@@ -1,0 +1,89 @@
+name: Grizzlys Ergebnisdienst
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  result-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Firebase Admin installieren
+        run: npm install firebase-admin
+
+      - name: Ergebnisse prüfen und Push senden
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          cat > result-push.js <<'EOF'
+          const admin = require("firebase-admin");
+
+          const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
+          admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+          });
+
+          const db = admin.firestore();
+          const messaging = admin.messaging();
+
+          async function main() {
+            const tokensSnap = await db.collection("pushTokens").get();
+            const tokens = tokensSnap.docs
+              .map(d => d.data().token)
+              .filter(Boolean);
+
+            if (!tokens.length) {
+              console.log("Keine Push-Geräte registriert.");
+              return;
+            }
+
+            const resultsSnap = await db.collection("results").get();
+            const now = Date.now();
+
+            for (const resultDoc of resultsSnap.docs) {
+              const r = resultDoc.data();
+
+              if (!r.updatedAt) continue;
+              if (r.pushSentAt) continue;
+
+              const updated = r.updatedAt.toMillis();
+              const age = now - updated;
+
+              if (age < 0 || age > 10 * 60 * 1000) continue;
+
+              const title = "🏒 ESV Grizzlys U15";
+              const body =
+                `Ergebnis: ${r.home} ${r.homeScore}:${r.awayScore} ${r.away}`;
+
+              for (let i = 0; i < tokens.length; i += 500) {
+                const batch = tokens.slice(i, i + 500);
+
+                await messaging.sendEachForMulticast({
+                  tokens: batch,
+                  notification: {
+                    title,
+                    body
+                  }
+                });
+              }
+
+              await resultDoc.ref.update({
+                pushSentAt: admin.firestore.FieldValue.serverTimestamp()
+              });
+
+              console.log("Push gesendet:", resultDoc.id);
+            }
+          }
+
+          main()
+            .then(() => process.exit(0))
+            .catch(error => {
+              console.error(error);
+              process.exit(1);
+            });
+          EOF
+
+          node result-push.js
