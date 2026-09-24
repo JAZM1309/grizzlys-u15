@@ -197,7 +197,6 @@ document.addEventListener("DOMContentLoaded",()=>{
       const supported=await isSupported(); if(!supported) throw new Error("unsupported");
       messaging=messaging||getMessaging(app);
       const reg=await navigator.serviceWorker.register("./sw.js");
-alert("Service Worker: " + (reg.active ? "AKTIV" : "NICHT AKTIV"));
       const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
       if(!token) throw new Error("no token");
       alert("FCM-Token wurde erfolgreich erstellt.");
