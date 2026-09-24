@@ -24,7 +24,8 @@ jobs:
           const { cert, initializeApp } = require("firebase-admin/app");
           const { getFirestore, FieldValue } = require("firebase-admin/firestore");
           const { getMessaging } = require("firebase-admin/messaging");
-
+          const fs = require("fs");
+  
           const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
           const firebaseApp = initializeApp({
