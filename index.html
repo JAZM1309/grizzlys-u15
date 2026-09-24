@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(!token) throw new Error("no token");
       await setDoc(doc(db,"pushTokens",token),{token,createdAt:serverTimestamp(),platform:navigator.userAgent});
       alert("Push-Benachrichtigungen sind auf diesem Gerät aktiviert.");
-    }catch(e){console.error(e);alert("Push konnte auf diesem Gerät noch nicht aktiviert werden.");}
+    }catch(e){console.error(e);alert("Push-Fehler: " + (e?.code || e?.message || String(e)));}
   });
   onAuthStateChanged(auth,user=>setAdminUi(user));
   loadResults();
