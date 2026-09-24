@@ -73,7 +73,7 @@ jobs:
               }
 
               await resultDoc.ref.update({
-                pushSentAt: admin.firestore.FieldValue.serverTimestamp()
+                pushSentAt: FieldValue.serverTimestamp()
               });
 
               console.log("Push gesendet:", resultDoc.id);
