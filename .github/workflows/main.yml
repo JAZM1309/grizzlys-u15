@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Spielplan laden
+        uses: actions/checkout@v4
+        
       - name: Firebase Admin installieren
         run: npm install firebase-admin
 
