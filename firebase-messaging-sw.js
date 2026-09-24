@@ -1,0 +1,28 @@
+/* Firebase Cloud Messaging service worker for ESV Grizzlys U15 v1.3 */
+importScripts("https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging-compat.js");
+
+firebase.initializeApp({
+  apiKey: "AIzaSyC-Dqjj-vNMYA8QRc3SGeivMDRjEHjwKe0",
+  authDomain: "grizzlys-u15.firebaseapp.com",
+  projectId: "grizzlys-u15",
+  storageBucket: "grizzlys-u15.firebasestorage.app",
+  messagingSenderId: "595868074479",
+  appId: "1:595868074479:web:2ac44da77d0dc533ac361a"
+});
+
+const messaging = firebase.messaging();
+messaging.onBackgroundMessage(payload => {
+  const n = payload.notification || {};
+  const title = n.title || "ESV Grizzlys U15";
+  const options = { body: n.body || "Neue Grizzlys-Meldung", icon: "./icon-192.png", badge: "./icon-192.png", data: payload.data || {} };
+  self.registration.showNotification(title, options);
+});
+
+self.addEventListener("notificationclick", event => {
+  event.notification.close();
+  event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
+    for(const client of list){ if("focus" in client) return client.focus(); }
+    if(clients.openWindow) return clients.openWindow("./");
+  }));
+});
