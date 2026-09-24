@@ -25,7 +25,10 @@ jobs:
           const { getFirestore, FieldValue } = require("firebase-admin/firestore");
           const { getMessaging } = require("firebase-admin/messaging");
           const fs = require("fs");
-  
+          const html = fs.readFileSync("index.html", "utf8");
+          const gamesMatch = html.match(/const games=(\[[\s\S]*?\]);/);
+          const games = gamesMatch ? JSON.parse(gamesMatch[1]) : [];
+
           const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
           const firebaseApp = initializeApp({
