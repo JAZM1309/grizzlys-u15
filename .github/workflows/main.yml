@@ -28,7 +28,46 @@ jobs:
           const html = fs.readFileSync("index.html", "utf8");
           const gamesMatch = html.match(/const games=(\[[\s\S]*?\]);/);
           const games = gamesMatch ? JSON.parse(gamesMatch[1]) : [];
+          function berlinDate(date, time) {
+           const [y, m, d] = date.split("-").map(Number);
+           const [hh, mm] = time.split(":").map(Number);
 
+           const localAsUtc = Date.UTC(y, m - 1, d, hh, mm);
+           let guess = localAsUtc;
+
+          const fmt = new Intl.DateTimeFormat("en-US", {
+           timeZone: "Europe/Berlin",
+           year: "numeric",
+           month: "2-digit",
+           day: "2-digit",
+           hour: "2-digit",
+           minute: "2-digit",
+           second: "2-digit",
+           hourCycle: "h23"
+          });
+
+          for (let i = 0; i < 3; i++) {
+          const p = Object.fromEntries(
+          fmt.formatToParts(new Date(guess))
+          .filter(x => x.type !== "literal")
+          .map(x => [x.type, x.value])
+          );
+
+          const displayedAsUtc = Date.UTC(
+          Number(p.year),
+          Number(p.month) - 1,
+          Number(p.day),
+          Number(p.hour),
+          Number(p.minute),
+          Number(p.second)
+          );
+
+          guess += localAsUtc - displayedAsUtc;
+          }
+
+          return new Date(guess);
+          }
+          
           const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
           const firebaseApp = initializeApp({
