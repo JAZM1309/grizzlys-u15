@@ -173,6 +173,7 @@ jobs:
 
               console.log("Push gesendet:", resultDoc.id);
             }
+            await sendGameReminders(tokens);
           }
 
           main()
