@@ -76,6 +76,46 @@ jobs:
           diff <= 24 * 60 * 60 * 1000 + 5 * 60 * 1000
           );
           }
+          async function sendGameReminders(tokens) {
+          for (const game of games) {
+          if (!isReminderTime(game)) continue;
+
+          const reminderId =
+          `${game.date}_${game.time.replace(/:/g, "")}_${game.team}`;
+
+          const reminderRef =
+          db.collection("gameReminders").doc(reminderId);
+
+          const reminderDoc = await reminderRef.get();
+
+          if (reminderDoc.exists && reminderDoc.data().sentAt) {
+          continue;
+          }
+
+          const title = "🏒 ESV Grizzlys U15";
+          const body =
+          `Morgen: U15 ${game.team} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
+
+          for (let i = 0; i < tokens.length; i += 500) {
+          const batch = tokens.slice(i, i + 500);
+
+          await messaging.sendEachForMulticast({
+          tokens: batch,
+          notification: {
+          title,
+          body
+          }
+          });
+          }
+
+          await reminderRef.set({
+          sentAt: FieldValue.serverTimestamp(),
+          game
+          });
+
+          console.log("24h-Erinnerung gesendet:", reminderId);
+          }
+          }
           
           const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
