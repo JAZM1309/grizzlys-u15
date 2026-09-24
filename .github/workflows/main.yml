@@ -67,6 +67,15 @@ jobs:
 
           return new Date(guess);
           }
+          function isReminderTime(game) {
+          const gameTime = berlinDate(game.date, game.time).getTime();
+          const diff = gameTime - Date.now();
+
+          return (
+          diff >= 23 * 60 * 60 * 1000 + 55 * 60 * 1000 &&
+          diff <= 24 * 60 * 60 * 1000 + 5 * 60 * 1000
+          );
+          }
           
           const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
