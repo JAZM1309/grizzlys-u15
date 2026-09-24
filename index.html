@@ -199,7 +199,6 @@ document.addEventListener("DOMContentLoaded",()=>{
       const reg=await navigator.serviceWorker.register("./sw.js");
       const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
       if(!token) throw new Error("no token");
-      alert("FCM-Token wurde erfolgreich erstellt.");
       await setDoc(doc(db,"pushTokens",token),{token,createdAt:serverTimestamp(),platform:navigator.userAgent});
       alert("Push-Benachrichtigungen sind auf diesem Gerät aktiviert.");
     }catch(e){console.error(e);alert("Push-Fehler: " + (e?.code || e?.message || String(e)));}
