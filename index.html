@@ -208,7 +208,6 @@ alert("Service Worker: " + (reg.active ? "AKTIV" : "NICHT AKTIV"));
   onAuthStateChanged(auth,user=>setAdminUi(user));
   loadResults();
   isSupported().then(ok=>{
-  alert("FCM unterstützt: " + ok);
   if(ok && FIREBASE_VAPID_KEY){
     messaging=getMessaging(app);
     onMessage(messaging,payload=>{
