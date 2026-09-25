@@ -19,6 +19,7 @@ button{font:inherit}.app{max-width:760px;margin:auto;min-height:100vh;padding-bo
 main{padding:14px 14px 0}.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-bottom:14px}
 .tab,.filter{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;padding:10px;cursor:pointer;font-weight:800}
 .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.infoTop{position:absolute;right:18px;bottom:18px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .opponentCard{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px;box-shadow:0 4px 16px rgba(8,31,55,.06);cursor:pointer}
 .opponentCard .opponentLogo{width:42px;height:42px}
 .opponentCardInfo{min-width:0}
@@ -90,9 +91,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 </head>
 <body>
 <div class="app">
-<header class="hero"><div class="heroTop"><img src="logo.png" alt="ESV Grizzlys Logo"><div><div class="kicker">ESV Grizzlys Bergkamen</div><h1>U15 Spielplan</h1></div></div><div class="season">Saison 2026/27</div></header>
+<header class="hero"><div class="heroTop"><img src="logo.png" alt="ESV Grizzlys Logo"><div><div class="kicker">ESV Grizzlys Bergkamen</div><h1>U15 Spielplan</h1></div></div><div class="season">Saison 2026/27</div><button id="infoTopBtn" class="infoTop" type="button" aria-label="Info">ⓘ</button></header>
 <main>
-<nav class="tabs"><button class="tab active" data-view="home">Start</button><button class="tab" data-view="schedule">Spielplan</button><button class="tab" data-view="opponents">Gegner</button><button class="tab" data-view="downloads">Downloads</button><button class="tab" data-view="info">ⓘ Info</button></nav>
+<nav class="tabs"><button class="tab active" data-view="home">Start</button><button class="tab" data-view="schedule">Spielplan</button><button class="tab" data-view="opponents">Gegner</button><button class="tab" data-view="downloads">Downloads</button></nav>
 <section id="homeView">
 <div class="next"><div class="nextLabel">Nächstes Spiel</div><div id="nextTeam"></div><div id="nextDate" class="nextDate"></div><div id="nextMatch" class="match"></div><div id="nextMeta" class="meta"></div><div class="actions"><button id="nextRoute" class="action">📍 Route</button><button id="nextCalendar" class="action">📅 Termin</button><button id="nextReminder" class="action">🔔 Erinnerung</button><button id="nextShare" class="action">↗️ Teilen</button></div></div>
 <div class="sectionTitle" style="font-size:19px;font-weight:950;margin:15px 0 9px">Mannschaften</div>
