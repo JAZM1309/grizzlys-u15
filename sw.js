@@ -12,18 +12,6 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(payload => {
-  const n = payload.notification || {};
-  const title = n.title || "ESV Grizzlys U15";
-
-  self.registration.showNotification(title, {
-    body: n.body || "Neue Grizzlys-Meldung",
-    icon: "./icon-192.png",
-    badge: "./icon-192.png",
-    data: payload.data || {}
-  });
-});
-
 self.addEventListener("notificationclick", event => {
   event.notification.close();
 
