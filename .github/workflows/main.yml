@@ -158,12 +158,31 @@ jobs:
               for (let i = 0; i < tokens.length; i += 500) {
                 const batch = tokens.slice(i, i + 500);
 
-                await messaging.sendEachForMulticast({
-                  tokens: batch,
-                  notification: {
-                    title,
-                    body
-                  }
+                const response = await messaging.sendEachForMulticast({
+                tokens: batch,
+                notification: {
+                title,
+                body
+                }
+                });
+
+                console.log(
+                "FCM Ergebnis:",
+                response.successCount,
+                "erfolgreich,",
+                response.failureCount,
+                "fehlgeschlagen"
+                );
+
+                response.responses.forEach((r, index) => {
+                if (!r.success) {
+                console.log(
+                "FCM Fehler Token",
+                index,
+                r.error?.code,
+                r.error?.message
+                );
+                }
                 });
               }
 
