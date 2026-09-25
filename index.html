@@ -154,7 +154,7 @@ async function loadResults(){
 
 function adminEditor(){
   const box=document.getElementById("adminResults"); if(!box) return;
-  box.innerHTML=games.slice().sort((a,b)=>dt(b)-dt(a)).map(g=>{
+  box.innerHTML=games.slice().sort((a,b)=>dt(a)-dt(b)).map(g=>{
     const r=resultFor(g)||{};
     const id=resultKey(g);
     return `<div class="adminGame" data-result-id="${id}">
