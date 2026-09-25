@@ -19,6 +19,21 @@ button{font:inherit}.app{max-width:760px;margin:auto;min-height:100vh;padding-bo
 main{padding:14px 14px 0}.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-bottom:14px}
 .tab,.filter{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;padding:10px;cursor:pointer;font-weight:800}
 .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.opponentCard{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px;box-shadow:0 4px 16px rgba(8,31,55,.06);cursor:pointer}
+.opponentCard .opponentLogo{width:42px;height:42px}
+.opponentCardInfo{min-width:0}
+.opponentCardName{font-size:16px;font-weight:950;line-height:1.2}
+.opponentCardMeta{font-size:11px;color:var(--muted);margin-top:4px}
+.opponentRoute{white-space:nowrap}
+.opponentGames{display:grid;gap:8px}
+.opponentGame{border:1px solid var(--border);border-radius:14px;padding:11px;background:#fbfdff}
+.opponentGameTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.opponentGameDate{font-weight:900}
+.opponentGameTeam{font-size:11px;font-weight:950;padding:4px 7px;border-radius:8px;background:var(--ice);color:var(--navy)}
+.opponentGameMatch{margin-top:7px;font-weight:850;line-height:1.3}
+.opponentGameVenue{font-size:11px;color:var(--muted);margin-top:6px}
+.opponentGameActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.opponentGameActions .action{font-size:11px;padding:7px 9px}
 .next{background:#fff;border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:var(--shadow);margin-bottom:16px}
 .nextLabel{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
 .nextDate{font-size:18px;font-weight:900;margin-top:4px}
@@ -79,7 +94,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 <main>
 <nav class="tabs"><button class="tab active" data-view="home">Start</button><button class="tab" data-view="schedule">Spielplan</button><button class="tab" data-view="downloads">Downloads</button><button class="tab" data-view="info">ⓘ Info</button></nav>
 <section id="homeView">
-  
 <div class="next"><div class="nextLabel">Nächstes Spiel</div><div id="nextTeam"></div><div id="nextDate" class="nextDate"></div><div id="nextMatch" class="match"></div><div id="nextMeta" class="meta"></div><div class="actions"><button id="nextRoute" class="action">📍 Route</button><button id="nextCalendar" class="action">📅 Termin</button><button id="nextReminder" class="action">🔔 Erinnerung</button><button id="nextShare" class="action">↗️ Teilen</button></div></div>
 <div class="sectionTitle" style="font-size:19px;font-weight:950;margin:15px 0 9px">Mannschaften</div>
 <div class="teamCards">
@@ -88,6 +102,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 </div>
 <div class="infoCard"><b>38 Spiele</b> · chronologisch sortiert · <span style="color:var(--a);font-weight:900">U15 A blau</span> · <span style="color:var(--b);font-weight:900">U15 B orange</span></div>
 </section>
+  <section id="opponentsView" hidden>
+<div class="scheduleHead">
+<div class="scheduleTitle">Gegner</div>
+<div id="opponentsCount" class="small"></div>
+</div>
+<div class="small" style="margin-bottom:12px">
+Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
+</div>
+<div id="opponentsList" class="list"></div>
+  </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button">☷ Chronologisch</button><button id="monthBtn" class="modeBtn" type="button">▦ Kalender</button></div><div class="scheduleFilters"><button class="filter active" type="button" data-filter="all">Alle</button><button class="filter" type="button" data-filter="A">U15 A</button><button class="filter" type="button" data-filter="B">U15 B</button></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div style="font-size:21px;font-weight:950;margin-bottom:6px">📥 Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter.</div><div class="downloadCards"><button id="downloadA" class="downloadCard"><span>🔵</span><b>U15 A</b><small>Alle Spiele der U15 A</small></button><button id="downloadB" class="downloadCard"><span>🟠</span><b>U15 B</b><small>Alle Spiele der U15 B</small></button><button id="downloadBoth" class="downloadCard"><span>🏒</span><b>U15 A + B</b><small>Beide Mannschaften zusammen</small></button></div></div></section>
 <section id="infoView" hidden><div class="infoCard"><b>ESV Grizzlys Bergkamen · U15 · 2026/27</b><br><span class="small">App-Version 1.3</span><br><br>Der Spielplan kann zwischen <b>chronologischer Liste</b> und <b>Monatskalender</b> umgeschaltet werden. Im Monatskalender stehen die Termine direkt in den Tageskacheln. Die farbige Seitenlinie und das Team-Badge zeigen sofort, ob es sich um U15 A oder U15 B handelt.<br><br>Die Gegnerlogos werden direkt beim jeweiligen Gegner angezeigt. Bei Spielgemeinschaften können mehrere Vereinslogos erscheinen.</div><div class="infoCard" style="margin-top:12px"><b>Hinweis zu den Logos</b><br><span class="small">Die Logos stammen aus den jeweiligen Vereins-/Webauftritten bzw. öffentlich verfügbaren Vereinsdarstellungen. Falls ein Logo online nicht erreichbar ist, zeigt die App automatisch ein neutrales Kürzel.</span></div></section>
@@ -340,6 +364,56 @@ window.applyResults=function(){
     if(meta && badge && !meta.innerHTML.includes("resultBadge")) meta.innerHTML += "<br>"+badge;
   }
 };
+  function renderOpponents(){
+  const root=document.getElementById("opponentsList");
+  if(!root)return;
+
+  const groups=new Map();
+
+  games.forEach(g=>{
+    const name=opponent(g);
+    if(!groups.has(name))groups.set(name,[]);
+    groups.get(name).push(g);
+  });
+
+  const arr=[...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0],"de"));
+
+  document.getElementById("opponentsCount").textContent=arr.length+" Gegner";
+
+  root.innerHTML=arr.map(([name,gs])=>{
+    const sorted=gs.slice().sort((a,b)=>dt(a)-dt(b));
+    const routeGame=sorted.find(g=>dt(g)>=new Date())||sorted[sorted.length-1];
+
+    const teams=[...new Set(gs.map(g=>"U15 "+g.team))].join(" · ");
+
+    return '<article class="opponentCard" data-opponent="'+esc(name)+'">'+
+      logoHtml(name,"opponentLogo")+
+      '<div class="opponentCardInfo">'+
+      '<div class="opponentCardName">'+esc(name)+'</div>'+
+      '<div class="opponentCardMeta">'+gs.length+" "+(gs.length===1?"Spiel":"Spiele")+" · "+esc(teams)+'</div>'+
+      '</div>'+
+      '<button class="action opponentRoute" type="button">📍 Route</button>'+
+      '</article>';
+  }).join("");
+
+  root.querySelectorAll(".opponentCard").forEach(card=>{
+    const name=card.dataset.opponent;
+    const gs=groups.get(name)||[];
+
+    card.onclick=e=>{
+      if(e.target.closest(".opponentRoute"))return;
+      openOpponentDetails(name,gs);
+    };
+
+    const sorted=gs.slice().sort((a,b)=>dt(a)-dt(b));
+    const routeGame=sorted.find(g=>dt(g)>=new Date())||sorted[sorted.length-1];
+
+    card.querySelector(".opponentRoute").onclick=e=>{
+      e.stopPropagation();
+      route(routeGame);
+    };
+  });
+  }
 function renderList(filter="all"){
   if(scheduleMode!=="chrono"){renderCalendar(filter);return;}
   const list=document.getElementById("gamesList"); list.innerHTML="";
