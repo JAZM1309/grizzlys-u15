@@ -120,6 +120,15 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <div id="adminLogin" style="margin-top:10px"><form id="adminLoginForm"><input id="adminEmail" type="email" autocomplete="username" placeholder="Admin-E-Mail" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;margin-bottom:7px"><input id="adminPassword" type="password" autocomplete="current-password" placeholder="Passwort" style="width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;margin-bottom:7px"><button class="action" type="submit">🔐 Anmelden</button></form></div>
 <div id="adminPanel" hidden style="margin-top:12px"><button id="adminLogout" class="action" type="button">Abmelden</button><div id="adminResults" class="adminResults" style="margin-top:10px"></div></div></section>
 
+  <div id="opponentModal" class="matchModal" hidden aria-hidden="true">
+  <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="opponentModalTitle">
+    <div class="matchModalHead">
+      <div id="opponentModalTitle" class="matchModalTitle">Gegner</div>
+      <button id="opponentModalClose" class="matchModalClose" type="button" aria-label="Gegnerübersicht schließen">×</button>
+    </div>
+    <div id="opponentModalContent"></div>
+  </div>
+  </div>
 <div id="matchModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="matchModalTitle">
     <div class="matchModalHead">
@@ -358,6 +367,7 @@ window.applyResults=function(){
     const active=document.querySelector(".scheduleFilters .filter.active");
     renderList(active?active.dataset.filter:"all");
   }
+  renderOpponents();
   const homeNext=games.filter(x=>dt(x)>=new Date()).sort((a,b)=>dt(a)-dt(b))[0];
   if(homeNext){
     const badge=resultBadge(homeNext); const meta=document.getElementById("nextMeta");
@@ -414,6 +424,59 @@ window.applyResults=function(){
     };
   });
   }
+  function openOpponentDetails(name,gs){
+  const modal=document.getElementById("opponentModal");
+  const content=document.getElementById("opponentModalContent");
+
+  const sorted=gs.slice().sort((a,b)=>dt(a)-dt(b));
+
+  document.getElementById("opponentModalTitle").textContent=name;
+
+  content.innerHTML=
+    '<div class="small" style="margin-bottom:10px">'+
+    gs.length+" "+(gs.length===1?"Spiel":"Spiele")+
+    " gegen diesen Gegner</div>"+
+    '<div class="opponentGames">'+
+    sorted.map(g=>
+      '<div class="opponentGame">'+
+      '<div class="opponentGameTop">'+
+      '<div class="opponentGameDate">'+esc(fmtDate(g))+" · "+esc(g.time)+" Uhr</div>"+
+      '<div class="opponentGameTeam">U15 '+esc(g.team)+'</div>'+
+      '</div>'+
+      '<div class="opponentGameMatch">'+esc(g.home)+" – "+esc(g.away)+'</div>'+
+      '<div class="opponentGameVenue">📍 '+esc(g.stadium)+" · "+esc(address(g))+
+      (resultFor(g)?" "+resultBadge(g):"")+
+      '</div>'+
+      '<div class="opponentGameActions">'+
+      '<button class="action gameRoute" type="button">📍 Route</button>'+
+      '<button class="action gameDetails" type="button">Spieldetails</button>'+
+      '</div>'+
+      '</div>'
+    ).join("")+
+    '</div>';
+
+  content.querySelectorAll(".opponentGame").forEach((card,i)=>{
+    const g=sorted[i];
+
+    card.querySelector(".gameRoute").onclick=()=>route(g);
+
+    card.querySelector(".gameDetails").onclick=()=>{
+      closeOpponentDetails();
+      openMatchDetails(g);
+    };
+  });
+
+  modal.hidden=false;
+  modal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+}
+
+function closeOpponentDetails(){
+  const modal=document.getElementById("opponentModal");
+  modal.hidden=true;
+  modal.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
 function renderList(filter="all"){
   if(scheduleMode!=="chrono"){renderCalendar(filter);return;}
   const list=document.getElementById("gamesList"); list.innerHTML="";
@@ -484,7 +547,7 @@ function closeMatchDetails(){
   document.body.style.overflow="";
 }
 
-function showView(name){["home","schedule","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule")setScheduleMode(scheduleMode);window.scrollTo({top:0,behavior:"smooth"})}
+function showView(name){["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule")setScheduleMode(scheduleMode);window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.querySelectorAll(".scheduleFilters .filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".scheduleFilters .filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(scheduleMode==="month")renderCalendar(b.dataset.filter);else renderList(b.dataset.filter)});
 document.getElementById("chronoBtn").onclick=()=>setScheduleMode("chrono");
@@ -493,10 +556,12 @@ document.getElementById("downloadA").onclick=()=>downloadTeamCalendar("A");
 document.getElementById("downloadB").onclick=()=>downloadTeamCalendar("B");
 document.getElementById("downloadBoth").onclick=downloadBothCalendars;
 document.getElementById("matchModalClose").onclick=closeMatchDetails;
+document.getElementById("opponentModalClose").onclick=closeOpponentDetails;
+document.getElementById("opponentModal").addEventListener("click",e=>{if(e.target.id==="opponentModal")closeOpponentDetails();});
 document.getElementById("matchModal").addEventListener("click",e=>{if(e.target.id==="matchModal")closeMatchDetails()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!document.getElementById("matchModal").hidden)closeMatchDetails()});
 document.querySelectorAll(".teamCard").forEach(b=>b.onclick=()=>{showView("schedule");document.querySelectorAll(".scheduleFilters .filter").forEach(x=>x.classList.toggle("active",x.dataset.filter===b.dataset.team));if(scheduleMode==="month")renderCalendar(b.dataset.team);else renderList(b.dataset.team)});
 if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{});}
-renderNext();renderList();
+renderNext();renderList();renderOpponents();
 </script>
 </body></html>
