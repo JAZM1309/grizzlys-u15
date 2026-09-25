@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(ok && FIREBASE_VAPID_KEY){
     messaging=getMessaging(app);
     onMessage(messaging,payload=>{
-      alert("PUSH EMPFANGEN");
+      
       const n=payload.notification||{};
       if(n.title) alert((n.title ? n.title+"\n" : "") + (n.body||""));
     });
