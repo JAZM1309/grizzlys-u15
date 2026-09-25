@@ -149,7 +149,7 @@ jobs:
               const updated = r.updatedAt.toMillis();
               const age = now - updated;
 
-              if (age < 0 || age > 10 * 60 * 1000) continue;
+              if (age < 0) continue;
 
               const title = "🏒 ESV Grizzlys U15";
               const body =
