@@ -208,7 +208,7 @@ function resultBadge(g){
   const opponentScore=homeTeamIsGrizzlys?as:hs;
   const outcome=grizzlysScore>opponentScore?"SIEG":grizzlysScore<opponentScore?"NIEDERLAGE":"UNENTSCHIEDEN";
   const outcomeClass=outcome.toLowerCase();
-  return `<div class="resultBadge">ENDRESULTAT <strong>${esc(String(hs))}:${esc(String(as))}</strong> · <span class="resultOutcome ${outcomeClass}">${outcome}</span></div>`;
+  return `<div class="resultBadge">ENDERGEBNIS <strong>${esc(String(hs))}:${esc(String(as))}</strong> · <span class="resultOutcome ${outcomeClass}">${outcome}</span></div>`;
 }
 window.resultFor=resultFor;
 window.resultBadge=resultBadge;
