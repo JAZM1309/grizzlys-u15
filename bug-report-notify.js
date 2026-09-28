@@ -8,8 +8,7 @@ function required(name) {
 }
 
 function getServiceAccount() {
-  const raw = required("FIREBASE_SERVICE_ACCOUNT");
-  return JSON.parse(raw);
+  return JSON.parse(required("FIREBASE_SERVICE_ACCOUNT"));
 }
 
 admin.initializeApp({
@@ -36,19 +35,14 @@ function smtpTransport() {
 
 function reportText(report) {
   return [
-    `Neue Fehlermeldung in der Grizzlys-U15-App`,
-    ``,
+    "Neue Fehlermeldung in der Grizzlys-U15-App", "",
     `Bereich: ${report.area || "Sonstiges"}`,
     `Version: ${report.appVersion || "?"}`,
     `Plattform: ${report.platform || "?"}`,
     `Push beim Nutzer: ${report.pushRegistered ? "aktiv" : "nicht registriert"}`,
-    ``,
-    `Fehlerbeschreibung:`,
-    report.description || "",
-    ``,
+    "", "Fehlerbeschreibung:", report.description || "", "",
     report.contact ? `Rückfrage-Kontakt: ${report.contact}` : "Kein Rückfrage-Kontakt angegeben.",
-    ``,
-    `Die Meldung wurde in Firestore unter bugReports gespeichert.`
+    "", "Die Meldung wurde in Firestore unter bugReports gespeichert."
   ].join("\n");
 }
 
@@ -64,8 +58,7 @@ async function sendEmail(report) {
 
 async function sendPush(report) {
   const snap = await db.collection("pushTokens")
-    .where("admin", "==", true)
-    .get();
+    .where("admin", "==", true).get();
 
   const tokens = [];
   snap.forEach(doc => {
@@ -85,14 +78,9 @@ async function sendPush(report) {
       title: "🐛 Neue Fehlermeldung",
       body: `${report.area || "Sonstiges"}: ${(report.description || "").slice(0, 100)}`
     },
-    data: {
-      type: "bugReport",
-      reportId: report.id || ""
-    },
+    data: { type: "bugReport", reportId: report.id || "" },
     webpush: {
-      fcmOptions: {
-        link: "https://jazm1309.github.io/grizzlys-u15/"
-      }
+      fcmOptions: { link: "https://jazm1309.github.io/grizzlys-u15/" }
     }
   });
 
@@ -103,9 +91,7 @@ async function sendPush(report) {
       if (
         code.includes("registration-token-not-registered") ||
         code.includes("invalid-registration-token")
-      ) {
-        invalidTokens.push(uniqueTokens[index]);
-      }
+      ) invalidTokens.push(uniqueTokens[index]);
       console.warn("Push fehlgeschlagen:", code, result.error?.message || "");
     }
   });
@@ -123,8 +109,6 @@ async function main() {
     const ts = stateSnap.data().lastProcessedAt;
     lastProcessedMs = ts.toMillis ? ts.toMillis() : Date.parse(ts);
   } else {
-    // Beim ersten Lauf nur den aktuellen Stand markieren.
-    // So werden alte Fehlermeldungen nicht nachträglich verschickt.
     await STATE_REF.set({
       lastProcessedAt: admin.firestore.Timestamp.now(),
       initializedAt: admin.firestore.FieldValue.serverTimestamp()
@@ -153,12 +137,36 @@ async function main() {
   }
 
   for (const report of reports) {
+    const reportRef = db.collection("bugReports").doc(report.id);
+    const currentSnap = await reportRef.get();
+    const current = currentSnap.data() || {};
+
     console.log(`Verarbeite Fehlermeldung ${report.id}`);
 
-    // Beide Benachrichtigungen müssen erfolgreich sein, bevor der
-    // Fortschrittsstand weitergeschoben wird.
-    await sendPush(report);
-    await sendEmail(report);
+    // Push und E-Mail werden getrennt gespeichert.
+    // Ein E-Mail-Fehler löst keinen zweiten Push aus.
+    if (!current.pushSentAt) {
+      await sendPush(report);
+      await reportRef.update({
+        pushSentAt: admin.firestore.FieldValue.serverTimestamp()
+      });
+      console.log("Fehler-Push als gesendet markiert:", report.id);
+    } else {
+      console.log("Fehler-Push bereits gesendet:", report.id);
+    }
+
+    const afterPushSnap = await reportRef.get();
+    const afterPush = afterPushSnap.data() || {};
+
+    if (!afterPush.emailSentAt) {
+      await sendEmail(report);
+      await reportRef.update({
+        emailSentAt: admin.firestore.FieldValue.serverTimestamp()
+      });
+      console.log("Fehler-E-Mail als gesendet markiert:", report.id);
+    } else {
+      console.log("Fehler-E-Mail bereits gesendet:", report.id);
+    }
 
     await STATE_REF.set({
       lastProcessedAt: admin.firestore.Timestamp.fromMillis(report._createdMs),
