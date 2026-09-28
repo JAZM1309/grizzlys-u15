@@ -7,17 +7,14 @@ function required(name) {
   return value;
 }
 
-function getServiceAccount() {
-  return JSON.parse(required("FIREBASE_SERVICE_ACCOUNT"));
-}
-
 admin.initializeApp({
-  credential: admin.credential.cert(getServiceAccount())
+  credential: admin.credential.cert(
+    JSON.parse(required("FIREBASE_SERVICE_ACCOUNT"))
+  )
 });
 
 const db = admin.firestore();
 const messaging = admin.messaging();
-
 const STATE_REF = db.doc("system/bugReportNotifier");
 const NOTIFY_EMAIL = required("BUG_REPORT_EMAIL");
 
@@ -33,8 +30,8 @@ function smtpTransport() {
   });
 }
 
-function reportText(report) {
-  return [
+async function sendEmail(report) {
+  const text = [
     "Neue Fehlermeldung in der Grizzlys-U15-App",
     "",
     `Bereich: ${report.area || "Sonstiges"}`,
@@ -47,20 +44,14 @@ function reportText(report) {
     "",
     report.contact
       ? `Rückfrage-Kontakt: ${report.contact}`
-      : "Kein Rückfrage-Kontakt angegeben.",
-    "",
-    "Die Meldung wurde in Firestore unter bugReports gespeichert."
+      : "Kein Rückfrage-Kontakt angegeben."
   ].join("\n");
-}
 
-async function sendEmail(report) {
-  const transporter = smtpTransport();
-
-  await transporter.sendMail({
+  await smtpTransport().sendMail({
     from: process.env.SMTP_USER,
     to: NOTIFY_EMAIL,
     subject: `🐛 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
-    text: reportText(report)
+    text
   });
 }
 
@@ -70,7 +61,6 @@ async function sendPush(report) {
     .get();
 
   const tokens = [];
-
   snap.forEach(doc => {
     const data = doc.data() || {};
     if (data.token) tokens.push(data.token);
@@ -105,27 +95,18 @@ async function sendPush(report) {
   response.responses.forEach((result, index) => {
     if (!result.success) {
       const code = result.error?.code || "";
-
       if (
         code.includes("registration-token-not-registered") ||
         code.includes("invalid-registration-token")
       ) {
         invalidTokens.push(uniqueTokens[index]);
       }
-
-      console.warn(
-        "Push fehlgeschlagen:",
-        code,
-        result.error?.message || ""
-      );
+      console.warn("Push fehlgeschlagen:", code);
     }
   });
 
   for (const token of invalidTokens) {
-    await db.collection("pushTokens")
-      .doc(token)
-      .delete()
-      .catch(() => {});
+    await db.collection("pushTokens").doc(token).delete().catch(() => {});
   }
 
   return response.successCount > 0;
@@ -133,24 +114,17 @@ async function sendPush(report) {
 
 async function main() {
   const stateSnap = await STATE_REF.get();
-
   let lastProcessedMs = 0;
 
   if (stateSnap.exists && stateSnap.data().lastProcessedAt) {
     const ts = stateSnap.data().lastProcessedAt;
-    lastProcessedMs = ts.toMillis
-      ? ts.toMillis()
-      : Date.parse(ts);
+    lastProcessedMs = ts.toMillis ? ts.toMillis() : Date.parse(ts);
   } else {
     await STATE_REF.set({
       lastProcessedAt: admin.firestore.Timestamp.now(),
       initializedAt: admin.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
-
-    console.log(
-      "Notifier initialisiert. Bestehende Fehlermeldungen werden nicht nachträglich versendet."
-    );
-
+    console.log("Notifier initialisiert.");
     return;
   }
 
@@ -160,16 +134,10 @@ async function main() {
   snap.forEach(doc => {
     const data = doc.data() || {};
     const createdAt = data.createdAt;
-    const createdMs = createdAt?.toMillis
-      ? createdAt.toMillis()
-      : 0;
+    const createdMs = createdAt?.toMillis ? createdAt.toMillis() : 0;
 
     if (createdMs > lastProcessedMs) {
-      reports.push({
-        id: doc.id,
-        ...data,
-        _createdMs: createdMs
-      });
+      reports.push({ id: doc.id, ...data, _createdMs: createdMs });
     }
   });
 
@@ -181,45 +149,57 @@ async function main() {
   }
 
   for (const report of reports) {
-    const reportRef = db.collection("bugReports").doc(report.id);
-
-    const currentSnap = await reportRef.get();
+    const ref = db.collection("bugReports").doc(report.id);
+    const currentSnap = await ref.get();
     const current = currentSnap.data() || {};
 
-    console.log(`Verarbeite Fehlermeldung ${report.id}`);
-
-    /*
-     * WICHTIG:
-     * Push und E-Mail haben eigene Statusfelder.
-     *
-     * Sobald pushSentAt gesetzt ist, wird für diese
-     * Fehlermeldung NIE wieder ein Push ausgelöst.
-     *
-     * Auch dann nicht, wenn der E-Mail-Versand fehlschlägt.
-     */
-
+    // pushSentAt schützt dauerhaft vor einem zweiten Push.
     let pushSent = Boolean(current.pushSentAt);
 
     if (pushSent) {
-      console.log(
-        "Fehler-Push bereits gesendet – kein erneuter Push:",
-        report.id
-      );
+      console.log("Push bereits gesendet – kein erneuter Push:", report.id);
     } else {
       pushSent = await sendPush(report);
-
       if (pushSent) {
-        await reportRef.update({
+        await ref.update({
           pushSentAt: admin.firestore.FieldValue.serverTimestamp()
         });
-
-        console.log(
-          "Fehler-Push als gesendet markiert:",
-          report.id
-        );
-      } else {
-        console.log(
-          "Fehler-Push nicht gesendet – wird erneut versucht:",
-          report.id
-        );
+        console.log("Push als gesendet markiert:", report.id);
       }
+    }
+
+    const afterPush = (await ref.get()).data() || {};
+    let emailSent = Boolean(afterPush.emailSentAt);
+
+    if (!emailSent) {
+      try {
+        await sendEmail(report);
+        await ref.update({
+          emailSentAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        emailSent = true;
+        console.log("E-Mail als gesendet markiert:", report.id);
+      } catch (error) {
+        console.error("E-Mail-Versand fehlgeschlagen:", error.message);
+      }
+    } else {
+      console.log("E-Mail bereits gesendet:", report.id);
+    }
+
+    if (pushSent && emailSent) {
+      await STATE_REF.set({
+        lastProcessedAt: admin.firestore.Timestamp.fromMillis(report._createdMs),
+        lastProcessedReportId: report.id,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      console.log("Fehlermeldung vollständig verarbeitet:", report.id);
+    } else {
+      console.log("Fehlermeldung bleibt für den nächsten Lauf offen:", report.id);
+    }
+  }
+}
+
+main().catch(error => {
+  console.error(error);
+  process.exit(1);
+});
