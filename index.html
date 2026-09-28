@@ -377,6 +377,13 @@ function detectPlatform(){
   return "Sonstiges";
 }
 
+function detectPlatformFromStoredUserAgent(ua){
+  const value=ua||"";
+  if(/iPhone|iPad|iPod/i.test(value)) return "Apple";
+  if(/Android/i.test(value)) return "Android";
+  return "Sonstiges";
+}
+
 function getInstallationId(){
   const key="grizzlysInstallationId";
   try{
@@ -395,7 +402,8 @@ async function registerAppInstallation(){
       installationId,
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
-      updatedAt:serverTimestamp()
+      updatedAt:serverTimestamp(),
+      createdAt:serverTimestamp()
     },{merge:true});
   }catch(err){
     console.warn("App-Installation konnte nicht registriert werden",err);
@@ -414,8 +422,9 @@ async function loadPushStats(){
       const data=d.data()||{};
       if(!data.installationId) return;
       appCount++;
-      if(data.platform==="Apple") apple++;
-      else if(data.platform==="Android") android++;
+      const platform=data.platform || detectPlatformFromStoredUserAgent(data.userAgent);
+      if(platform==="Apple") apple++;
+      else if(platform==="Android") android++;
       const ts=data.updatedAt||data.createdAt;
       if(ts?.toMillis){ const ms=ts.toMillis(); if(latestApp===null || ms>latestApp) latestApp=ms; }
     });
