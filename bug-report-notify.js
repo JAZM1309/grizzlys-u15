@@ -23,7 +23,7 @@ const NOTIFY_EMAIL = required("BUG_REPORT_EMAIL");
 
 function smtpTransport() {
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.gmx.net",
+    host: process.env.SMTP_HOST || "mail.gmx.net",
     port: Number(process.env.SMTP_PORT || 587),
     secure: false,
     auth: {
@@ -35,19 +35,27 @@ function smtpTransport() {
 
 function reportText(report) {
   return [
-    "Neue Fehlermeldung in der Grizzlys-U15-App", "",
+    "Neue Fehlermeldung in der Grizzlys-U15-App",
+    "",
     `Bereich: ${report.area || "Sonstiges"}`,
     `Version: ${report.appVersion || "?"}`,
     `Plattform: ${report.platform || "?"}`,
     `Push beim Nutzer: ${report.pushRegistered ? "aktiv" : "nicht registriert"}`,
-    "", "Fehlerbeschreibung:", report.description || "", "",
-    report.contact ? `Rückfrage-Kontakt: ${report.contact}` : "Kein Rückfrage-Kontakt angegeben.",
-    "", "Die Meldung wurde in Firestore unter bugReports gespeichert."
+    "",
+    "Fehlerbeschreibung:",
+    report.description || "",
+    "",
+    report.contact
+      ? `Rückfrage-Kontakt: ${report.contact}`
+      : "Kein Rückfrage-Kontakt angegeben.",
+    "",
+    "Die Meldung wurde in Firestore unter bugReports gespeichert."
   ].join("\n");
 }
 
 async function sendEmail(report) {
   const transporter = smtpTransport();
+
   await transporter.sendMail({
     from: process.env.SMTP_USER,
     to: NOTIFY_EMAIL,
@@ -58,15 +66,18 @@ async function sendEmail(report) {
 
 async function sendPush(report) {
   const snap = await db.collection("pushTokens")
-    .where("admin", "==", true).get();
+    .where("admin", "==", true)
+    .get();
 
   const tokens = [];
+
   snap.forEach(doc => {
     const data = doc.data() || {};
     if (data.token) tokens.push(data.token);
   });
 
   const uniqueTokens = [...new Set(tokens)];
+
   if (!uniqueTokens.length) {
     console.log("Kein Admin-Push-Token registriert.");
     return false;
@@ -78,26 +89,43 @@ async function sendPush(report) {
       title: "🐛 Neue Fehlermeldung",
       body: `${report.area || "Sonstiges"}: ${(report.description || "").slice(0, 100)}`
     },
-    data: { type: "bugReport", reportId: report.id || "" },
+    data: {
+      type: "bugReport",
+      reportId: report.id || ""
+    },
     webpush: {
-      fcmOptions: { link: "https://jazm1309.github.io/grizzlys-u15/" }
+      fcmOptions: {
+        link: "https://jazm1309.github.io/grizzlys-u15/"
+      }
     }
   });
 
   const invalidTokens = [];
+
   response.responses.forEach((result, index) => {
     if (!result.success) {
       const code = result.error?.code || "";
+
       if (
         code.includes("registration-token-not-registered") ||
         code.includes("invalid-registration-token")
-      ) invalidTokens.push(uniqueTokens[index]);
-      console.warn("Push fehlgeschlagen:", code, result.error?.message || "");
+      ) {
+        invalidTokens.push(uniqueTokens[index]);
+      }
+
+      console.warn(
+        "Push fehlgeschlagen:",
+        code,
+        result.error?.message || ""
+      );
     }
   });
 
   for (const token of invalidTokens) {
-    await db.collection("pushTokens").doc(token).delete().catch(() => {});
+    await db.collection("pushTokens")
+      .doc(token)
+      .delete()
+      .catch(() => {});
   }
 
   return response.successCount > 0;
@@ -105,17 +133,24 @@ async function sendPush(report) {
 
 async function main() {
   const stateSnap = await STATE_REF.get();
+
   let lastProcessedMs = 0;
 
   if (stateSnap.exists && stateSnap.data().lastProcessedAt) {
     const ts = stateSnap.data().lastProcessedAt;
-    lastProcessedMs = ts.toMillis ? ts.toMillis() : Date.parse(ts);
+    lastProcessedMs = ts.toMillis
+      ? ts.toMillis()
+      : Date.parse(ts);
   } else {
     await STATE_REF.set({
       lastProcessedAt: admin.firestore.Timestamp.now(),
       initializedAt: admin.firestore.FieldValue.serverTimestamp()
     }, { merge: true });
-    console.log("Notifier initialisiert. Bestehende Fehlermeldungen werden nicht nachträglich versendet.");
+
+    console.log(
+      "Notifier initialisiert. Bestehende Fehlermeldungen werden nicht nachträglich versendet."
+    );
+
     return;
   }
 
@@ -125,9 +160,16 @@ async function main() {
   snap.forEach(doc => {
     const data = doc.data() || {};
     const createdAt = data.createdAt;
-    const createdMs = createdAt?.toMillis ? createdAt.toMillis() : 0;
+    const createdMs = createdAt?.toMillis
+      ? createdAt.toMillis()
+      : 0;
+
     if (createdMs > lastProcessedMs) {
-      reports.push({ id: doc.id, ...data, _createdMs: createdMs });
+      reports.push({
+        id: doc.id,
+        ...data,
+        _createdMs: createdMs
+      });
     }
   });
 
@@ -140,60 +182,44 @@ async function main() {
 
   for (const report of reports) {
     const reportRef = db.collection("bugReports").doc(report.id);
+
     const currentSnap = await reportRef.get();
     const current = currentSnap.data() || {};
 
     console.log(`Verarbeite Fehlermeldung ${report.id}`);
 
-    // Push und E-Mail werden getrennt gespeichert.
-    // Ein E-Mail-Fehler löst keinen zweiten Push aus.
+    /*
+     * WICHTIG:
+     * Push und E-Mail haben eigene Statusfelder.
+     *
+     * Sobald pushSentAt gesetzt ist, wird für diese
+     * Fehlermeldung NIE wieder ein Push ausgelöst.
+     *
+     * Auch dann nicht, wenn der E-Mail-Versand fehlschlägt.
+     */
+
     let pushSent = Boolean(current.pushSentAt);
 
-    if (!pushSent) {
+    if (pushSent) {
+      console.log(
+        "Fehler-Push bereits gesendet – kein erneuter Push:",
+        report.id
+      );
+    } else {
       pushSent = await sendPush(report);
+
       if (pushSent) {
         await reportRef.update({
           pushSentAt: admin.firestore.FieldValue.serverTimestamp()
         });
-        console.log("Fehler-Push als gesendet markiert:", report.id);
+
+        console.log(
+          "Fehler-Push als gesendet markiert:",
+          report.id
+        );
       } else {
-        console.log("Fehler-Push nicht gesendet – kein gültiges Admin-Gerät:", report.id);
+        console.log(
+          "Fehler-Push nicht gesendet – wird erneut versucht:",
+          report.id
+        );
       }
-    } else {
-      console.log("Fehler-Push bereits gesendet:", report.id);
-    }
-
-    const afterPushSnap = await reportRef.get();
-    const afterPush = afterPushSnap.data() || {};
-    let emailSent = Boolean(afterPush.emailSentAt);
-
-    if (!emailSent) {
-      await sendEmail(report);
-      emailSent = true;
-      await reportRef.update({
-        emailSentAt: admin.firestore.FieldValue.serverTimestamp()
-      });
-      console.log("Fehler-E-Mail als gesendet markiert:", report.id);
-    } else {
-      console.log("Fehler-E-Mail bereits gesendet:", report.id);
-    }
-
-    // Erst wenn beide Kanäle erfolgreich waren, gilt die Meldung als vollständig verarbeitet.
-    if (pushSent && emailSent) {
-      await STATE_REF.set({
-        lastProcessedAt: admin.firestore.Timestamp.fromMillis(report._createdMs),
-        lastProcessedReportId: report.id,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    } else {
-      console.log("Fehlermeldung bleibt offen für den nächsten Lauf:", report.id);
-    }
-  }
-
-  console.log(`${reports.length} neue Fehlermeldung(en) verarbeitet.`);
-}
-
-main().catch(error => {
-  console.error(error);
-  process.exit(1);
-});
