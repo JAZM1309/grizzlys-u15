@@ -33,47 +33,31 @@ jobs:
           function berlinDate(date, time) {
             const [y, m, d] = date.split("-").map(Number);
             const [hh, mm] = time.split(":").map(Number);
-
             const localAsUtc = Date.UTC(y, m - 1, d, hh, mm);
             let guess = localAsUtc;
-
             const fmt = new Intl.DateTimeFormat("en-US", {
-              timeZone: "Europe/Berlin",
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hourCycle: "h23"
+              timeZone: "Europe/Berlin", year: "numeric", month: "2-digit",
+              day: "2-digit", hour: "2-digit", minute: "2-digit",
+              second: "2-digit", hourCycle: "h23"
             });
-
             for (let i = 0; i < 3; i++) {
               const p = Object.fromEntries(
                 fmt.formatToParts(new Date(guess))
                   .filter(x => x.type !== "literal")
                   .map(x => [x.type, x.value])
               );
-
               const displayedAsUtc = Date.UTC(
-                Number(p.year),
-                Number(p.month) - 1,
-                Number(p.day),
-                Number(p.hour),
-                Number(p.minute),
-                Number(p.second)
+                Number(p.year), Number(p.month) - 1, Number(p.day),
+                Number(p.hour), Number(p.minute), Number(p.second)
               );
-
               guess += localAsUtc - displayedAsUtc;
             }
-
             return new Date(guess);
           }
 
           function isReminderTime(game) {
             const gameTime = berlinDate(game.date, game.time).getTime();
             const diff = gameTime - Date.now();
-
             return (
               diff >= 23 * 60 * 60 * 1000 + 30 * 60 * 1000 &&
               diff <= 24 * 60 * 60 * 1000 + 30 * 60 * 1000
@@ -81,11 +65,7 @@ jobs:
           }
 
           const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-
-          const firebaseApp = initializeApp({
-            credential: cert(serviceAccount)
-          });
-
+          const firebaseApp = initializeApp({ credential: cert(serviceAccount) });
           const db = getFirestore(firebaseApp);
           const messaging = getMessaging(firebaseApp);
 
@@ -95,30 +75,21 @@ jobs:
 
             for (let i = 0; i < tokens.length; i += 500) {
               const batch = tokens.slice(i, i + 500);
-
               const response = await messaging.sendEachForMulticast({
                 tokens: batch.map(x => x.token),
                 notification
               });
-
               successCount += response.successCount;
 
               response.responses.forEach((result, index) => {
                 if (!result.success) {
                   const tokenInfo = batch[index];
-
-                  console.log(
-                    "FCM Fehler Token:",
-                    result.error?.code,
-                    result.error?.message
-                  );
-
+                  console.log("FCM Fehler Token:",
+                    result.error?.code, result.error?.message);
                   if (
                     result.error?.code === "messaging/registration-token-not-registered" ||
                     result.error?.code === "messaging/invalid-registration-token"
-                  ) {
-                    invalidTokenDocs.push(tokenInfo.ref);
-                  }
+                  ) invalidTokenDocs.push(tokenInfo.ref);
                 }
               });
             }
@@ -127,7 +98,6 @@ jobs:
               await ref.delete();
               console.log("Ungültiges Push-Token entfernt.");
             }
-
             return successCount;
           }
 
@@ -137,15 +107,10 @@ jobs:
 
               const reminderId =
                 `${game.date}_${game.time.replace(/:/g, "")}_${game.team}`;
-
-              const reminderRef =
-                db.collection("gameReminders").doc(reminderId);
-
+              const reminderRef = db.collection("gameReminders").doc(reminderId);
               const reminderDoc = await reminderRef.get();
 
-              if (reminderDoc.exists && reminderDoc.data().sentAt) {
-                continue;
-              }
+              if (reminderDoc.exists && reminderDoc.data().sentAt) continue;
 
               const title = "🏒 ESV Grizzlys U15";
               const body =
@@ -155,10 +120,8 @@ jobs:
 
               if (successCount > 0) {
                 await reminderRef.set({
-                  sentAt: FieldValue.serverTimestamp(),
-                  game
+                  sentAt: FieldValue.serverTimestamp(), game
                 });
-
                 console.log("24h-Erinnerung gesendet:", reminderId);
               } else {
                 console.log("24h-Erinnerung nicht gesendet – kein gültiges Push-Gerät.");
@@ -168,12 +131,8 @@ jobs:
 
           async function main() {
             const tokensSnap = await db.collection("pushTokens").get();
-
             const tokens = tokensSnap.docs
-              .map(doc => ({
-                token: doc.data().token,
-                ref: doc.ref
-              }))
+              .map(doc => ({ token: doc.data().token, ref: doc.ref }))
               .filter(x => Boolean(x.token));
 
             if (!tokens.length) {
@@ -182,18 +141,32 @@ jobs:
             }
 
             const resultsSnap = await db.collection("results").get();
-            const now = Date.now();
+
+            // Kein starres 10-Minuten-Fenster mehr.
+            // Der letzte Prüfzeitpunkt wird in Firestore gespeichert.
+            const resultStateRef = db.doc("system/resultPushNotifier");
+            const resultStateSnap = await resultStateRef.get();
+            let lastScanMs = 0;
+
+            if (resultStateSnap.exists && resultStateSnap.data().lastScanAt) {
+              const ts = resultStateSnap.data().lastScanAt;
+              lastScanMs = ts.toMillis ? ts.toMillis() : Date.parse(ts);
+            } else {
+              await resultStateRef.set({
+                lastScanAt: FieldValue.serverTimestamp(),
+                initializedAt: FieldValue.serverTimestamp()
+              }, { merge: true });
+              console.log("Ergebnis-Push-Notifier initialisiert.");
+              lastScanMs = Date.now();
+            }
 
             for (const resultDoc of resultsSnap.docs) {
               const r = resultDoc.data();
-
               if (!r.updatedAt) continue;
               if (r.pushSentAt) continue;
 
               const updated = r.updatedAt.toMillis();
-              const age = now - updated;
-
-              if (age < 0 || age > 10 * 60 * 1000) continue;
+              if (updated <= lastScanMs) continue;
 
               const title = "🏒 ESV Grizzlys U15";
               const body =
@@ -205,15 +178,19 @@ jobs:
                 await resultDoc.ref.update({
                   pushSentAt: FieldValue.serverTimestamp()
                 });
-
-                console.log("Push gesendet:", resultDoc.id);
+                console.log("Ergebnis-Push gesendet:", resultDoc.id);
               } else {
                 console.log(
-                  "Push NICHT als gesendet markiert – kein gültiges Gerät:",
+                  "Ergebnis-Push NICHT als gesendet markiert – kein gültiges Gerät:",
                   resultDoc.id
                 );
               }
             }
+
+            await resultStateRef.set({
+              lastScanAt: FieldValue.serverTimestamp(),
+              updatedAt: FieldValue.serverTimestamp()
+            }, { merge: true });
 
             await sendGameReminders(tokens);
           }
