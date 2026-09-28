@@ -508,6 +508,23 @@ async function loadBugReports(){
   }
 }
 
+async function registerAdminPushToken(){
+  try{
+    if(!FIREBASE_VAPID_KEY || !auth.currentUser || auth.currentUser.uid!==ADMIN_UID) return;
+    if(!('Notification' in window) || Notification.permission!=="granted") return;
+    const supported=await isSupported();
+    if(!supported) return;
+    messaging=messaging||getMessaging(app);
+    const reg=await navigator.serviceWorker.register("./sw.js");
+    await navigator.serviceWorker.ready;
+    const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
+    if(!token) return;
+    await setDoc(doc(db,"pushTokens",token),{token,updatedAt:serverTimestamp(),platform:navigator.userAgent,admin:true,adminUid:ADMIN_UID},{merge:true});
+    try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);}catch(e){}
+    console.log("Admin-Push-Token registriert.");
+  }catch(e){console.warn("Admin-Push konnte nicht registriert werden",e);}
+}
+
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
   if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadPushStats(); loadBugReports(); }
@@ -539,8 +556,8 @@ document.addEventListener("DOMContentLoaded",()=>{
       await navigator.serviceWorker.ready;
       const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
       if(!token) throw new Error("Firebase hat kein Push-Token geliefert.");
-      await setDoc(doc(db,"pushTokens",token),{token,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),platform:navigator.userAgent});
-      try{localStorage.setItem("grizzlysPushRegistered","1");}catch(e){}
+      await setDoc(doc(db,"pushTokens",token),{token,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),platform:navigator.userAgent,admin:auth.currentUser?.uid===ADMIN_UID,adminUid:auth.currentUser?.uid===ADMIN_UID?ADMIN_UID:null});
+      try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);}catch(e){}
       alert("Push-Benachrichtigungen sind auf diesem Gerät aktiviert und registriert.");
     }catch(e){
       console.error("Push-Aktivierung fehlgeschlagen:",e);
@@ -548,7 +565,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       alert("Push konnte nicht registriert werden" + code + ": " + (e?.message || String(e)));
     }
   });
-  onAuthStateChanged(auth,user=>setAdminUi(user));
+  onAuthStateChanged(auth,user=>{setAdminUi(user);if(user?.uid===ADMIN_UID)registerAdminPushToken();});
   registerAppInstallation();
   loadResults();
   loadScheduleOverrides();

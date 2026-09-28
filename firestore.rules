@@ -1,0 +1,60 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Eingerichteter Grizzlys-U15-Admin
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid == "q6AID4Wkp2arQlCTROTKqON6ckk2";
+    }
+
+    // Spielergebnisse: öffentlich lesbar, Änderungen nur durch den Admin.
+    match /results/{resultId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Spielplanänderungen: öffentlich lesbar, Änderungen nur durch den Admin.
+    match /scheduleOverrides/{gameId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Push-Tokens: Gerät darf seinen eigenen Token anlegen/aktualisieren.
+    // Lesen und Löschen nur durch den Admin.
+    match /pushTokens/{tokenId} {
+      allow create, update: if request.resource.data.token == tokenId;
+      allow read, delete: if isAdmin();
+    }
+
+    // Technische App-Registrierungen: Gerät darf nur seinen eigenen
+    // Datensatz mit derselben installationId anlegen/aktualisieren.
+    match /appInstallations/{installationId} {
+      allow create, update: if request.resource.data.installationId == installationId;
+      allow read, delete: if isAdmin();
+    }
+
+    // Fehlermeldungen:
+    // Jeder Nutzer darf eine neue Meldung erstellen.
+    // Nur der Admin darf Meldungen lesen, bearbeiten oder löschen.
+    match /bugReports/{reportId} {
+      allow create: if
+        request.resource.data.status == "Neu"
+        && request.resource.data.appVersion is string
+        && request.resource.data.description is string;
+
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Erinnerungsdaten werden über den vorgesehenen Server-/Adminweg verarbeitet.
+    match /gameReminders/{reminderId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Alles andere bleibt standardmäßig gesperrt.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
