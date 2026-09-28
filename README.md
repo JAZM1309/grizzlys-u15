@@ -2,6 +2,14 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+## Version 1.6.1
+
+### Neu in Version 1.6.1
+
+- Fehlerbeschreibung im Meldeformular mit größerer Schrift, größerem Zeilenabstand und höherem Eingabefeld
+- Robustere Geräte-/Installationsstatistik für Apple und Android
+- Ältere Registrierungen können anhand gespeicherter Gerätedaten der passenden Plattform zugeordnet werden
+
 ## Version 1.6
 
 ### Neu in Version 1.6
