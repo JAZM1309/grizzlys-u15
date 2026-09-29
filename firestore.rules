@@ -41,6 +41,8 @@ service cloud.firestore {
     match /bugReports/{reportId} {
       allow create: if
         request.resource.data.status == "Neu"
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 2
         && request.resource.data.appVersion is string
         && request.resource.data.description is string;
 
