@@ -50,7 +50,7 @@ async function sendEmail(report) {
   await smtpTransport().sendMail({
     from: process.env.SMTP_USER,
     to: NOTIFY_EMAIL,
-    subject: `🐛 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
+    subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
     text
   });
 }
@@ -76,7 +76,7 @@ async function sendPush(report) {
   const response = await messaging.sendEachForMulticast({
     tokens: uniqueTokens,
     notification: {
-      title: "🐛 Neue Fehlermeldung",
+      title: "🏒 Neue Grizzlys-Fehlermeldung",
       body: `${report.area || "Sonstiges"}: ${(report.description || "").slice(0, 100)}`
     },
     data: {
