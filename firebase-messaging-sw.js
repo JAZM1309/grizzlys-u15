@@ -15,7 +15,12 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(payload => {
   const n = payload.notification || {};
   const title = n.title || "ESV Grizzlys U15";
-  const options = { body: n.body || "Neue Grizzlys-Meldung", icon: "./icon-192.png", badge: "./icon-192.png", data: payload.data || {} };
+  const options = {
+    body: n.body || "Neue Grizzlys-Meldung",
+    icon: n.icon || "./icon-192.png",
+    badge: n.badge || "./icon-192.png",
+    data: payload.data || {}
+  };
   self.registration.showNotification(title, options);
 });
 
