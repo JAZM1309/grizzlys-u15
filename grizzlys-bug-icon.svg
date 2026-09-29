@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06264b"/><stop offset="1" stop-color="#0b4e86"/></linearGradient><linearGradient id="badge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff8a00"/><stop offset="1" stop-color="#d92d20"/></linearGradient></defs>
+<rect x="12" y="12" width="488" height="488" rx="90" fill="url(#bg)"/>
+<circle cx="245" cy="245" r="190" fill="#fff" opacity=".08"/>
+<image href="https://jazm1309.github.io/grizzlys-u15/logo.png" x="42" y="70" width="330" height="330" preserveAspectRatio="xMidYMid meet"/>
+<g transform="translate(305 292)">
+<rect x="0" y="0" width="150" height="175" rx="18" fill="#fff" stroke="#0b2d50" stroke-width="12"/>
+<path d="M28 42h72M28 72h92M28 102h70" stroke="#8aa2b8" stroke-width="10" stroke-linecap="round"/>
+<circle cx="113" cy="130" r="40" fill="url(#badge)" stroke="#fff" stroke-width="8"/>
+<path d="M113 108v27" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="113" cy="149" r="6" fill="#fff"/>
+</g>
+<ellipse cx="105" cy="430" rx="66" ry="18" fill="#050b13" opacity=".8"/>
+<path d="M44 421c38-25 92-25 130 0" fill="none" stroke="#ff8a00" stroke-width="12" stroke-linecap="round"/>
+</svg>
