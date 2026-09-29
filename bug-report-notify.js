@@ -52,7 +52,7 @@ async function sendEmail(report) {
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/\n/g,"<br>");
-  const iconUrl = "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png";
+  const iconUrl = "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.jpg";
 
   await smtpTransport().sendMail({
     from: process.env.SMTP_USER,
@@ -103,7 +103,7 @@ async function sendPush(report) {
     },
     webpush: {
       notification: {
-        icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png",
+        icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.jpg",
         badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
       },
       fcmOptions: {
