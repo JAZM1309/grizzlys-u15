@@ -432,6 +432,7 @@ async function syncExistingPushRegistration(){
     },{merge:true});
     try{
       localStorage.setItem("grizzlysPushRegistered","1");
+      trackAnalyticsEvent("push_registration",{platform:detectPlatform()});
       localStorage.setItem("grizzlysPushToken",token);
     }catch(e){}
   }catch(err){
@@ -587,6 +588,7 @@ async function submitBugReport(){
       status:"Neu"
     };
     await addDoc(collection(db,"bugReports"),report);
+    trackAnalyticsEvent("bug_report_submitted",{area});
     document.getElementById("bugReportDescription").value="";
     document.getElementById("bugReportContact").value="";
     closeBugReport();
@@ -907,8 +909,8 @@ function setScheduleMode(mode){
     renderList("all");
   }
 }
-function downloadTeamCalendar(team){const arr=games.filter(g=>g.team===team).sort((a,b)=>dt(a)-dt(b));downloadIcsBundle(arr,"U15-"+team+"-Spielplan.ics")}
-function downloadBothCalendars(){downloadIcsBundle(games.slice().sort((a,b)=>dt(a)-dt(b)),"U15-A-und-B-Spielplan.ics")}
+function downloadTeamCalendar(team){trackAnalyticsEvent("calendar_download",{team:"U15 "+team,type:"team"});const arr=games.filter(g=>g.team===team).sort((a,b)=>dt(a)-dt(b));downloadIcsBundle(arr,"U15-"+team+"-Spielplan.ics")}
+function downloadBothCalendars(){trackAnalyticsEvent("calendar_download",{team:"U15 A+B",type:"both"});downloadIcsBundle(games.slice().sort((a,b)=>dt(a)-dt(b)),"U15-A-und-B-Spielplan.ics")}
 function pdfFilterMatch(g,filters){
   if(!filters || filters.length===0 || filters.includes("all")) return true;
   const teamFilters=filters.filter(f=>f==="A"||f==="B");
@@ -945,6 +947,7 @@ function closePdfFilter(){
   const m=document.getElementById("pdfFilterModal");m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow="";
 }
 function printAllGamesPdf(filters=["all"]){
+  trackAnalyticsEvent("pdf_download",{filter:pdfFilterLabel(filters)});
   const label=pdfFilterLabel(filters);
   const arr=games.filter(g=>pdfFilterMatch(g,filters)).slice().sort((a,b)=>dt(a)-dt(b));
   const rows=arr.map(g=>{
@@ -1212,7 +1215,7 @@ function hockeyCpuMove(){if(hockeyOver)return;const board=window.__hockeyBoard;l
 function hockeyPlayerMove(i){if(hockeyOver||hockeyTurn!=="player"||window.__hockeyBoard[i])return;window.__hockeyBoard[i]="player";const result=hockeyWinner(window.__hockeyBoard);if(result){hockeyFinish(result);return;}hockeyTurn="cpu";hockeyStatus.textContent="🥅 Gegner ist am Zug …";hockeyRender();setTimeout(hockeyCpuMove,320);}
 function openHockeyGame(){hockeyModal.hidden=false;hockeyModal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";hockeyNewRound();document.getElementById("hockeyGameClose")?.focus();}
 function closeHockeyGame(){hockeyModal.hidden=true;hockeyModal.setAttribute("aria-hidden","true");document.body.style.overflow="";}
-document.getElementById("openHockeyGame")?.addEventListener("click",openHockeyGame);
+document.getElementById("openHockeyGame")?.addEventListener("click",()=>{trackAnalyticsEvent("hockey_game_started");openHockeyGame();});
 document.getElementById("hockeyGameClose")?.addEventListener("click",closeHockeyGame);
 document.getElementById("hockeyGameClose2")?.addEventListener("click",closeHockeyGame);
 document.getElementById("hockeyNewGame")?.addEventListener("click",hockeyNewRound);
@@ -1222,6 +1225,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&hockeyModal&&!hocke
 const shareAppBtn=document.getElementById("shareApp");
 if(shareAppBtn){
   shareAppBtn.onclick=async()=>{
+    trackAnalyticsEvent("app_share");
     const shareData={title:"ESV Grizzlys U15 Spielplan",text:"ESV Grizzlys U15 – Spielplan 2026/27",url:window.location.href};
     try{
       if(navigator.share){
