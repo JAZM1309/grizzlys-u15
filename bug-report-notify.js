@@ -47,11 +47,29 @@ async function sendEmail(report) {
       : "Kein Rückfrage-Kontakt angegeben."
   ].join("\n");
 
+  const safeDescription = String(report.description || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/\n/g,"<br>");
+  const iconUrl = "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.svg";
+
   await smtpTransport().sendMail({
     from: process.env.SMTP_USER,
     to: NOTIFY_EMAIL,
-    subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
-    text
+    subject: `Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
+    text,
+    html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px">
+      <img src="${iconUrl}" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px 0">
+      <h2 style="margin:0 0 16px">Neue Fehlermeldung in der Grizzlys-U15-App</h2>
+      <p><b>Bereich:</b> ${report.area || "Sonstiges"}<br>
+      <b>Version:</b> ${report.appVersion || "?"}<br>
+      <b>Plattform:</b> ${report.platform || "?"}<br>
+      <b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p>
+      <p><b>Fehlerbeschreibung:</b></p>
+      <p>${safeDescription}</p>
+      ${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}
+    </div>`
   });
 }
 
@@ -84,6 +102,10 @@ async function sendPush(report) {
       reportId: report.id || ""
     },
     webpush: {
+      notification: {
+        icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.svg",
+        badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
+      },
       fcmOptions: {
         link: "https://jazm1309.github.io/grizzlys-u15/"
       }
