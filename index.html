@@ -614,7 +614,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("openBugReport")?.addEventListener("click",()=>{const m=document.getElementById("bugReportModal");if(m){m.hidden=false;m.setAttribute("aria-hidden","false");document.getElementById("bugReportDescription")?.focus();}});
   document.getElementById("bugReportClose")?.addEventListener("click",closeBugReport);
   document.getElementById("bugReportCancel")?.addEventListener("click",closeBugReport);
-  document.getElementById("bugReportSend")?.addEventListener("click",submitBugReport);\n  document.getElementById("adminBugFilter")?.addEventListener("change",loadBugReports);
+  document.getElementById("bugReportSend")?.addEventListener("click",submitBugReport);
+  document.getElementById("adminBugFilter")?.addEventListener("change",loadBugReports);
   document.getElementById("bugReportModal")?.addEventListener("click",e=>{if(e.target.id==="bugReportModal")closeBugReport();});
   document.getElementById("enablePush")?.addEventListener("click",async()=>{
     if(!FIREBASE_VAPID_KEY){alert("Push ist vorbereitet. Es fehlt noch der Web-Push-Schlüssel (VAPID) aus Firebase.");return;}
