@@ -195,7 +195,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 
 </div></section>
 
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Sonstiges</option></select></label><label>Fehlerbeschreibung<textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.1 · Geräte-/Browserdaten werden nur zur Fehleranalyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Sonstiges</option></select></label><label>Fehlerbeschreibung<textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.1 · Geräte-/Browserdaten werden nur zur Fehleranalyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div class="hockeyGameIntro">Erziele zuerst drei in einer Reihe. Du bist 🏒.</div><div class="hockeyScore"><span>🏒 Du: <b id="hockeyPlayerScore">0</b></span><span>🥅 Gegner: <b id="hockeyCpuScore">0</b></span></div><div class="hockeyRink"><div id="hockeyBoard" class="hockeyBoard"></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neues Spiel</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät und speichert keine Ergebnisse.</div></div></div></div>
 <div id="pdfFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="pdfFilterTitle">
@@ -392,6 +392,25 @@ function detectPlatformFromStoredUserAgent(ua){
   return "Sonstiges";
 }
 
+async function registerAdminPushToken(){
+  try{
+    if(auth.currentUser?.uid!==ADMIN_UID || !FIREBASE_VAPID_KEY) return;
+    if(!("Notification" in window) || Notification.permission!=="granted") return;
+    if(!(await isSupported())) return;
+    messaging=messaging||getMessaging(app);
+    const reg=await navigator.serviceWorker.register("./sw.js");
+    await navigator.serviceWorker.ready;
+    const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
+    if(!token) return;
+    await setDoc(doc(db,"pushTokens",token),{
+      token,installationId:getInstallationId(),updatedAt:serverTimestamp(),
+      platform:navigator.userAgent||"",admin:true,adminUid:ADMIN_UID
+    },{merge:true});
+    try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);}catch(e){}
+    console.log("Admin-Push-Token registriert.");
+  }catch(err){console.warn("Admin-Push-Token konnte nicht registriert werden",err);}
+}
+
 function getInstallationId(){
   const key="grizzlysInstallationId";
   try{
@@ -492,13 +511,16 @@ function closeBugReport(){
 }
 
 async function submitBugReport(){
+  const name=document.getElementById("bugReportName")?.value.trim()||"";
   const area=document.getElementById("bugReportArea")?.value||"Sonstiges";
   const description=document.getElementById("bugReportDescription")?.value.trim()||"";
   const contact=document.getElementById("bugReportContact")?.value.trim()||"";
+  if(name.length<2){alert("Bitte gib deinen Namen an.");document.getElementById("bugReportName")?.focus();return;}
   if(description.length<5){alert("Bitte beschreibe den Fehler kurz.");return;}
   const btn=document.getElementById("bugReportSend"); if(btn)btn.disabled=true;
   try{
     const report={
+      name,
       area,
       description,
       contact,
@@ -511,6 +533,7 @@ async function submitBugReport(){
     };
     await addDoc(collection(db,"bugReports"),report);
     trackAnalyticsEvent("bug_report_submitted",{area});
+    document.getElementById("bugReportName").value="";
     document.getElementById("bugReportDescription").value="";
     document.getElementById("bugReportContact").value="";
     closeBugReport();
@@ -560,6 +583,7 @@ async function loadBugReports(){
           <div class="adminBugMeta">${esc(ts)} · ${esc(r.appVersion||"?")} · ${esc(r.platform||"?")} · Push: ${r.pushRegistered?"aktiv":"nicht registriert"}</div></div>
           <span class="adminBugStatus ${cls}">${esc(status)}</span>
         </div>
+        <div class="adminBugMeta"><b>Name:</b> ${esc(r.name||"Nicht angegeben")}</div>
         <div class="adminBugDesc">${esc(r.description||"")}</div>
         ${r.contact?`<div class="adminBugMeta">Rückfrage: ${esc(r.contact)}</div>`:""}
         <div class="adminBugActions">
@@ -620,7 +644,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("adminModalClose")?.addEventListener("click",closeAdminModal);
   document.getElementById("adminModal")?.addEventListener("click",e=>{if(e.target.id==="adminModal")closeAdminModal();});
   document.getElementById("adminLogout")?.addEventListener("click",()=>signOut(auth));
-  document.getElementById("openBugReport")?.addEventListener("click",()=>{const m=document.getElementById("bugReportModal");if(m){m.hidden=false;m.setAttribute("aria-hidden","false");document.getElementById("bugReportDescription")?.focus();}});
+  document.getElementById("openBugReport")?.addEventListener("click",()=>{const m=document.getElementById("bugReportModal");if(m){m.hidden=false;m.setAttribute("aria-hidden","false");document.getElementById("bugReportName")?.focus();}});
   document.getElementById("bugReportClose")?.addEventListener("click",closeBugReport);
   document.getElementById("bugReportCancel")?.addEventListener("click",closeBugReport);
   document.getElementById("bugReportSend")?.addEventListener("click",submitBugReport);
