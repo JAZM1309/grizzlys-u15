@@ -189,8 +189,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
       <div class="adminAccordion" data-admin-accordion="results"><button class="adminAccordionHeader" type="button"><span>🏒 Ergebnisverwaltung</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Ergebnisse eintragen, ändern oder löschen.</div><div id="adminResults" class="adminResults"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="schedule"><button class="adminAccordionHeader" type="button"><span>📅 Spieländerungen</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Falsche oder verlegte Termine zentral ändern. Die Änderung wird für alle Nutzer übernommen.</div><div id="adminSchedule" class="adminSchedule"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="bugs"><button class="adminAccordionHeader" type="button"><span>🐞 Fehlermeldungen <span id="adminBugCount" class="adminBugBadge" hidden>0</span></span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Gemeldete Fehler prüfen, archivieren oder endgültig löschen.</div><div style="display:flex;gap:7px;align-items:center;margin-bottom:8px"><label for="adminBugFilter" class="small" style="font-weight:900">Anzeige:</label><select id="adminBugFilter" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select></div><div id="adminBugReports" class="adminResults"></div></div></div>
-      <div class="adminAccordion" data-admin-accordion="stats"><button class="adminAccordionHeader" type="button"><span>📊 App-Statistik</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div id="adminAppStats" class="adminAppStats"><div class="adminPushStat"><span class="small">📱 App registriert</span><b id="appInstallCount">–</b></div><div class="adminPushStat"><span class="small">🍎 Apple</span><b id="appAppleCount">–</b></div><div class="adminPushStat"><span class="small">🤖 Android</span><b id="appAndroidCount">–</b></div><div class="adminPushStat"><span class="small">🔔 Push registriert</span><b id="pushActiveCount">–</b></div><div class="adminPushStat"><span class="small">🕒 Letzte App-Registrierung</span><b id="appLastRegistration" style="font-size:14px">–</b></div><div class="adminPushStat"><span class="small">🕒 Letzte Push-Registrierung</span><b id="pushLastRegistration" style="font-size:14px">–</b></div></div><div class="small" style="margin-top:8px">Gezählt werden registrierte App-Installationen sowie gespeicherte FCM-Registrierungen in Firebase. Eine Person kann mehrere Geräte registrieren. Die Installationszahl ist eine technische Geräte-/Browser-Registrierung und keine exakte Zahl physisch installierter Apps.</div><button id="refreshPushStats" class="action" type="button" style="margin-top:9px">🔄 Aktualisieren</button></div></div>
-    </div>
+          </div>
   </div>
 </div>
 
@@ -462,83 +461,6 @@ async function registerAppInstallation(){
   }
 }
 
-async function loadPushStats(){
-  const appCountEl=document.getElementById("appInstallCount"), appleEl=document.getElementById("appAppleCount"), androidEl=document.getElementById("appAndroidCount");
-  const pushCountEl=document.getElementById("pushActiveCount"), appLastEl=document.getElementById("appLastRegistration"), pushLastEl=document.getElementById("pushLastRegistration");
-  if(!appCountEl || !appleEl || !androidEl || !pushCountEl || !appLastEl || !pushLastEl) return;
-  [appCountEl,appleEl,androidEl,pushCountEl,appLastEl,pushLastEl].forEach(el=>el.textContent="…");
-
-  try{
-    const snap=await getDocs(collection(db,"appInstallations"));
-    const installations=[];
-    snap.forEach(d=>{const data=d.data()||{};if(data.installationId)installations.push(data);});
-    let apple=0,android=0,latestApp=null;
-    installations.forEach(data=>{
-      const platform=data.platform||detectPlatformFromStoredUserAgent(data.userAgent);
-      if(platform==="Apple")apple++;
-      else if(platform==="Android")android++;
-      const ts=data.updatedAt||data.createdAt;
-      if(ts?.toMillis){const ms=ts.toMillis();if(latestApp===null||ms>latestApp)latestApp=ms;}
-    });
-    appCountEl.textContent=String(installations.length);
-    appleEl.textContent=String(apple);
-    androidEl.textContent=String(android);
-    appLastEl.textContent=latestApp===null?"–":new Date(latestApp).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
-  }catch(err){
-    console.warn("App-Statistik konnte nicht geladen werden",err);
-    appCountEl.textContent="Fehler";appleEl.textContent="–";androidEl.textContent="–";appLastEl.textContent="–";
-  }
-
-  try{
-    const snap=await getDocs(collection(db,"pushTokens"));
-    const byInstallation=new Map();
-    const legacy=[];
-    let latest=null;
-
-    snap.forEach(d=>{
-      const data=d.data()||{};
-      if(!data.token)return;
-      const platform=detectPlatformFromStoredUserAgent(data.userAgent||data.platform||"");
-      const ts=data.updatedAt||data.createdAt;
-      if(ts?.toMillis){const ms=ts.toMillis();if(latest===null||ms>latest)latest=ms;}
-
-      if(data.installationId){
-        const old=byInstallation.get(data.installationId);
-        if(!old || (platform!=="Sonstiges" && old.platform==="Sonstiges")){
-          byInstallation.set(data.installationId,{platform});
-        }
-      }else{
-        // Alte FCM-Tokens besitzen noch keine Installations-ID.
-        // Sie werden deshalb vorübergehend einzeln gezählt.
-        legacy.push({platform});
-      }
-    });
-
-    let pushApple=0,pushAndroid=0;
-    byInstallation.forEach(v=>{
-      if(v.platform==="Apple")pushApple++;
-      else if(v.platform==="Android")pushAndroid++;
-    });
-    legacy.forEach(v=>{
-      if(v.platform==="Apple")pushApple++;
-      else if(v.platform==="Android")pushAndroid++;
-    });
-
-    const pushCount=pushApple+pushAndroid;
-    pushCountEl.textContent=String(pushCount);
-    pushLastEl.textContent=latest===null?"–":new Date(latest).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
-
-    // Die Geräteverteilung der Push-Registrierungen wird über dieselbe
-    // Quelle ermittelt wie der Gesamtzähler.
-    if(pushCount>0){
-      // App-Statistik zeigt weiterhin echte Installationen; Push-Geräte
-      // werden separat aus den FCM-Registrierungen bestimmt.
-    }
-  }catch(err){
-    console.warn("Push-Statistik konnte nicht geladen werden",err);
-    pushCountEl.textContent="Fehler";pushLastEl.textContent="–";
-  }
-}
 function setupAdminAccordions(){
   const items=[...document.querySelectorAll(".adminAccordion")];
   items.forEach(x=>x.classList.remove("open"));
@@ -687,7 +609,7 @@ async function loadBugReports(){
 
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
-  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadPushStats(); loadBugReports(); }
+  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadBugReports(); }
   else { login.hidden=false; panel.hidden=true; status.textContent=user?"Angemeldet, aber keine Admin-Berechtigung":"Nicht angemeldet"; }
 }
 
@@ -698,7 +620,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("adminModalClose")?.addEventListener("click",closeAdminModal);
   document.getElementById("adminModal")?.addEventListener("click",e=>{if(e.target.id==="adminModal")closeAdminModal();});
   document.getElementById("adminLogout")?.addEventListener("click",()=>signOut(auth));
-  document.getElementById("refreshPushStats")?.addEventListener("click",loadPushStats);
   document.getElementById("openBugReport")?.addEventListener("click",()=>{const m=document.getElementById("bugReportModal");if(m){m.hidden=false;m.setAttribute("aria-hidden","false");document.getElementById("bugReportDescription")?.focus();}});
   document.getElementById("bugReportClose")?.addEventListener("click",closeBugReport);
   document.getElementById("bugReportCancel")?.addEventListener("click",closeBugReport);
