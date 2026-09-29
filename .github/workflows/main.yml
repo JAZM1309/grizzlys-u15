@@ -69,7 +69,7 @@ jobs:
           const db = getFirestore(firebaseApp);
           const messaging = getMessaging(firebaseApp);
 
-          async function sendPush(tokens, notification) {
+          async function sendPush(tokens, notification, webpush = undefined) {
             let successCount = 0;
             const invalidTokenDocs = [];
 
@@ -77,7 +77,8 @@ jobs:
               const batch = tokens.slice(i, i + 500);
               const response = await messaging.sendEachForMulticast({
                 tokens: batch.map(x => x.token),
-                notification
+                notification,
+                ...(webpush ? { webpush } : {})
               });
               successCount += response.successCount;
 
@@ -153,10 +154,10 @@ jobs:
               const body =
                 `Ergebnis: ${r.home} ${r.homeScore}:${r.awayScore} ${r.away}`;
 
-              const successCount = await sendPush(tokens, {
-                title,
-                body,
-                webpush: {
+              const successCount = await sendPush(
+                tokens,
+                { title, body },
+                {
                   notification: {
                     icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg",
                     badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
@@ -165,7 +166,7 @@ jobs:
                     link: "https://jazm1309.github.io/grizzlys-u15/"
                   }
                 }
-              });
+              );
 
               if (successCount > 0) {
                 await resultDoc.ref.update({
