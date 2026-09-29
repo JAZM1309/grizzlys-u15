@@ -34,6 +34,7 @@ async function sendEmail(report) {
   const text = [
     "Neue Fehlermeldung in der Grizzlys-U15-App",
     "",
+    `Name: ${report.name || "Nicht angegeben"}`,
     `Bereich: ${report.area || "Sonstiges"}`,
     `Version: ${report.appVersion || "?"}`,
     `Plattform: ${report.platform || "?"}`,
@@ -62,7 +63,7 @@ async function sendEmail(report) {
     html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px">
       <img src="${iconUrl}" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px 0">
       <h2 style="margin:0 0 16px">Neue Fehlermeldung in der Grizzlys-U15-App</h2>
-      <p><b>Bereich:</b> ${report.area || "Sonstiges"}<br>
+      <p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br>
       <b>Version:</b> ${report.appVersion || "?"}<br>
       <b>Plattform:</b> ${report.platform || "?"}<br>
       <b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p>
@@ -95,7 +96,7 @@ async function sendPush(report) {
     tokens: uniqueTokens,
     notification: {
       title: "🏒 Neue Grizzlys-Fehlermeldung",
-      body: `${report.area || "Sonstiges"}: ${(report.description || "").slice(0, 100)}`
+      body: `${report.name || "Unbekannt"} – ${report.area || "Sonstiges"}: ${(report.description || "").slice(0, 80)}`
     },
     data: {
       type: "bugReport",
