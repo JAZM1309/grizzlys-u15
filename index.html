@@ -165,6 +165,15 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 .hockeyActions{position:absolute!important;left:6%!important;right:6%!important;bottom:3.5%!important;z-index:9!important;display:flex!important;gap:8px!important;margin:0!important}
 .hockeyActions .action{height:42px!important;padding:6px 8px!important;font-size:13px!important;background:rgba(3,35,65,.88)!important;color:#fff!important;border:1px solid #168cff!important;border-radius:12px!important}
 .hockeyHint{display:none!important}
+
+/* FINAL TOUCH FIX – Spielfelder über der Grafik */
+.hockeyGameBody{position:relative!important}
+.hockeyGameHero{position:relative!important;z-index:1!important}
+.hockeyRink{position:absolute!important;left:17%!important;top:39%!important;width:66%!important;height:29%!important;z-index:50!important;pointer-events:auto!important;display:block!important}
+.hockeyBoard{position:relative!important;z-index:51!important;display:grid!important;width:100%!important;height:100%!important;pointer-events:auto!important}
+.hockeyCell{position:relative!important;z-index:52!important;display:block!important;width:100%!important;height:100%!important;pointer-events:auto!important;touch-action:manipulation!important;background:transparent!important;border:0!important}
+.hockeyScore,.hockeyActions,.hockeyHint{display:none!important;pointer-events:none!important}
+.hockeyStatus{display:block!important;position:absolute!important;left:6%!important;right:6%!important;bottom:1%!important;z-index:10!important;pointer-events:none!important}
 </style>
 </head>
 <body>
