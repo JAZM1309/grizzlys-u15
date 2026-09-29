@@ -395,6 +395,41 @@ function getInstallationId(){
   }
 }
 
+async function syncExistingPushRegistration(){
+  try{
+    if(!FIREBASE_VAPID_KEY || !("Notification" in window) || Notification.permission!=="granted") return;
+    if(!(await isSupported())) return;
+    messaging=messaging||getMessaging(app);
+    const reg=await navigator.serviceWorker.register("./sw.js");
+    await navigator.serviceWorker.ready;
+    const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
+    if(!token) return;
+    const installationId=getInstallationId();
+    await setDoc(doc(db,"pushTokens",token),{
+      token,
+      installationId,
+      updatedAt:serverTimestamp(),
+      platform:navigator.userAgent,
+      admin:auth.currentUser?.uid===ADMIN_UID,
+      adminUid:auth.currentUser?.uid===ADMIN_UID?ADMIN_UID:null
+    },{merge:true});
+    await setDoc(doc(db,"appInstallations",installationId),{
+      installationId,
+      platform:detectPlatform(),
+      userAgent:navigator.userAgent||"",
+      pushEnabled:true,
+      pushRegisteredAt:serverTimestamp(),
+      updatedAt:serverTimestamp()
+    },{merge:true});
+    try{
+      localStorage.setItem("grizzlysPushRegistered","1");
+      localStorage.setItem("grizzlysPushToken",token);
+    }catch(e){}
+  }catch(err){
+    console.warn("Bestehende Push-Registrierung konnte nicht synchronisiert werden",err);
+  }
+}
+
 async function registerAppInstallation(){
   try{
     const installationId=getInstallationId();
@@ -701,6 +736,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   });
   onAuthStateChanged(auth,user=>{setAdminUi(user);if(user?.uid===ADMIN_UID)registerAdminPushToken();});
   registerAppInstallation();
+  syncExistingPushRegistration().then(()=>registerAppInstallation());
   loadResults();
   loadScheduleOverrides();
   isSupported().then(ok=>{
