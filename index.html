@@ -16,6 +16,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag("js", new Date());
   gtag("config", "G-WJ539PL04L");
+  function trackAnalyticsEvent(name, params) { try { gtag("event", name, params || {}); } catch(e) {} }
 </script>
 <style>
 :root{--navy:#071b33;--navy2:#0d2c52;--a:#168cff;--b:#ff8a00;--ice:#edf6ff;--text:#102033;--muted:#667789;--border:#d8e4ef;--shadow:0 8px 28px rgba(8,31,55,.10)}
@@ -1189,7 +1190,7 @@ function closeMatchDetails(){
   document.body.style.overflow="";
 }
 
-function showView(name){["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule")setScheduleMode(scheduleMode);window.scrollTo({top:0,behavior:"smooth"})}
+function showView(name){trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":"info_opened");["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule")setScheduleMode(scheduleMode);window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.getElementById("infoTopBtn").onclick=()=>showView("info");
 
