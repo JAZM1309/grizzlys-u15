@@ -423,53 +423,75 @@ async function loadPushStats(){
   if(!appCountEl || !appleEl || !androidEl || !pushCountEl || !appLastEl || !pushLastEl) return;
   [appCountEl,appleEl,androidEl,pushCountEl,appLastEl,pushLastEl].forEach(el=>el.textContent="…");
 
-  let appInstallations=[];
   try{
     const snap=await getDocs(collection(db,"appInstallations"));
-    snap.forEach(d=>{
-      const data=d.data()||{};
-      if(data.installationId) appInstallations.push(data);
-    });
-    let apple=0, android=0, latestApp=null;
-    appInstallations.forEach(data=>{
-      const platform=data.platform || detectPlatformFromStoredUserAgent(data.userAgent);
-      if(platform==="Apple") apple++;
-      else if(platform==="Android") android++;
+    const installations=[];
+    snap.forEach(d=>{const data=d.data()||{};if(data.installationId)installations.push(data);});
+    let apple=0,android=0,latestApp=null;
+    installations.forEach(data=>{
+      const platform=data.platform||detectPlatformFromStoredUserAgent(data.userAgent);
+      if(platform==="Apple")apple++;
+      else if(platform==="Android")android++;
       const ts=data.updatedAt||data.createdAt;
       if(ts?.toMillis){const ms=ts.toMillis();if(latestApp===null||ms>latestApp)latestApp=ms;}
     });
-    appCountEl.textContent=String(appInstallations.length);
+    appCountEl.textContent=String(installations.length);
     appleEl.textContent=String(apple);
     androidEl.textContent=String(android);
     appLastEl.textContent=latestApp===null?"–":new Date(latestApp).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
   }catch(err){
     console.warn("App-Statistik konnte nicht geladen werden",err);
-    appCountEl.textContent="Fehler"; appleEl.textContent="–"; androidEl.textContent="–"; appLastEl.textContent="–";
+    appCountEl.textContent="Fehler";appleEl.textContent="–";androidEl.textContent="–";appLastEl.textContent="–";
   }
 
   try{
     const snap=await getDocs(collection(db,"pushTokens"));
-    const installationIds=new Set();
-    let legacyCount=0, latest=null;
+    const byInstallation=new Map();
+    const legacy=[];
+    let latest=null;
+
     snap.forEach(d=>{
       const data=d.data()||{};
-      if(!data.token) return;
-      if(data.installationId) installationIds.add(data.installationId);
-      else legacyCount++;
+      if(!data.token)return;
+      const platform=detectPlatformFromStoredUserAgent(data.userAgent||data.platform||"");
       const ts=data.updatedAt||data.createdAt;
       if(ts?.toMillis){const ms=ts.toMillis();if(latest===null||ms>latest)latest=ms;}
+
+      if(data.installationId){
+        const old=byInstallation.get(data.installationId);
+        if(!old || (platform!=="Sonstiges" && old.platform==="Sonstiges")){
+          byInstallation.set(data.installationId,{platform});
+        }
+      }else{
+        // Alte FCM-Tokens besitzen noch keine Installations-ID.
+        // Sie werden deshalb vorübergehend einzeln gezählt.
+        legacy.push({platform});
+      }
     });
 
-    // Neue Registrierungen werden eindeutig nach Gerät gezählt.
-    // Ältere Tokens haben noch keine installationId und werden vorübergehend
-    // als eigene Push-Registrierungen mitgezählt, damit bestehende Geräte
-    // nicht plötzlich aus der Statistik verschwinden.
-    const pushCount=installationIds.size + legacyCount;
+    let pushApple=0,pushAndroid=0;
+    byInstallation.forEach(v=>{
+      if(v.platform==="Apple")pushApple++;
+      else if(v.platform==="Android")pushAndroid++;
+    });
+    legacy.forEach(v=>{
+      if(v.platform==="Apple")pushApple++;
+      else if(v.platform==="Android")pushAndroid++;
+    });
+
+    const pushCount=pushApple+pushAndroid;
     pushCountEl.textContent=String(pushCount);
     pushLastEl.textContent=latest===null?"–":new Date(latest).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
+
+    // Die Geräteverteilung der Push-Registrierungen wird über dieselbe
+    // Quelle ermittelt wie der Gesamtzähler.
+    if(pushCount>0){
+      // App-Statistik zeigt weiterhin echte Installationen; Push-Geräte
+      // werden separat aus den FCM-Registrierungen bestimmt.
+    }
   }catch(err){
     console.warn("Push-Statistik konnte nicht geladen werden",err);
-    pushCountEl.textContent="Fehler"; pushLastEl.textContent="–";
+    pushCountEl.textContent="Fehler";pushLastEl.textContent="–";
   }
 }
 function setupAdminAccordions(){
