@@ -30,6 +30,25 @@ jobs:
           const gamesMatch = html.match(/const games=(\[[\s\S]*?\]);/);
           const games = gamesMatch ? JSON.parse(gamesMatch[1]) : [];
 
+          // Spielverschiebungen werden im Admin-Bereich in Firebase gespeichert.
+          // Der Pushdienst muss diese Änderungen vor der 24h-Prüfung laden.
+          function applyScheduleOverrides(games, overrides) {
+            for (const game of games) {
+              const baseId = game.date + "_" + game.time.replace(/:/g, "") + "_" + game.team;
+              game._baseId = baseId;
+              const override = overrides[baseId];
+              if (!override) continue;
+              Object.assign(game, {
+                day: override.day || game.day,
+                date: override.date || game.date,
+                time: override.time || game.time,
+                home: override.home || game.home,
+                away: override.away || game.away,
+                stadium: override.stadium || game.stadium
+              });
+            }
+          }
+
           function berlinDate(date, time) {
             const [y, m, d] = date.split("-").map(Number);
             const [hh, mm] = time.split(":").map(Number);
@@ -113,15 +132,8 @@ jobs:
           }
 
           function gameIdentity(game, occurrence) {
-            // Datum/Uhrzeit gehören bewusst NICHT zur Identität: Bei einer
-            // Spielverschiebung soll dasselbe Spiel weiterverfolgt werden.
-            return [
-              normalizeGamePart(game.team),
-              normalizeGamePart(game.home),
-              normalizeGamePart(game.away),
-              normalizeGamePart(game.stadium),
-              occurrence
-            ].join("_");
+            // Bei einer Verschiebung bleibt die ursprüngliche Spiel-ID gleich.
+            return [normalizeGamePart(game._baseId || ""), normalizeGamePart(game.team), occurrence].join("_");
           }
 
           async function sendGameReminders(tokens) {
@@ -200,6 +212,12 @@ jobs:
               console.log("Keine Push-Geräte registriert.");
               return;
             }
+
+            const overridesSnap = await db.collection("scheduleOverrides").get();
+            const overrides = {};
+            overridesSnap.forEach(doc => { overrides[doc.id] = doc.data(); });
+            applyScheduleOverrides(games, overrides);
+            console.log("Spielplanänderungen geladen:", overridesSnap.size);
 
             const resultsSnap = await db.collection("results").get();
 
