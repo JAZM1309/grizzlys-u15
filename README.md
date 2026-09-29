@@ -2,6 +2,19 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+## Version 1.6.2
+
+### Neu in Version 1.6.2
+
+- Ergebnis-Push-Dienst korrigiert und zuverlässig an Firebase Cloud Messaging angebunden
+- Eigenes Ergebnis-Push-Bild im Grizzlys-Stil eingebunden
+- Eigenes Bild für die automatische 24-Stunden-Spielerinnerung vorbereitet und im Erinnerungsdienst hinterlegt
+- Push-Bild und Fallback-Verhalten des Firebase Messaging Service Workers verbessert
+- Fehlermeldungen wieder mit verpflichtendem Namen im Formular und in der Verwaltung
+- Admin-Push-Token wird beim Admin-Login automatisch registriert, damit Admin-Benachrichtigungen funktionieren
+- Fehler-E-Mail und Fehler-Push inklusive passendem Fehlermeldungsbild funktionieren wieder zusammen
+- Dokumentation und Versionsstand auf 1.6.2 aktualisiert
+
 ## Version 1.6.1
 
 ### Neu in Version 1.6.1
