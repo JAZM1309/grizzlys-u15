@@ -180,14 +180,14 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
       <div class="adminAccordion" data-admin-accordion="results"><button class="adminAccordionHeader" type="button"><span>🏒 Ergebnisverwaltung</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Ergebnisse eintragen, ändern oder löschen.</div><div id="adminResults" class="adminResults"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="schedule"><button class="adminAccordionHeader" type="button"><span>📅 Spieländerungen</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Falsche oder verlegte Termine zentral ändern. Die Änderung wird für alle Nutzer übernommen.</div><div id="adminSchedule" class="adminSchedule"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="bugs"><button class="adminAccordionHeader" type="button"><span>🐞 Fehlermeldungen <span id="adminBugCount" class="adminBugBadge" hidden>0</span></span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Gemeldete Fehler prüfen, archivieren oder endgültig löschen.</div><div style="display:flex;gap:7px;align-items:center;margin-bottom:8px"><label for="adminBugFilter" class="small" style="font-weight:900">Anzeige:</label><select id="adminBugFilter" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select></div><div id="adminBugReports" class="adminResults"></div></div></div>
-      <div class="adminAccordion" data-admin-accordion="stats"><button class="adminAccordionHeader" type="button"><span>📊 App-Statistik</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div id="adminAppStats" class="adminAppStats"><div class="adminPushStat"><span class="small">📱 App registriert</span><b id="appInstallCount">–</b></div><div class="adminPushStat"><span class="small">🍎 Apple</span><b id="appAppleCount">–</b></div><div class="adminPushStat"><span class="small">🤖 Android</span><b id="appAndroidCount">–</b></div><div class="adminPushStat"><span class="small">🔔 Push registriert</span><b id="pushActiveCount">–</b></div><div class="adminPushStat"><span class="small">🕒 Letzte App-Registrierung</span><b id="appLastRegistration" style="font-size:14px">–</b></div><div class="adminPushStat"><span class="small">🕒 Letzte Push-Registrierung</span><b id="pushLastRegistration" style="font-size:14px">–</b></div></div><div class="small" style="margin-top:8px">Gezählt werden registrierte App-Installationen sowie gespeicherte FCM-Registrierungen in Firebase. Eine Person kann mehrere Geräte registrieren. Die Installationszahl ist eine technische Geräte-/Browser-Registrierung und keine exakte Zahl physisch installierter Apps.</div><button id="refreshPushStats" class="action" type="button" style="margin-top:9px">🔄 Aktualisieren</button><a class="action" href="https://console.firebase.google.com/project/grizzlys-u15/analytics/overview" target="_blank" rel="noopener noreferrer" style="display:inline-flex;margin-top:9px;text-decoration:none">📈 Firebase-Statistik öffnen</a><div class="small" style="margin-top:8px">Dort stehen die vollständigen Nutzungsdaten von Google Analytics, sobald Analytics im Firebase-Projekt aktiviert ist.</div></div></div>
+      <div class="adminAccordion" data-admin-accordion="stats"><button class="adminAccordionHeader" type="button"><span>📊 App-Statistik</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div id="adminAppStats" class="adminAppStats"><div class="adminPushStat"><span class="small">📱 App registriert</span><b id="appInstallCount">–</b></div><div class="adminPushStat"><span class="small">🍎 Apple</span><b id="appAppleCount">–</b></div><div class="adminPushStat"><span class="small">🤖 Android</span><b id="appAndroidCount">–</b></div><div class="adminPushStat"><span class="small">🔔 Push registriert</span><b id="pushActiveCount">–</b></div><div class="adminPushStat"><span class="small">🕒 Letzte App-Registrierung</span><b id="appLastRegistration" style="font-size:14px">–</b></div><div class="adminPushStat"><span class="small">🕒 Letzte Push-Registrierung</span><b id="pushLastRegistration" style="font-size:14px">–</b></div></div><div class="small" style="margin-top:8px">Gezählt werden registrierte App-Installationen sowie gespeicherte FCM-Registrierungen in Firebase. Eine Person kann mehrere Geräte registrieren. Die Installationszahl ist eine technische Geräte-/Browser-Registrierung und keine exakte Zahl physisch installierter Apps.</div><button id="refreshPushStats" class="action" type="button" style="margin-top:9px">🔄 Aktualisieren</button></div></div>
     </div>
   </div>
 </div>
 
 </div></section>
 
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Name<input id="bugReportName" type="text" maxlength="100" placeholder="Dein Name" autocomplete="name" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Sonstiges</option></select></label><label>Fehlerbeschreibung<textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.1 · Geräte-/Browserdaten werden nur zur Fehleranalyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Sonstiges</option></select></label><label>Fehlerbeschreibung<textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.1 · Geräte-/Browserdaten werden nur zur Fehleranalyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div class="hockeyGameIntro">Erziele zuerst drei in einer Reihe. Du bist 🏒.</div><div class="hockeyScore"><span>🏒 Du: <b id="hockeyPlayerScore">0</b></span><span>🥅 Gegner: <b id="hockeyCpuScore">0</b></span></div><div class="hockeyRink"><div id="hockeyBoard" class="hockeyBoard"></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neues Spiel</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät und speichert keine Ergebnisse.</div></div></div></div>
 <div id="pdfFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="pdfFilterTitle">
@@ -235,7 +235,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebas
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
-import { getAnalytics, logEvent, isSupported as analyticsSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC-Dqjj-vNMYA8QRc3SGeivMDRjEHjwKe0",
@@ -251,19 +250,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 let messaging = null;
-let analytics = null;
-
-// Firebase Analytics: wird aktiv, sobald Google Analytics im Firebase-Projekt
-// aktiviert/verknüpft ist. Die Mess-ID kann von der aktuellen Firebase-SDK-Version
-// automatisch aus der Projektkonfiguration bezogen werden.
-(async()=>{
-  try{
-    if(await analyticsSupported()) analytics=getAnalytics(app);
-  }catch(e){ console.warn("Firebase Analytics nicht verfügbar:",e); }
-})();
-function trackEvent(name,params={}){
-  try{ if(analytics) logEvent(analytics,name,params); }catch(e){ console.warn("Analytics-Ereignis fehlgeschlagen:",name,e); }
-}
 let results = {};
 
 window.firebaseReady = false;
@@ -574,16 +560,13 @@ function closeBugReport(){
 }
 
 async function submitBugReport(){
-  const name=document.getElementById("bugReportName")?.value.trim()||"";
   const area=document.getElementById("bugReportArea")?.value||"Sonstiges";
   const description=document.getElementById("bugReportDescription")?.value.trim()||"";
   const contact=document.getElementById("bugReportContact")?.value.trim()||"";
-  if(name.length<2){alert("Bitte gib deinen Namen ein.");return;}
   if(description.length<5){alert("Bitte beschreibe den Fehler kurz.");return;}
   const btn=document.getElementById("bugReportSend"); if(btn)btn.disabled=true;
   try{
     const report={
-      name,
       area,
       description,
       contact,
@@ -595,8 +578,6 @@ async function submitBugReport(){
       status:"Neu"
     };
     await addDoc(collection(db,"bugReports"),report);
-    trackEvent("bug_report_submitted",{area});
-    document.getElementById("bugReportName").value="";
     document.getElementById("bugReportDescription").value="";
     document.getElementById("bugReportContact").value="";
     closeBugReport();
@@ -642,7 +623,7 @@ async function loadBugReports(){
       const archived=Boolean(r.archived);
       return `<div class="adminBugItem ${archived?"archived":""}" data-bug-id="${esc(r.id)}">
         <div class="adminBugHead">
-          <div><b>${esc(r.name||"Unbekannter Name")}</b> · ${esc(r.area||"Sonstiges")}${archived?'<span class="adminBugArchivedBadge">ARCHIV</span>':""}
+          <div><b>${esc(r.area||"Sonstiges")}</b>${archived?'<span class="adminBugArchivedBadge">ARCHIV</span>':""}
           <div class="adminBugMeta">${esc(ts)} · ${esc(r.appVersion||"?")} · ${esc(r.platform||"?")} · Push: ${r.pushRegistered?"aktiv":"nicht registriert"}</div></div>
           <span class="adminBugStatus ${cls}">${esc(status)}</span>
         </div>
@@ -746,7 +727,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         pushRegisteredAt:serverTimestamp(),
         updatedAt:serverTimestamp()
       },{merge:true});
-      trackEvent("push_registration_success",{platform:detectPlatform()});
       alert("Push-Benachrichtigungen sind auf diesem Gerät aktiviert und registriert.");
     }catch(e){
       console.error("Push-Aktivierung fehlgeschlagen:",e);
@@ -918,8 +898,8 @@ function setScheduleMode(mode){
     renderList("all");
   }
 }
-function downloadTeamCalendar(team){trackEvent("calendar_download",{team:"U15 "+team,type:"team"});const arr=games.filter(g=>g.team===team).sort((a,b)=>dt(a)-dt(b));downloadIcsBundle(arr,"U15-"+team+"-Spielplan.ics")}
-function downloadBothCalendars(){trackEvent("calendar_download",{team:"U15 A+B",type:"both"});downloadIcsBundle(games.slice().sort((a,b)=>dt(a)-dt(b)),"U15-A-und-B-Spielplan.ics")}
+function downloadTeamCalendar(team){const arr=games.filter(g=>g.team===team).sort((a,b)=>dt(a)-dt(b));downloadIcsBundle(arr,"U15-"+team+"-Spielplan.ics")}
+function downloadBothCalendars(){downloadIcsBundle(games.slice().sort((a,b)=>dt(a)-dt(b)),"U15-A-und-B-Spielplan.ics")}
 function pdfFilterMatch(g,filters){
   if(!filters || filters.length===0 || filters.includes("all")) return true;
   const teamFilters=filters.filter(f=>f==="A"||f==="B");
@@ -956,7 +936,6 @@ function closePdfFilter(){
   const m=document.getElementById("pdfFilterModal");m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow="";
 }
 function printAllGamesPdf(filters=["all"]){
-  trackEvent("pdf_download",{filter:pdfFilterLabel(filters)});
   const label=pdfFilterLabel(filters);
   const arr=games.filter(g=>pdfFilterMatch(g,filters)).slice().sort((a,b)=>dt(a)-dt(b));
   const rows=arr.map(g=>{
@@ -1069,7 +1048,6 @@ window.applyResults=function(){
   });
   }
   function openOpponentDetails(name,gs){
-  trackEvent("opponent_viewed",{games_count:gs.length});
   const modal=document.getElementById("opponentModal");
   const content=document.getElementById("opponentModalContent");
 
@@ -1157,11 +1135,10 @@ function icsFor(g,alarm=false){
  a.push("END:VEVENT","END:VCALENDAR"); return a.join("\r\n");
 }
 function downloadIcs(g,alarm){const blob=new Blob([icsFor(g,alarm)],{type:"text/calendar"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(alarm?"Erinnerung-":"U15-")+g.date+"-"+g.team+".ics";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function calendar(g){trackEvent("calendar_download",{team:"U15 "+g.team,type:"game"});downloadIcs(g,false)} function reminder(g){trackEvent("calendar_download",{team:"U15 "+g.team,type:"reminder"});downloadIcs(g,true);setTimeout(()=>alert("Kalenderdatei vorbereitet – die Erinnerung ist 24 Stunden vorher hinterlegt."),250)}
+function calendar(g){downloadIcs(g,false)} function reminder(g){downloadIcs(g,true);setTimeout(()=>alert("Kalenderdatei vorbereitet – die Erinnerung ist 24 Stunden vorher hinterlegt."),250)}
 async function shareGame(g){const text="🏒 U15 "+g.team+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g);if(navigator.share){try{await navigator.share({title:"ESV Grizzlys U15",text})}catch(e){}}else alert(text)}
 
 function openMatchDetails(g){
-  trackEvent("match_details_viewed",{team:"U15 "+g.team,home_away:isHome(g)?"home":"away"});
   const modal=document.getElementById("matchModal");
   const content=document.getElementById("matchModalContent");
   const home=isHome(g);
@@ -1204,7 +1181,7 @@ function closeMatchDetails(){
   document.body.style.overflow="";
 }
 
-function showView(name){trackEvent("screen_view",{screen_name:name});["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule")setScheduleMode(scheduleMode);window.scrollTo({top:0,behavior:"smooth"})}
+function showView(name){["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule")setScheduleMode(scheduleMode);window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.getElementById("infoTopBtn").onclick=()=>showView("info");
 
@@ -1219,12 +1196,12 @@ let hockeyCells=[], hockeyTurn="player", hockeyOver=false, hockeyPlayerWins=0, h
 const hockeyWins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 function hockeyWinner(board){for(const line of hockeyWins){const[a,b,c]=line;if(board[a]&&board[a]===board[b]&&board[a]===board[c])return board[a];}return board.every(Boolean)?"draw":null;}
 function hockeyRender(){hockeyBoard.innerHTML="";hockeyCells=[];const board=window.__hockeyBoard||Array(9).fill("");board.forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.className="hockeyCell"+(v==="player"?" player":v==="cpu"?" cpu":"");b.textContent=v==="player"?"🏒":v==="cpu"?"🥅":"";b.setAttribute("aria-label",v?`Feld ${i+1} belegt`:`Feld ${i+1} frei`);b.disabled=!!v||hockeyOver||hockeyTurn!=="player";b.onclick=()=>hockeyPlayerMove(i);hockeyBoard.appendChild(b);hockeyCells.push(b);});hockeyPlayerScore.textContent=hockeyPlayerWins;hockeyCpuScore.textContent=hockeyCpuWins;}
-function hockeyFinish(result){trackEvent("hockey_round_finished",{result});hockeyOver=true;if(result==="player"){hockeyPlayerWins++;hockeyStatus.textContent="🏆 Tor! Du hast gewonnen!";}else if(result==="cpu"){hockeyCpuWins++;hockeyStatus.textContent="🥅 Gegentor! Der Gegner gewinnt.";}else hockeyStatus.textContent="🤝 Unentschieden – kein Sieger.";hockeyRender();}
+function hockeyFinish(result){hockeyOver=true;if(result==="player"){hockeyPlayerWins++;hockeyStatus.textContent="🏆 Tor! Du hast gewonnen!";}else if(result==="cpu"){hockeyCpuWins++;hockeyStatus.textContent="🥅 Gegentor! Der Gegner gewinnt.";}else hockeyStatus.textContent="🤝 Unentschieden – kein Sieger.";hockeyRender();}
 function hockeyNewRound(){window.__hockeyBoard=Array(9).fill("");hockeyTurn="player";hockeyOver=false;hockeyStatus.textContent="Dein Zug – schieße auf ein freies Feld!";hockeyRender();}
 function hockeyWinningMove(board,who){for(const line of hockeyWins){const vals=line.map(i=>board[i]);if(vals.filter(v=>v===who).length===2&&vals.includes(""))return line[vals.indexOf("")];}return -1;}
 function hockeyCpuMove(){if(hockeyOver)return;const board=window.__hockeyBoard;let move=hockeyWinningMove(board,"cpu");if(move<0)move=hockeyWinningMove(board,"player");if(move<0&&board[4]==="")move=4;if(move<0){const free=board.map((v,i)=>v?null:i).filter(i=>i!==null);move=free[Math.floor(Math.random()*free.length)];}if(move!==undefined&&move>=0)board[move]="cpu";const result=hockeyWinner(board);hockeyTurn="player";if(result)hockeyFinish(result);else{hockeyStatus.textContent="Dein Zug – schieße auf ein freies Feld!";hockeyRender();}}
 function hockeyPlayerMove(i){if(hockeyOver||hockeyTurn!=="player"||window.__hockeyBoard[i])return;window.__hockeyBoard[i]="player";const result=hockeyWinner(window.__hockeyBoard);if(result){hockeyFinish(result);return;}hockeyTurn="cpu";hockeyStatus.textContent="🥅 Gegner ist am Zug …";hockeyRender();setTimeout(hockeyCpuMove,320);}
-function openHockeyGame(){trackEvent("hockey_game_started");hockeyModal.hidden=false;hockeyModal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";hockeyNewRound();document.getElementById("hockeyGameClose")?.focus();}
+function openHockeyGame(){hockeyModal.hidden=false;hockeyModal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";hockeyNewRound();document.getElementById("hockeyGameClose")?.focus();}
 function closeHockeyGame(){hockeyModal.hidden=true;hockeyModal.setAttribute("aria-hidden","true");document.body.style.overflow="";}
 document.getElementById("openHockeyGame")?.addEventListener("click",openHockeyGame);
 document.getElementById("hockeyGameClose")?.addEventListener("click",closeHockeyGame);
@@ -1236,7 +1213,6 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&hockeyModal&&!hocke
 const shareAppBtn=document.getElementById("shareApp");
 if(shareAppBtn){
   shareAppBtn.onclick=async()=>{
-    trackEvent("app_share");
     const shareData={title:"ESV Grizzlys U15 Spielplan",text:"ESV Grizzlys U15 – Spielplan 2026/27",url:window.location.href};
     try{
       if(navigator.share){
