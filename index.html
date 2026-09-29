@@ -392,11 +392,16 @@ function detectPlatformFromStoredUserAgent(ua){
   return "Sonstiges";
 }
 
-async function registerAdminPushToken(){
+async function registerAdminPushToken(requestPermission=false){
   try{
-    if(auth.currentUser?.uid!==ADMIN_UID || !FIREBASE_VAPID_KEY) return;
-    if(!("Notification" in window) || Notification.permission!=="granted") return;
-    if(!(await isSupported())) return;
+    if(auth.currentUser?.uid!==ADMIN_UID || !FIREBASE_VAPID_KEY) return false;
+    if(!("Notification" in window)) return false;
+    if(requestPermission && Notification.permission!=="granted"){
+      const permission=await Notification.requestPermission();
+      if(permission!=="granted") return false;
+    }
+    if(Notification.permission!=="granted") return false;
+    if(!(await isSupported())) return false;
     messaging=messaging||getMessaging(app);
     const reg=await navigator.serviceWorker.register("./sw.js");
     await navigator.serviceWorker.ready;
@@ -408,7 +413,8 @@ async function registerAdminPushToken(){
     },{merge:true});
     try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);}catch(e){}
     console.log("Admin-Push-Token registriert.");
-  }catch(err){console.warn("Admin-Push-Token konnte nicht registriert werden",err);}
+    return true;
+  }catch(err){console.warn("Admin-Push-Token konnte nicht registriert werden",err);return false;}
 }
 
 function getInstallationId(){
@@ -639,7 +645,7 @@ function setAdminUi(user){
 
 document.addEventListener("DOMContentLoaded",()=>{
   const form=document.getElementById("adminLoginForm");
-  form?.addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("adminEmail").value.trim(),pw=document.getElementById("adminPassword").value;try{await signInWithEmailAndPassword(auth,email,pw);document.getElementById("adminPassword").value="";}catch(err){alert("Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort prüfen.");}});
+  form?.addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("adminEmail").value.trim(),pw=document.getElementById("adminPassword").value;try{const cred=await signInWithEmailAndPassword(auth,email,pw);document.getElementById("adminPassword").value="";if(cred.user?.uid===ADMIN_UID) await registerAdminPushToken(true);}catch(err){alert("Anmeldung fehlgeschlagen. Bitte E-Mail und Passwort prüfen.");}});
   document.getElementById("openAdmin")?.addEventListener("click",()=>{const m=document.getElementById("adminModal");if(m){m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";document.getElementById("adminEmail")?.focus();}});
   document.getElementById("adminModalClose")?.addEventListener("click",closeAdminModal);
   document.getElementById("adminModal")?.addEventListener("click",e=>{if(e.target.id==="adminModal")closeAdminModal();});
