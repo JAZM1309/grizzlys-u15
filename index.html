@@ -422,33 +422,54 @@ async function loadPushStats(){
   const pushCountEl=document.getElementById("pushActiveCount"), appLastEl=document.getElementById("appLastRegistration"), pushLastEl=document.getElementById("pushLastRegistration");
   if(!appCountEl || !appleEl || !androidEl || !pushCountEl || !appLastEl || !pushLastEl) return;
   [appCountEl,appleEl,androidEl,pushCountEl,appLastEl,pushLastEl].forEach(el=>el.textContent="…");
+
+  let appInstallations=[];
   try{
     const snap=await getDocs(collection(db,"appInstallations"));
-    let appCount=0, apple=0, android=0, pushCount=0, latestApp=null, latestPush=null;
     snap.forEach(d=>{
       const data=d.data()||{};
-      if(!data.installationId) return;
-      appCount++;
+      if(data.installationId) appInstallations.push(data);
+    });
+    let apple=0, android=0, latestApp=null;
+    appInstallations.forEach(data=>{
       const platform=data.platform || detectPlatformFromStoredUserAgent(data.userAgent);
       if(platform==="Apple") apple++;
       else if(platform==="Android") android++;
-      const appTs=data.updatedAt||data.createdAt;
-      if(appTs?.toMillis){ const ms=appTs.toMillis(); if(latestApp===null || ms>latestApp) latestApp=ms; }
-      if(data.pushEnabled===true){
-        pushCount++;
-        const pushTs=data.pushRegisteredAt||data.updatedAt;
-        if(pushTs?.toMillis){ const ms=pushTs.toMillis(); if(latestPush===null || ms>latestPush) latestPush=ms; }
-      }
+      const ts=data.updatedAt||data.createdAt;
+      if(ts?.toMillis){const ms=ts.toMillis();if(latestApp===null||ms>latestApp)latestApp=ms;}
     });
-    appCountEl.textContent=String(appCount);
+    appCountEl.textContent=String(appInstallations.length);
     appleEl.textContent=String(apple);
     androidEl.textContent=String(android);
-    pushCountEl.textContent=String(pushCount);
-    appLastEl.textContent=latestApp===null ? "–" : new Date(latestApp).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
-    pushLastEl.textContent=latestPush===null ? "–" : new Date(latestPush).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
+    appLastEl.textContent=latestApp===null?"–":new Date(latestApp).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
   }catch(err){
     console.warn("App-Statistik konnte nicht geladen werden",err);
-    appCountEl.textContent="Fehler"; appleEl.textContent="–"; androidEl.textContent="–"; pushCountEl.textContent="–"; appLastEl.textContent="–"; pushLastEl.textContent="–";
+    appCountEl.textContent="Fehler"; appleEl.textContent="–"; androidEl.textContent="–"; appLastEl.textContent="–";
+  }
+
+  try{
+    const snap=await getDocs(collection(db,"pushTokens"));
+    const installationIds=new Set();
+    let legacyCount=0, latest=null;
+    snap.forEach(d=>{
+      const data=d.data()||{};
+      if(!data.token) return;
+      if(data.installationId) installationIds.add(data.installationId);
+      else legacyCount++;
+      const ts=data.updatedAt||data.createdAt;
+      if(ts?.toMillis){const ms=ts.toMillis();if(latest===null||ms>latest)latest=ms;}
+    });
+
+    // Neue Registrierungen werden eindeutig nach Gerät gezählt.
+    // Ältere Tokens haben noch keine installationId und werden vorübergehend
+    // als eigene Push-Registrierungen mitgezählt, damit bestehende Geräte
+    // nicht plötzlich aus der Statistik verschwinden.
+    const pushCount=installationIds.size + legacyCount;
+    pushCountEl.textContent=String(pushCount);
+    pushLastEl.textContent=latest===null?"–":new Date(latest).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"});
+  }catch(err){
+    console.warn("Push-Statistik konnte nicht geladen werden",err);
+    pushCountEl.textContent="Fehler"; pushLastEl.textContent="–";
   }
 }
 function setupAdminAccordions(){
@@ -631,7 +652,15 @@ document.addEventListener("DOMContentLoaded",()=>{
       await navigator.serviceWorker.ready;
       const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
       if(!token) throw new Error("Firebase hat kein Push-Token geliefert.");
-      await setDoc(doc(db,"pushTokens",token),{token,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),platform:navigator.userAgent,admin:auth.currentUser?.uid===ADMIN_UID,adminUid:auth.currentUser?.uid===ADMIN_UID?ADMIN_UID:null});
+      await setDoc(doc(db,"pushTokens",token),{
+        token,
+        installationId:getInstallationId(),
+        createdAt:serverTimestamp(),
+        updatedAt:serverTimestamp(),
+        platform:navigator.userAgent,
+        admin:auth.currentUser?.uid===ADMIN_UID,
+        adminUid:auth.currentUser?.uid===ADMIN_UID?ADMIN_UID:null
+      });
       try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);}catch(e){}
       await setDoc(doc(db,"appInstallations",getInstallationId()),{
         installationId:getInstallationId(),
