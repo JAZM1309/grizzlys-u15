@@ -335,7 +335,16 @@ function adminScheduleEditor(){
       const day=new Date(date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long"});
       await setDoc(doc(db,"scheduleOverrides",id),{gameId:id,team:g.team,originalDate:g._base.date,originalTime:g._base.time,day,date,time,home,away,stadium,updatedAt:serverTimestamp()});
       scheduleOverrides[id]={gameId:id,team:g.team,originalDate:g._base.date,originalTime:g._base.time,day,date,time,home,away,stadium};
-      applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); adminScheduleEditor();
+      applyScheduleOverrides(); renderNext(); renderList(); renderOpponents();
+      // Die geöffnete Admin-Sektion bleibt bestehen; nur den Status der
+      // bearbeiteten Zeile aktualisieren.
+      const head=row.querySelector(".adminScheduleGame > div");
+      if(head && !head.querySelector(".scheduleChanged")){
+        const badge=document.createElement("span");
+        badge.className="scheduleChanged";
+        badge.textContent="GEÄNDERT";
+        head.appendChild(badge);
+      }
       alert("Spielplanänderung gespeichert und für alle Nutzer übernommen.");
     }catch(e){console.error(e);alert("Änderung konnte nicht gespeichert werden. Bitte prüfen, ob du als Admin angemeldet bist.");} finally{btn.disabled=false;}
   });
@@ -364,7 +373,29 @@ function adminEditor(){
     try{
       await setDoc(doc(db,"results",row.dataset.resultId),{gameId:row.dataset.resultId,team:g.team,date:g.date,time:g.time,home:g.home,away:g.away,homeScore:Number(hs),awayScore:Number(as),updatedAt:serverTimestamp()});
       results[row.dataset.resultId]={gameId:row.dataset.resultId,team:g.team,date:g.date,time:g.time,home:g.home,away:g.away,homeScore:Number(hs),awayScore:Number(as)};
-      window.applyResults?.(); adminEditor();
+      window.applyResults?.();
+      // Admin-Ansicht nicht komplett neu aufbauen: offene Sektion und weitere
+      // Änderungen bleiben dadurch direkt bedienbar.
+      const existingDelete=row.querySelector(".deleteResult");
+      if(!existingDelete){
+        const del=document.createElement("button");
+        del.className="action deleteResult";
+        del.type="button";
+        del.textContent="Löschen";
+        row.querySelector(".adminScore")?.appendChild(del);
+        del.onclick=async()=>{
+          if(!confirm("Ergebnis wirklich löschen?"))return;
+          del.disabled=true;
+          try{
+            await deleteDoc(doc(db,"results",row.dataset.resultId));
+            delete results[row.dataset.resultId];
+            window.applyResults?.();
+            row.querySelector(".scoreHome").value="";
+            row.querySelector(".scoreAway").value="";
+            del.remove();
+          }catch(e){alert("Löschen nicht möglich.");del.disabled=false;}
+        };
+      }
       alert("Ergebnis gespeichert.");
     }catch(e){alert("Speichern nicht möglich. Bitte prüfen, ob du als Admin angemeldet bist.");console.error(e)} finally{btn.disabled=false;}
   });
