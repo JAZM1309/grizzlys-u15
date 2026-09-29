@@ -457,7 +457,7 @@ async function registerAdminPushToken(requestPermission=false){
     if(Notification.permission!=="granted") return false;
     if(!(await isSupported())) return false;
     messaging=messaging||getMessaging(app);
-    const reg=await navigator.serviceWorker.register("./sw.js");
+    const reg=await navigator.serviceWorker.register("./sw.js?v=22");
     await navigator.serviceWorker.ready;
     const token=await getToken(messaging,{vapidKey:FIREBASE_VAPID_KEY,serviceWorkerRegistration:reg});
     if(!token) return;
