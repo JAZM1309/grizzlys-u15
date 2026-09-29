@@ -59,8 +59,10 @@ jobs:
             const gameTime = berlinDate(game.date, game.time).getTime();
             const diff = gameTime - Date.now();
             return (
-              diff >= 23 * 60 * 60 * 1000 + 30 * 60 * 1000 &&
-              diff <= 24 * 60 * 60 * 1000 + 30 * 60 * 1000
+              // GitHub Actions kann den Cron-Lauf verzögert starten.
+              // Deshalb bewusst ein robustes Fenster um die 24h-Marke.
+              diff >= 23 * 60 * 60 * 1000 &&
+              diff <= 25 * 60 * 60 * 1000
             );
           }
 
@@ -108,36 +110,45 @@ jobs:
 
               const reminderId =
                 `${game.date}_${game.time.replace(/:/g, "")}_${game.team}`;
-              const reminderRef = db.collection("gameReminders").doc(reminderId);
-              const reminderDoc = await reminderRef.get();
 
-              if (reminderDoc.exists && reminderDoc.data().sentAt) continue;
+              try {
+                const reminderRef = db.collection("gameReminders").doc(reminderId);
+                const reminderDoc = await reminderRef.get();
 
-              const title = "🏒 ESV Grizzlys U15";
-              const body =
-                `Morgen: U15 ${game.team} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
+                if (reminderDoc.exists && reminderDoc.data().sentAt) continue;
 
-              const successCount = await sendPush(
-                tokens,
-                { title, body },
-                {
-                  notification: {
-                    icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon.png",
-                    badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
-                  },
-                  fcmOptions: {
-                    link: "https://jazm1309.github.io/grizzlys-u15/"
+                const title = "🏒 ESV Grizzlys U15";
+                const body =
+                  `Morgen: U15 ${game.team} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
+
+                const successCount = await sendPush(
+                  tokens,
+                  { title, body },
+                  {
+                    notification: {
+                      // Vorhandene Datei: grizzlys-24h-icon-192.png
+                      icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon-192.png",
+                      badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
+                    },
+                    fcmOptions: {
+                      link: "https://jazm1309.github.io/grizzlys-u15/"
+                    }
                   }
-                }
-              );
+                );
 
-              if (successCount > 0) {
-                await reminderRef.set({
-                  sentAt: FieldValue.serverTimestamp(), game
-                });
-                console.log("24h-Erinnerung gesendet:", reminderId);
-              } else {
-                console.log("24h-Erinnerung nicht gesendet – kein gültiges Push-Gerät.");
+                if (successCount > 0) {
+                  await reminderRef.set({
+                    sentAt: FieldValue.serverTimestamp(), game
+                  });
+                  console.log("24h-Erinnerung gesendet:", reminderId);
+                } else {
+                  console.log("24h-Erinnerung nicht gesendet – kein gültiges Push-Gerät.");
+                }
+              } catch (error) {
+                // Ein Fehler bei einer 24h-Erinnerung darf den Ergebnis-Push
+                // oder die Prüfung weiterer Erinnerungen niemals blockieren.
+                console.error("Fehler bei 24h-Erinnerung:", reminderId, error);
+                continue;
               }
             }
           }
@@ -193,7 +204,13 @@ jobs:
               }
             }
 
-            await sendGameReminders(tokens);
+            // 24h-Erinnerungen sind bewusst vom Ergebnis-Push entkoppelt.
+            // Selbst ein unerwarteter Fehler hier darf den Workflow nicht fehlschlagen lassen.
+            try {
+              await sendGameReminders(tokens);
+            } catch (error) {
+              console.error("24h-Erinnerungsdienst fehlgeschlagen:", error);
+            }
           }
 
           main()
