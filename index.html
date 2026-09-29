@@ -137,6 +137,29 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
   .printFooter{margin-top:8px;font-size:7.5pt;color:#666}
 }
 
+
+/* Hockey Mini-Spiel: vollständiges Motiv, Spielfelder direkt im Tor, keine Scrollfläche */
+.hockeyGameModal{align-items:center!important;justify-content:center!important;padding:6px!important;overflow:hidden!important}
+.hockeyGameBox{width:min(360px,calc(100vw - 18px))!important;max-height:calc(100vh - 12px)!important;height:auto!important;overflow:hidden!important}
+.hockeyGameBody{position:relative!important;padding:0!important;overflow:hidden!important;background:#06182c!important}
+.hockeyGameHero{width:100%!important;height:auto!important;aspect-ratio:2/3!important;flex:0 0 auto!important;margin:0!important;border:0!important;overflow:hidden!important}
+.hockeyGameHeroImg{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important}
+.hockeyGameHeroTitle{display:none!important}
+.hockeyGameIntro{display:none!important}
+.hockeyScore{position:absolute!important;left:0!important;right:0!important;top:9%!important;z-index:8!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;margin:0!important;padding:0 6%!important;pointer-events:none!important}
+.hockeyScore span{padding:5px 3px!important;background:rgba(3,18,34,.45)!important;border:1px solid rgba(255,255,255,.25)!important;font-size:11px!important;text-shadow:0 2px 3px #000!important}
+.hockeyScore span+span{background:rgba(120,45,0,.45)!important}
+.hockeyScore b{font-size:18px!important}
+.hockeyRink{position:absolute!important;left:17%!important;top:39%!important;width:66%!important;height:29%!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;z-index:7!important}
+.hockeyRink:before{display:none!important}
+.hockeyBoard{width:100%!important;height:100%!important;display:grid!important;grid-template-columns:repeat(3,1fr)!important;grid-template-rows:repeat(3,1fr)!important;gap:1.5%!important}
+.hockeyCell{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;aspect-ratio:auto!important;border:1px solid transparent!important;background:transparent!important;border-radius:4px!important;box-shadow:none!important;padding:0!important}
+.hockeyCell.player:before{width:42%!important}
+.hockeyCell.cpu:before{width:48%!important;height:46%!important;border-width:4px!important}
+.hockeyStatus{display:none!important}
+.hockeyActions{position:absolute!important;left:6%!important;right:6%!important;bottom:3.5%!important;z-index:9!important;display:flex!important;gap:8px!important;margin:0!important}
+.hockeyActions .action{height:42px!important;padding:6px 8px!important;font-size:13px!important;background:rgba(3,35,65,.88)!important;color:#fff!important;border:1px solid #168cff!important;border-radius:12px!important}
+.hockeyHint{display:none!important}
 </style>
 </head>
 <body>
