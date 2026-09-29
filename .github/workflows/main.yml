@@ -104,18 +104,53 @@ jobs:
             return successCount;
           }
 
+          function normalizeGamePart(value) {
+            return String(value || "")
+              .toLowerCase()
+              .trim()
+              .replace(/[^a-z0-9äöüß]+/gi, "-")
+              .replace(/^-+|-+$/g, "");
+          }
+
+          function gameIdentity(game, occurrence) {
+            // Datum/Uhrzeit gehören bewusst NICHT zur Identität: Bei einer
+            // Spielverschiebung soll dasselbe Spiel weiterverfolgt werden.
+            return [
+              normalizeGamePart(game.team),
+              normalizeGamePart(game.home),
+              normalizeGamePart(game.away),
+              normalizeGamePart(game.stadium),
+              occurrence
+            ].join("_");
+          }
+
           async function sendGameReminders(tokens) {
+            const occurrences = new Map();
+
             for (const game of games) {
+              const baseKey = [
+                normalizeGamePart(game.team),
+                normalizeGamePart(game.home),
+                normalizeGamePart(game.away),
+                normalizeGamePart(game.stadium)
+              ].join("|");
+              const occurrence = (occurrences.get(baseKey) || 0) + 1;
+              occurrences.set(baseKey, occurrence);
+
               if (!isReminderTime(game)) continue;
 
-              const reminderId =
-                `${game.date}_${game.time.replace(/:/g, "")}_${game.team}`;
+              const reminderId = gameIdentity(game, occurrence);
+              const scheduleKey = game.date + "_" + game.time;
 
               try {
                 const reminderRef = db.collection("gameReminders").doc(reminderId);
                 const reminderDoc = await reminderRef.get();
+                const previous = reminderDoc.exists ? reminderDoc.data() : null;
 
-                if (reminderDoc.exists && reminderDoc.data().sentAt) continue;
+                // Für denselben aktuellen Termin nur einmal senden.
+                // Wurde das Spiel verschoben, ist scheduleKey neu und eine
+                // neue 24h-Erinnerung darf gesendet werden.
+                if (previous && previous.sentScheduleKey === scheduleKey) continue;
 
                 const title = "🏒 ESV Grizzlys U15";
                 const body =
@@ -138,9 +173,11 @@ jobs:
 
                 if (successCount > 0) {
                   await reminderRef.set({
-                    sentAt: FieldValue.serverTimestamp(), game
+                    sentAt: FieldValue.serverTimestamp(),
+                    sentScheduleKey: scheduleKey,
+                    game
                   });
-                  console.log("24h-Erinnerung gesendet:", reminderId);
+                  console.log("24h-Erinnerung gesendet:", reminderId, scheduleKey);
                 } else {
                   console.log("24h-Erinnerung nicht gesendet – kein gültiges Push-Gerät.");
                 }
