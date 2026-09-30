@@ -1,68 +1,49 @@
-# ESV Grizzlys U15 App
+ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
-## Version 1.6.2
+Version 1.6.2
 
-### Änderungen und Funktionen
-
-- Spielplan für U15 A und U15 B
-- Chronologische Spielplanansicht und Monatskalender
-- U15 A und U15 B farblich getrennt
-- Gegnerübersicht mit Spielen, Logos und Routen
-- Spieldetails aus Kalender- und Spielplanansicht
-- Kalender-Downloads für U15 A, U15 B sowie beide Mannschaften
-- PDF-Druck mit Auswahlfiltern für Alle, U15 A, U15 B, Heim und Auswärts; mehrere Filter können kombiniert werden
-- Ergebnisse aus Firebase Firestore direkt im Spielplan und in den Spieldetails
-- Anzeige „ENDERGEBNIS“ sowie Sieg/Niederlage/Unentschieden
-- Geschützte Ergebnisverwaltung im Admin-Bereich
-- Spieländerungen zentral über den Admin-Bereich
-- Push-Benachrichtigungen über Firebase Cloud Messaging
-- Automatische Push-Meldung bei neuen Spielergebnissen
-- Automatische Erinnerung 24 Stunden vor einem Spiel
-- Eigenes Grizzlys-Bild für Ergebnis-Pushs
-- Eigenes Grizzlys-Bild für die 24-Stunden-Spielerinnerung
-- Push-Service-Worker verwendet die vom Dienst übergebene Bilddatei und ein Fallback
-- Push-Geräte-Tokens werden in Firestore gespeichert und nicht mehr gültige Tokens bereinigt
+Neu in Version 1.6.2
+- Ergebnis-Push-Dienst korrigiert und zuverlässig an Firebase Cloud Messaging angebunden
+- Eigenes Ergebnis-Push-Bild und 24-Stunden-Erinnerungsbild
+- Push-Bild und Fallback-Verhalten verbessert
+- Fehlermeldungen wieder mit verpflichtendem Namen
 - Admin-Push-Token wird beim Admin-Login registriert
-- Fehler melden direkt aus der App
-- Name im Fehlerformular ist verpflichtend
-- Fehlermeldungen werden in Firebase gespeichert und im geschützten Admin-Bereich verwaltet
-- Fehler-Push und Fehler-E-Mail mit Fehlermeldungsbild
-- App-/Gerätestatistik für Installationen und Push-Registrierungen
-- Hockey Tic-Tac-Toe als Minispiel
-- Teilen der App und einzelner Spiele
-- EHV-NRW-Tabellen für U15 A und U15 B
-- Teamseiten der Grizzlys U15 A und U15 B
-- PWA-Unterstützung für Smartphones und Desktop
+- Fehler-E-Mail und Fehler-Push inklusive Fehlermeldungsbild
+- Direkter Analytics-Zugang im geschützten Admin-Bereich; Android öffnet bevorzugt die installierte Google-Analytics-App, alternativ die Analytics-Webseite
+- Dokumentation und Versionsstand auf 1.6.2 aktualisiert
 
-## Firebase
+Google Analytics
+- Aktive, neue und wiederkehrende Nutzer
+- Durchschnittliche Interaktionsdauer
+- Sitzungen und Ereignisanzahl
+- Betriebssystem, Gerätekategorie und Stadt
+- Seitenaufrufe
+- Eigene Ereignisse für Spielplan, Gegner, Downloads, Push und Hockey-Mini-Spiel
+- Zeiträume wie Woche, Monat und benutzerdefinierter Gesamtzeitraum
 
-Projekt: `grizzlys-u15`
+Vorherige Funktionen
+- Zentrale Ergebnisverwaltung über Firebase Firestore
+- Ergebnisse im Spielplan und in den Spieldetails
+- Geschützter Admin-Bereich
+- Firebase Authentication
+- Push-Benachrichtigungen für Ergebnisse und 24-Stunden-Erinnerung
+- Push-Geräte und Installationen in Firestore
+- Gegnerübersicht, Spieldetails, Kalender, Downloads, Routen und PDF-Druck
+- Fehler melden und Fehlerverwaltung
+- Hockey Tic-Tac-Toe
+- PWA-Unterstützung
+
+Firebase-Projekt: grizzlys-u15
 
 Firestore-Sammlungen:
-- `results` – Spielergebnisse
-- `pushTokens` – registrierte Push-Geräte
-- `gameReminders` – Erinnerungsdaten
-- `appInstallations` – technische App-/Geräteregistrierungen
-- `bugReports` – Fehlermeldungen
+- results
+- pushTokens
+- gameReminders
+- appInstallations
+- bugReports
 
-## Automatische Dienste
-
-### Ergebnisdienst
-Der GitHub-Actions-Ergebnisdienst prüft regelmäßig die Spielergebnisse und sendet neue Ergebnis-Pushs. Das Ergebnis-Push verwendet das Grizzlys-Ergebnisbild.
-
-### 24-Stunden-Erinnerung
-Der Dienst prüft regelmäßig bevorstehende Spiele und sendet 24 Stunden vor dem Spiel eine Push-Erinnerung mit dem eigenen Grizzlys-24-Stunden-Bild.
-
-### Fehlermeldungsdienst
-Neue Fehlermeldungen werden über GitHub Actions verarbeitet. Der Dienst kann eine Push-Benachrichtigung und eine E-Mail an die Verwaltung senden.
-
-## Veröffentlichung
-
-Die App wird als kostenlose PWA über GitHub Pages veröffentlicht.
-
-Repository:
-`JAZM1309/grizzlys-u15`
-
-Die README-Dateien dienen der Projektdokumentation und sind nicht Bestandteil der sichtbaren App-Oberfläche.
+Veröffentlichung
+Kostenlose PWA über GitHub Pages.
+Repository: JAZM1309/grizzlys-u15
