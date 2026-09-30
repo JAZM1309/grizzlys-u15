@@ -13,7 +13,25 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - Fehlermeldungen wieder mit verpflichtendem Namen im Formular und in der Verwaltung
 - Admin-Push-Token wird beim Admin-Login automatisch registriert, damit Admin-Benachrichtigungen funktionieren
 - Fehler-E-Mail und Fehler-Push inklusive passendem Fehlermeldungsbild funktionieren wieder zusammen
+- Direkter 📊 Analytics-Zugang im geschützten Admin-Bereich ergänzt; auf Android wird die installierte Google-Analytics-App bevorzugt geöffnet, alternativ die Analytics-Webseite
 - Dokumentation und Versionsstand auf 1.6.2 aktualisiert
+
+## Google Analytics
+
+Google Analytics 4 ist für die App eingerichtet. Im geschützten Admin-Bereich gibt es den Button **📊 Analytics**, der auf Android bevorzugt die installierte Google-Analytics-App öffnet. Falls das direkte Öffnen nicht möglich ist, wird die Analytics-Webseite als Fallback geöffnet.
+
+Im GA4-Dashboard werden unter anderem ausgewertet:
+
+- Aktive Nutzer und neue Nutzer
+- Wiederkehrende Nutzer
+- Durchschnittliche Interaktionsdauer
+- Sitzungen und Ereignisanzahl
+- Betriebssystem und Gerätekategorie
+- Stadt
+- Seitenaufrufe
+- App-Funktionen über eigene Ereignisse, z. B. Spielplan, Gegner, Downloads, Push und Hockey-Mini-Spiel
+
+Der Zeitraum kann im Analytics-Dashboard z. B. auf Woche, Monat oder einen benutzerdefinierten Gesamtzeitraum gestellt werden.
 
 ## Version 1.6.1
 
