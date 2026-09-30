@@ -696,7 +696,7 @@ function analyticsRender(data){
   const s=data.summary||{};
   document.getElementById("analyticsSummary").innerHTML=[["Aktive Nutzer",s.activeUsers],["Neue Nutzer",s.newUsers],["Sitzungen",s.sessions],["Events",s.eventCount]].map(x=>'<div class="analyticsStat"><b>'+analyticsEsc(x[1])+'</b><span>'+x[0]+'</span></div>').join('');
   document.getElementById("analyticsRangeLabel").textContent="Zeitraum: "+data.startDate+" bis "+data.endDate;
-  const daily=data.daily||[]; const max=Math.max(...daily.map(x=>Number(x.activeUsers||0)),1); const analyticsDayLabel=d=>{const m=String(d||"").match(/^\d{4}-(\d{2})-(\d{2})$/);return m?m[2]+"."+m[1]+".":String(d||"");};
+  const daily=data.daily||[]; const max=Math.max(...daily.map(x=>Number(x.activeUsers||0)),1); const analyticsDayLabel=d=>{const s=String(d||""); const m=s.match(/^(?:\d{4}[-]?)(\d{2})[-]?(\d{2})$/); return m?m[2]+"."+m[1]+".":s;};
   document.getElementById("analyticsDaily").innerHTML='<b>📈 Aktive Nutzer pro Tag</b>'+(daily.length?'<div class="analyticsChart">'+daily.map(x=>'<div class="analyticsCol" title="'+analyticsEsc(x.date)+': '+analyticsEsc(x.activeUsers)+'"><i style="height:'+Math.max(2,Math.round(Number(x.activeUsers||0)/max*105))+'px"></i><small>'+analyticsEsc(analyticsDayLabel(x.date))+'</small></div>').join('')+'</div>':'<div class="small" style="margin-top:8px">Keine Tagesdaten.</div>');
   document.getElementById("analyticsEvents").innerHTML='<b>🎯 Nutzung / Events</b>'+analyticsRows(data.events||[],"name","count");
   document.getElementById("analyticsDevices").innerHTML='<b>📱 Geräte</b>'+analyticsRows(data.devices||[],"name","activeUsers");
