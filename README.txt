@@ -2,9 +2,9 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
-Version 1.6.2
+Version 1.6.3
 
-Neu in Version 1.6.2
+Neu in Version 1.6.3
 - Ergebnis-Push-Dienst korrigiert und zuverlässig an Firebase Cloud Messaging angebunden
 - Eigenes Ergebnis-Push-Bild und 24-Stunden-Erinnerungsbild
 - Push-Bild und Fallback-Verhalten verbessert
@@ -12,7 +12,7 @@ Neu in Version 1.6.2
 - Admin-Push-Token wird beim Admin-Login registriert
 - Fehler-E-Mail und Fehler-Push inklusive Fehlermeldungsbild
 - Direkter Analytics-Zugang im geschützten Admin-Bereich; Android öffnet bevorzugt die installierte Google-Analytics-App, alternativ die Analytics-Webseite
-- Dokumentation und Versionsstand auf 1.6.2 aktualisiert
+- Dokumentation und Versionsstand auf 1.6.3 aktualisiert
 
 Google Analytics
 - Aktive, neue und wiederkehrende Nutzer
@@ -47,3 +47,10 @@ Firestore-Sammlungen:
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.
 Repository: JAZM1309/grizzlys-u15
+
+Neu in Version 1.6.3
+- Eigenes Analytics-Dashboard im geschützten Admin-Bereich
+- Zeiträume: Heute, Woche, Monat, 30 Tage, Saison und Gesamt
+- Aktive/neue Nutzer, Sitzungen, Events und Tagesverlauf
+- Events, Geräte, Betriebssysteme, Seitenaufrufe und Städte
+- Google Analytics bleibt die Datenquelle; keine Zugangsdaten im PWA-Frontend
