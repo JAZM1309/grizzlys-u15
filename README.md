@@ -6,6 +6,15 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 ### Neu in Version 1.6.3
 
+- Integriertes Google-Analytics-Statistikdashboard direkt im geschützten Admin-Bereich
+- Zeitraum-Auswahl im Statistikdashboard: Heute, Diese Woche, Dieser Monat, 30 Tage, Saison und Gesamt
+- Kennzahlen für aktive Nutzer, neue Nutzer, Sitzungen und Events
+- Tagesverlauf der aktiven Nutzer
+- Auswertungen zu Events, Geräten, Betriebssystemen, Seitenaufrufen und Städten
+- Analytics-Daten werden über eine geschützte Firebase Cloud Function aus der Google Analytics Data API geladen
+- Google-Analytics-Zugangsdaten werden nicht im PWA-Frontend gespeichert
+- Analytics-Tagesbeschriftungen im Diagramm korrigiert
+- PWA-Cache für aktualisierte Analytics-Anzeige erneuert
 - Ergebnis-Push-Dienst korrigiert und zuverlässig an Firebase Cloud Messaging angebunden
 - Eigenes Ergebnis-Push-Bild im Grizzlys-Stil eingebunden
 - Eigenes Bild für die automatische 24-Stunden-Spielerinnerung vorbereitet und im Erinnerungsdienst hinterlegt
@@ -13,25 +22,37 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - Fehlermeldungen wieder mit verpflichtendem Namen im Formular und in der Verwaltung
 - Admin-Push-Token wird beim Admin-Login automatisch registriert, damit Admin-Benachrichtigungen funktionieren
 - Fehler-E-Mail und Fehler-Push inklusive passendem Fehlermeldungsbild funktionieren wieder zusammen
-- Direkter 📊 Analytics-Zugang im geschützten Admin-Bereich ergänzt; auf Android wird die installierte Google-Analytics-App bevorzugt geöffnet, alternativ die Analytics-Webseite
 - Dokumentation und Versionsstand auf 1.6.3 aktualisiert
 
 ## Google Analytics
 
-Google Analytics 4 ist für die App eingerichtet. Im geschützten Admin-Bereich gibt es den Button **📊 Analytics**, der auf Android bevorzugt die installierte Google-Analytics-App öffnet. Falls das direkte Öffnen nicht möglich ist, wird die Analytics-Webseite als Fallback geöffnet.
+Google Analytics 4 ist die Datenquelle für das geschützte Statistikdashboard.
 
-Im GA4-Dashboard werden unter anderem ausgewertet:
+Im Admin-Bereich gibt es den Button **📊 App-Statistik**. Dort können die Nutzungsdaten direkt innerhalb der App ausgewertet werden.
 
-- Aktive Nutzer und neue Nutzer
-- Wiederkehrende Nutzer
-- Durchschnittliche Interaktionsdauer
-- Sitzungen und Ereignisanzahl
-- Betriebssystem und Gerätekategorie
-- Stadt
+Das Dashboard zeigt unter anderem:
+
+- Aktive Nutzer
+- Neue Nutzer
+- Sitzungen
+- Events
+- Tagesverlauf der aktiven Nutzer
+- Nutzung bzw. wichtige App-Events
+- Gerätekategorien
+- Betriebssysteme
 - Seitenaufrufe
-- App-Funktionen über eigene Ereignisse, z. B. Spielplan, Gegner, Downloads, Push und Hockey-Mini-Spiel
+- Städte
 
-Der Zeitraum kann im Analytics-Dashboard z. B. auf Woche, Monat oder einen benutzerdefinierten Gesamtzeitraum gestellt werden.
+Verfügbare Zeiträume:
+
+- Heute
+- Diese Woche
+- Dieser Monat
+- 30 Tage
+- Saison
+- Gesamt
+
+Die Daten werden serverseitig über eine Firebase Cloud Function und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 ## Version 1.6.1
 
@@ -47,6 +68,7 @@ Der Zeitraum kann im Analytics-Dashboard z. B. auf Woche, Monat oder einen benut
 
 - Fehler melden direkt aus der App
 - Fehlerformular mit Bereich und Fehlerbeschreibung
+- Verpflichtende Namensangabe bei einer Fehlermeldung
 - Optionales Feld für eine E-Mail-Adresse zur Rückfrage
 - Automatische Übermittlung der App-Version und technischer Gerätedaten
 - Push-Status kann bei einer Fehlermeldung mitübermittelt werden
@@ -113,6 +135,7 @@ Nutzer können einen Fehler direkt über **Info → Fehler melden** melden.
 
 Eine Meldung kann enthalten:
 
+- Name
 - Bereich
 - Beschreibung des Fehlers
 - optional E-Mail-Adresse
@@ -120,7 +143,7 @@ Eine Meldung kann enthalten:
 - technische Geräte-/Browserinformationen
 - Push-Registrierungsstatus, sofern verfügbar
 
-Die Meldungen werden im Admin-Bereich angezeigt und können dort mit einem Status versehen werden.
+Die Meldungen werden im Admin-Bereich angezeigt und können dort mit einem Status versehen werden. Fehler können zusätzlich per E-Mail und Push an den Admin gemeldet werden.
 
 ## Veröffentlichung
 
@@ -131,12 +154,3 @@ Repository:
 `JAZM1309/grizzlys-u15`
 
 Die README dient ausschließlich als Dokumentation des Projekts und ist nicht Bestandteil der sichtbaren App-Oberfläche.
-
-### Neu in Version 1.6.3
-
-- Eigenes Analytics-Dashboard direkt im geschützten Admin-Bereich
-- Zeitraum-Auswahl: Heute, Woche, Monat, 30 Tage, Saison und Gesamt
-- Kennzahlen für aktive/neue Nutzer, Sitzungen und Events
-- Auswertung der wichtigsten App-Events, Geräte, Betriebssysteme, Seitenaufrufe und Städte
-- Tagesverlauf der aktiven Nutzer
-- Google Analytics bleibt die Datenquelle; Zugangsdaten werden nicht in der PWA gespeichert
