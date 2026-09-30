@@ -137,6 +137,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
   .printFooter{margin-top:8px;font-size:7.5pt;color:#666}
 }
 
+
+.analyticsStat{padding:10px;border:1px solid var(--border);border-radius:12px;background:#fff}.analyticsStat b{display:block;font-size:22px}.analyticsStat span{font-size:12px;color:#667085}.analyticsList{display:grid;gap:6px;margin-top:8px}.analyticsRow{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #edf2f7}.analyticsRow:last-child{border-bottom:0}.analyticsBar{height:8px;border-radius:99px;background:#dbe8f5;overflow:hidden;margin-top:3px}.analyticsBar i{display:block;height:100%;background:#0864b7;border-radius:99px}.analyticsChart{display:flex;align-items:flex-end;gap:3px;height:130px;padding:8px 2px 0}.analyticsCol{flex:1;min-width:2px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.analyticsCol i{display:block;width:100%;max-width:16px;background:#0864b7;border-radius:4px 4px 0 0;min-height:2px}.analyticsCol small{font-size:8px;color:#667085;margin-top:3px;white-space:nowrap}.analyticsError{color:#b42318;font-weight:800}
 </style>
 </head>
 <body>
@@ -166,7 +168,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button">☷ Chronologisch</button><button id="monthBtn" class="modeBtn" type="button">▦ Kalender</button></div><div class="scheduleFilters"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span>🔽 Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer">📊 Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer">📊 Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div style="font-size:21px;font-weight:950;margin-bottom:6px">📥 Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter.</div><div class="downloadCards"><button id="downloadA" class="downloadCard"><span>🔵</span><b>U15 A</b><small>Alle Spiele der U15 A</small></button><button id="downloadB" class="downloadCard"><span>🟠</span><b>U15 B</b><small>Alle Spiele der U15 B</small></button><button id="downloadBoth" class="downloadCard"><span>🏒</span><b>U15 A + B</b><small>Beide Mannschaften zusammen</small></button><button id="downloadPdf" class="downloadCard"><span>📄</span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small></button></div></div></section>
-<section id="infoView" hidden><div class="infoCard"><b>ESV Grizzlys Bergkamen · U15 · 2026/27</b><br><span class="small">App-Version 1.6.2</span><br><br>Diese App ist der digitale Spielplan der <b>ESV Grizzlys Bergkamen U15</b>. Sie bündelt die Termine und Ergebnisse von U15 A und U15 B übersichtlich an einem Ort.<br><br><b>Auf einen Blick:</b><br>• Spielplan chronologisch oder als Monatskalender<br>• Gegnerübersicht mit Spielen und Routen<br>• Kalender- und PDF-Downloads<br>• Push für neue Ergebnisse und 24-Stunden-Erinnerungen<br>• Teamseiten und Tabellen direkt erreichbar<br><button id="shareApp" class="action" type="button" style="margin-top:12px">📤 App teilen</button></div><div class="infoCard" style="margin-top:12px"><b>🌐 Grizzlys Teamseiten</b><br><span class="small">Direkt zu den offiziellen Teamseiten von U15 A und U15 B.</span><div class="infoLinks"><a class="action infoLink teamALink" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer">🔵 Grizzlys U15 A</a><a class="action infoLink teamBLink" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer">🟠 Grizzlys U15 B</a></div></div><div class="infoCard" style="margin-top:12px"><b>Hinweis zu den Logos</b><br><span class="small">Die Logos stammen aus den jeweiligen Vereins-/Webauftritten bzw. öffentlich verfügbaren Vereinsdarstellungen. Falls ein Logo online nicht erreichbar ist, zeigt die App automatisch ein neutrales Kürzel.</span></div></section>
+<section id="infoView" hidden><div class="infoCard"><b>ESV Grizzlys Bergkamen · U15 · 2026/27</b><br><span class="small">App-Version 1.6.3</span><br><br>Diese App ist der digitale Spielplan der <b>ESV Grizzlys Bergkamen U15</b>. Sie bündelt die Termine und Ergebnisse von U15 A und U15 B übersichtlich an einem Ort.<br><br><b>Auf einen Blick:</b><br>• Spielplan chronologisch oder als Monatskalender<br>• Gegnerübersicht mit Spielen und Routen<br>• Kalender- und PDF-Downloads<br>• Push für neue Ergebnisse und 24-Stunden-Erinnerungen<br>• Teamseiten und Tabellen direkt erreichbar<br><button id="shareApp" class="action" type="button" style="margin-top:12px">📤 App teilen</button></div><div class="infoCard" style="margin-top:12px"><b>🌐 Grizzlys Teamseiten</b><br><span class="small">Direkt zu den offiziellen Teamseiten von U15 A und U15 B.</span><div class="infoLinks"><a class="action infoLink teamALink" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer">🔵 Grizzlys U15 A</a><a class="action infoLink teamBLink" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer">🟠 Grizzlys U15 B</a></div></div><div class="infoCard" style="margin-top:12px"><b>Hinweis zu den Logos</b><br><span class="small">Die Logos stammen aus den jeweiligen Vereins-/Webauftritten bzw. öffentlich verfügbaren Vereinsdarstellungen. Falls ein Logo online nicht erreichbar ist, zeigt die App automatisch ein neutrales Kürzel.</span></div></section>
 <section class="infoCard" style="margin-top:12px"><b>🔔 Benachrichtigungen</b><br><span class="small">Aktiviere Push-Benachrichtigungen auf diesem Gerät. Sie informieren dich automatisch über neue Spielergebnisse und erinnern dich 24 Stunden vor einem Spiel.</span><br><button id="enablePush" class="action" type="button" style="margin-top:10px">🔔 Push aktivieren</button><div class="small" style="margin-top:7px">Die Push-Funktion ist aktiv und wird für Ergebnis-Meldungen sowie die 24-Stunden-Erinnerung vor Spielen genutzt.</div></section>
 <section class="bugReportCard"><button id="openBugReport" class="action bugReportButton" type="button"><span>🐞</span><span><strong>Fehler melden</strong><small>Etwas funktioniert nicht? Melde es direkt an die App-Verwaltung.</small></span></button></section>
 <section class="infoCard adminAccessCard" style="margin-top:12px"><button id="openAdmin" class="adminOpenButton" type="button"><span class="adminOpenIcon">🔐</span><span class="adminOpenCopy"><strong>Admin-Bereich</strong><small>Ergebnisverwaltung · Spieländerungen · Fehlermeldungen · Statistik</small></span><span class="adminOpenArrow">›</span></button></section>
@@ -187,20 +189,49 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
     <div id="adminPanel" hidden style="margin-top:12px">
       <button id="adminLogout" class="action" type="button">Abmelden</button>
       <div class="adminAnalyticsCard" style="margin:10px 0 12px;padding:12px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(135deg,#f7fbff,#fff)">
-        <div style="font-weight:950;margin-bottom:4px">📊 Analytics</div>
-        <div class="small" style="margin-bottom:9px">Grizzlys-App-Dashboard in der Google-Analytics-App öffnen.</div>
-        <a class="action" href="intent://open/#Intent;scheme=https;package=com.google.android.apps.giant;S.browser_fallback_url=https%3A%2F%2Fanalytics.google.com%2F;end" style="display:block;text-align:center;text-decoration:none">📊 Analytics öffnen</a>
+        <div style="font-weight:950;margin-bottom:4px">📊 App-Statistik</div>
+        <div class="small" style="margin-bottom:9px">Eigene Grizzlys-Auswertung aus Google Analytics – mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button id="openAnalyticsDashboard" class="action" type="button">📊 Dashboard öffnen</button>
+          <a class="action" href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Google Analytics</a>
+        </div>
       </div>
       <div class="adminAccordion" data-admin-accordion="results"><button class="adminAccordionHeader" type="button"><span>🏒 Ergebnisverwaltung</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Ergebnisse eintragen, ändern oder löschen.</div><div id="adminResults" class="adminResults"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="schedule"><button class="adminAccordionHeader" type="button"><span>📅 Spieländerungen</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Falsche oder verlegte Termine zentral ändern. Die Änderung wird für alle Nutzer übernommen.</div><div id="adminSchedule" class="adminSchedule"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="bugs"><button class="adminAccordionHeader" type="button"><span>🐞 Fehlermeldungen <span id="adminBugCount" class="adminBugBadge" hidden>0</span></span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Gemeldete Fehler prüfen, archivieren oder endgültig löschen.</div><div style="display:flex;gap:7px;align-items:center;margin-bottom:8px"><label for="adminBugFilter" class="small" style="font-weight:900">Anzeige:</label><select id="adminBugFilter" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select></div><div id="adminBugReports" class="adminResults"></div></div></div>
+      <div id="analyticsDashboardModal" class="matchModal" hidden aria-hidden="true">
+        <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="analyticsDashboardTitle" style="max-width:760px">
+          <div class="matchModalHead"><div id="analyticsDashboardTitle" class="matchModalTitle">📊 App-Statistik</div><button id="analyticsDashboardClose" class="matchModalClose" type="button" aria-label="Analytics schließen">×</button></div>
+          <div class="small" style="margin-bottom:10px">Daten aus Google Analytics 4. Die Auswertung ist nur für den angemeldeten Admin verfügbar.</div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px">
+            <button class="analyticsRangeBtn action" data-range="today" type="button">Heute</button>
+            <button class="analyticsRangeBtn action" data-range="week" type="button">Diese Woche</button>
+            <button class="analyticsRangeBtn action" data-range="month" type="button">Dieser Monat</button>
+            <button class="analyticsRangeBtn action" data-range="30d" type="button">30 Tage</button>
+            <button class="analyticsRangeBtn action" data-range="season" type="button">Saison</button>
+            <button class="analyticsRangeBtn action" data-range="overall" type="button">Gesamt</button>
+            <button id="analyticsRefresh" class="action" type="button">↻ Aktualisieren</button>
+          </div>
+          <div id="analyticsRangeLabel" class="small" style="margin-bottom:10px;font-weight:800">Zeitraum wird geladen …</div>
+          <div id="analyticsStatus" class="small" style="margin-bottom:10px"></div>
+          <div id="analyticsSummary" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px"></div>
+          <div id="analyticsDaily" class="infoCard" style="margin-bottom:10px"></div>
+          <div style="display:grid;grid-template-columns:1fr;gap:10px">
+            <div id="analyticsEvents" class="infoCard"></div>
+            <div id="analyticsDevices" class="infoCard"></div>
+            <div id="analyticsOs" class="infoCard"></div>
+            <div id="analyticsPages" class="infoCard"></div>
+            <div id="analyticsCities" class="infoCard"></div>
+          </div>
+        </div>
+      </div>
           </div>
   </div>
 </div>
 
 </div></section>
 
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Sonstiges</option></select></label><label>Fehlerbeschreibung<textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.2 · Geräte-/Browserdaten werden nur zur Fehleranalyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Sonstiges</option></select></label><label>Fehlerbeschreibung<textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.3 · Geräte-/Browserdaten werden nur zur Fehleranalyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div class="hockeyGameIntro">Erziele zuerst drei in einer Reihe. Du bist 🏒.</div><div class="hockeyScore"><span>🏒 Du: <b id="hockeyPlayerScore">0</b></span><span>🥅 Gegner: <b id="hockeyCpuScore">0</b></span></div><div class="hockeyRink"><div id="hockeyBoard" class="hockeyBoard"></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neues Spiel</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät und speichert keine Ergebnisse.</div></div></div></div>
 <div id="pdfFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="pdfFilterTitle">
@@ -248,6 +279,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebas
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-functions.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC-Dqjj-vNMYA8QRc3SGeivMDRjEHjwKe0",
@@ -262,6 +294,7 @@ const FIREBASE_VAPID_KEY = "BBIBjtlQVluCnG3m3WbJsoGV_XWh1AxPyPThCBLbmBeN-CmmV0MT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions(app, "europe-west1");
 let messaging = null;
 let results = {};
 
@@ -535,7 +568,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.6.2",
+      appVersion:"1.6.3",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -642,9 +675,54 @@ async function loadBugReports(){
   }
 }
 
+const analyticsRangeState={range:"month"};
+function analyticsDates(range){
+  const now=new Date(); const iso=d=>d.toISOString().slice(0,10);
+  const today=iso(now); let start=today;
+  if(range==="week"){ const d=new Date(now); const day=(d.getDay()+6)%7; d.setDate(d.getDate()-day); start=iso(d); }
+  else if(range==="month"){ start=today.slice(0,8)+"01"; }
+  else if(range==="30d"){ const d=new Date(now); d.setDate(d.getDate()-29); start=iso(d); }
+  else if(range==="season"){ start="2026-08-01"; }
+  else if(range==="overall"){ start="2026-01-01"; }
+  return {startDate:start,endDate:today};
+}
+function analyticsEsc(v){return esc(String(v??""));}
+function analyticsRows(items,labelKey,valueKey,bar=true){
+  if(!items?.length) return '<div class="small">Keine Daten für diesen Zeitraum.</div>';
+  const max=Math.max(...items.map(x=>Number(x[valueKey]||0)),1);
+  return '<div class="analyticsList">'+items.map(x=>'<div class="analyticsRow"><div style="min-width:0;flex:1"><b>'+analyticsEsc(x[labelKey])+'</b>'+(bar?'<div class="analyticsBar"><i style="width:'+Math.max(2,Math.round(Number(x[valueKey]||0)/max*100))+'%"></i></div>':'')+'</div><strong>'+analyticsEsc(x[valueKey])+'</strong></div>').join('')+'</div>';
+}
+function analyticsRender(data){
+  const s=data.summary||{};
+  document.getElementById("analyticsSummary").innerHTML=[["Aktive Nutzer",s.activeUsers],["Neue Nutzer",s.newUsers],["Sitzungen",s.sessions],["Events",s.eventCount]].map(x=>'<div class="analyticsStat"><b>'+analyticsEsc(x[1])+'</b><span>'+x[0]+'</span></div>').join('');
+  document.getElementById("analyticsRangeLabel").textContent="Zeitraum: "+data.startDate+" bis "+data.endDate;
+  const daily=data.daily||[]; const max=Math.max(...daily.map(x=>Number(x.activeUsers||0)),1);
+  document.getElementById("analyticsDaily").innerHTML='<b>📈 Aktive Nutzer pro Tag</b>'+(daily.length?'<div class="analyticsChart">'+daily.map(x=>'<div class="analyticsCol" title="'+analyticsEsc(x.date)+': '+analyticsEsc(x.activeUsers)+'"><i style="height:'+Math.max(2,Math.round(Number(x.activeUsers||0)/max*105))+'px"></i><small>'+analyticsEsc(String(x.date).slice(5))+'</small></div>').join('')+'</div>':'<div class="small" style="margin-top:8px">Keine Tagesdaten.</div>');
+  document.getElementById("analyticsEvents").innerHTML='<b>🎯 Nutzung / Events</b>'+analyticsRows(data.events||[],"name","count");
+  document.getElementById("analyticsDevices").innerHTML='<b>📱 Geräte</b>'+analyticsRows(data.devices||[],"name","activeUsers");
+  document.getElementById("analyticsOs").innerHTML='<b>💻 Betriebssysteme</b>'+analyticsRows(data.os||[],"name","activeUsers");
+  document.getElementById("analyticsPages").innerHTML='<b>📄 Seitenaufrufe</b>'+analyticsRows(data.pages||[],"name","views");
+  document.getElementById("analyticsCities").innerHTML='<b>📍 Städte</b>'+analyticsRows(data.cities||[],"name","activeUsers");
+}
+async function loadAnalyticsDashboard(){
+  const status=document.getElementById("analyticsStatus"); if(!auth.currentUser||auth.currentUser.uid!==ADMIN_UID){status.textContent="Admin-Anmeldung erforderlich.";status.className="small analyticsError";return;}
+  status.className="small"; status.textContent="Daten werden geladen …";
+  try{
+    const fn=httpsCallable(functions,"getAnalyticsDashboard");
+    const data=(await fn(analyticsDates(analyticsRangeState.range))).data;
+    analyticsRender(data); status.textContent="Aktualisiert: "+new Date().toLocaleString("de-DE");
+  }catch(e){console.error(e);status.className="small analyticsError";status.textContent="Analytics konnten nicht geladen werden. Bitte Data API, GA4 Property-ID und Berechtigung der Firebase-Funktionsidentität prüfen."}
+}
+function setupAnalyticsDashboard(){
+  document.getElementById("openAnalyticsDashboard")?.addEventListener("click",()=>{const m=document.getElementById("analyticsDashboardModal");m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";loadAnalyticsDashboard();});
+  document.getElementById("analyticsDashboardClose")?.addEventListener("click",()=>{const m=document.getElementById("analyticsDashboardModal");m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow="";});
+  document.getElementById("analyticsRefresh")?.addEventListener("click",loadAnalyticsDashboard);
+  document.querySelectorAll(".analyticsRangeBtn").forEach(b=>b.addEventListener("click",()=>{analyticsRangeState.range=b.dataset.range;loadAnalyticsDashboard();}));
+  document.getElementById("analyticsDashboardModal")?.addEventListener("click",e=>{if(e.target.id==="analyticsDashboardModal"){e.currentTarget.hidden=true;e.currentTarget.setAttribute("aria-hidden","true");document.body.style.overflow="";}});
+}
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
-  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadBugReports(); }
+  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadBugReports(); setupAnalyticsDashboard(); }
   else { login.hidden=false; panel.hidden=true; status.textContent=user?"Angemeldet, aber keine Admin-Berechtigung":"Nicht angemeldet"; }
 }
 
