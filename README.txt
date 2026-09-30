@@ -5,23 +5,43 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 Version 1.6.3
 
 Neu in Version 1.6.3
-- Ergebnis-Push-Dienst korrigiert und zuverlässig an Firebase Cloud Messaging angebunden
-- Eigenes Ergebnis-Push-Bild und 24-Stunden-Erinnerungsbild
-- Push-Bild und Fallback-Verhalten verbessert
+- Integriertes Google-Analytics-Statistikdashboard direkt im geschützten Admin-Bereich
+- Zeiträume: Heute, Diese Woche, Dieser Monat, 30 Tage, Saison und Gesamt
+- Aktive Nutzer, neue Nutzer, Sitzungen und Events
+- Tagesverlauf der aktiven Nutzer
+- Auswertungen zu Events, Geräten, Betriebssystemen, Seitenaufrufen und Städten
+- Analytics-Daten über eine geschützte Firebase Cloud Function und die Google Analytics Data API
+- Keine Google-Analytics-Zugangsdaten im PWA-Frontend
+- Analytics-Tagesbeschriftungen und PWA-Cache für die aktuelle Anzeige korrigiert
+- Ergebnis-Push-Dienst und Push-Bilder korrigiert
+- Eigenes Bild für die automatische 24-Stunden-Spielerinnerung
 - Fehlermeldungen wieder mit verpflichtendem Namen
 - Admin-Push-Token wird beim Admin-Login registriert
 - Fehler-E-Mail und Fehler-Push inklusive Fehlermeldungsbild
-- Direkter Analytics-Zugang im geschützten Admin-Bereich; Android öffnet bevorzugt die installierte Google-Analytics-App, alternativ die Analytics-Webseite
 - Dokumentation und Versionsstand auf 1.6.3 aktualisiert
 
 Google Analytics
-- Aktive, neue und wiederkehrende Nutzer
-- Durchschnittliche Interaktionsdauer
-- Sitzungen und Ereignisanzahl
-- Betriebssystem, Gerätekategorie und Stadt
+Das geschützte Statistikdashboard zeigt:
+- Aktive Nutzer
+- Neue Nutzer
+- Sitzungen
+- Events
+- Tagesverlauf
+- App-Events
+- Geräte
+- Betriebssysteme
 - Seitenaufrufe
-- Eigene Ereignisse für Spielplan, Gegner, Downloads, Push und Hockey-Mini-Spiel
-- Zeiträume wie Woche, Monat und benutzerdefinierter Gesamtzeitraum
+- Städte
+
+Zeiträume:
+- Heute
+- Diese Woche
+- Dieser Monat
+- 30 Tage
+- Saison
+- Gesamt
+
+Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
@@ -47,10 +67,3 @@ Firestore-Sammlungen:
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.
 Repository: JAZM1309/grizzlys-u15
-
-Neu in Version 1.6.3
-- Eigenes Analytics-Dashboard im geschützten Admin-Bereich
-- Zeiträume: Heute, Woche, Monat, 30 Tage, Saison und Gesamt
-- Aktive/neue Nutzer, Sitzungen, Events und Tagesverlauf
-- Events, Geräte, Betriebssysteme, Seitenaufrufe und Städte
-- Google Analytics bleibt die Datenquelle; keine Zugangsdaten im PWA-Frontend
