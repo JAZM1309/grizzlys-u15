@@ -2,8 +2,20 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { setGlobalOptions } = require("firebase-functions/v2");
 const { BetaAnalyticsDataClient } = require("@google-analytics/data");
 const logger = require("firebase-functions/logger");
+const { defineString } = require("firebase-functions/params");
 
 setGlobalOptions({ region: "europe-west1", maxInstances: 2 });
+
+// Nicht geheim: GA4 Property-ID und die UID des einzigen Admins.
+// Parameterisierte Konfiguration ist der aktuelle Firebase-Weg für Functions.
+const GA4_PROPERTY_ID = defineString("GA4_PROPERTY_ID", {
+  default: "556483153",
+  description: "GA4 Property-ID für das Grizzlys Statistik-Dashboard"
+});
+const ADMIN_UID = defineString("ADMIN_UID", {
+  default: "q6AID4Wkp2arQlCTROTKqON6ckk2",
+  description: "Firebase Auth UID des Grizzlys Admins"
+});
 
 function rows(report) {
   return (report?.rows || []).map(r => {
@@ -20,11 +32,10 @@ function dateRange(startDate, endDate) {
 
 exports.getAnalyticsDashboard = onCall(async (request) => {
   if (!request.auth?.uid) throw new HttpsError("unauthenticated", "Admin-Anmeldung erforderlich.");
-  const adminUid = process.env.ADMIN_UID;
-  if (adminUid && request.auth.uid !== adminUid) throw new HttpsError("permission-denied", "Keine Admin-Berechtigung.");
+  const adminUid = ADMIN_UID.value();
+  if (request.auth.uid !== adminUid) throw new HttpsError("permission-denied", "Keine Admin-Berechtigung.");
 
-  const propertyId = process.env.GA4_PROPERTY_ID;
-  if (!propertyId) throw new HttpsError("failed-precondition", "GA4_PROPERTY_ID ist in der Function nicht gesetzt.");
+  const propertyId = GA4_PROPERTY_ID.value();
 
   const startDate = String(request.data?.startDate || "");
   const endDate = String(request.data?.endDate || "");
