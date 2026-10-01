@@ -1,4 +1,4 @@
-/* Firebase Cloud Messaging service worker for ESV Grizzlys U15 v1.3 */
+/* Firebase Cloud Messaging service worker for ESV Grizzlys U15 v1.6.4 */
 importScripts("https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging-compat.js");
 
@@ -14,13 +14,40 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 messaging.onBackgroundMessage(payload => {
   const n = payload.notification || {};
-  const title = n.title || "ESV Grizzlys U15";
+  const data = payload.data || {};
+  const type = data.type || "";
+
+  let icon = "./icon-192.png";
+  let badge = "./icon-192.png";
+  let image = null;
+
+  if (type === "bugReport") {
+    icon = "./grizzlys-bug-icon.png";
+    badge = "./grizzlys-bug-icon.png";
+    image = "./grizzlys-bug-icon.png";
+  } else if (type === "result") {
+    icon = "./grizzlys-result-icon.png";
+    badge = "./grizzlys-result-icon.png";
+    image = "./grizzlys-result-icon.png";
+  } else if (type === "gameReminder") {
+    icon = "./grizzlys-24h-icon-192.png";
+    badge = "./grizzlys-24h-icon-192.png";
+    image = "./grizzlys-24h-icon-192.png";
+  } else {
+    icon = n.icon || icon;
+    badge = n.badge || badge;
+    image = n.image || null;
+  }
+
   const options = {
     body: n.body || "Neue Grizzlys-Meldung",
-    icon: n.icon || "./icon-192.png",
-    badge: n.badge || "./icon-192.png",
-    data: payload.data || {}
+    icon,
+    badge,
+    data
   };
+
+  if (image) options.image = image;
+
   self.registration.showNotification(title, options);
 });
 
