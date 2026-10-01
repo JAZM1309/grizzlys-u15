@@ -997,7 +997,21 @@ function printAllGamesPdf(filters=["all"]){
     '<tr class="printRepeatHead"><td colspan="7">'+'<div class="printHeader">'+'<div class="printHeaderLeft"><img class="printLogo" src="logo.png" alt="ESV Grizzlys Logo"><div><div class="printTitle">ESV Grizzlys Bergkamen · U15 Spielplan</div>'+'<div class="printSub">Saison 2026/27 · '+esc(label)+' · Ergebnisse, wenn vorhanden</div></div></div>'+'<div class="printDate">Stand: '+esc(new Date().toLocaleDateString("de-DE"))+'</div>'+'</div>'+'</td></tr>'+
     '<tr><th>Datum</th><th>Uhrzeit</th><th>Mannschaft</th><th>Heim</th><th>Gast</th><th>Ergebnis</th><th>Spielort</th></tr></thead><tbody>'+rows+'</tbody></table>'+
     '<div class="printFooter">ESV Grizzlys Bergkamen · U15 · Saison 2026/27</div>';
-  requestAnimationFrame(()=>setTimeout(()=>window.print(),120));
+  const printWindow=window.open("","_blank");
+  if(!printWindow){alert("Das Druckfenster konnte nicht geöffnet werden. Bitte Pop-ups für die App erlauben.");return;}
+  const logoUrl=new URL("logo.png",window.location.href).href;
+  printWindow.document.open();
+  printWindow.document.write(`<!doctype html><html lang="de"><head><meta charset="utf-8"><title>ESV Grizzlys U15 Spielplan</title><style>
+    @page{size:A4 landscape;margin:10mm}
+    html,body{margin:0;padding:0;background:#fff;color:#111;font-family:Arial,Helvetica,sans-serif}
+    .printHeader{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #071b33;padding-bottom:7px;margin-bottom:10px}
+    .printHeaderLeft{display:flex;align-items:center;gap:12px}.printLogo{width:70px;height:70px;object-fit:contain;flex:0 0 70px}
+    .printTitle{font-size:18pt;font-weight:800}.printSub{font-size:9pt;color:#555;margin-top:2px}.printDate{font-size:8pt;color:#555}
+    .printTable{width:100%;border-collapse:collapse;font-size:8.5pt}.printTable th{background:#071b33;color:#fff;text-align:left;padding:5px 6px}.printTable td{border-bottom:1px solid #d8e4ef;padding:4px 6px;vertical-align:top}.printTable tr{break-inside:avoid}.printTeamA{color:#0864b7;font-weight:800}.printTeamB{color:#b65d00;font-weight:800}.printResult{font-weight:800}.printFooter{margin-top:8px;font-size:7.5pt;color:#666}
+  </style></head><body>${printHtml.replace(/src="logo\\.png"/g,'src="'+logoUrl+'')}</body></html>`);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.onload=()=>setTimeout(()=>printWindow.print(),150);
 }
 function downloadIcsBundle(arr,filename){const body=arr.flatMap(g=>icsForEvent(g));const content=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN",...body,"END:VCALENDAR"].join("\r\n");const blob=new Blob([content],{type:"text/calendar;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:U15 "+g.team+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
