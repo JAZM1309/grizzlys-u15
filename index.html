@@ -1000,6 +1000,7 @@ function printAllGamesPdf(filters=["all"]){
   const printWindow=window.open("","_blank");
   if(!printWindow){alert("Das Druckfenster konnte nicht geöffnet werden. Bitte Pop-ups für die App erlauben.");return;}
   const logoUrl=new URL("logo.png",window.location.href).href;
+  const printHtml=root.innerHTML;
   printWindow.document.open();
   printWindow.document.write(`<!doctype html><html lang="de"><head><meta charset="utf-8"><title>ESV Grizzlys U15 Spielplan</title><style>
     @page{size:A4 landscape;margin:10mm}
