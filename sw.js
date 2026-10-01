@@ -10,7 +10,40 @@ firebase.initializeApp({
   appId: "1:595868074479:web:2ac44da77d0dc533ac361a"
 });
 
+
 const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(payload => {
+  const n = payload.notification || {};
+  const data = payload.data || {};
+  const type = data.type || "";
+  let icon = "./icon-192.png";
+  let badge = "./icon-192.png";
+  let image = null;
+
+  if (type === "bugReport") {
+    icon = "./grizzlys-bug-icon.png";
+    badge = "./grizzlys-bug-icon.png";
+    image = "./grizzlys-bug-icon.png";
+  } else if (type === "result") {
+    icon = "./grizzlys-result-icon.png";
+    badge = "./grizzlys-result-icon.png";
+    image = "./grizzlys-result-icon.png";
+  } else if (type === "gameReminder") {
+    icon = "./grizzlys-24h-icon-192.png";
+    badge = "./grizzlys-24h-icon-192.png";
+    image = "./grizzlys-24h-icon-192.png";
+  }
+
+  const options = {
+    body: data.body || n.body || "Neue Grizzlys-Meldung",
+    icon,
+    badge,
+    data
+  };
+  if (image) options.image = image;
+  self.registration.showNotification(data.title || n.title || "ESV Grizzlys U15", options);
+});
 
 self.addEventListener("notificationclick", event => {
   event.notification.close();
@@ -31,7 +64,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v15";
+const CACHE = "grizzlys-u15-v16";
 
 const CORE = [
   "./",
