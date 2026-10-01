@@ -264,20 +264,29 @@ async function sendEmail(report) {
     from: process.env.SMTP_USER, to: NOTIFY_EMAIL,
     subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
     text,
-    attachments: [{ filename: "grizzlys-bug-icon.png", content: Buffer.from(BUG_ICON_BASE64, "base64"), cid: "grizzlys-bug-icon" }],
+    attachments: [{ filename: "grizzlys-bug-icon.png", content: Buffer.from(BUG_ICON_BASE64, "base64"), cid: "grizzlys-bug-icon", contentType: "image/png", contentDisposition: "inline" }],
     html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px"><img src="cid:grizzlys-bug-icon" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2><p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p><p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}</div>`
   });
 }
 
 async function sendPush(report) {
   const snap = await db.collection("pushTokens").where("admin","==",true).get();
-  const tokens = [...new Set(snap.docs.map(d => d.data()?.token).filter(Boolean))];
+  const byInstallation = new Map();
+  for (const doc of snap.docs) {
+    const d = doc.data() || {};
+    if (!d.token) continue;
+    const key = d.installationId || doc.id;
+    const previous = byInstallation.get(key);
+    const currentMs = d.updatedAt?.toMillis ? d.updatedAt.toMillis() : 0;
+    const previousMs = previous?.updatedAt?.toMillis ? previous.updatedAt.toMillis() : 0;
+    if (!previous || currentMs >= previousMs) byInstallation.set(key, { data:d });
+  }
+  const tokens = [...byInstallation.values()].map(x => x.data.token).filter(Boolean);
   if (!tokens.length) return false;
   const response = await messaging.sendEachForMulticast({
     tokens,
-    notification: { title:"🏒 Neue Grizzlys-Fehlermeldung", body:`${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}` },
-    data: { type:"bugReport", reportId:report.id || "" },
-    webpush: { notification:{ icon:PUSH_ICON, badge:PUSH_ICON, image:BUG_ICON }, fcmOptions:{ link:"https://jazm1309.github.io/grizzlys-u15/" } }
+    data: { type:"bugReport", reportId:report.id || "", title:"🏒 Neue Grizzlys-Fehlermeldung", body:`${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}` },
+    webpush: { fcmOptions:{ link:"https://jazm1309.github.io/grizzlys-u15/" } }
   });
   for (let i=0;i<response.responses.length;i++) {
     const result=response.responses[i];
