@@ -174,7 +174,7 @@ jobs:
                   {
                     notification: {
                       // Vorhandene Datei: grizzlys-24h-icon-192.png
-                      icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon-192.png",
+                      icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg",
                       badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
                     },
                     fcmOptions: {
