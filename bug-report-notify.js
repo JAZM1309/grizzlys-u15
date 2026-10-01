@@ -327,14 +327,28 @@ async function main() {
     if(createdMs>lastProcessedMs) reports.push({id:doc.id,...data,_createdMs:createdMs});
   });
   reports.sort((a,b)=>a._createdMs-b._createdMs);
+  console.log("Bug-Notifier: neue Fehlermeldungen:", reports.length);
+  if (reports.length) console.log("Bug-Notifier: Admin-Push-Token werden beim Versand geprüft.");
   for(const report of reports){
+    console.log("Bug-Notifier: verarbeite Fehlermeldung:", report.id, report.area || "Sonstiges");
     const ref=db.collection("bugReports").doc(report.id);
     let current=(await ref.get()).data()||{};
     let pushSent=Boolean(current.pushSentAt);
-    if(!pushSent){ pushSent=await sendPush(report); if(pushSent) await ref.update({pushSentAt:admin.firestore.FieldValue.serverTimestamp()}); }
+    if(!pushSent){
+      pushSent=await sendPush(report);
+      console.log("Bug-Notifier: Push gesendet:", pushSent);
+      if(pushSent) await ref.update({pushSentAt:admin.firestore.FieldValue.serverTimestamp()});
+    }
     current=(await ref.get()).data()||{};
     let emailSent=Boolean(current.emailSentAt);
-    if(!emailSent){ try{ await sendEmail(report); await ref.update({emailSentAt:admin.firestore.FieldValue.serverTimestamp()}); emailSent=true; }catch(error){ console.error("E-Mail-Versand fehlgeschlagen:",error.message); } }
+    if(!emailSent){
+      try{
+        await sendEmail(report);
+        await ref.update({emailSentAt:admin.firestore.FieldValue.serverTimestamp()});
+        emailSent=true;
+        console.log("Bug-Notifier: E-Mail gesendet:", report.id);
+      }catch(error){ console.error("E-Mail-Versand fehlgeschlagen:",error.message); }
+    }
     if(pushSent && emailSent) await STATE_REF.set({lastProcessedAt:admin.firestore.Timestamp.fromMillis(report._createdMs),lastProcessedReportId:report.id,updatedAt:admin.firestore.FieldValue.serverTimestamp()},{merge:true});
   }
 }
