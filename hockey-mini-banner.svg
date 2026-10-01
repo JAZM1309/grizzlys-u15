@@ -1,35 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 316">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice">
 <defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#041426"/><stop offset=".55" stop-color="#0b3e67"/><stop offset="1" stop-color="#183c45"/></linearGradient>
- <linearGradient id="ice" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dff4ff" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity=".02"/></linearGradient>
- <filter id="glow"><feGaussianBlur stdDeviation="5"/></filter>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#04172b"/><stop offset=".48" stop-color="#0a3961"/><stop offset="1" stop-color="#071a31"/></linearGradient>
+ <linearGradient id="ice" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e9f8ff" stop-opacity=".34"/><stop offset="1" stop-color="#8ed8ff" stop-opacity=".04"/></linearGradient>
+ <radialGradient id="light"><stop stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ <clipPath id="puck"><circle cx="158" cy="292" r="67"/></clipPath>
+ <filter id="blur"><feGaussianBlur stdDeviation="9"/></filter>
 </defs>
-<rect width="1200" height="316" rx="28" fill="url(#bg)"/>
-<g opacity=".25" fill="none" stroke="#fff">
- <path d="M-50 285 Q300 120 650 285 T1300 190" stroke-width="2"/>
- <path d="M-80 300 Q280 145 640 300 T1280 205" stroke="#ff8a00" stroke-width="4"/>
- <ellipse cx="615" cy="315" rx="370" ry="155" stroke-width="2"/>
- <path d="M615 160v190" stroke-width="2"/>
+<rect width="1200" height="400" rx="30" fill="url(#bg)"/>
+<ellipse cx="120" cy="95" rx="210" ry="95" fill="url(#light)" opacity=".34"/>
+<ellipse cx="550" cy="55" rx="260" ry="70" fill="url(#light)" opacity=".22"/>
+<g opacity=".24" fill="none" stroke="#fff">
+ <path d="M-100 260 Q250 120 590 280 T1320 180" stroke-width="3"/>
+ <path d="M-120 300 Q250 160 600 305 T1320 220" stroke="#ff8a00" stroke-width="7"/>
+ <ellipse cx="615" cy="405" rx="390" ry="165" stroke-width="3"/>
+ <path d="M615 205V430" stroke-width="3"/>
+ <circle cx="615" cy="355" r="54" stroke-width="3"/>
 </g>
-<path d="M0 252 Q330 160 650 270 T1200 220 V316H0Z" fill="url(#ice)"/>
-<g transform="translate(145 190) rotate(-12)">
- <ellipse cx="0" cy="48" rx="100" ry="25" fill="#000" opacity=".28" filter="url(#glow)"/>
- <ellipse cx="0" cy="32" rx="76" ry="25" fill="#101820" stroke="#8999a7" stroke-width="2"/>
- <path d="M-60 18 Q-42 -18 -25 -55 L18 -130 Q28 -147 43 -139 L51 -132 Q58 -125 48 -107 L5 -35 Q-10 -8 -22 27Z" fill="#252d35" stroke="#b9c4cc" stroke-width="3"/>
- <path d="M-48 28 Q-25 10 8 10" stroke="#ff8a00" stroke-width="5" opacity=".9"/>
- <circle cx="-5" cy="31" r="17" fill="#0a1119"/>
- <path d="M-22 29 Q-4 15 13 29 Q-4 43 -22 29Z" fill="#7b8790" opacity=".75"/>
+<path d="M0 286 Q310 190 625 292 T1200 235 V400H0Z" fill="url(#ice)"/>
+<!-- dynamic rink spray -->
+<g fill="#fff" opacity=".55">
+ <circle cx="55" cy="300" r="4"/><circle cx="72" cy="275" r="2"/><circle cx="90" cy="320" r="3"/><circle cx="105" cy="288" r="2"/><circle cx="122" cy="335" r="4"/>
 </g>
-<g transform="translate(1000 108)" opacity=".22" fill="#0a1422" stroke="#9fb6c7" stroke-width="3">
- <circle cx="0" cy="-28" r="30"/><circle cx="-35" cy="-45" r="16"/><circle cx="35" cy="-45" r="16"/>
- <path d="M-55 5 Q-45 -25 0 -18 Q45 -25 55 5 L48 65 Q0 92 -48 65Z"/>
- <path d="M-24 -5 Q0 12 24 -5 M-13 38 Q0 52 13 38" fill="none"/>
- <circle cx="-13" cy="-30" r="4" fill="#fff" stroke="none"/><circle cx="13" cy="-30" r="4" fill="#fff" stroke="none"/>
+<!-- hockey stick -->
+<g transform="translate(235 275) rotate(-54)">
+ <path d="M0 0 L10 -210 Q12 -225 28 -223 L40 -220 Q48 -216 45 -202 L32 -18 Q30 4 18 18Z" fill="#1d2731" stroke="#d7e0e7" stroke-width="4"/>
+ <path d="M-4 0 Q24 -12 70 4 L150 32 Q168 38 174 53 L171 66 Q167 77 151 73 L66 44 Q28 31 -5 28Z" fill="#252f38" stroke="#c4d0d8" stroke-width="4"/>
+ <path d="M5 -150 L35 -148" stroke="#ff8a00" stroke-width="8"/>
 </g>
-<g opacity=".9">
- <circle cx="95" cy="45" r="4" fill="#fff"/><circle cx="120" cy="58" r="2" fill="#fff"/>
- <circle cx="175" cy="92" r="3" fill="#ff8a00"/><circle cx="210" cy="70" r="2" fill="#fff"/>
+<!-- puck -->
+<ellipse cx="158" cy="310" rx="78" ry="24" fill="#000" opacity=".35" filter="url(#blur)"/>
+<ellipse cx="158" cy="292" rx="74" ry="25" fill="#0b1118" stroke="#aab7c1" stroke-width="3"/>
+<circle cx="158" cy="292" r="58" fill="#111a23" stroke="#344451" stroke-width="2"/>
+<image href="logo.png" x="100" y="234" width="116" height="116" preserveAspectRatio="xMidYMid meet" opacity=".85" clip-path="url(#puck)"/>
+<ellipse cx="158" cy="292" rx="53" ry="18" fill="none" stroke="#ff8a00" stroke-opacity=".45" stroke-width="2"/>
+<!-- actual Grizzlys logo in the background -->
+<g opacity=".30">
+ <circle cx="1015" cy="195" r="175" fill="#071b33" opacity=".32"/>
+ <image href="logo.png" x="845" y="25" width="340" height="340" preserveAspectRatio="xMidYMid meet"/>
 </g>
-<path d="M740 30 Q860 80 950 25" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="18"/>
+<path d="M760 38 Q900 105 1035 45" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="24"/>
+<g fill="#ff8a00" opacity=".75"><circle cx="820" cy="320" r="3"/><circle cx="850" cy="300" r="2"/><circle cx="1120" cy="280" r="3"/></g>
 </svg>
