@@ -116,6 +116,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 #printSchedule{display:none}
 @media print{
   @page{size:A4 landscape;margin:10mm}
+  html,body{margin:0!important;padding:0!important;height:auto!important;min-height:0!important;background:#fff!important}
   body{background:#fff!important}
   .app{max-width:none!important;padding:0!important}
   .app>header,.app>main,.app>footer{display:none!important}
@@ -188,14 +189,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
     </div>
     <div id="adminPanel" hidden style="margin-top:12px">
       <button id="adminLogout" class="action" type="button">Abmelden</button>
-      <div class="adminAnalyticsCard" style="margin:10px 0 12px;padding:12px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(135deg,#f7fbff,#fff)">
-        <div style="font-weight:950;margin-bottom:4px">📊 App-Statistik</div>
-        <div class="small" style="margin-bottom:9px">Eigene Grizzlys-Auswertung aus Google Analytics – mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap">
-          <button id="openAnalyticsDashboard" class="action" type="button">📊 Dashboard öffnen</button>
-          <a class="action" href="https://analytics.google.com/" target="_blank" rel="noopener noreferrer" style="text-decoration:none">Google Analytics</a>
-        </div>
-      </div>
+      <div class="adminAccordion" data-admin-accordion="analytics"><button class="adminAccordionHeader" type="button"><span>📊 App-Statistik</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Eigene Grizzlys-Auswertung mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div><button id="openAnalyticsDashboard" class="action" type="button">📊 Statistik öffnen</button></div></div>
       <div class="adminAccordion" data-admin-accordion="results"><button class="adminAccordionHeader" type="button"><span>🏒 Ergebnisverwaltung</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Ergebnisse eintragen, ändern oder löschen.</div><div id="adminResults" class="adminResults"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="schedule"><button class="adminAccordionHeader" type="button"><span>📅 Spieländerungen</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Falsche oder verlegte Termine zentral ändern. Die Änderung wird für alle Nutzer übernommen.</div><div id="adminSchedule" class="adminSchedule"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="bugs"><button class="adminAccordionHeader" type="button"><span>🐞 Fehlermeldungen <span id="adminBugCount" class="adminBugBadge" hidden>0</span></span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Gemeldete Fehler prüfen, archivieren oder endgültig löschen.</div><div style="display:flex;gap:7px;align-items:center;margin-bottom:8px"><label for="adminBugFilter" class="small" style="font-weight:900">Anzeige:</label><select id="adminBugFilter" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select></div><div id="adminBugReports" class="adminResults"></div></div></div>
@@ -1003,7 +997,7 @@ function printAllGamesPdf(filters=["all"]){
     '<tr class="printRepeatHead"><td colspan="7">'+'<div class="printHeader">'+'<div class="printHeaderLeft"><img class="printLogo" src="logo.png" alt="ESV Grizzlys Logo"><div><div class="printTitle">ESV Grizzlys Bergkamen · U15 Spielplan</div>'+'<div class="printSub">Saison 2026/27 · '+esc(label)+' · Ergebnisse, wenn vorhanden</div></div></div>'+'<div class="printDate">Stand: '+esc(new Date().toLocaleDateString("de-DE"))+'</div>'+'</div>'+'</td></tr>'+
     '<tr><th>Datum</th><th>Uhrzeit</th><th>Mannschaft</th><th>Heim</th><th>Gast</th><th>Ergebnis</th><th>Spielort</th></tr></thead><tbody>'+rows+'</tbody></table>'+
     '<div class="printFooter">ESV Grizzlys Bergkamen · U15 · Saison 2026/27</div>';
-  window.print();
+  requestAnimationFrame(()=>setTimeout(()=>window.print(),120));
 }
 function downloadIcsBundle(arr,filename){const body=arr.flatMap(g=>icsForEvent(g));const content=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN",...body,"END:VCALENDAR"].join("\r\n");const blob=new Blob([content],{type:"text/calendar;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:U15 "+g.team+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
