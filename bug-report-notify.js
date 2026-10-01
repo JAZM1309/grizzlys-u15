@@ -264,7 +264,7 @@ async function sendEmail(report) {
     from: process.env.SMTP_USER, to: NOTIFY_EMAIL,
     subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
     text,
-    attachments: [{ filename: "grizzlys-bug-icon.png", content: Buffer.from(BUG_ICON_BASE64, "base64"), cid: "grizzlys-bug-icon", contentType: "image/png", contentDisposition: "inline" }],
+    attachments: [{ filename: "grizzlys-bug-icon.png", content: Buffer.from(Buffer.from(BUG_ICON_BASE64, "base64").toString("utf8"), "base64"), cid: "grizzlys-bug-icon", contentType: "image/png", contentDisposition: "inline" }],
     html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px"><img src="cid:grizzlys-bug-icon" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2><p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p><p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}</div>`
   });
 }
