@@ -264,8 +264,8 @@ async function sendEmail(report) {
     from: process.env.SMTP_USER, to: NOTIFY_EMAIL,
     subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
     text,
-    attachments: [{ filename: "grizzlys-bug-icon.png", content: Buffer.from(BUG_ICON_BASE64, "base64"), cid: "grizzlys-bug-icon", contentType: "image/png", contentDisposition: "inline" }],
-    html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px"><img src="cid:grizzlys-bug-icon" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2><p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p><p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}</div>`
+    attachments: [{ filename: "grizzlys-bug-icon.png", content: Buffer.from(Buffer.from(BUG_ICON_BASE64, "base64").toString("utf8"), "base64"), cid: "grizzlys-bug-icon", contentType: "image/png", contentDisposition: "inline" }],
+    html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px"><img src="https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2><p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p><p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}</div>`
   });
 }
 
@@ -281,8 +281,10 @@ async function sendPush(report) {
     const previousMs = previous?.updatedAt?.toMillis ? previous.updatedAt.toMillis() : 0;
     if (!previous || currentMs >= previousMs) byInstallation.set(key, { data:d });
   }
-  const tokens = [...byInstallation.values()].map(x => x.data.token).filter(Boolean);
-  if (!tokens.length) return false;
+  const candidates = [...byInstallation.values()].map(x => x.data).filter(d => d.token);
+  console.log("Bug-Push: Admin-Token gefunden:", candidates.length);
+  if (!candidates.length) return false;
+  const tokens = candidates.map(d => d.token);
   const title = "🏒 Neue Grizzlys-Fehlermeldung";
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
   const response = await messaging.sendEachForMulticast({
@@ -301,6 +303,7 @@ async function sendPush(report) {
       if (code.includes("registration-token-not-registered") || code.includes("invalid-registration-token")) await db.collection("pushTokens").doc(tokens[i]).delete().catch(()=>{});
     }
   }
+  console.log("Bug-Push Ergebnis:", { successCount: response.successCount, failureCount: response.failureCount });
   return response.successCount > 0;
 }
 
