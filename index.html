@@ -475,8 +475,7 @@ async function syncExistingPushRegistration(){
       installationId,
       updatedAt:serverTimestamp(),
       platform:navigator.userAgent,
-      admin:auth.currentUser?.uid===ADMIN_UID,
-      adminUid:auth.currentUser?.uid===ADMIN_UID?ADMIN_UID:null
+      ...(auth.currentUser?.uid===ADMIN_UID ? {admin:true,adminUid:ADMIN_UID} : {})
     },{merge:true});
     await setDoc(doc(db,"appInstallations",installationId),{
       installationId,
@@ -773,7 +772,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       alert("Push konnte nicht registriert werden" + code + ": " + (e?.message || String(e)));
     }
   });
-  onAuthStateChanged(auth,user=>{setAdminUi(user);if(user?.uid===ADMIN_UID)registerAdminPushToken();});
+  onAuthStateChanged(auth,user=>{setAdminUi(user);if(user?.uid===ADMIN_UID)registerAdminPushToken(true);});
   registerAppInstallation();
   syncExistingPushRegistration().then(()=>registerAppInstallation());
   loadResults();
