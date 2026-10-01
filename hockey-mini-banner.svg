@@ -31,12 +31,7 @@
 <ellipse cx="158" cy="310" rx="78" ry="24" fill="#000" opacity=".35" filter="url(#blur)"/>
 <ellipse cx="158" cy="292" rx="74" ry="25" fill="#0b1118" stroke="#aab7c1" stroke-width="3"/>
 <circle cx="158" cy="292" r="58" fill="#111a23" stroke="#344451" stroke-width="2"/>
-<image href="logo.png" x="100" y="234" width="116" height="116" preserveAspectRatio="xMidYMid meet" opacity=".85" clip-path="url(#puck)"/>
-<ellipse cx="158" cy="292" rx="53" ry="18" fill="none" stroke="#ff8a00" stroke-opacity=".45" stroke-width="2"/>
-<!-- actual Grizzlys logo in the background -->
-<g opacity=".30">
- <circle cx="1015" cy="195" r="175" fill="#071b33" opacity=".32"/>
- <image href="logo.png" x="845" y="25" width="340" height="340" preserveAspectRatio="xMidYMid meet"/>
+
 </g>
 <path d="M760 38 Q900 105 1035 45" fill="none" stroke="#fff" stroke-opacity=".08" stroke-width="24"/>
 <g fill="#ff8a00" opacity=".75"><circle cx="820" cy="320" r="3"/><circle cx="850" cy="300" r="2"/><circle cx="1120" cy="280" r="3"/></g>
