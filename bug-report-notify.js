@@ -13,6 +13,7 @@ const messaging = admin.messaging();
 const STATE_REF = db.doc("system/bugReportNotifier");
 const NOTIFY_EMAIL = required("BUG_REPORT_EMAIL");
 const BUG_ICON = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-bug-icon.jpg";
+const PUSH_ICON = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg";
 
 function smtpTransport() {
   return nodemailer.createTransport({
@@ -51,7 +52,7 @@ async function sendPush(report) {
     tokens,
     notification: { title:"🏒 Neue Grizzlys-Fehlermeldung", body:`${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}` },
     data: { type:"bugReport", reportId:report.id || "" },
-    webpush: { notification:{ icon:BUG_ICON, badge:"https://jazm1309.github.io/grizzlys-u15/icon-192.png" }, fcmOptions:{ link:"https://jazm1309.github.io/grizzlys-u15/" } }
+    webpush: { notification:{ icon:PUSH_ICON, badge:"https://jazm1309.github.io/grizzlys-u15/icon-192.png" }, fcmOptions:{ link:"https://jazm1309.github.io/grizzlys-u15/" } }
   });
   for (let i=0;i<response.responses.length;i++) {
     const result=response.responses[i];
