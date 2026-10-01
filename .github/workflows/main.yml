@@ -173,10 +173,10 @@ jobs:
                   { title, body },
                   {
                     notification: {
-                      // Grizzlys-Logo für die Statusleiste
-                      icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon-192.png",
-                      badge: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon-192.png"
+                      icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-24h-icon-192.png",
+                      badge: "https://jazm1309.github.io/grizzlys-u15/grizzlys-24h-icon-192.png"
                     },
+                    data: { type: "gameReminder", title, body },
                     fcmOptions: {
                       link: "https://jazm1309.github.io/grizzlys-u15/"
                     }
@@ -237,9 +237,10 @@ jobs:
                 { title, body },
                 {
                   notification: {
-                    icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg",
-                    badge: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg"
+                    icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-result-icon.png",
+                    badge: "https://jazm1309.github.io/grizzlys-u15/grizzlys-result-icon.png"
                   },
+                  data: { type: "result", title, body },
                   fcmOptions: {
                     link: "https://jazm1309.github.io/grizzlys-u15/"
                   }
