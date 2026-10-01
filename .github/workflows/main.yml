@@ -173,8 +173,8 @@ jobs:
                   { title, body },
                   {
                     notification: {
-                      // Vorhandene Datei: grizzlys-24h-icon-192.png
-                      icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg",
+                      // Grizzlys-Logo für die Statusleiste
+                      icon: "https://jazm1309.github.io/grizzlys-u15/icon-192.png",
                       badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
                     },
                     fcmOptions: {
@@ -237,7 +237,7 @@ jobs:
                 { title, body },
                 {
                   notification: {
-                    icon: "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.svg",
+                    icon: "https://jazm1309.github.io/grizzlys-u15/icon-192.png",
                     badge: "https://jazm1309.github.io/grizzlys-u15/icon-192.png"
                   },
                   fcmOptions: {
