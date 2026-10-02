@@ -13,7 +13,8 @@ const db = admin.firestore();
 const messaging = admin.messaging();
 const STATE_REF = db.doc("system/bugReportNotifier");
 const NOTIFY_EMAIL = required("BUG_REPORT_EMAIL");
-const PUSH_ICON = "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png";
+const BUG_ICON = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-bug-icon.png";
+const PUSH_ICON = "./grizzlys-bug-icon.png";
 
 function smtpTransport() {
   return nodemailer.createTransport({
@@ -41,7 +42,7 @@ async function sendEmail(report) {
     subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
     text,
     attachments: [{ filename: "grizzlys-bug-icon.png", path: "grizzlys-bug-icon.png", cid: "grizzlys-bug-icon", contentType: "image/png", contentDisposition: "inline" }],
-    html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px"><img src="cid:grizzlys-bug-icon" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2><p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p><p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}</div>`
+    html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px"><img src="${BUG_ICON}" alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><img src="cid:grizzlys-bug-icon" alt="" width="1" height="1" style="display:none"/> alt="Grizzlys Fehler" width="220" style="display:block;margin:0 0 18px"><h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2><p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p><p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}</div>`
   });
 }
 
@@ -65,18 +66,7 @@ async function sendPush(report) {
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
   const response = await messaging.sendEachForMulticast({
     tokens,
-    notification: { title, body },
-    data: { type:"bugReport", reportId:report.id || "", title, body },
-    webpush: {
-      notification: {
-        title,
-        body,
-        icon: PUSH_ICON,
-        badge: PUSH_ICON,
-        image: PUSH_ICON
-      },
-      fcmOptions:{ link:"https://jazm1309.github.io/grizzlys-u15/" }
-    }
+    data: { type:"bugReport", reportId:report.id || "", title, body }
   });
   for (let i=0;i<response.responses.length;i++) {
     const result=response.responses[i];
