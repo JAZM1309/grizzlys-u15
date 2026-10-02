@@ -179,7 +179,7 @@ jobs:
                   {
                     notification: {
                       icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-24h-icon-192.png",
-                      badge: "https://jazm1309.github.io/grizzlys-u15/grizzlys-24h-icon-192.png"
+                      badge: "https://jazm1309.github.io/grizzlys-u15/badge-96.png"
                     },
                     data: { type: "gameReminder", title, body },
                     fcmOptions: {
@@ -243,7 +243,7 @@ jobs:
                 {
                   notification: {
                     icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-result-icon.png",
-                    badge: "https://jazm1309.github.io/grizzlys-u15/grizzlys-result-icon.png"
+                    badge: "https://jazm1309.github.io/grizzlys-u15/badge-96.png"
                   },
                   data: { type: "result", title, body },
                   fcmOptions: {
