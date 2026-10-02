@@ -92,13 +92,13 @@ async function sendPush(report) {
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
 
   // Genau dieselbe FCM/WebPush-Struktur wie beim funktionierenden 24h-Push.
-  const successCount = await messaging.sendEachForMulticast({
+  const response = await messaging.sendEachForMulticast({
     tokens,
     notification: { title, body },
     webpush: {
       notification: {
         icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png",
-        badge: "https://jazm1309.github.io/grizzlys-u15/badge-96.png",
+        badge: "https://jazm1309.github.io/grizzlys-u15/Badge-96.png",
         image: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png"
       },
       data: { type: "bugReport", title, body },
@@ -108,8 +108,8 @@ async function sendPush(report) {
     }
   });
 
-  console.log("Bug-Push Ergebnis:", { successCount });
-  return successCount > 0;
+  console.log("Bug-Push Ergebnis:", { successCount: response.successCount, failureCount: response.failureCount });
+  return response.successCount > 0;
 }
 
 async function main() {
