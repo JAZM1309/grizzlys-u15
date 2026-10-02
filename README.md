@@ -2,9 +2,14 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
-## Version 1.6.3
+## Version 1.6.4
 
-### Neu in Version 1.6.3
+## Version 1.6.4
+
+### Neu in Version 1.6.4
+- U15 A als Spielgemeinschaft „SpG ESV Grizzlys Bergkamen / ESC Rheine Young Cats“ ergänzt, inklusive Young-Cats-Logo in den Spieldarstellungen
+
+### Neu in Version 1.6.4
 
 - Integriertes Google-Analytics-Statistikdashboard direkt im geschützten Admin-Bereich
 - Zeitraum-Auswahl im Statistikdashboard: Heute, Diese Woche, Dieser Monat, 30 Tage, Saison und Gesamt
@@ -22,7 +27,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - Fehlermeldungen wieder mit verpflichtendem Namen im Formular und in der Verwaltung
 - Admin-Push-Token wird beim Admin-Login automatisch registriert, damit Admin-Benachrichtigungen funktionieren
 - Fehler-E-Mail und Fehler-Push inklusive passendem Fehlermeldungsbild funktionieren wieder zusammen
-- Dokumentation und Versionsstand auf 1.6.3 aktualisiert
+- Dokumentation und Versionsstand auf 1.6.4 aktualisiert
 
 ## Google Analytics
 
