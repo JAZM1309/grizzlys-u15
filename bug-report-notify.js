@@ -85,29 +85,25 @@ async function sendPush(report) {
   const title = "🏒 Neue Grizzlys-Fehlermeldung";
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
 
-  const response = await messaging.sendEachForMulticast({
+  // Genau dieselbe FCM/WebPush-Struktur wie beim funktionierenden 24h-Push.
+  const successCount = await messaging.sendEachForMulticast({
     tokens,
-    data: {
-      type: "bugReport",
-      reportId: report.id || "",
-      title,
-      body,
-      image: BUG_ICON_URL
+    notification: { title, body },
+    webpush: {
+      notification: {
+        icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png",
+        badge: "https://jazm1309.github.io/grizzlys-u15/main/badge-96.png",
+        image: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png"
+      },
+      data: { type: "bugReport", title, body },
+      fcmOptions: {
+        link: "https://jazm1309.github.io/grizzlys-u15/"
+      }
     }
   });
 
-  for (let i=0;i<response.responses.length;i++) {
-    const result=response.responses[i];
-    if (!result.success) {
-      const code=result.error?.code || "";
-      if (code.includes("registration-token-not-registered") || code.includes("invalid-registration-token")) {
-        await db.collection("pushTokens").doc(tokens[i]).delete().catch(()=>{});
-      }
-    }
-  }
-
-  console.log("Bug-Push Ergebnis:", { successCount: response.successCount, failureCount: response.failureCount });
-  return response.successCount > 0;
+  console.log("Bug-Push Ergebnis:", { successCount });
+  return successCount > 0;
 }
 
 async function main() {
