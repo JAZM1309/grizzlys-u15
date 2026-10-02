@@ -24,7 +24,7 @@ messaging.onBackgroundMessage(payload => {
   const data = payload.data || {};
   const type = data.type || "";
   let icon = "./icon-192.png";
-  let badge = "./icon-192.png";
+  let badge = "./badge-96.png";
   let image = null;
 
   if (type === "bugReport") {
@@ -60,7 +60,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v21";
+const CACHE = "grizzlys-u15-v22";
 
 const CORE = [
   "./",
