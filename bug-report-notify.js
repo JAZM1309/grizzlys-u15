@@ -92,7 +92,7 @@ async function sendPush(report) {
     webpush: {
       notification: {
         icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png",
-        badge: "https://jazm1309.github.io/grizzlys-u15/main/badge-96.png",
+        badge: "https://jazm1309.github.io/grizzlys-u15/badge-96.png",
         image: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png"
       },
       data: { type: "bugReport", title, body },
