@@ -64,7 +64,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v16";
+const CACHE = "grizzlys-u15-v17";
 
 const CORE = [
   "./",
@@ -104,10 +104,11 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE)
-          .then(cache => cache.put(event.request, copy));
-
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE)
+            .then(cache => cache.put(event.request, copy));
+        }
         return response;
       })
       .catch(() => caches.match(event.request))
