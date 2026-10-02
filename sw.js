@@ -16,11 +16,15 @@ const RESULT_ICON_URL = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15
 const REMINDER_ICON_URL = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon-192.png";
 
 messaging.onBackgroundMessage(payload => {
+  // FCM notification-Payloads werden bei Hintergrundempfang bereits vom
+  // Browser/FCM angezeigt. Nicht noch einmal selbst anzeigen.
+  if (payload.notification) return;
+
   const n = payload.notification || {};
   const data = payload.data || {};
   const type = data.type || "";
   let icon = "./icon-192.png";
-  let badge = "./Badge-96.png";
+  let badge = "./icon-192.png";
   let image = null;
 
   if (type === "bugReport") {
@@ -56,7 +60,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v20";
+const CACHE = "grizzlys-u15-v21";
 
 const CORE = [
   "./",
@@ -66,7 +70,6 @@ const CORE = [
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable-512.png",
-  "./Badge-96.png",
   "./grizzlys-bug-icon.png"
 ];
 
