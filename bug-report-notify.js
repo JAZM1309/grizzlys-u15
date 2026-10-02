@@ -324,14 +324,6 @@ async function main() {
     const createdMs=createdAt?.toMillis ? createdAt.toMillis() : 0;
     if(createdMs>lastProcessedMs) reports.push({id:doc.id,...data,_createdMs:createdMs});
   });
-  const imageRetryId = "fmUnnUm3S4ZXo0Pz0iWv";
-  if (!reports.some(r => r.id === imageRetryId)) {
-    const retryDoc = await db.collection("bugReports").doc(imageRetryId).get();
-    if (retryDoc.exists && !(retryDoc.data() || {}).testImageRetryAt) {
-      reports.push({id:retryDoc.id,...(retryDoc.data() || {}),_createdMs:(retryDoc.data()?.createdAt?.toMillis ? retryDoc.data().createdAt.toMillis() : 0)});
-      console.log("Bug-Notifier: einmaliger Bild-Test erneut eingeplant.");
-    }
-  }
   reports.sort((a,b)=>a._createdMs-b._createdMs);
   console.log("Bug-Notifier: neue Fehlermeldungen:", reports.length);
   if (reports.length) console.log("Bug-Notifier: Admin-Push-Token werden beim Versand geprüft.");
@@ -339,15 +331,14 @@ async function main() {
     console.log("Bug-Notifier: verarbeite Fehlermeldung:", report.id, report.area || "Sonstiges");
     const ref=db.collection("bugReports").doc(report.id);
     let current=(await ref.get()).data()||{};
-    const oneTimeImageRetry = report.id === "fmUnnUm3S4ZXo0Pz0iWv" && !current.testImageRetryAt;
-    let pushSent=Boolean(current.pushSentAt) && !oneTimeImageRetry;
+    let pushSent=Boolean(current.pushSentAt);
     if(!pushSent){
       pushSent=await sendPush(report);
       console.log("Bug-Notifier: Push gesendet:", pushSent);
       if(pushSent) await ref.update({pushSentAt:admin.firestore.FieldValue.serverTimestamp()});
     }
     current=(await ref.get()).data()||{};
-    let emailSent=Boolean(current.emailSentAt) && !oneTimeImageRetry;
+    let emailSent=Boolean(current.emailSentAt);
     if(!emailSent){
       try{
         await sendEmail(report);
@@ -357,7 +348,6 @@ async function main() {
       }catch(error){ console.error("E-Mail-Versand fehlgeschlagen:",error.message); }
     }
     if(pushSent && emailSent){
-      if(oneTimeImageRetry) await ref.update({testImageRetryAt:admin.firestore.FieldValue.serverTimestamp()});
       await STATE_REF.set({lastProcessedAt:admin.firestore.Timestamp.fromMillis(report._createdMs),lastProcessedReportId:report.id,updatedAt:admin.firestore.FieldValue.serverTimestamp()},{merge:true});
     }
   }
