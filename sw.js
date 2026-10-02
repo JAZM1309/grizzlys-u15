@@ -10,8 +10,10 @@ firebase.initializeApp({
   appId: "1:595868074479:web:2ac44da77d0dc533ac361a"
 });
 
-
 const messaging = firebase.messaging();
+const BUG_ICON_URL = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-bug-icon.png";
+const RESULT_ICON_URL = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-result-icon.png";
+const REMINDER_ICON_URL = "https://raw.githubusercontent.com/JAZM1309/grizzlys-u15/main/grizzlys-24h-icon-192.png";
 
 messaging.onBackgroundMessage(payload => {
   const n = payload.notification || {};
@@ -22,17 +24,14 @@ messaging.onBackgroundMessage(payload => {
   let image = null;
 
   if (type === "bugReport") {
-    icon = "./grizzlys-bug-icon.png";
-    badge = "./badge-96.png";
-    image = "./grizzlys-bug-icon.png";
+    icon = BUG_ICON_URL;
+    image = BUG_ICON_URL;
   } else if (type === "result") {
-    icon = "./grizzlys-result-icon.png";
-    badge = "./badge-96.png";
-    image = "./grizzlys-result-icon.png";
+    icon = RESULT_ICON_URL;
+    image = RESULT_ICON_URL;
   } else if (type === "gameReminder") {
-    icon = "./grizzlys-24h-icon-192.png";
-    badge = "./badge-96.png";
-    image = "./grizzlys-24h-icon-192.png";
+    icon = REMINDER_ICON_URL;
+    image = REMINDER_ICON_URL;
   }
 
   const options = {
@@ -47,24 +46,17 @@ messaging.onBackgroundMessage(payload => {
 
 self.addEventListener("notificationclick", event => {
   event.notification.close();
-
   event.waitUntil(
-    clients.matchAll({
-      type: "window",
-      includeUncontrolled: true
-    }).then(list => {
+    clients.matchAll({type: "window", includeUncontrolled: true}).then(list => {
       for (const client of list) {
         if ("focus" in client) return client.focus();
       }
-
-      if (clients.openWindow) {
-        return clients.openWindow("./");
-      }
+      if (clients.openWindow) return clients.openWindow("./");
     })
   );
 });
 
-const CACHE = "grizzlys-u15-v18";
+const CACHE = "grizzlys-u15-v19";
 
 const CORE = [
   "./",
@@ -89,27 +81,19 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys()
-      .then(keys =>
-        Promise.all(
-          keys
-            .filter(key => key !== CACHE)
-            .map(key => caches.delete(key))
-        )
-      )
+      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
-
   event.respondWith(
     fetch(event.request)
       .then(response => {
         if (response.ok) {
           const copy = response.clone();
-          caches.open(CACHE)
-            .then(cache => cache.put(event.request, copy));
+          caches.open(CACHE).then(cache => cache.put(event.request, copy));
         }
         return response;
       })
