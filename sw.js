@@ -14,6 +14,9 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(payload => {
+  // Notification-Payloads werden von FCM im Hintergrund bereits angezeigt.
+  // Nur reine Datennachrichten werden hier selbst dargestellt.
+  if (payload.notification) return;
   const n = payload.notification || {};
   const data = payload.data || {};
   const type = data.type || "";
