@@ -768,8 +768,6 @@ document.addEventListener("DOMContentLoaded",()=>{
       alert("Push-Benachrichtigungen sind auf diesem Gerät aktiviert und registriert.");
     }catch(e){
       console.error("Push-Aktivierung fehlgeschlagen:",e);
-      const code=e?.code ? ` [${e.code}]` : "";
-      alert("Push konnte nicht registriert werden" + code + ": " + (e?.message || String(e)));
     }
   });
   onAuthStateChanged(auth,user=>{setAdminUi(user);if(user?.uid===ADMIN_UID)registerAdminPushToken(true);});
