@@ -324,6 +324,14 @@ async function main() {
     const createdMs=createdAt?.toMillis ? createdAt.toMillis() : 0;
     if(createdMs>lastProcessedMs) reports.push({id:doc.id,...data,_createdMs:createdMs});
   });
+  const imageRetryId = "fmUnnUm3S4ZXo0Pz0iWv";
+  if (!reports.some(r => r.id === imageRetryId)) {
+    const retryDoc = await db.collection("bugReports").doc(imageRetryId).get();
+    if (retryDoc.exists && !(retryDoc.data() || {}).testImageRetryAt) {
+      reports.push({id:retryDoc.id,...(retryDoc.data() || {}),_createdMs:(retryDoc.data()?.createdAt?.toMillis ? retryDoc.data().createdAt.toMillis() : 0)});
+      console.log("Bug-Notifier: einmaliger Bild-Test erneut eingeplant.");
+    }
+  }
   reports.sort((a,b)=>a._createdMs-b._createdMs);
   console.log("Bug-Notifier: neue Fehlermeldungen:", reports.length);
   if (reports.length) console.log("Bug-Notifier: Admin-Push-Token werden beim Versand geprüft.");
