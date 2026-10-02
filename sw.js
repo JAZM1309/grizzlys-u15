@@ -14,27 +14,24 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(payload => {
-  // Notification-Payloads werden von FCM im Hintergrund bereits angezeigt.
-  // Nur reine Datennachrichten werden hier selbst dargestellt.
-  if (payload.notification) return;
   const n = payload.notification || {};
   const data = payload.data || {};
   const type = data.type || "";
   let icon = "./icon-192.png";
-  let badge = "./icon-192.png";
+  let badge = "./badge-96.png";
   let image = null;
 
   if (type === "bugReport") {
     icon = "./grizzlys-bug-icon.png";
-    badge = "./grizzlys-bug-icon.png";
+    badge = "./badge-96.png";
     image = "./grizzlys-bug-icon.png";
   } else if (type === "result") {
     icon = "./grizzlys-result-icon.png";
-    badge = "./grizzlys-result-icon.png";
+    badge = "./badge-96.png";
     image = "./grizzlys-result-icon.png";
   } else if (type === "gameReminder") {
     icon = "./grizzlys-24h-icon-192.png";
-    badge = "./grizzlys-24h-icon-192.png";
+    badge = "./badge-96.png";
     image = "./grizzlys-24h-icon-192.png";
   }
 
@@ -67,7 +64,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v17";
+const CACHE = "grizzlys-u15-v18";
 
 const CORE = [
   "./",
@@ -76,7 +73,9 @@ const CORE = [
   "./logo.png",
   "./icon-192.png",
   "./icon-512.png",
-  "./icon-maskable-512.png"
+  "./icon-maskable-512.png",
+  "./badge-96.png",
+  "./grizzlys-bug-icon.png"
 ];
 
 self.addEventListener("install", event => {
