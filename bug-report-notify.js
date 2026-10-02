@@ -91,21 +91,11 @@ async function sendPush(report) {
   const title = "🏒 Neue Grizzlys-Fehlermeldung";
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
 
-  // Genau dieselbe FCM/WebPush-Struktur wie beim funktionierenden 24h-Push.
+  // Data-only: Nur unser Service Worker erzeugt die Benachrichtigung.
+  // Dadurch entsteht kein zweiter automatischer FCM/Android-Push.
   const response = await messaging.sendEachForMulticast({
     tokens,
-    notification: { title, body },
-    webpush: {
-      notification: {
-        icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png",
-        badge: "https://jazm1309.github.io/grizzlys-u15/Badge-96.png",
-        image: "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png"
-      },
-      data: { type: "bugReport", title, body },
-      fcmOptions: {
-        link: "https://jazm1309.github.io/grizzlys-u15/"
-      }
-    }
+    data: { type: "bugReport", title, body }
   });
 
   console.log("Bug-Push Ergebnis:", { successCount: response.successCount, failureCount: response.failureCount });
