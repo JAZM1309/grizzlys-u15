@@ -1,5 +1,10 @@
 name: Grizzlys Ergebnisdienst
 
+concurrency:
+  group: result-push
+  cancel-in-progress: false
+
+
 on:
   workflow_dispatch:
   schedule:
