@@ -84,6 +84,7 @@ async function sendPush(report) {
     const bm = b.updatedAt?.toMillis ? b.updatedAt.toMillis() : 0;
     return bm - am;
   });
+
   console.log("Bug-Push: Admin-Token gefunden:", candidates.length, "– verwende das zuletzt aktualisierte Gerät.");
   if (!candidates.length) return false;
 
@@ -91,11 +92,22 @@ async function sendPush(report) {
   const title = "🏒 Neue Grizzlys-Fehlermeldung";
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
 
-  // Data-only: Nur unser Service Worker erzeugt die Benachrichtigung.
-  // Dadurch entsteht kein zweiter automatischer FCM/Android-Push.
+  // Gleicher FCM-Aufbau wie beim funktionierenden 24h-Push:
+  // notification + webpush.notification (icon, badge, image) + data + link.
   const response = await messaging.sendEachForMulticast({
     tokens,
-    data: { type: "bugReport", title, body }
+    notification: { title, body },
+    webpush: {
+      notification: {
+        icon: BUG_ICON_URL,
+        badge: BUG_ICON_URL,
+        image: BUG_ICON_URL
+      },
+      data: { type: "bugReport", title, body },
+      fcmOptions: {
+        link: "https://jazm1309.github.io/grizzlys-u15/"
+      }
+    }
   });
 
   console.log("Bug-Push Ergebnis:", { successCount: response.successCount, failureCount: response.failureCount });
@@ -106,26 +118,29 @@ async function main() {
   const stateSnap=await STATE_REF.get();
   let lastProcessedMs=0;
 
-  if (stateSnap.exists && stateSnap.data().lastProcessedAt) {
-    const ts=stateSnap.data().lastProcessedAt;
-    lastProcessedMs=ts.toMillis ? ts.toMillis() : Date.parse(ts);
-  } else {
-    await STATE_REF.set({lastProcessedAt:admin.firestore.Timestamp.now(),initializedAt:admin.firestore.FieldValue.serverTimestamp()},{merge:true});
-    console.log("Notifier initialisiert – bestehende Fehlermeldungen werden nicht nachträglich versendet.");
-    return;
+  if (!stateSnap.exists) {
+    await STATE_REF.set({
+      initializedAt: admin.firestore.FieldValue.serverTimestamp()
+    }, {merge:true});
+    console.log("Notifier initialisiert.");
   }
 
   const snap=await db.collection("bugReports").get();
   const reports=[];
   snap.forEach(doc=>{
     const data=doc.data()||{};
-    const createdAt=data.createdAt;
-    const createdMs=createdAt?.toMillis ? createdAt.toMillis() : 0;
-    if(createdMs>lastProcessedMs) reports.push({id:doc.id,...data,_createdMs:createdMs});
+    // Wie beim funktionierenden 24h-Dienst wird nicht über ein globales
+    // Zeitfenster entschieden. Eine Meldung ist erledigt, sobald Push UND
+    // E-Mail erfolgreich versendet wurden.
+    if(!data.pushSentAt || !data.emailSentAt) {
+      const createdAt=data.createdAt;
+      const createdMs=createdAt?.toMillis ? createdAt.toMillis() : 0;
+      reports.push({id:doc.id,...data,_createdMs:createdMs});
+    }
   });
 
   reports.sort((a,b)=>a._createdMs-b._createdMs);
-  console.log("Bug-Notifier: neue Fehlermeldungen:", reports.length);
+  console.log("Bug-Notifier: offene Fehlermeldungen:", reports.length);
 
   for(const report of reports){
     console.log("Bug-Notifier: verarbeite Fehlermeldung:", report.id, report.area || "Sonstiges");
