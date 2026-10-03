@@ -148,6 +148,8 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 .scheduleSticky .filterPanel{max-height:calc(100vh - 200px);overflow:auto}
 @keyframes todayFlash{0%,100%{box-shadow:0 4px 16px rgba(8,31,55,.06)}30%,70%{box-shadow:0 0 0 3px var(--a),0 4px 16px rgba(8,31,55,.12)}}
 .card.todayFlash{animation:todayFlash 1.6s ease}
+.card.nextGame{box-shadow:0 0 0 2px var(--team),0 6px 20px rgba(8,31,55,.14)}
+.nextBadge{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:8px;background:var(--navy);color:#fff;font-size:10px;font-weight:950;line-height:1.2}
 </style>
 </head>
 <body>
@@ -951,6 +953,7 @@ function setScheduleMode(mode){
   }
 }
 function todayKey(){const n=new Date(),p=x=>String(x).padStart(2,"0");return n.getFullYear()+"-"+p(n.getMonth()+1)+"-"+p(n.getDate())}
+function nextGame(){const now=Date.now();return games.filter(gameMatchesFilters).sort((a,b)=>dt(a)-dt(b)).find(g=>dt(g).getTime()+2*3600000>=now)||null}
 function stickyOffset(){const el=document.getElementById("scheduleSticky");return (el?el.offsetHeight:0)+10}
 function scrollToToday(smooth=true){
   const sec=document.getElementById("scheduleView"); if(!sec||sec.hidden)return;
@@ -965,7 +968,7 @@ function scrollToToday(smooth=true){
     target=document.getElementById("calendarView");
   }else{
     const cards=[...document.querySelectorAll("#gamesList .card[data-date]")], t=todayKey();
-    const card=cards.find(c=>c.dataset.date>=t)||cards[cards.length-1];
+    const card=document.querySelector("#gamesList .card.nextGame")||cards.find(c=>c.dataset.date>=t)||cards[cards.length-1];
     if(card){
       target=card;
       const prev=card.previousElementSibling;
@@ -976,12 +979,6 @@ function scrollToToday(smooth=true){
   if(!target)return;
   const y=target.getBoundingClientRect().top+window.scrollY-stickyOffset();
   window.scrollTo({top:Math.max(0,y),behavior:smooth?"smooth":"auto"});
-}
-let scheduleUserScrolled=false;
-function scheduleAutoRecheck(){
-  scheduleUserScrolled=false;
-  ["touchstart","wheel","keydown","mousedown"].forEach(e=>window.addEventListener(e,()=>{scheduleUserScrolled=true},{once:true,passive:true}));
-  setTimeout(()=>{if(!scheduleUserScrolled)scrollToToday(false)},450);
 }
 function downloadTeamCalendar(team){trackAnalyticsEvent("calendar_download",{team:"U15 "+team,type:"team"});const arr=games.filter(g=>g.team===team).sort((a,b)=>dt(a)-dt(b));downloadIcsBundle(arr,"U15-"+team+"-Spielplan.ics")}
 function downloadBothCalendars(){trackAnalyticsEvent("calendar_download",{team:"U15 A+B",type:"both"});downloadIcsBundle(games.slice().sort((a,b)=>dt(a)-dt(b)),"U15-A-und-B-Spielplan.ics")}
@@ -1217,13 +1214,14 @@ function renderList(filter="all"){
   const list=document.getElementById("gamesList"); list.innerHTML="";
   const arr=games.filter(gameMatchesFilters).sort((a,b)=>dt(a)-dt(b));
   document.getElementById("scheduleTitle").textContent="Spielplan"; document.getElementById("scheduleCount").textContent=arr.length+" Spiele";
-  let month="";
+  let month=""; const ng=nextGame();
   arr.forEach(g=>{
     const m=monthLabel(g); if(m!==month){month=m; const mh=document.createElement("div");mh.className="month";mh.textContent=m;list.appendChild(mh)}
     const card=document.createElement("article"); card.className="card "+(g.team==="B"?"teamB":"teamA"); card.dataset.date=g.date;
     const home=isHome(g);
     card.innerHTML=`<div class="top"><div class="dateBlock"><div class="teamBadge">U15 ${g.team}</div><div class="date">${fmtDate(g)}</div><div class="time">${g.time}</div></div><div class="matchRow"><div><div class="opponentLine">${home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home)}<span>${g.home}</span></div><div style="text-align:center;color:#9aa7b4;font-size:10px;font-weight:900;margin:3px 0">GEGEN</div><div class="opponentLine">${home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo")}<span>${g.away}</span></div><span class="homeaway">${home?"🏠 HEIMSPIEL":"✈️ AUSWÄRTS"}</span><div class="venue">📍 ${g.stadium} · ${address(g)}</div>${resultBadge(g)}</div></div></div><div class="cardActions"><button class="action route">📍 Route</button><button class="action cal">📅 Termin</button><button class="action rem">🔔 Erinnerung</button><button class="action share">↗️ Teilen</button></div>`;
     card.querySelector(".route").onclick=()=>route(g);card.querySelector(".cal").onclick=()=>calendar(g);card.querySelector(".rem").onclick=()=>reminder(g);card.querySelector(".share").onclick=()=>shareGame(g);
+    if(g===ng){card.classList.add("nextGame");card.querySelector(".dateBlock").insertAdjacentHTML("beforeend",'<div class="nextBadge">⏭ Nächstes Spiel</div>')}
     list.appendChild(card);
   });
 }
@@ -1282,7 +1280,7 @@ function closeMatchDetails(){
   document.body.style.overflow="";
 }
 
-function showView(name){trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":"info_opened");["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){setScheduleMode(scheduleMode);scrollToToday(false);scheduleAutoRecheck()}else window.scrollTo({top:0,behavior:"smooth"})}
+function showView(name){trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":"info_opened");["home","schedule","opponents","downloads","info"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.getElementById("infoTopBtn").onclick=()=>showView("info");
 
@@ -1331,11 +1329,11 @@ if(shareAppBtn){
   };
 }
 document.getElementById("filterToggle").onclick=()=>{const p=document.getElementById("filterPanel"),open=!p.classList.contains("open");p.classList.toggle("open",open);document.getElementById("filterToggle").setAttribute("aria-expanded",String(open));p.setAttribute("aria-hidden",String(!open));};
-document.querySelectorAll(".filterOption").forEach(b=>b.onclick=()=>{const f=b.dataset.filter;if(f==="A"||f==="B"){if(activeTeamFilters.has(f))activeTeamFilters.delete(f);else activeTeamFilters.add(f)}else{if(activeVenueFilters.has(f))activeVenueFilters.delete(f);else activeVenueFilters.add(f)}updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all");scrollToToday(false)});
-document.getElementById("filterReset").onclick=()=>{activeTeamFilters=new Set(["A","B"]);activeVenueFilters=new Set(["home","away"]);updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all");scrollToToday(false)};
+document.querySelectorAll(".filterOption").forEach(b=>b.onclick=()=>{const f=b.dataset.filter;if(f==="A"||f==="B"){if(activeTeamFilters.has(f))activeTeamFilters.delete(f);else activeTeamFilters.add(f)}else{if(activeVenueFilters.has(f))activeVenueFilters.delete(f);else activeVenueFilters.add(f)}updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all")});
+document.getElementById("filterReset").onclick=()=>{activeTeamFilters=new Set(["A","B"]);activeVenueFilters=new Set(["home","away"]);updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all")};
 document.getElementById("opponentSearch").addEventListener("input",()=>renderOpponents());
-document.getElementById("chronoBtn").onclick=()=>{setScheduleMode("chrono");scrollToToday(false)};
-document.getElementById("monthBtn").onclick=()=>{setScheduleMode("month");scrollToToday(false)};
+document.getElementById("chronoBtn").onclick=()=>setScheduleMode("chrono");
+document.getElementById("monthBtn").onclick=()=>setScheduleMode("month");
 document.getElementById("todayBtn").onclick=()=>{const p=document.getElementById("filterPanel");p.classList.remove("open");p.setAttribute("aria-hidden","true");document.getElementById("filterToggle").setAttribute("aria-expanded","false");trackAnalyticsEvent("today_jump");scrollToToday(true)};
 document.getElementById("downloadA").onclick=()=>downloadTeamCalendar("A");
 document.getElementById("downloadB").onclick=()=>downloadTeamCalendar("B");
@@ -1363,7 +1361,7 @@ document.getElementById("opponentModalClose").onclick=closeOpponentDetails;
 document.getElementById("opponentModal").addEventListener("click",e=>{if(e.target.id==="opponentModal")closeOpponentDetails();});
 document.getElementById("matchModal").addEventListener("click",e=>{if(e.target.id==="matchModal")closeMatchDetails()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){const am=document.getElementById("adminModal");if(am&&!am.hidden){closeAdminModal();return;}if(!document.getElementById("matchModal").hidden)closeMatchDetails();}});
-document.querySelectorAll(".teamCard").forEach(b=>b.onclick=()=>{showView("schedule");activeTeamFilters=new Set([b.dataset.team]);activeVenueFilters=new Set(["home","away"]);updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all");scrollToToday(false)});
+document.querySelectorAll(".teamCard").forEach(b=>b.onclick=()=>{showView("schedule");activeTeamFilters=new Set([b.dataset.team]);activeVenueFilters=new Set(["home","away"]);updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all")});
 if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{});}
 updateFilterUi();renderNext();renderList("all");renderOpponents();
 </script>
