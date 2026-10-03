@@ -2,6 +2,16 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Version 1.6.6
+
+Neu in Version 1.6.6
+- Statistik im Admin-Bereich zeigt die Ergebnis-Pushes: Zeitpunkt, Ergebnis, Anzahl erreichter Geräte, fehlgeschlagene Zustellungen und aktuell registrierte Push-Geräte
+- Workflow main.yml speichert Versandzeitpunkt und Zahlen im Ergebnis-Dokument und schreibt sie ins GitHub-Actions-Log
+- Ältere Ergebnis-Pushes ohne gespeicherte Zahlen erscheinen als „Anzahl nicht erfasst“
+- Aktualisieren-Button des Update-Hinweises robuster gemacht
+- PWA-Cache auf grizzlys-u15-v26 erneuert
+- Dokumentation und Versionsstand auf 1.6.6 aktualisiert
+
 Version 1.6.5
 
 Neu in Version 1.6.5
@@ -55,7 +65,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v25).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v26).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
