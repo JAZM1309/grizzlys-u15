@@ -2,15 +2,22 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
-## Version 1.6.4
+## Version 1.6.5
+
+### Neu in Version 1.6.5
+
+- Update-Hinweis in der App: Sobald eine neue Version bereitsteht, erscheint unten ein dezenter Banner „Neue Version verfügbar“ mit den Buttons **Aktualisieren** und **Schließen**
+- Die App prüft beim Zurückkehren in den Vordergrund sowie alle 30 Minuten, ob eine neue Version vorliegt
+- Der Service Worker aktiviert eine neue Version erst nach Tippen auf „Aktualisieren“ (kein automatisches Umschalten mehr mitten in der Nutzung)
+- Schließen blendet den Banner bis zum nächsten App-Start aus
+- PWA-Cache auf `grizzlys-u15-v25` erneuert
+- Dokumentation und Versionsstand auf 1.6.5 aktualisiert
 
 ## Version 1.6.4
 
 ### Neu in Version 1.6.4
+
 - U15 A als Spielgemeinschaft „SpG ESV Grizzlys Bergkamen / ESC Rheine Young Cats“ ergänzt, inklusive Young-Cats-Logo in den Spieldarstellungen
-
-### Neu in Version 1.6.4
-
 - Integriertes Google-Analytics-Statistikdashboard direkt im geschützten Admin-Bereich
 - Zeitraum-Auswahl im Statistikdashboard: Heute, Diese Woche, Dieser Monat, 30 Tage, Saison und Gesamt
 - Kennzahlen für aktive Nutzer, neue Nutzer, Sitzungen und Events
@@ -108,6 +115,15 @@ Die Daten werden serverseitig über eine Firebase Cloud Function und die Google 
 - PDF-Druck des kompletten Spielplans inklusive vorhandener Ergebnisse und Grizzlys-Logo
 - Überarbeitete Navigation und Darstellung für Smartphone und Desktop
 - PWA-Unterstützung zum Installieren der App auf dem Gerät
+
+## Update-Hinweis
+
+Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie im Hintergrund und wartet. Die App zeigt dann unten den Banner „Neue Version verfügbar“.
+
+- **Aktualisieren** aktiviert die neue Version und lädt die App neu
+- **×** blendet den Banner bis zum nächsten App-Start aus
+
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v25`).
 
 ## Firebase
 
