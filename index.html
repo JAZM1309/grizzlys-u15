@@ -1373,7 +1373,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){const am=document.g
 document.querySelectorAll(".teamCard").forEach(b=>b.onclick=()=>{showView("schedule");activeTeamFilters=new Set([b.dataset.team]);activeVenueFilters=new Set(["home","away"]);updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all")});
 if("serviceWorker" in navigator){(function(){
   const banner=document.getElementById("updateBanner");
-  let reloadRequested=false,dismissed=false,waitingWorker=null;
+  let reloadRequested=false,reloaded=false,dismissed=false,waitingWorker=null;
+  function go(){if(reloaded)return;reloaded=true;location.reload();}
   function showBanner(worker){waitingWorker=worker;if(!dismissed)banner.hidden=false;}
   function track(reg){
     if(reg.waiting&&navigator.serviceWorker.controller)showBanner(reg.waiting);
@@ -1382,12 +1383,22 @@ if("serviceWorker" in navigator){(function(){
       nw.addEventListener("statechange",()=>{if(nw.state==="installed"&&navigator.serviceWorker.controller)showBanner(nw);});
     });
   }
-  document.getElementById("updateBannerReload").onclick=()=>{
-    if(!waitingWorker){location.reload();return;}
-    reloadRequested=true;waitingWorker.postMessage({type:"SKIP_WAITING"});
+  document.getElementById("updateBannerReload").onclick=async()=>{
+    const btn=document.getElementById("updateBannerReload");
+    btn.disabled=true;btn.textContent="Wird aktualisiert…";
+    reloadRequested=true;
+    try{
+      const reg=await navigator.serviceWorker.getRegistration();
+      const w=(reg&&reg.waiting)||waitingWorker;
+      if(w){
+        w.addEventListener("statechange",()=>{if(w.state==="activated")go();});
+        w.postMessage({type:"SKIP_WAITING"});
+      }else go();
+    }catch(e){go();}
+    setTimeout(go,2500);
   };
   document.getElementById("updateBannerClose").onclick=()=>{dismissed=true;banner.hidden=true;};
-  navigator.serviceWorker.addEventListener("controllerchange",()=>{if(reloadRequested)location.reload();});
+  navigator.serviceWorker.addEventListener("controllerchange",()=>{if(reloadRequested)go();});
   navigator.serviceWorker.register("./sw.js").then(reg=>{
     track(reg);
     const check=()=>reg.update().catch(()=>{});
