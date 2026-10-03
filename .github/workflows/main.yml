@@ -95,8 +95,11 @@ jobs:
           const db = getFirestore(firebaseApp);
           const messaging = getMessaging(firebaseApp);
 
+          let lastPushStats = { total: 0, success: 0, failed: 0 };
+
           async function sendPush(tokens, notification, webpush = undefined) {
             let successCount = 0;
+            let failedCount = 0;
             const invalidTokenDocs = [];
 
             for (let i = 0; i < tokens.length; i += 500) {
@@ -110,6 +113,7 @@ jobs:
 
               response.responses.forEach((result, index) => {
                 if (!result.success) {
+                  failedCount += 1;
                   const tokenInfo = batch[index];
                   console.log("FCM Fehler Token:",
                     result.error?.code, result.error?.message);
@@ -125,6 +129,7 @@ jobs:
               await ref.delete();
               console.log("Ungültiges Push-Token entfernt.");
             }
+            lastPushStats = { total: tokens.length, success: successCount, failed: failedCount };
             return successCount;
           }
 
@@ -254,9 +259,16 @@ jobs:
 
               if (successCount > 0) {
                 await resultDoc.ref.update({
-                  pushSentAt: FieldValue.serverTimestamp()
+                  pushSentAt: FieldValue.serverTimestamp(),
+                  pushSentCount: lastPushStats.success,
+                  pushFailedCount: lastPushStats.failed,
+                  pushTargetCount: lastPushStats.total
                 });
-                console.log("Ergebnis-Push gesendet:", resultDoc.id);
+                console.log(
+                  "Ergebnis-Push gesendet:", resultDoc.id,
+                  "– an", lastPushStats.success, "von", lastPushStats.total,
+                  "Geräten (", lastPushStats.failed, "fehlgeschlagen )"
+                );
               } else {
                 console.log(
                   "Ergebnis-Push NICHT als gesendet markiert – kein gültiges Push-Gerät:",
