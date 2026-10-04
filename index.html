@@ -158,6 +158,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 .updateBannerClose{border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;width:32px;height:32px;border-radius:50%;cursor:pointer}
 @keyframes updateBannerIn{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.updateBanner{animation:none}}
+.thanksModal{position:fixed;inset:0;background:rgba(7,27,51,.58);display:flex;align-items:center;justify-content:center;padding:16px;z-index:70;animation:thanksFade .2s ease-out}
+.thanksModal[hidden]{display:none}
+.thanksBox{width:min(380px,100%);background:#fff;border-radius:24px;box-shadow:0 18px 55px rgba(0,0,0,.28);padding:22px 20px 18px;text-align:center;border-top:6px solid var(--a);animation:thanksPop .28s ease-out}
+.thanksImg{display:block;width:150px;height:150px;object-fit:contain;margin:0 auto 10px}
+.thanksTitle{font-size:21px;font-weight:950;color:var(--navy);margin-bottom:8px}
+.thanksText{font-size:15px;line-height:1.45;color:var(--muted);margin-bottom:16px}
+.thanksBtn{width:100%;border:0;background:var(--navy);color:#fff;border-radius:13px;padding:12px;font-size:15px;font-weight:900;cursor:pointer}
+@keyframes thanksFade{from{opacity:0}to{opacity:1}}
+@keyframes thanksPop{from{transform:scale(.94) translateY(10px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.thanksModal,.thanksBox{animation:none}}
 </style>
 </head>
 <body>
@@ -245,6 +255,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 
 </div></section>
 
+<div id="thanksModal" class="thanksModal" hidden aria-hidden="true"><div class="thanksBox" role="dialog" aria-modal="true" aria-labelledby="thanksTitle"><img id="thanksImg" class="thanksImg" src="grizzlys-bug-icon.png" alt=""><div id="thanksTitle" class="thanksTitle"></div><div id="thanksText" class="thanksText"></div><button id="thanksClose" class="thanksBtn" type="button">Schließen</button></div></div>
 <div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="bugReportGrid"><label>Art der Meldung<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta">App-Version 1.6.7 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action" type="button">📨 Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div class="hockeyGameIntro">Erziele zuerst drei in einer Reihe. Du bist 🏒.</div><div class="hockeyScore"><span>🏒 Du: <b id="hockeyPlayerScore">0</b></span><span>🥅 Gegner: <b id="hockeyCpuScore">0</b></span></div><div class="hockeyRink"><div id="hockeyBoard" class="hockeyBoard"></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neues Spiel</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät und speichert keine Ergebnisse.</div></div></div></div>
 <div id="pdfFilterModal" class="matchModal" hidden aria-hidden="true">
@@ -562,9 +573,9 @@ function getPushRegistrationStatus(){
 }
 
 const BUG_TYPES={
-  "Fehler":{title:"🐞 Fehler melden",intro:"Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.",label:"Fehlerbeschreibung",placeholder:"Was funktioniert nicht? Was hast du gemacht?",emptyMsg:"Bitte beschreibe den Fehler kurz.",thanks:"Danke! Die Fehlermeldung wurde an die App-Verwaltung übermittelt.",emoji:"🐞"},
-  "Wunsch / Anregung":{title:"💡 Wunsch / Anregung",intro:"Was wünschst du dir für die App oder was könnte besser werden? Die Idee wird an die App-Verwaltung übermittelt.",label:"Dein Wunsch / deine Anregung",placeholder:"Was fehlt dir oder was könnte besser sein?",emptyMsg:"Bitte beschreibe deinen Wunsch kurz.",thanks:"Danke für deine Anregung! Sie wurde an die App-Verwaltung übermittelt.",emoji:"💡"},
-  "Lob":{title:"👍 Lob",intro:"Was gefällt dir an der App? Dein Lob geht direkt an die App-Verwaltung.",label:"Dein Lob",placeholder:"Was gefällt dir besonders?",emptyMsg:"Bitte schreibe kurz, was dir gefällt.",thanks:"Danke für dein Lob! Es wurde an die App-Verwaltung übermittelt.",emoji:"👍"}
+  "Fehler":{title:"🐞 Fehler melden",intro:"Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.",label:"Fehlerbeschreibung",placeholder:"Was funktioniert nicht? Was hast du gemacht?",emptyMsg:"Bitte beschreibe den Fehler kurz.",thanksTitle:"Danke für deine Meldung! 🐞",thanks:"Ich schaue mir das an und kümmere mich darum.",img:"grizzlys-bug-icon.png",emoji:"🐞"},
+  "Wunsch / Anregung":{title:"💡 Wunsch / Anregung",intro:"Was wünschst du dir für die App oder was könnte besser werden? Die Idee wird an die App-Verwaltung übermittelt.",label:"Dein Wunsch / deine Anregung",placeholder:"Was fehlt dir oder was könnte besser sein?",emptyMsg:"Bitte beschreibe deinen Wunsch kurz.",thanksTitle:"Danke für deine Idee! 💡",thanks:"Ich schaue mir deinen Wunsch in Ruhe an und kümmere mich darum.",img:"grizzlys-wunsch-icon.png",emoji:"💡"},
+  "Lob":{title:"👍 Lob",intro:"Was gefällt dir an der App? Dein Lob geht direkt an die App-Verwaltung.",label:"Dein Lob",placeholder:"Was gefällt dir besonders?",emptyMsg:"Bitte schreibe kurz, was dir gefällt.",thanksTitle:"Danke, das freut mich riesig! 👍",thanks:"Dein Lob motiviert mich, die App weiter zu verbessern.",img:"grizzlys-lob-icon.png",emoji:"👍"}
 };
 function currentBugType(){const v=document.getElementById("bugReportType")?.value;return BUG_TYPES[v]?v:"Fehler";}
 function updateBugReportType(){
@@ -574,6 +585,18 @@ function updateBugReportType(){
   set("bugReportIntro",el=>el.textContent=t.intro);
   set("bugReportDescLabel",el=>el.textContent=t.label);
   set("bugReportDescription",el=>el.placeholder=t.placeholder);
+}
+function showFeedbackThanks(typeInfo){
+  const m=document.getElementById("thanksModal"); if(!m){alert(typeInfo.thanksTitle+"\n"+typeInfo.thanks);return;}
+  document.getElementById("thanksImg").src=typeInfo.img;
+  document.getElementById("thanksTitle").textContent=typeInfo.thanksTitle;
+  document.getElementById("thanksText").textContent=typeInfo.thanks;
+  m.hidden=false; m.setAttribute("aria-hidden","false");
+  document.getElementById("thanksClose")?.focus();
+}
+function closeFeedbackThanks(){
+  const m=document.getElementById("thanksModal"); if(!m)return;
+  m.hidden=true; m.setAttribute("aria-hidden","true");
 }
 function closeBugReport(){
   const modal=document.getElementById("bugReportModal");
@@ -611,7 +634,7 @@ async function submitBugReport(){
     document.getElementById("bugReportContact").value="";
     closeBugReport();
     const typeSel=document.getElementById("bugReportType"); if(typeSel){typeSel.value="Fehler";updateBugReportType();}
-    alert(typeInfo.thanks);
+    showFeedbackThanks(typeInfo);
   }catch(err){
     console.error("Fehlermeldung konnte nicht gesendet werden",err);
     alert("Die Meldung konnte nicht gesendet werden. Bitte später erneut versuchen.");
@@ -794,6 +817,9 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("bugReportSend")?.addEventListener("click",submitBugReport);
   document.getElementById("adminBugFilter")?.addEventListener("change",loadBugReports);
   document.getElementById("adminBugType")?.addEventListener("change",loadBugReports);
+  document.getElementById("thanksClose")?.addEventListener("click",closeFeedbackThanks);
+  document.getElementById("thanksModal")?.addEventListener("click",e=>{if(e.target.id==="thanksModal")closeFeedbackThanks();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeFeedbackThanks();});
   document.getElementById("bugReportType")?.addEventListener("change",updateBugReportType);
   document.getElementById("bugReportModal")?.addEventListener("click",e=>{if(e.target.id==="bugReportModal")closeBugReport();});
   document.getElementById("enablePush")?.addEventListener("click",async()=>{
