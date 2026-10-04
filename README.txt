@@ -2,6 +2,16 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Version 1.7.2
+
+Neu in Version 1.7.2
+- Startseite: Karte Nächstes Spiel kompakter (ohne Adresszeile, kleinere Icons)
+- Neue Karte Letztes Spiel mit Ergebnis, Sieg/Niederlage/Unentschieden und Farbstreifen; Tippen öffnet die Spiel-Details
+- Mannschaftskacheln: Bilanz, Tore, Formpunkte der letzten 5 Spiele, Fortschrittsbalken, nächster Gegner mit Logo, Farbverlauf in Teamfarbe
+- Werte werden aus den vorhandenen Ergebnissen berechnet; Push, Cloud Function und Firebase-Regeln unverändert
+- PWA-Cache auf grizzlys-u15-v30 erneuert
+- Dokumentation und Versionsstand auf 1.7.2 aktualisiert
+
 Version 1.7.1
 
 Neu in Version 1.7.1
@@ -105,7 +115,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v29).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v30).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
