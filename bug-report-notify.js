@@ -167,6 +167,9 @@ async function main() {
     if(!data.pushSentAt || !data.emailSentAt) {
       const createdAt=data.createdAt;
       const createdMs=createdAt?.toMillis ? createdAt.toMillis() : 0;
+      // Die Cloud Function onBugReportCreated bekommt 3 Minuten Vorsprung;
+      // dieser Workflow versendet nur, was dort nicht erfolgreich war.
+      if(createdMs && Date.now()-createdMs < 3*60*1000) return;
       reports.push({id:doc.id,...data,_createdMs:createdMs});
     }
   });
