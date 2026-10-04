@@ -253,7 +253,7 @@ async function sendBugPush(report) {
     return bm - am;
   });
 
-  logger.info("Bug-Push: Admin-Token gefunden", { count: candidates.length });
+  logger.info("Bug-Push: Admin-Geräte gefunden", { count: candidates.length });
   if (!candidates.length) return false;
 
   const info = typeInfo(report);
@@ -262,7 +262,7 @@ async function sendBugPush(report) {
 
   // Gleicher FCM/WebPush-Aufbau wie im bisherigen Notifier.
   const response = await admin.messaging().sendEachForMulticast({
-    tokens: [candidates[0].token],
+    tokens: [...new Set(candidates.map(c => c.token))],
     notification: { title, body },
     webpush: {
       notification: {
