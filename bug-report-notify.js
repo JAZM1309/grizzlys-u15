@@ -13,7 +13,36 @@ const db = admin.firestore();
 const messaging = admin.messaging();
 const STATE_REF = db.doc("system/bugReportNotifier");
 const NOTIFY_EMAIL = required("BUG_REPORT_EMAIL");
-const BUG_ICON_URL = "https://jazm1309.github.io/grizzlys-u15/grizzlys-bug-icon.png";
+const ICON_BASE_URL = "https://jazm1309.github.io/grizzlys-u15/";
+const TYPE_INFO = {
+  "Fehler": {
+    file: "grizzlys-bug-icon.png",
+    mailLabel: "Fehlermeldung",
+    heading: "Neue Fehlermeldung in der Grizzlys-U15-App",
+    descLabel: "Fehlerbeschreibung",
+    pushTitle: "🏒 Neue Grizzlys-Fehlermeldung",
+    alt: "Grizzlys Fehler"
+  },
+  "Wunsch / Anregung": {
+    file: "grizzlys-wunsch-icon.png",
+    mailLabel: "Wunsch / Anregung",
+    heading: "Neuer Wunsch / neue Anregung zur Grizzlys-U15-App",
+    descLabel: "Wunsch / Anregung",
+    pushTitle: "💡 Neuer Grizzlys-Wunsch / Neue Anregung",
+    alt: "Grizzlys Wunsch und Anregungen"
+  },
+  "Lob": {
+    file: "grizzlys-lob-icon.png",
+    mailLabel: "Lob",
+    heading: "Neues Lob für die Grizzlys-U15-App",
+    descLabel: "Lob",
+    pushTitle: "👍 Neues Lob für die Grizzlys-App",
+    alt: "Grizzlys Lob"
+  }
+};
+function typeInfo(report) {
+  return TYPE_INFO[report.type] || TYPE_INFO["Fehler"];
+}
 const BUG_BADGE_URL = "https://jazm1309.github.io/grizzlys-u15/badge-96.png";
 
 function smtpTransport() {
@@ -26,14 +55,16 @@ function smtpTransport() {
 }
 
 async function sendEmail(report) {
+  const info = typeInfo(report);
   const text = [
-    "Neue Fehlermeldung in der Grizzlys-U15-App","",
+    info.heading,"",
     `Name: ${report.name || "Nicht angegeben"}`,
+    `Art: ${report.type || "Fehler"}`,
     `Bereich: ${report.area || "Sonstiges"}`,
     `Version: ${report.appVersion || "?"}`,
     `Plattform: ${report.platform || "?"}`,
     `Push beim Nutzer: ${report.pushRegistered ? "aktiv" : "nicht registriert"}`,"",
-    "Fehlerbeschreibung:",report.description || "","",
+    `${info.descLabel}:`,report.description || "","",
     report.contact ? `Rückfrage-Kontakt: ${report.contact}` : "Kein Rückfrage-Kontakt angegeben."
   ].join("\n");
 
@@ -46,20 +77,20 @@ async function sendEmail(report) {
   await smtpTransport().sendMail({
     from: process.env.SMTP_USER,
     to: NOTIFY_EMAIL,
-    subject: `🏒 Grizzlys U15 – neue Fehlermeldung (${report.area || "Sonstiges"})`,
+    subject: `🏒 Grizzlys U15 – ${info.mailLabel} (${report.area || "Sonstiges"})`,
     text,
     attachments: [{
-      filename: "grizzlys-bug-icon.png",
-      path: path.join(__dirname, "grizzlys-bug-icon.png"),
-      cid: "grizzlys-bug-icon@grizzlys-u15",
+      filename: info.file,
+      path: path.join(__dirname, info.file),
+      cid: "grizzlys-feedback-icon@grizzlys-u15",
       contentType: "image/png",
       contentDisposition: "inline"
     }],
     html: `<div style="font-family:Arial,sans-serif;color:#111;max-width:700px">
-      <img src="cid:grizzlys-bug-icon@grizzlys-u15" alt="Grizzlys Fehler" width="160" height="160" style="display:block;margin:0 0 18px">
-      <h2>Neue Fehlermeldung in der Grizzlys-U15-App</h2>
-      <p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p>
-      <p><b>Fehlerbeschreibung:</b></p><p>${safe}</p>
+      <img src="cid:grizzlys-feedback-icon@grizzlys-u15" alt="${info.alt}" width="160" height="160" style="display:block;margin:0 0 18px">
+      <h2>${info.heading}</h2>
+      <p><b>Name:</b> ${report.name || "Nicht angegeben"}<br><b>Art:</b> ${report.type || "Fehler"}<br><b>Bereich:</b> ${report.area || "Sonstiges"}<br><b>Version:</b> ${report.appVersion || "?"}<br><b>Plattform:</b> ${report.platform || "?"}<br><b>Push beim Nutzer:</b> ${report.pushRegistered ? "aktiv" : "nicht registriert"}</p>
+      <p><b>${info.descLabel}:</b></p><p>${safe}</p>
       ${report.contact ? `<p><b>Rückfrage-Kontakt:</b> ${report.contact}</p>` : "<p>Kein Rückfrage-Kontakt angegeben.</p>"}
     </div>`
   });
@@ -90,7 +121,8 @@ async function sendPush(report) {
   if (!candidates.length) return false;
 
   const tokens = [candidates[0].token];
-  const title = "🏒 Neue Grizzlys-Fehlermeldung";
+  const info = typeInfo(report);
+  const title = info.pushTitle;
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
 
   // Exakt derselbe FCM/WebPush-Aufbau wie beim funktionierenden 24h-Push.
@@ -100,7 +132,7 @@ async function sendPush(report) {
     notification: { title, body },
     webpush: {
       notification: {
-        icon: BUG_ICON_URL,
+        icon: ICON_BASE_URL + info.file,
         badge: BUG_BADGE_URL
       },
       data: { type: "bugReport", title, body },

@@ -2,6 +2,18 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Version 1.6.7
+
+Neu in Version 1.6.7
+- „Fehler melden“ wurde zu Feedback & Fehler erweitert: Art der Meldung (Fehler, Wunsch / Anregung, Lob) mit passenden Texten und Dankes-Meldung
+- Neuer Bereich „Neue Funktion“ in der Bereichsauswahl
+- Admin-Bereich: „Rückmeldungen“ statt „Fehlermeldungen“, zusätzlicher Filter nach Art
+- Neue Benachrichtigungsbilder: grizzlys-wunsch-icon.png und grizzlys-lob-icon.png; Fehler behalten grizzlys-bug-icon.png
+- bug-report-notify.js: Push-Titel/-Bild und E-Mail-Betreff/-Bild richten sich nach der Art der Meldung (main.yml unverändert)
+- firestore.rules: neues optionales Feld type (Fehler, Wunsch / Anregung, Lob)
+- PWA-Cache auf grizzlys-u15-v27 erneuert
+- Dokumentation und Versionsstand auf 1.6.7 aktualisiert
+
 Version 1.6.6
 
 Neu in Version 1.6.6
@@ -65,7 +77,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v26).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v27).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore

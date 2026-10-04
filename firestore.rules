@@ -41,8 +41,9 @@ service cloud.firestore {
       allow create: if
         request.resource.data.status == "Neu"
         && request.resource.data.keys().hasOnly(
-             ["name","area","description","contact","appVersion","platform","userAgent",
+             ["type","name","area","description","contact","appVersion","platform","userAgent",
               "pushRegistered","createdAt","status"])
+        && request.resource.data.get("type", "Fehler") in ["Fehler","Wunsch / Anregung","Lob"]
         && request.resource.data.name is string
         && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 80
         && request.resource.data.description is string
