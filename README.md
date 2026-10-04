@@ -2,6 +2,21 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+## Version 1.7.0
+
+### Neu in Version 1.7.0
+
+- Modernisierte Optik ohne Änderung an Farben, Logos, Menü und Funktionen
+- Kopfbereich mit Stadionbild kompakter (kleineres Logo und weniger Höhe), das nächste Spiel steht dadurch höher
+- Karte „Nächstes Spiel“: leiserer Titel, Teamlabel oben rechts, Uhrzeit groß, weiche Schatten statt harter Rahmen
+- Spielpaarung aufgeräumt: Logos über den Namen, „VS“ in der Mitte, langer SpG-Name bricht nicht mehr über viele Zeilen
+- Aktionen (Route, Termin, Erinnerung, Teilen) als einheitliche Linien-Icons in einer Reihe statt Emoji-Chips; Standort-Symbol als Linien-Icon
+- Mannschaftskarten mit weicheren Rahmen und Schatten; „Heim · “ / „Auswärts · “ statt Emoji
+- Kleine Bewegungen: Karten und Buttons reagieren beim Antippen, Ansichten blenden sanft ein (nicht bei „reduzierte Bewegung“)
+- Versandlogik, Push, Cloud Function und Firebase-Regeln unverändert
+- PWA-Cache auf `grizzlys-u15-v28` erneuert
+- Dokumentation und Versionsstand auf 1.7.0 aktualisiert
+
 ## Version 1.6.7
 
 ### Neu in Version 1.6.7
@@ -12,7 +27,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - Neue Benachrichtigungsbilder: `grizzlys-wunsch-icon.png` (Wunsch & Anregungen) und `grizzlys-lob-icon.png` (Lob); Fehler behalten `grizzlys-bug-icon.png`
 - `bug-report-notify.js`: Push-Titel, Push-Bild, E-Mail-Betreff, E-Mail-Bild und Überschriften richten sich nach der Art der Meldung (Ergebnis- und Erinnerungs-Push in `main.yml` unverändert)
 - `firestore.rules`: neues optionales Feld `type` (erlaubt: Fehler, Wunsch / Anregung, Lob); Meldungen ohne `type` zählen als Fehler
-- PWA-Cache auf `grizzlys-u15-v27` erneuert
+- PWA-Cache auf `grizzlys-u15-v28` erneuert
 - Dokumentation und Versionsstand auf 1.6.7 aktualisiert
 
 ## Version 1.6.6
@@ -147,7 +162,7 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v27`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v28`).
 
 ## Firebase
 

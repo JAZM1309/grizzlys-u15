@@ -2,6 +2,20 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Version 1.7.0
+
+Neu in Version 1.7.0
+- Modernisierte Optik ohne Änderung an Farben, Logos, Menü und Funktionen
+- Kompakterer Kopfbereich mit Stadionbild, das nächste Spiel steht höher
+- Karte „Nächstes Spiel“: leiserer Titel, Teamlabel oben rechts, Uhrzeit groß, weiche Schatten
+- Spielpaarung aufgeräumt: Logos über den Namen, VS in der Mitte
+- Aktionen (Route, Termin, Erinnerung, Teilen) als einheitliche Linien-Icons in einer Reihe statt Emoji-Chips
+- Mannschaftskarten mit weicheren Rahmen; „Heim · “ / „Auswärts · “ statt Emoji
+- Kleine Bewegungen beim Antippen und beim Wechsel der Ansichten (nicht bei „reduzierte Bewegung“)
+- Push, Cloud Function und Firebase-Regeln unverändert
+- PWA-Cache auf grizzlys-u15-v28 erneuert
+- Dokumentation und Versionsstand auf 1.7.0 aktualisiert
+
 Version 1.6.7
 
 Neu in Version 1.6.7
@@ -11,7 +25,7 @@ Neu in Version 1.6.7
 - Neue Benachrichtigungsbilder: grizzlys-wunsch-icon.png und grizzlys-lob-icon.png; Fehler behalten grizzlys-bug-icon.png
 - bug-report-notify.js: Push-Titel/-Bild und E-Mail-Betreff/-Bild richten sich nach der Art der Meldung (main.yml unverändert)
 - firestore.rules: neues optionales Feld type (Fehler, Wunsch / Anregung, Lob)
-- PWA-Cache auf grizzlys-u15-v27 erneuert
+- PWA-Cache auf grizzlys-u15-v28 erneuert
 - Dokumentation und Versionsstand auf 1.6.7 aktualisiert
 
 Version 1.6.6
@@ -77,7 +91,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v27).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v28).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
