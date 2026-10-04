@@ -2,6 +2,21 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+## Version 1.7.1
+
+### Neu in Version 1.7.1
+
+- Das moderne Layout aus 1.7.0 gilt jetzt auch auf **Spielplan, Gegner, Downloads und Info**
+- Spielplan: Umschalter „Chronologisch / Kalender“ als Segment-Schalter mit Icons, Filter- und „Heute“-Button mit Icons, Tabellen-Links als Chips, Monatsüberschriften leiser, Spielkarten mit weichem Schatten und Mannschaftsfarbe am Rand
+- Spielkarten: Logos über den Namen, große Uhrzeit, Heim-/Auswärts-Label, Aktionen (Route, Termin, Erinnerung, Teilen) als Icon-Reihe; „Nächstes Spiel“ hervorgehoben
+- Spiel-Details (Fenster): Emoji durch Linien-Icons ersetzt
+- Gegner: Suchfeld mit Lupe, Gegnerkarten mit Farbstreifen und Route-Button mit Icon
+- Downloads: Kalender-/PDF-Einträge mit runden Icons und Pfeil
+- Info: weichere Karten, Überschriften mit Icons, Teamseiten als farbige Chips, Buttons mit Icons
+- Push, Cloud Function und Firebase-Regeln unverändert
+- PWA-Cache auf `grizzlys-u15-v29` erneuert
+- Dokumentation und Versionsstand auf 1.7.1 aktualisiert
+
 ## Version 1.7.0
 
 ### Neu in Version 1.7.0
@@ -162,7 +177,7 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v28`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v29`).
 
 ## Firebase
 
