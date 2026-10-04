@@ -304,6 +304,12 @@ main>section{animation:viewIn .28s ease-out}
 .bugReportCard{border:0;background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(16,32,51,.09)}
 .rbIcon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--ice);color:#0b6fd6}.rbIcon .ic{width:22px;height:22px;vertical-align:0}
 .adminOpenIcon .ic{width:22px;height:22px;vertical-align:0}.adminOpenArrow .ic{width:20px;height:20px;vertical-align:0}
+/* Kachel-Design der Mannschaftskacheln auch für Spielkarten und Gegnerkarten */
+.card,.opponentGame,.opponentCard[data-team]{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,color-mix(in srgb,var(--team) 11%,white),#fff 62%)}
+.opponentCard.opponentA{--team:var(--a)}.opponentCard.opponentB{--team:var(--b)}
+.opponentGame.A{--team:var(--a)}.opponentGame.B{--team:var(--b)}
+.card[data-team]::after,.opponentGame[data-team]::after,.opponentCard[data-team]::after{content:attr(data-team);position:absolute;right:10px;top:-12px;z-index:-1;font-size:84px;font-weight:950;line-height:1;color:var(--team);opacity:.07;pointer-events:none}
+.opponentCard[data-team]::after{font-size:64px;top:-8px;right:84px}
 </style>
 <script>window.ICONS={"pin": "<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\"/><path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z\"/>", "calplus": "<path d=\"M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5\"/><path d=\"M16 3v4\"/><path d=\"M8 3v4\"/><path d=\"M4 11h16\"/><path d=\"M16 19h6\"/><path d=\"M19 16v6\"/>", "cal": "<path d=\"M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z\"/><path d=\"M16 3v4\"/><path d=\"M8 3v4\"/><path d=\"M4 11h16\"/>", "bell": "<path d=\"M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6\"/><path d=\"M9 17v1a3 3 0 0 0 6 0v-1\"/>", "share": "<path d=\"M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M8.7 10.7l6.6 -3.4\"/><path d=\"M8.7 13.3l6.6 3.4\"/>", "filter": "<path d=\"M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z\"/>", "target": "<path d=\"M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/><path d=\"M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\"/><path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/>", "list": "<path d=\"M9 6l11 0\"/><path d=\"M9 12l11 0\"/><path d=\"M9 18l11 0\"/><path d=\"M5 6l0 .01\"/><path d=\"M5 12l0 .01\"/><path d=\"M5 18l0 .01\"/>", "chart": "<path d=\"M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M4 20h14\"/>", "search": "<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\"/><path d=\"M21 21l-6 -6\"/>", "download": "<path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2\"/><path d=\"M7 11l5 5l5 -5\"/><path d=\"M12 4l0 12\"/>", "file": "<path d=\"M14 3v4a1 1 0 0 0 1 1h4\"/><path d=\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z\"/><path d=\"M9 9l1 0\"/><path d=\"M9 13l6 0\"/><path d=\"M9 17l6 0\"/>", "chev": "<path d=\"M9 6l6 6l-6 6\"/>", "home": "<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\"/><path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\"/><path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\"/>", "away": "<path d=\"M7 17l10 -10\"/><path d=\"M8 7l9 0l0 9\"/>", "clock": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M12 7v5l3 3\"/>", "world": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M3.6 9h16.8\"/><path d=\"M3.6 15h16.8\"/><path d=\"M11.5 3a17 17 0 0 0 0 18\"/><path d=\"M12.5 3a17 17 0 0 1 0 18\"/>", "chat": "<path d=\"M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1\"/>", "lock": "<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z\"/><path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\"/><path d=\"M8 11v-4a4 4 0 1 1 8 0v4\"/>"};window.ic=function(n,c){return '<svg class="ic'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';};window.actBtn=function(cl,icon,label){return '<button class="action '+cl+'" type="button"><span class="aIcon">'+ic(icon)+'</span>'+label+'</button>';};</script>
 </head>
@@ -1373,7 +1379,7 @@ window.applyResults=function(){
     const teamClasses=teamSet.length===1?(teamSet[0]==="A"?" opponentA":" opponentB"):"";
     const teamBadges=teamSet.map(t=>`<span class="opponentTeamBadge ${t}">U15 ${t}</span>`).join("");
 
-    return '<article class="opponentCard'+teamClasses+'" data-opponent="'+esc(name)+'">'+
+    return '<article class="opponentCard'+teamClasses+'" data-opponent="'+esc(name)+'"'+(teamSet.length===1?' data-team="'+teamSet[0]+'"':'')+'>'+
       logoHtml(name,"opponentLogo")+
       '<div class="opponentCardInfo">'+
       '<div class="opponentCardName">'+esc(name)+'</div>'+
@@ -1419,7 +1425,7 @@ window.applyResults=function(){
       const home=isHome(g);
       const homeLogo=home?grizzlysHtml("opponentGameLogo"):logoHtml(g.home,"opponentGameLogo");
       const awayLogo=home?logoHtml(g.away,"opponentGameLogo"):grizzlysHtml("opponentGameLogo");
-      return '<div class="opponentGame '+esc(g.team)+'">'+
+      return '<div class="opponentGame '+esc(g.team)+'" data-team="'+esc(g.team)+'">'+
       '<div class="opponentGameTop">'+
       '<div class="opponentGameDate">'+esc(fmtDate(g))+" · "+esc(g.time)+" Uhr</div>"+
       '<div class="opponentGameTeam">U15 '+esc(g.team)+'</div>'+
@@ -1474,7 +1480,7 @@ function renderList(filter="all"){
   let month=""; const ng=nextGame();
   arr.forEach(g=>{
     const m=monthLabel(g); if(m!==month){month=m; const mh=document.createElement("div");mh.className="month";mh.textContent=m;list.appendChild(mh)}
-    const card=document.createElement("article"); card.className="card "+(g.team==="B"?"teamB":"teamA"); card.dataset.date=g.date;
+    const card=document.createElement("article"); card.className="card "+(g.team==="B"?"teamB":"teamA"); card.dataset.date=g.date; card.dataset.team=g.team;
     const home=isHome(g);
     const sideL=home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home), sideR=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
     card.innerHTML=`<div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${g.team}</span></div><div class="gcWhen"><span class="gcDate">${fmtDate(g)}</span><b class="gcTime">${g.time}</b></div></div><div class="gcMatch"><div class="gcSide">${sideL}<span>${g.home}</span></div><div class="vs">VS</div><div class="gcSide">${sideR}<span>${g.away}</span></div></div><div class="gcMeta"><span class="homeaway">${home?ic("home")+"Heimspiel":ic("away")+"Auswärts"}</span></div><div class="gcVenue">${ic("pin")}<b>${g.stadium}</b> · ${address(g)}</div>${resultBadge(g)}<div class="cardActions">${actBtn("route","pin","Route")}${actBtn("cal","calplus","Termin")}${actBtn("rem","bell","Erinnerung")}${actBtn("share","share","Teilen")}</div>`;
