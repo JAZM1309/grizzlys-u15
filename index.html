@@ -1418,9 +1418,16 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){const am=document.g
 document.querySelectorAll(".teamCard").forEach(b=>b.onclick=()=>{showView("schedule");activeTeamFilters=new Set([b.dataset.team]);activeVenueFilters=new Set(["home","away"]);updateFilterUi();if(scheduleMode==="month")renderCalendar();else renderList("all")});
 if("serviceWorker" in navigator){(function(){
   const banner=document.getElementById("updateBanner");
-  let reloadRequested=false,reloaded=false,dismissed=false,waitingWorker=null;
+  const RELOAD_KEY="grizzlysUpdateReloadAt";
+  let reloadRequested=false,reloaded=false,dismissed=false,waitingWorker=null,suppressUntil=0;
+  try{const t=Number(sessionStorage.getItem(RELOAD_KEY)||0);if(t&&Date.now()-t<120000)suppressUntil=t+120000;}catch(e){}
   function go(){if(reloaded)return;reloaded=true;location.reload();}
-  function showBanner(worker){waitingWorker=worker;if(!dismissed)banner.hidden=false;}
+  function showBanner(worker){
+    waitingWorker=worker;if(dismissed)return;
+    const wait=suppressUntil-Date.now();
+    if(wait>0){setTimeout(()=>{if(!dismissed&&waitingWorker)banner.hidden=false;},wait);return;}
+    banner.hidden=false;
+  }
   function track(reg){
     if(reg.waiting&&navigator.serviceWorker.controller)showBanner(reg.waiting);
     reg.addEventListener("updatefound",()=>{
@@ -1432,6 +1439,7 @@ if("serviceWorker" in navigator){(function(){
     const btn=document.getElementById("updateBannerReload");
     btn.disabled=true;btn.textContent="Wird aktualisiert…";
     reloadRequested=true;
+    try{sessionStorage.setItem(RELOAD_KEY,String(Date.now()));}catch(e){}
     try{
       const reg=await navigator.serviceWorker.getRegistration();
       const w=(reg&&reg.waiting)||waitingWorker;
