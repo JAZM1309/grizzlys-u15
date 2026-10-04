@@ -117,10 +117,10 @@ async function sendPush(report) {
     return bm - am;
   });
 
-  console.log("Bug-Push: Admin-Token gefunden:", candidates.length, "– verwende das zuletzt aktualisierte Gerät.");
+  console.log("Bug-Push: Admin-Token gefunden:", candidates.length, "– sende an alle Admin-Geräte.");
   if (!candidates.length) return false;
 
-  const tokens = [candidates[0].token];
+  const tokens = [...new Set(candidates.map(c => c.token))];
   const info = typeInfo(report);
   const title = info.pushTitle;
   const body = `${report.area || "Sonstiges"}: ${(report.description || "").slice(0,100)}`;
