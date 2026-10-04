@@ -328,6 +328,8 @@ main>section{animation:viewIn .28s ease-out}
 .calChip.teamA.active{background:var(--a);border-color:var(--a)}.calChip.teamB.active{background:var(--b);border-color:var(--b)}
 .calChip.active i{background:#fff}
 #calFilterGo:disabled{opacity:.45;pointer-events:none}
+.mdCard{box-shadow:0 8px 24px rgba(16,32,51,.09),inset 5px 0 0 var(--team)!important}
+.mdCard .matchModalActions{margin-top:12px}
 </style>
 <script>window.ICONS={"pin": "<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\"/><path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z\"/>", "calplus": "<path d=\"M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5\"/><path d=\"M16 3v4\"/><path d=\"M8 3v4\"/><path d=\"M4 11h16\"/><path d=\"M16 19h6\"/><path d=\"M19 16v6\"/>", "cal": "<path d=\"M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z\"/><path d=\"M16 3v4\"/><path d=\"M8 3v4\"/><path d=\"M4 11h16\"/>", "bell": "<path d=\"M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6\"/><path d=\"M9 17v1a3 3 0 0 0 6 0v-1\"/>", "share": "<path d=\"M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M8.7 10.7l6.6 -3.4\"/><path d=\"M8.7 13.3l6.6 3.4\"/>", "filter": "<path d=\"M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z\"/>", "target": "<path d=\"M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/><path d=\"M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\"/><path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/>", "list": "<path d=\"M9 6l11 0\"/><path d=\"M9 12l11 0\"/><path d=\"M9 18l11 0\"/><path d=\"M5 6l0 .01\"/><path d=\"M5 12l0 .01\"/><path d=\"M5 18l0 .01\"/>", "chart": "<path d=\"M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M4 20h14\"/>", "search": "<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\"/><path d=\"M21 21l-6 -6\"/>", "download": "<path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2\"/><path d=\"M7 11l5 5l5 -5\"/><path d=\"M12 4l0 12\"/>", "file": "<path d=\"M14 3v4a1 1 0 0 0 1 1h4\"/><path d=\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z\"/><path d=\"M9 9l1 0\"/><path d=\"M9 13l6 0\"/><path d=\"M9 17l6 0\"/>", "chev": "<path d=\"M9 6l6 6l-6 6\"/>", "home": "<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\"/><path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\"/><path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\"/>", "away": "<path d=\"M7 17l10 -10\"/><path d=\"M8 7l9 0l0 9\"/>", "clock": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M12 7v5l3 3\"/>", "world": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M3.6 9h16.8\"/><path d=\"M3.6 15h16.8\"/><path d=\"M11.5 3a17 17 0 0 0 0 18\"/><path d=\"M12.5 3a17 17 0 0 1 0 18\"/>", "chat": "<path d=\"M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1\"/>", "lock": "<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z\"/><path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\"/><path d=\"M8 11v-4a4 4 0 1 1 8 0v4\"/>"};window.ic=function(n,c){return '<svg class="ic'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';};window.actBtn=function(cl,icon,label){return '<button class="action '+cl+'" type="button"><span class="aIcon">'+ic(icon)+'</span>'+label+'</button>';};</script>
 </head>
@@ -1571,23 +1573,8 @@ function openMatchDetails(g){
   const cls=g.team==="A"?"teamA":"teamB";
   const homeLogo=home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home);
   const awayLogo=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
-  content.innerHTML=
-    `<div class="matchModalTeam nextTeam ${cls}">U15 ${g.team}</div>`+
-    `<div class="matchModalMatch">`+
-      `<div class="matchModalSide"><div class="opponentLine">${homeLogo}<span>${esc(g.home)}</span></div></div>`+
-      `<div class="vs">VS</div>`+
-      `<div class="matchModalSide right"><div class="opponentLine" style="justify-content:flex-end"><span>${esc(g.away)}</span>${awayLogo}</div></div>`+
-    `</div>`+
-    `<div class="matchModalMeta">`+
-      `<b>${ic("cal")} ${esc(fmtDate(g))}</b><br>`+
-      `<b>${ic("clock")} ${esc(g.time)} Uhr</b><br>`+
-      `${home?ic("home")+" Heimspiel":ic("away")+" Auswärtsspiel"}<br>`+
-      `${ic("pin")} <b>${esc(g.stadium)}</b><br>`+
-      `<span class="small">${esc(address(g))}</span>`+(resultFor(g)?`<br>${resultBadge(g)}`:"")+
-    `</div>`+
-    `<div class="matchModalActions">`+
-      actBtn("modalRoute","pin","Route")+actBtn("modalCal","calplus","Termin")+actBtn("modalRem","bell","Erinnerung")+actBtn("modalShare","share","Teilen")+
-    `</div>`;
+  const sideL=homeLogo, sideR=awayLogo;
+  content.innerHTML=`<article class="card mdCard ${g.team==="B"?"teamB":"teamA"}" data-team="${g.team}"><div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${g.team}</span></div><div class="gcWhen"><span class="gcDate">${esc(fmtDate(g))}</span><b class="gcTime">${esc(g.time)}</b></div></div><div class="gcMatch"><div class="gcSide">${sideL}<span>${esc(g.home)}</span></div><div class="vs">VS</div><div class="gcSide">${sideR}<span>${esc(g.away)}</span></div></div><div class="gcMeta"><span class="homeaway">${home?ic("home")+"Heimspiel":ic("away")+"Auswärts"}</span></div><div class="gcVenue">${ic("pin")}<b>${esc(g.stadium)}</b> · ${esc(address(g))}</div>${resultFor(g)?resultBadge(g):""}<div class="matchModalActions">${actBtn("modalRoute","pin","Route")}${actBtn("modalCal","calplus","Termin")}${actBtn("modalRem","bell","Erinnerung")}${actBtn("modalShare","share","Teilen")}</div></article>`;
   content.querySelector(".modalRoute").onclick=()=>route(g);
   content.querySelector(".modalCal").onclick=()=>calendar(g);
   content.querySelector(".modalRem").onclick=()=>reminder(g);
