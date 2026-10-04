@@ -9,6 +9,8 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - Startseite: Karte „Nächstes Spiel“ kompakter (weniger Höhe, Adresszeile entfällt, kleinere Aktions-Icons)
 - Neue Karte „Letztes Spiel“: zuletzt gespieltes Spiel mit Ergebnis, Sieg/Niederlage/Unentschieden-Label und Farbstreifen; Tipp öffnet die Spiel-Details. Liegt noch kein Ergebnis vor, steht „Ergebnis folgt“
 - Mannschaftskacheln überarbeitet: Bilanz (Siege/Unentschieden/Niederlagen/Tore), Formpunkte der letzten 5 Spiele, Fortschrittsbalken „x von y Spielen gespielt“, nächster Gegner mit Logo, Buchstaben-Wasserzeichen und Farbverlauf in der Teamfarbe
+- Kachel-Design (Farbverlauf, Buchstaben-Wasserzeichen, Farbstreifen) jetzt auch bei Spielkarten, Gegnerkarten, „Nächstes Spiel“, „Letztes Spiel“ und den Downloads
+- Downloads: ein Button „Kalender herunterladen“ mit Auswahl (Mannschaft, Heim/Auswärts, ganze Saison oder nur kommende Spiele) statt drei fester Kalender-Buttons
 - Alle Werte werden aus den vorhandenen Ergebnissen berechnet; Push, Cloud Function und Firebase-Regeln unverändert
 - PWA-Cache auf `grizzlys-u15-v30` erneuert
 - Dokumentation und Versionsstand auf 1.7.2 aktualisiert

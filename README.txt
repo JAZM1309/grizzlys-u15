@@ -8,6 +8,8 @@ Neu in Version 1.7.2
 - Startseite: Karte Nächstes Spiel kompakter (ohne Adresszeile, kleinere Icons)
 - Neue Karte Letztes Spiel mit Ergebnis, Sieg/Niederlage/Unentschieden und Farbstreifen; Tippen öffnet die Spiel-Details
 - Mannschaftskacheln: Bilanz, Tore, Formpunkte der letzten 5 Spiele, Fortschrittsbalken, nächster Gegner mit Logo, Farbverlauf in Teamfarbe
+- Kachel-Design auch bei Spielkarten, Gegnerkarten, Nächstes/Letztes Spiel und Downloads
+- Downloads: ein Button Kalender herunterladen mit Auswahl (Mannschaft, Heim/Auswärts, ganze Saison oder nur kommende Spiele)
 - Werte werden aus den vorhandenen Ergebnissen berechnet; Push, Cloud Function und Firebase-Regeln unverändert
 - PWA-Cache auf grizzlys-u15-v30 erneuert
 - Dokumentation und Versionsstand auf 1.7.2 aktualisiert
