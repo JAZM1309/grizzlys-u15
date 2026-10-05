@@ -2,6 +2,38 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Version 1.8.0
+
+Neu in Version 1.8.0
+- Kopfbereich aufgewertet: Eisnebel, Eisstaub, leuchtende Bandenlinie, Saison-Abzeichen mit Puck
+- Live-Status im Kopfbereich: Nächstes Spiel in x Tagen, Morgen 10:30 Uhr, am Spieltag GAMEDAY mit Uhrzeit
+- Mini-Leiste beim Scrollen mit kleinem Logo, Titel und Kurzstatus; Tabs bleiben sichtbar
+- Halloween-Design in Schwarz und Orange, automatisch vom 20.10. bis 2.11.
+- Schalter Halloween-Design in den Einstellungen (nur im Halloween-Zeitraum sichtbar)
+- Halloween-Bär als Logo im Kopfbereich (halloween-logo.png), Kürbis am Titel, Spinnennetz und Fledermäuse
+- Schließbarer Gruß Happy Halloween – Zeit für Spuk auf dem Eis (wünscht das Grizzlys-Team) auf der Startseite
+- Abzeichen Halloween-Spiel beim Spiel am 31.10.; die Karte dieses Spiels ist besonders gruselig (dunkel, pulsierendes Leuchten, Spinnennetz, Geister, Kürbis, blinzelnde Augen)
+- Hockey Mini-Spiel wird zum Gruselspiel: dunkles Spielfeld mit Nebel, Spinne, Fledermaus und leuchtenden Augen, Kürbis gegen Geist, Gruseltexte, leuchtende Gewinnlinie, Wackeln und Blitz bei einer Niederlage
+- Hockey Mini-Spiel aufgewertet: Eisfläche mit Banden, Werbebanden und Anspielkreis, Anzeigetafel mit Serienstand und Torlampe, Puck- und Schläger-Figuren mit Einrutsch-Animation und Eisspray, Gewinnlinie leuchtet, "TOOOR!" mit Konfetti und Vibration
+- Mini-Spiel mit neuen Regeln: Serie "Best of 5", drei Schwierigkeitsstufen (Anfänger, Profi, Torwart), drei Strafzeiten pro Runde (sperren ein Feld für den Gegner für 2 Züge) und Pokale (Hattrick, Serie gewonnen, Torwart bezwungen), die lokal auf dem Gerät gespeichert werden
+- Gruselspiel im Halloween-Zeitraum mit Hallenlicht aus: Kürbis-Pucks, Geister, orange Torlampe, Fledermaus- und Kürbis-Konfetti
+- Button zum Mini-Spiel aufgewertet: Eishallen-Look mit Lichtreflex, wippendem Puck-Symbol, "NEU"-Banderole, Mini-Spielfeld mit leuchtender Gewinnreihe und Pokal-Zaehler (z. B. 1/3 Pokale)
+- Neuer Bereich "Einstellungen" (Zahnrad-Symbol im Kopfbereich neben dem Info-Symbol): Darstellung Hell / Dunkel / Automatisch (folgt dem Handy), Halloween-Schalter, Push-Anmeldung, Feedback & Fehler und Admin-Bereich. Diese Punkte stehen nicht mehr unten auf jeder Seite bzw. in der Info
+- Dunkelmodus fuer alle Seiten, Fenster und das Minispiel; die Auswahl wird auf dem Geraet gespeichert (Standard: Hell). Das Halloween-Design hat Vorrang, solange es aktiv ist
+- Slogan "Ein Team - zwei starke Mannschaften" im Kopfbereich rechts neben dem Titel, in Pinsel-Handschrift (Schrift Permanent Marker, direkt in der App eingebettet, funktioniert offline) mit blauem Pinselstrich; im Halloween-Design orange; auf sehr schmalen Handys kleiner bzw. ausgeblendet
+- Die angezeigte App-Version (Info und Fehlermeldungen) enthaelt jetzt die Cache-Nummer, z. B. 1.8.0-v44; so lassen sich Test- und Live-Stand genau vergleichen. Die Testversion zeigt sie zusaetzlich im orangen Balken
+- Aufgeraeumt: nicht mehr genutzte Dateien entfernt (alte Uebersichts-PDFs, ungenutzte Symbole, Mini-Spiel-Banner, analytics-test.html); statt der Versions-PDFs gibt es jetzt eine einzige PDF Grizzlys-U15-App-Seitenuebersicht.pdf (Aufbau der Seiten und Verknuepfungen, ohne Versionsnummer)
+- Der Slogan im Kopfbereich wird beim Start Zeile fuer Zeile "geschrieben" (der blaue Pinselstrich zeichnet sich zuletzt); bei aktivierter Bewegungsreduzierung erscheint er sofort
+- Bereich "Push aktivieren" (Einstellungen) neu gestaltet: klingelnde Glocke, Beispiel-Meldungen (Ergebnis und 24-Stunden-Erinnerung), drei Vorteile, grosser Button und Statusanzeige (Aus / Aktiv / Blockiert / Nicht moeglich) mit passendem Hinweis, auch fuer Dunkelmodus und Halloween. Die Anmeldung selbst ist unveraendert
+- PDF-Auswahl (Downloads) im neuen Chip-Design wie die Kalender-Auswahl: Gruppen "Umfang", "Mannschaft" (mit blauem/orangem Punkt) und "Spielort", auch im Dunkelmodus
+- Feedback-Bereich überarbeitet: Karte „Deine Meinung zählt“ mit Schnellauswahl (Fehler / Idee / Lob), Meldeformular mit Art-Umschalter, Zeichenzähler und Hinweis zum Datenschutz
+- Admin: Ergebnisverwaltung und Spieländerungen zeigen die aktuellen bzw. nächsten Spiele oben (Ergebnisse: nach Nähe zum heutigen Tag, Spieländerungen: kommende zuerst, danach vergangene)
+- Fledermäuse im Dankesfenster nach einer Rückmeldung
+- Optional: Halloween-App-Symbole im Ordner halloween-app-symbol (siehe ANLEITUNG.txt)
+- Push, Cloud Function und Firebase-Regeln unverändert
+- PWA-Cache auf grizzlys-u15-v44 erneuert
+- Dokumentation und Versionsstand auf 1.8.0 aktualisiert
+
 Version 1.7.2
 
 Neu in Version 1.7.2
@@ -117,7 +149,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v30).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v44).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
