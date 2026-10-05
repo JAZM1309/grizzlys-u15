@@ -213,4 +213,7 @@ async function main() {
   }
 }
 
-main().catch(error=>{console.error(error);process.exit(1);});
+// Wichtig: Prozess ausdrücklich beenden. Die Firebase-Verbindung bleibt sonst offen,
+// der GitHub-Job läuft dann bis zum Timeout und spätere Läufe werden abgebrochen
+// (= "All jobs were cancelled"-E-Mails alle paar Minuten).
+main().then(()=>process.exit(0)).catch(error=>{console.error(error);process.exit(1);});
