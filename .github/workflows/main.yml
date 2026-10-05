@@ -1,297 +1,40 @@
-name: Grizzlys Ergebnisdienst
+name: Bug report notifications
 
 concurrency:
-  group: result-push
+  group: bug-report-notify
   cancel-in-progress: false
 
-
 on:
-  workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  result-push:
+  notify:
     runs-on: ubuntu-latest
+    timeout-minutes: 4
 
     steps:
-      - name: Spielplan laden
+      - name: Repository auschecken
         uses: actions/checkout@v4
 
-      - name: Firebase Admin installieren
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Abhängigkeiten installieren
         run: npm install firebase-admin nodemailer
 
-      - name: Ergebnisse prüfen und Push senden
+      - name: Neue Fehlermeldungen prüfen
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          cat > result-push.js <<'EOF'
-          const { cert, initializeApp } = require("firebase-admin/app");
-          const { getFirestore, FieldValue } = require("firebase-admin/firestore");
-          const { getMessaging } = require("firebase-admin/messaging");
-          const fs = require("fs");
-
-          const html = fs.readFileSync("index.html", "utf8");
-          const gamesMatch = html.match(/const games=(\[[\s\S]*?\]);/);
-          const games = gamesMatch ? JSON.parse(gamesMatch[1]) : [];
-
-          // Spielverschiebungen werden im Admin-Bereich in Firebase gespeichert.
-          // Der Pushdienst muss diese Änderungen vor der 24h-Prüfung laden.
-          function applyScheduleOverrides(games, overrides) {
-            for (const game of games) {
-              const baseId = game.date + "_" + game.time.replace(/:/g, "") + "_" + game.team;
-              game._baseId = baseId;
-              const override = overrides[baseId];
-              if (!override) continue;
-              Object.assign(game, {
-                day: override.day || game.day,
-                date: override.date || game.date,
-                time: override.time || game.time,
-                home: override.home || game.home,
-                away: override.away || game.away,
-                stadium: override.stadium || game.stadium
-              });
-            }
-          }
-
-          function berlinDate(date, time) {
-            const [y, m, d] = date.split("-").map(Number);
-            const [hh, mm] = time.split(":").map(Number);
-            const localAsUtc = Date.UTC(y, m - 1, d, hh, mm);
-            let guess = localAsUtc;
-            const fmt = new Intl.DateTimeFormat("en-US", {
-              timeZone: "Europe/Berlin", year: "numeric", month: "2-digit",
-              day: "2-digit", hour: "2-digit", minute: "2-digit",
-              second: "2-digit", hourCycle: "h23"
-            });
-            for (let i = 0; i < 3; i++) {
-              const p = Object.fromEntries(
-                fmt.formatToParts(new Date(guess))
-                  .filter(x => x.type !== "literal")
-                  .map(x => [x.type, x.value])
-              );
-              const displayedAsUtc = Date.UTC(
-                Number(p.year), Number(p.month) - 1, Number(p.day),
-                Number(p.hour), Number(p.minute), Number(p.second)
-              );
-              guess += localAsUtc - displayedAsUtc;
-            }
-            return new Date(guess);
-          }
-
-          function isReminderTime(game) {
-            const gameTime = berlinDate(game.date, game.time).getTime();
-            const diff = gameTime - Date.now();
-            return (
-              // GitHub Actions kann den Cron-Lauf verzögert starten.
-              // Deshalb bewusst ein robustes Fenster um die 24h-Marke.
-              diff >= 23 * 60 * 60 * 1000 &&
-              diff <= 25 * 60 * 60 * 1000
-            );
-          }
-
-          const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-          const firebaseApp = initializeApp({ credential: cert(serviceAccount) });
-          const db = getFirestore(firebaseApp);
-          const messaging = getMessaging(firebaseApp);
-
-          let lastPushStats = { total: 0, success: 0, failed: 0 };
-
-          async function sendPush(tokens, notification, webpush = undefined) {
-            let successCount = 0;
-            let failedCount = 0;
-            const invalidTokenDocs = [];
-
-            for (let i = 0; i < tokens.length; i += 500) {
-              const batch = tokens.slice(i, i + 500);
-              const response = await messaging.sendEachForMulticast({
-                tokens: batch.map(x => x.token),
-                notification,
-                ...(webpush ? { webpush } : {})
-              });
-              successCount += response.successCount;
-
-              response.responses.forEach((result, index) => {
-                if (!result.success) {
-                  failedCount += 1;
-                  const tokenInfo = batch[index];
-                  console.log("FCM Fehler Token:",
-                    result.error?.code, result.error?.message);
-                  if (
-                    result.error?.code === "messaging/registration-token-not-registered" ||
-                    result.error?.code === "messaging/invalid-registration-token"
-                  ) invalidTokenDocs.push(tokenInfo.ref);
-                }
-              });
-            }
-
-            for (const ref of invalidTokenDocs) {
-              await ref.delete();
-              console.log("Ungültiges Push-Token entfernt.");
-            }
-            lastPushStats = { total: tokens.length, success: successCount, failed: failedCount };
-            return successCount;
-          }
-
-          function normalizeGamePart(value) {
-            return String(value || "")
-              .toLowerCase()
-              .trim()
-              .replace(/[^a-z0-9äöüß]+/gi, "-")
-              .replace(/^-+|-+$/g, "");
-          }
-
-          function gameIdentity(game, occurrence) {
-            // Bei einer Verschiebung bleibt die ursprüngliche Spiel-ID gleich.
-            return [normalizeGamePart(game._baseId || ""), normalizeGamePart(game.team), occurrence].join("_");
-          }
-
-          async function sendGameReminders(tokens) {
-            const occurrences = new Map();
-
-            for (const game of games) {
-              const baseKey = [
-                normalizeGamePart(game.team),
-                normalizeGamePart(game.home),
-                normalizeGamePart(game.away),
-                normalizeGamePart(game.stadium)
-              ].join("|");
-              const occurrence = (occurrences.get(baseKey) || 0) + 1;
-              occurrences.set(baseKey, occurrence);
-
-              if (!isReminderTime(game)) continue;
-
-              const reminderId = gameIdentity(game, occurrence);
-              const scheduleKey = game.date + "_" + game.time;
-
-              try {
-                const reminderRef = db.collection("gameReminders").doc(reminderId);
-                const reminderDoc = await reminderRef.get();
-                const previous = reminderDoc.exists ? reminderDoc.data() : null;
-
-                // Für denselben aktuellen Termin nur einmal senden.
-                // Wurde das Spiel verschoben, ist scheduleKey neu und eine
-                // neue 24h-Erinnerung darf gesendet werden.
-                if (previous && previous.sentScheduleKey === scheduleKey) continue;
-
-                const title = "🏒 ESV Grizzlys U15";
-                const body =
-                  `Morgen: U15 ${game.team} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
-
-                const successCount = await sendPush(
-                  tokens,
-                  { title, body },
-                  {
-                    notification: {
-                      icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-24h-icon-192.png",
-                      badge: "https://jazm1309.github.io/grizzlys-u15/badge-96.png"
-                    },
-                    data: { type: "gameReminder", title, body },
-                    fcmOptions: {
-                      link: "https://jazm1309.github.io/grizzlys-u15/"
-                    }
-                  }
-                );
-
-                if (successCount > 0) {
-                  await reminderRef.set({
-                    sentAt: FieldValue.serverTimestamp(),
-                    sentScheduleKey: scheduleKey,
-                    game
-                  });
-                  console.log("24h-Erinnerung gesendet:", reminderId, scheduleKey);
-                } else {
-                  console.log("24h-Erinnerung nicht gesendet – kein gültiges Push-Gerät.");
-                }
-              } catch (error) {
-                // Ein Fehler bei einer 24h-Erinnerung darf den Ergebnis-Push
-                // oder die Prüfung weiterer Erinnerungen niemals blockieren.
-                console.error("Fehler bei 24h-Erinnerung:", reminderId, error);
-                continue;
-              }
-            }
-          }
-
-          async function main() {
-            const tokensSnap = await db.collection("pushTokens").get();
-            const tokens = tokensSnap.docs
-              .map(doc => ({ token: doc.data().token, ref: doc.ref }))
-              .filter(x => Boolean(x.token));
-
-            if (!tokens.length) {
-              console.log("Keine Push-Geräte registriert.");
-              return;
-            }
-
-            const overridesSnap = await db.collection("scheduleOverrides").get();
-            const overrides = {};
-            overridesSnap.forEach(doc => { overrides[doc.id] = doc.data(); });
-            applyScheduleOverrides(games, overrides);
-            console.log("Spielplanänderungen geladen:", overridesSnap.size);
-
-            const resultsSnap = await db.collection("results").get();
-
-            // Ergebnis-Push wird ausschließlich über pushSentAt gesteuert.
-            // Dadurch gibt es kein Zeitfenster, in dem ein Ergebnis verloren gehen kann.
-            for (const resultDoc of resultsSnap.docs) {
-              const r = resultDoc.data();
-              if (!r.updatedAt) continue;
-              if (r.pushSentAt) continue;
-
-              const title = "🏒 ESV Grizzlys U15";
-              const body =
-                `Ergebnis: ${r.home} ${r.homeScore}:${r.awayScore} ${r.away}`;
-
-              const successCount = await sendPush(
-                tokens,
-                { title, body },
-                {
-                  notification: {
-                    icon: "https://jazm1309.github.io/grizzlys-u15/grizzlys-result-icon.png",
-                    badge: "https://jazm1309.github.io/grizzlys-u15/badge-96.png"
-                  },
-                  data: { type: "result", title, body },
-                  fcmOptions: {
-                    link: "https://jazm1309.github.io/grizzlys-u15/"
-                  }
-                }
-              );
-
-              if (successCount > 0) {
-                await resultDoc.ref.update({
-                  pushSentAt: FieldValue.serverTimestamp(),
-                  pushSentCount: lastPushStats.success,
-                  pushFailedCount: lastPushStats.failed,
-                  pushTargetCount: lastPushStats.total
-                });
-                console.log(
-                  "Ergebnis-Push gesendet:", resultDoc.id,
-                  "– an", lastPushStats.success, "von", lastPushStats.total,
-                  "Geräten (", lastPushStats.failed, "fehlgeschlagen )"
-                );
-              } else {
-                console.log(
-                  "Ergebnis-Push NICHT als gesendet markiert – kein gültiges Push-Gerät:",
-                  resultDoc.id
-                );
-              }
-            }
-
-            // 24h-Erinnerungen sind bewusst vom Ergebnis-Push entkoppelt.
-            // Selbst ein unerwarteter Fehler hier darf den Workflow nicht fehlschlagen lassen.
-            try {
-              await sendGameReminders(tokens);
-            } catch (error) {
-              console.error("24h-Erinnerungsdienst fehlgeschlagen:", error);
-            }
-          }
-
-          main()
-            .then(() => process.exit(0))
-            .catch(error => {
-              console.error(error);
-              process.exit(1);
-            });
-          EOF
-
-          node result-push.js
+          BUG_REPORT_EMAIL: ${{ secrets.BUG_REPORT_EMAIL }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        run: node bug-report-notify.js
