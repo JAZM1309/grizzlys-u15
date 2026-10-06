@@ -309,3 +309,8 @@ exports.onBugReportCreated = onDocumentCreated(
     if (Object.keys(update).length) await snap.ref.update(update);
   }
 );
+
+// Ergebnis-Push und 24h-Erinnerung (ersetzt den GitHub-Workflow)
+const push = require("./push");
+exports.onResultWritten = push.onResultWritten;
+exports.sendGameReminders = push.sendGameReminders;

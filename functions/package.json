@@ -1,7 +1,9 @@
 {
   "name": "grizzlys-u15-functions",
   "private": true,
-  "engines": { "node": "20" },
+  "engines": {
+    "node": "22"
+  },
   "dependencies": {
     "@google-analytics/data": "^5.1.0",
     "firebase-admin": "^13.5.0",
