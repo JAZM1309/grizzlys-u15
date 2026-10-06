@@ -314,4 +314,3 @@ exports.onBugReportCreated = onDocumentCreated(
 const push = require("./push");
 exports.onResultWritten = push.onResultWritten;
 exports.sendGameReminders = push.sendGameReminders;
-exports.standings = require("./standings").standings;
