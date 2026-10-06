@@ -1,0 +1,50 @@
+ERGEBNIS-PUSH UND 24h-ERINNERUNG ALS CLOUD FUNCTIONS
+=====================================================
+
+Neu:
+  onResultWritten    -> sendet den Ergebnis-Push SOFORT nach dem Speichern im Admin-Bereich
+  sendGameReminders  -> prüft alle 10 Minuten (Google Cloud Scheduler) und sendet die 24h-Erinnerung
+Beide beachten die Push-Auswahl der Nutzer (Ergebnisse / Erinnerung, U15 A / U15 B).
+Geräte ohne gespeicherte Auswahl bekommen weiterhin alles.
+
+Geänderte/neue Dateien im Repo
+  functions/push.js        (neu)
+  functions/index.js       (am Ende 3 Zeilen ergänzt)
+  functions/package.json   (Node 22)
+  firebase.json            (Runtime nodejs22)
+
+SCHRITT 1 – Dateien ins GitHub-Repo
+  Die vier Dateien oben ins Repo hochladen (push.js liegt im Ordner functions).
+
+SCHRITT 2 – Deploy in der Cloud Shell
+  1. https://console.cloud.google.com öffnen, oben das Projekt grizzlys-u15 wählen,
+     oben rechts auf das Symbol "Cloud Shell aktivieren" (>_) tippen.
+  2. Einmalig bzw. bei Änderungen den Code holen:
+       cd ~ && rm -rf grizzlys-u15 && git clone https://github.com/jazm1309/grizzlys-u15.git
+       cd grizzlys-u15/functions && npm install && cd ..
+     (Ist das Repo privat, nach Benutzername und GitHub-Token fragen lassen.)
+  3. Anmelden und deployen:
+       firebase login --no-localhost        (nur falls nach Login gefragt wird; Link öffnen, Code einfügen)
+       firebase deploy --only functions --project grizzlys-u15
+     Fragt Firebase nach dem Aktivieren von "Cloud Scheduler" oder anderen APIs: mit y bestätigen.
+     Mit "--only functions" werden alle Functions auf Node 22 umgestellt (Frist 30.10.2026).
+     Wer nur die neuen deployen will:
+       firebase deploy --only functions:onResultWritten,functions:sendGameReminders --project grizzlys-u15
+
+SCHRITT 3 – Prüfen
+  - Firebase Console > Functions: onResultWritten und sendGameReminders stehen in der Liste.
+  - Google Cloud Console > Cloud Scheduler: ein Job "firebase-schedule-sendGameReminders-..." existiert.
+    Dort "Job jetzt ausführen" tippen, danach in Logs (Cloud Run / Functions > Protokolle) prüfen,
+    dass keine Fehler stehen (Meldung "Erinnerung: niemand angemeldet" oder nichts ist normal,
+    solange kein Spiel in 23-25 Stunden ansteht).
+  - Der echte Test des Ergebnis-Push ist das nächste eingetragene Ergebnis; im Protokoll steht
+    dann "Ergebnis-Push" mit Zahl der Empfänger.
+
+SCHRITT 4 – GitHub-Workflow abschalten (erst nach bestandenem Test)
+  GitHub > Actions > "Grizzlys Ergebnisdienst" > drei Punkte > Disable workflow.
+  Beide Varianten dürfen kurz parallel laufen: Sie verwenden dieselben Duplikatsperren
+  (results.pushSentAt und gameReminders), es wird also nichts doppelt gesendet.
+  Zurück auf den alten Weg: Workflow wieder aktivieren, die Functions können bleiben oder
+  mit "firebase functions:delete onResultWritten sendGameReminders --region europe-west1" entfernt werden.
+
+Danach nicht mehr nötig: GitHub-Secret FIREBASE_SERVICE_ACCOUNT (außer für den Bug-Workflow, falls er aktiv bleibt).
