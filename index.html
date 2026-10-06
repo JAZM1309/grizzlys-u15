@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#071b33">
+<meta name="theme-color" content="#e8760a">
 <meta name="description" content="ESV Grizzlys Bergkamen U15 – Spielplan 2026/27">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>ESV Grizzlys U15</title>
+<title>TEST – Grizzlys U15</title><script>window.GRIZZLYS_TEST=true</script>
 <!-- Google Analytics 4 – bewusst unabhängig von Firebase-JavaScript eingebunden -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WJ539PL04L"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag("js", new Date());
-  gtag("config", "G-WJ539PL04L");
+  /* Test: kein Analytics */
   function trackAnalyticsEvent(name, params) { try { gtag("event", name, params || {}); } catch(e) {} }
 </script>
 <style>
@@ -792,6 +792,23 @@ html.dark .bugReportGrid input,html.dark .bugReportGrid select,html.dark .bugRep
 .hw .fbHead span,.hw .fbTile small{color:#c9a98a}.hw .fbTile{background:#1c0d05;color:#ffe3c4;border-color:#5a2d0a}
 .hw .fbBubble{background:linear-gradient(135deg,#ff7a00,#b34700)}
 .hw .fbSeg{background:#1c0d05;border-color:#5a2d0a}.hw .fbSeg button{color:#ffd2a1}.hw .fbSeg button.on{background:#ff7a00;color:#1c0d05}
+.testRibbon{position:sticky;top:0;z-index:70;background:#e8760a;color:#fff;text-align:center;font:800 12px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:7px 8px}
+/* Tabellenstand (EHV NRW) – kleiner Chip bei Paarungen und Gegnern */
+.gzStand{display:flex;align-items:center;gap:5px;width:fit-content;max-width:100%;margin:5px auto 0;padding:2px 8px 2px 2px;border-radius:999px;border:1px solid rgba(16,32,51,.10);background:rgba(16,32,51,.045);font-size:10px;font-weight:700;line-height:1.3;letter-spacing:.01em;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.gzStand b{display:inline-block;min-width:17px;padding:1px 6px;border-radius:999px;background:var(--navy2);color:#fff;font-weight:900;font-size:9.5px;text-align:center}
+.gzStand.none{padding:2px 8px;border-style:dashed;background:transparent;font-weight:600}
+.gcSide .gzStand{margin-top:-1px}
+.opponentCardInfo .gzStand{margin:6px 0 0}
+[data-team="A"] .gzStand b{background:var(--a)}
+[data-team="B"] .gzStand b{background:var(--b);color:#3a1d00}
+html.dark .gzStand{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+html.dark .gzStand b,html.dark .card .gzStand b{color:#fff;opacity:1}
+html.dark [data-team="B"] .gzStand b{color:#3a1d00}
+.hw .hwGameCard .gzStand{border-color:rgba(255,122,0,.35);background:rgba(255,122,0,.10);color:#ffe9d2}
+.gzStandNote{margin:12px 2px 0;font-size:10.5px;color:var(--muted);text-align:center}
+.hw .gzStandNote{color:#c9a98a}
+@media print{.gzStand,.gzStandNote{display:none}}
+
 </style>
 <script>
 /* Halloween-Zeitraum: 20.10. bis 02.11. (automatisch), Schalter in der Info-Seite */
@@ -809,7 +826,7 @@ html.dark .bugReportGrid input,html.dark .bugReportGrid select,html.dark .bugRep
 </script>
 <script>window.ICONS={"pin": "<path d=\"M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\"/><path d=\"M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z\"/>", "calplus": "<path d=\"M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5\"/><path d=\"M16 3v4\"/><path d=\"M8 3v4\"/><path d=\"M4 11h16\"/><path d=\"M16 19h6\"/><path d=\"M19 16v6\"/>", "cal": "<path d=\"M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z\"/><path d=\"M16 3v4\"/><path d=\"M8 3v4\"/><path d=\"M4 11h16\"/>", "bell": "<path d=\"M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6\"/><path d=\"M9 17v1a3 3 0 0 0 6 0v-1\"/>", "share": "<path d=\"M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M8.7 10.7l6.6 -3.4\"/><path d=\"M8.7 13.3l6.6 3.4\"/>", "filter": "<path d=\"M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z\"/>", "target": "<path d=\"M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/><path d=\"M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0\"/><path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/>", "list": "<path d=\"M9 6l11 0\"/><path d=\"M9 12l11 0\"/><path d=\"M9 18l11 0\"/><path d=\"M5 6l0 .01\"/><path d=\"M5 12l0 .01\"/><path d=\"M5 18l0 .01\"/>", "chart": "<path d=\"M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\"/><path d=\"M4 20h14\"/>", "search": "<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\"/><path d=\"M21 21l-6 -6\"/>", "download": "<path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2\"/><path d=\"M7 11l5 5l5 -5\"/><path d=\"M12 4l0 12\"/>", "file": "<path d=\"M14 3v4a1 1 0 0 0 1 1h4\"/><path d=\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z\"/><path d=\"M9 9l1 0\"/><path d=\"M9 13l6 0\"/><path d=\"M9 17l6 0\"/>", "chev": "<path d=\"M9 6l6 6l-6 6\"/>", "home": "<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\"/><path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\"/><path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\"/>", "away": "<path d=\"M7 17l10 -10\"/><path d=\"M8 7l9 0l0 9\"/>", "clock": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M12 7v5l3 3\"/>", "world": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M3.6 9h16.8\"/><path d=\"M3.6 15h16.8\"/><path d=\"M11.5 3a17 17 0 0 0 0 18\"/><path d=\"M12.5 3a17 17 0 0 1 0 18\"/>", "chat": "<path d=\"M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1\"/>", "lock": "<path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z\"/><path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\"/><path d=\"M8 11v-4a4 4 0 1 1 8 0v4\"/>"};window.ic=function(n,c){return '<svg class="ic'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';};window.actBtn=function(cl,icon,label){return '<button class="action '+cl+'" type="button"><span class="aIcon">'+ic(icon)+'</span>'+label+'</button>';};</script>
 </head>
-<body>
+<body><div class="testRibbon" role="note">Test v53 · nichts wird gespeichert</div>
 <div id="updateBanner" class="updateBanner" role="status" aria-live="polite" hidden><span class="updateBannerIcon" aria-hidden="true">&#8635;</span><div class="updateBannerText"><b>Neue Version verfügbar</b><span>Kurz aktualisieren, dann bist du auf dem neuesten Stand.</span></div><button id="updateBannerReload" class="updateBannerBtn" type="button">Aktualisieren</button><button id="updateBannerClose" class="updateBannerClose" type="button" aria-label="Schließen">&times;</button></div>
 <div class="app">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="gearPath" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 8.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7z M19.4 13.5a7.7 7.7 0 0 0 0-3l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2.6-1.5L14 2.5h-4l-.4 2.5a7.6 7.6 0 0 0-2.6 1.5l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 3l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2.6 1.5l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 2.6-1.5l2.4 1 2-3.4z"/></g></defs></svg>
@@ -837,11 +854,11 @@ html.dark .bugReportGrid input,html.dark .bugReportGrid select,html.dark .bugRep
 Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 </div>
 <div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="opponentSearch" type="search" placeholder="Gegner suchen …" aria-label="Gegner suchen" style="width:100%;padding:12px 12px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"></div>
-<div id="opponentsList" class="list"></div>
+<div id="opponentsList" class="list"></div><div id="standNote" class="gzStandNote" hidden></div>
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.8.0-v51</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.8.0-v53</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><div class="inTiles"><div class="inTile"><i>📅</i><b>Spielplan</b><small>Liste oder Monatskalender</small></div><div class="inTile"><i>🏒</i><b>Gegner</b><small>Spiele, Orte und Routen</small></div><div class="inTile"><i>⬇️</i><b>Downloads</b><small>Kalender und PDF</small></div><div class="inTile"><i>🔔</i><b>Push</b><small>Ergebnisse und 24-h-Erinnerung</small></div><div class="inTile"><i>🥅</i><b>Ergebnisse</b><small>direkt nach Spielende</small></div><div class="inTile"><i>🔗</i><b>Teamseiten</b><small>Tabellen und Vereinsseiten</small></div></div><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
 <p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p></section>
@@ -916,7 +933,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 </div></section>
 
 <div id="thanksModal" class="thanksModal" hidden aria-hidden="true"><div class="thanksBox" role="dialog" aria-modal="true" aria-labelledby="thanksTitle"><div class="hwDeco hwThanksBats" aria-hidden="true"><span class="hwBat hwBat1"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span><span class="hwBat hwBat2"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span><span class="hwBat hwBat3"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span></div><img id="thanksImg" class="thanksImg" src="grizzlys-bug-icon.png" alt=""><div id="thanksTitle" class="thanksTitle"></div><div id="thanksText" class="thanksText"></div><button id="thanksClose" class="thanksBtn" type="button">Schließen</button></div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.8.0-v51 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.8.0-v53 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hwDeco hwFogA" aria-hidden="true"></div><div class="hwDeco hwFogB" aria-hidden="true"></div><div class="hwDeco hwGameEyes" aria-hidden="true"><i></i><i></i></div><div class="hwDeco hwGameSpider" aria-hidden="true"><b></b><span>🕷️</span></div><div class="hwDeco hwGameBat" aria-hidden="true"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwFlash" aria-hidden="true"></div><div id="hqFx" class="hqFx" aria-hidden="true"></div><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div id="hockeyIntro" class="hockeyGameIntro">Best of 5 – wer zuerst 3 Runden gewinnt. Du bist der Puck.</div><div class="hqBoard" aria-live="polite"><div class="hqTeam"><i id="hqYou">GRIZZLYS</i><b id="hqScoreP">0</b></div><div class="hqMid"><div id="hqLamp" class="hqLamp" aria-hidden="true"></div><small id="hqSeriesInfo">Runde 1 · Best of 5</small></div><div class="hqTeam"><i id="hqFoe">GEGNER</i><b id="hqScoreC">0</b></div></div><div class="hqLevels" id="hqLevels" role="group" aria-label="Schwierigkeit"><button type="button" data-lv="easy">Anfänger</button><button type="button" data-lv="pro" class="on">Profi</button><button type="button" data-lv="keeper">Torwart</button></div><div class="hockeyRink"><div class="hqBanner" aria-hidden="true"><span>ESV GRIZZLYS</span><span>BERGKAMEN</span><span>U15</span></div><div id="hockeyBoard" class="hockeyBoard"></div><div class="hqBanner hqBannerB" aria-hidden="true"><span>BERGKAMEN</span><span>ESV GRIZZLYS</span><span>U15</span></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hqTools"><button id="hqPenBtn" class="hqPen" type="button">⏱ Strafzeit ×3</button><div id="hqTrophies" class="hqTrophies" aria-label="Pokale"></div></div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neue Serie</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät. Nur deine Pokale werden hier gespeichert.</div></div></div></div></div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -986,9 +1003,13 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
+import { getFirestore, collection, getDocs, doc, setDoc as _setDoc, addDoc as _addDoc, updateDoc as _updateDoc, deleteDoc as _deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getMessaging, getToken as _getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-functions.js";
+
+/* TESTVERSION: Schreibzugriffe und Push-Anmeldung sind gesperrt, damit keine echten Daten verändert werden */
+const _testBlock=()=>{throw new Error("Testversion: Speichern, Senden und Push sind hier deaktiviert.")};
+const setDoc=_testBlock, addDoc=_testBlock, updateDoc=_testBlock, deleteDoc=_testBlock, getToken=_testBlock;
 
 const firebaseConfig = {
   apiKey: "AIzaSyC-Dqjj-vNMYA8QRc3SGeivMDRjEHjwKe0",
@@ -1307,7 +1328,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.8.0-v51",
+      appVersion:"1.8.0-v53",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1585,6 +1606,62 @@ function monthLabel(g){return dt(g).toLocaleDateString("de-DE",{month:"long",yea
 function isHome(g){return g.home.includes("ESV Grizzlys")}
 function opponent(g){return isHome(g)?g.away:g.home}
 function address(g){return rinkAddresses[g.stadium]||g.stadium+", Deutschland"}
+/* ===== Tabellenstand vom EHV NRW =====
+   Zeigt Platz, Punkte und Tordifferenz als kleinen Chip bei Paarungen und Gegnern.
+   Die Daten kommen ausschließlich über die eigene Cloud Function "standings"
+   (functions/standings.js) – die App fragt den externen Dienst nie direkt ab.
+   Fällt der Abruf aus, bleibt der Chip weg – der Spielplan läuft normal weiter. */
+const STAND_URL="https://europe-west1-grizzlys-u15.cloudfunctions.net/standings";
+const STAND_STORE="grizzlysStandings", STAND_TTL=2*3600000;
+let standings={};
+try{const c=JSON.parse(localStorage.getItem(STAND_STORE)||"{}");if(c&&typeof c==="object")standings=c}catch(e){}
+function standNorm(s){return String(s||"").toLowerCase().replace(/[^a-z0-9äöüß]/g,"")}
+function standSig(s){const n=String(s||"");return logoKeys(n).sort().join("|")+(/grizzlys/i.test(n)?"|GRZ":"")+(/1b/i.test(n)?"#1b":"")}
+function standRow(team,name){
+  const rows=standings[team]&&standings[team].rows; if(!Array.isArray(rows))return null;
+  const n=standNorm(name);
+  return rows.find(r=>standNorm(r.n)===n)||(sig=>sig?rows.find(r=>standSig(r.n)===sig):null)(standSig(name))||null;
+}
+function standHtml(team,name,long=false){
+  const r=standRow(team,name); if(!r)return "";
+  if(!r.gp) return '<small class="gzStand none" title="Tabelle: noch kein Spiel absolviert">noch kein Spiel</small>';
+  const gd=Number(r.gd)||0, gdTxt=gd>0?"+"+gd:gd<0?"−"+Math.abs(gd):"±0";
+  const title="Tabelle: Platz "+r.r+" · "+r.gp+" "+(r.gp===1?"Spiel":"Spiele")+" · "+r.p+" Punkte · Tordifferenz "+gdTxt;
+  return '<small class="gzStand" title="'+esc(title)+'"><b>'+esc(r.r)+'.</b><span>'+esc(r.p)+' Pkt · '+gdTxt+(long?' · '+esc(r.gp)+' '+(r.gp===1?'Spiel':'Spiele'):'')+'</span></small>';
+}
+function standClean(part){
+  if(!part||!Array.isArray(part.rows))return null;
+  const rows=part.rows.map(x=>({n:String(x.n||"").slice(0,120),r:Number(x.r)||0,gp:Number(x.gp)||0,p:Number(x.p)||0,gd:Number(x.gd)||0})).filter(x=>x.n&&x.r).slice(0,40);
+  return rows.length?{rows,upd:String(part.upd||"").slice(0,40)}:null;
+}
+function standNote(){
+  const el=document.getElementById("standNote"); if(!el)return;
+  const have=["A","B"].filter(t=>standings[t]&&standings[t].rows);
+  if(!have.length){el.hidden=true;return}
+  const upd=have.map(t=>standings[t].upd).filter(Boolean).sort().pop();
+  el.hidden=false; el.textContent="Tabellenstand: EHV NRW"+(upd?" · Stand "+upd+" Uhr":"");
+}
+let standBusy=false;
+async function loadStandings(force=false){
+  if(standBusy)return;
+  if(!force&&standings.ts&&Date.now()-standings.ts<STAND_TTL){standNote();return}
+  standBusy=true;
+  try{
+    const res=await fetch(STAND_URL,{credentials:"omit"});
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    const d=await res.json(), next={ts:Date.now()};
+    ["A","B"].forEach(t=>{const c=standClean(d&&d[t]); if(c)next[t]=c; else if(standings[t])next[t]=standings[t]});
+    const changed=["A","B"].some(t=>JSON.stringify(next[t]||null)!==JSON.stringify(standings[t]||null));
+    if(next.A||next.B){
+      standings=next;
+      try{localStorage.setItem(STAND_STORE,JSON.stringify(standings))}catch(e){}
+      if(changed){ try{renderNext(); if(window.applyResults)window.applyResults()}catch(e){console.warn(e)} }
+    }
+  }catch(e){ console.warn("Tabellenstand konnte nicht geladen werden",e); }
+  standBusy=false; standNote();
+}
+window.loadStandings=loadStandings;
+
 
 // Ungefähre Fahrentfernung ab Eissporthalle Bergkamen (Häupenweg 29).
 // Die Werte beziehen sich auf die jeweilige Eishalle und werden bewusst als ca.-Angabe angezeigt.
@@ -1651,9 +1728,9 @@ function teamLogoHtml(name,cls="opponentLogo"){
   }
   return grizzlysHtml(cls);
 }
-function sideHtml(name,right=false){
+function sideHtml(name,right=false,team=""){
   const ours=name.includes("ESV Grizzlys");
-  return `<div class="teamSide ${right?"right":""}">${right?"":(ours?teamLogoHtml(name):logoHtml(name))}<div class="teamSideName">${name}</div>${right?(ours?teamLogoHtml(name):logoHtml(name)):""}</div>`;
+  return `<div class="teamSide ${right?"right":""}">${right?"":(ours?teamLogoHtml(name):logoHtml(name))}<div class="teamSideName">${name}${team?standHtml(team,name):""}</div>${right?(ours?teamLogoHtml(name):logoHtml(name)):""}</div>`;
 }
 let scheduleMode="chrono";
 let calendarCursor=new Date(dt(games.slice().sort((a,b)=>dt(a)-dt(b))[0]));
@@ -1859,7 +1936,7 @@ function renderNext(){
   const cls=g.team==="A"?"teamA":"teamB";
   const t=document.getElementById("nextTeam"); t.className="nextTeam "+cls; t.textContent="U15 "+g.team; document.querySelector(".next").dataset.team=g.team; document.querySelector(".nextLabel").innerHTML="Nächstes Spiel"+hwBadge(g);
   document.getElementById("nextDate").innerHTML=`<span>${fmtDate(g)}</span><b class="nextTime">${g.time} Uhr</b>`;
-  document.getElementById("nextMatch").innerHTML=sideHtml(g.home)+`<div class="vs">VS</div>`+sideHtml(g.away,true);
+  document.getElementById("nextMatch").innerHTML=sideHtml(g.home,false,g.team)+`<div class="vs">VS</div>`+sideHtml(g.away,true,g.team);
   const nextDistance=distanceHtml(g.stadium);
   document.getElementById("nextMeta").innerHTML=`<svg class="pinIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/></svg><b>${g.stadium}</b> · ${isHome(g)?"Heimspiel":"Auswärtsspiel"}${nextDistance?" · "+nextDistance:""}`;
   document.getElementById("nextRoute").onclick=()=>route(g); document.getElementById("nextCalendar").onclick=()=>calendar(g); document.getElementById("nextReminder").onclick=()=>reminder(g); document.getElementById("nextShare").onclick=()=>shareGame(g);
@@ -1997,7 +2074,7 @@ function renderLast(){
   const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};
   box.hidden=false; box.className="last "+(r?"res_"+r.o:"res_none"); box.dataset.team=g.team;
   box.innerHTML=`<div class="nextHead"><div class="nextLabel">Letztes Spiel${hwBadge(g)}</div><div class="nextTeam ${cls}">U15 ${g.team}</div></div>`+
-   `<div class="lastBody">${sideHtml(g.home)}<div class="lastScore">${r?`<b>${r.hs}:${r.as}</b><span class="lastPill ${r.o}">${word[r.o]}</span>`:`<span class="lastPill none">Ergebnis folgt</span>`}</div>${sideHtml(g.away,true)}</div>`+
+   `<div class="lastBody">${sideHtml(g.home,false,g.team)}<div class="lastScore">${r?`<b>${r.hs}:${r.as}</b><span class="lastPill ${r.o}">${word[r.o]}</span>`:`<span class="lastPill none">Ergebnis folgt</span>`}</div>${sideHtml(g.away,true,g.team)}</div>`+
    `<div class="lastFoot">${fmtDate(g)} · ${g.stadium} · ${isHome(g)?"Heimspiel":"Auswärtsspiel"}</div>`;
   hwDecorate(box,g);
   box.onclick=()=>openMatchDetails(g);
@@ -2066,6 +2143,7 @@ window.applyResults=function(){
       '<div class="opponentCardInfo">'+
       '<div class="opponentCardName">'+esc(name)+'</div>'+
       '<div class="opponentCardMeta"><span>'+gs.length+" "+(gs.length===1?"Spiel":"Spiele")+'</span>'+teamBadges+'<span>·</span>'+distanceHtml(routeGame.stadium)+'</div>'+
+      standHtml(teamSet[0],name,true)+
       '</div>'+
       '<button class="action opponentRoute" type="button">'+ic("pin")+'Route</button>'+
       '</article>';
@@ -2114,11 +2192,11 @@ window.applyResults=function(){
       '</div>'+
       '<div class="opponentGameMatchup">'+
         '<div class="opponentGameSide">'+
-          '<div class="opponentGameRole">HEIM</div>'+homeLogo+'<div class="opponentGameName">'+esc(g.home)+'</div>'+
+          '<div class="opponentGameRole">HEIM</div>'+homeLogo+'<div class="opponentGameName">'+esc(g.home)+'</div>'+standHtml(g.team,g.home)+
         '</div>'+
         '<div class="opponentGameVs">VS</div>'+
         '<div class="opponentGameSide right">'+
-          '<div class="opponentGameRole">AUSWÄRTS</div>'+awayLogo+'<div class="opponentGameName">'+esc(g.away)+'</div>'+
+          '<div class="opponentGameRole">AUSWÄRTS</div>'+awayLogo+'<div class="opponentGameName">'+esc(g.away)+'</div>'+standHtml(g.team,g.away)+
         '</div>'+
       '</div>'+
       '<div class="opponentGameHomeAway">'+(home?ic("home")+"HEIMSPIEL DER GRIZZLYS":ic("away")+"AUSWÄRTSSPIEL DER GRIZZLYS")+'</div>'+
@@ -2165,7 +2243,7 @@ function renderList(filter="all"){
     const card=document.createElement("article"); card.className="card "+(g.team==="B"?"teamB":"teamA"); card.dataset.date=g.date; card.dataset.team=g.team;
     const home=isHome(g);
     const sideL=home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home), sideR=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
-    card.innerHTML=`<div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${g.team}</span>${hwBadge(g)}</div><div class="gcWhen"><span class="gcDate">${fmtDate(g)}</span><b class="gcTime">${g.time}</b></div></div><div class="gcMatch"><div class="gcSide">${sideL}<span>${g.home}</span></div><div class="vs">VS</div><div class="gcSide">${sideR}<span>${g.away}</span></div></div><div class="gcMeta"><span class="homeaway">${home?ic("home")+"Heimspiel":ic("away")+"Auswärts"}</span></div><div class="gcVenue">${ic("pin")}<b>${g.stadium}</b> · ${address(g)}</div>${resultBadge(g)}<div class="cardActions">${actBtn("route","pin","Route")}${actBtn("cal","calplus","Termin")}${actBtn("rem","bell","Erinnerung")}${actBtn("share","share","Teilen")}</div>`;
+    card.innerHTML=`<div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${g.team}</span>${hwBadge(g)}</div><div class="gcWhen"><span class="gcDate">${fmtDate(g)}</span><b class="gcTime">${g.time}</b></div></div><div class="gcMatch"><div class="gcSide">${sideL}<span>${g.home}</span>${standHtml(g.team,g.home)}</div><div class="vs">VS</div><div class="gcSide">${sideR}<span>${g.away}</span>${standHtml(g.team,g.away)}</div></div><div class="gcMeta"><span class="homeaway">${home?ic("home")+"Heimspiel":ic("away")+"Auswärts"}</span></div><div class="gcVenue">${ic("pin")}<b>${g.stadium}</b> · ${address(g)}</div>${resultBadge(g)}<div class="cardActions">${actBtn("route","pin","Route")}${actBtn("cal","calplus","Termin")}${actBtn("rem","bell","Erinnerung")}${actBtn("share","share","Teilen")}</div>`;
     card.querySelector(".route").onclick=()=>route(g);card.querySelector(".cal").onclick=()=>calendar(g);card.querySelector(".rem").onclick=()=>reminder(g);card.querySelector(".share").onclick=()=>shareGame(g);
     if(g===ng){card.classList.add("nextGame");card.querySelector(".gcLeft").insertAdjacentHTML("beforeend",'<span class="nextBadge">Nächstes Spiel</span>')}
     hwDecorate(card,g);
@@ -2192,7 +2270,7 @@ function openMatchDetails(g){
   const homeLogo=home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home);
   const awayLogo=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
   const sideL=homeLogo, sideR=awayLogo;
-  content.innerHTML=`<article class="card mdCard ${g.team==="B"?"teamB":"teamA"}" data-team="${g.team}"><div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${g.team}</span>${hwBadge(g)}</div><div class="gcWhen"><span class="gcDate">${esc(fmtDate(g))}</span><b class="gcTime">${esc(g.time)}</b></div></div><div class="gcMatch"><div class="gcSide">${sideL}<span>${esc(g.home)}</span></div><div class="vs">VS</div><div class="gcSide">${sideR}<span>${esc(g.away)}</span></div></div><div class="gcMeta"><span class="homeaway">${home?ic("home")+"Heimspiel":ic("away")+"Auswärts"}</span></div><div class="gcVenue">${ic("pin")}<b>${esc(g.stadium)}</b> · ${esc(address(g))}</div>${resultFor(g)?resultBadge(g):""}<div class="matchModalActions">${actBtn("modalRoute","pin","Route")}${actBtn("modalCal","calplus","Termin")}${actBtn("modalRem","bell","Erinnerung")}${actBtn("modalShare","share","Teilen")}</div></article>`;
+  content.innerHTML=`<article class="card mdCard ${g.team==="B"?"teamB":"teamA"}" data-team="${g.team}"><div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${g.team}</span>${hwBadge(g)}</div><div class="gcWhen"><span class="gcDate">${esc(fmtDate(g))}</span><b class="gcTime">${esc(g.time)}</b></div></div><div class="gcMatch"><div class="gcSide">${sideL}<span>${esc(g.home)}</span>${standHtml(g.team,g.home)}</div><div class="vs">VS</div><div class="gcSide">${sideR}<span>${esc(g.away)}</span>${standHtml(g.team,g.away)}</div></div><div class="gcMeta"><span class="homeaway">${home?ic("home")+"Heimspiel":ic("away")+"Auswärts"}</span></div><div class="gcVenue">${ic("pin")}<b>${esc(g.stadium)}</b> · ${esc(address(g))}</div>${resultFor(g)?resultBadge(g):""}<div class="matchModalActions">${actBtn("modalRoute","pin","Route")}${actBtn("modalCal","calplus","Termin")}${actBtn("modalRem","bell","Erinnerung")}${actBtn("modalShare","share","Teilen")}</div></article>`;
   hwDecorate(content.querySelector(".mdCard"),g);
   content.querySelector(".modalRoute").onclick=()=>route(g);
   content.querySelector(".modalCal").onclick=()=>calendar(g);
@@ -2420,6 +2498,6 @@ applyHalloween(false);
     setInterval(check,30*60*1000);
   }).catch(()=>{});
 })();}
-updateFilterUi();renderNext();renderList("all");renderOpponents();
+updateFilterUi();renderNext();renderList("all");renderOpponents();standNote();loadStandings();document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadStandings()});
 </script>
 </body></html>

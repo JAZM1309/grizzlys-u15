@@ -1,10 +1,11 @@
 {
-  "name": "ESV Grizzlys U15",
-  "short_name": "Grizzlys U15",
+  "name": "TEST – ESV Grizzlys U15",
+  "id": "./test",
+  "short_name": "U15 TEST",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#071b33",
-  "theme_color": "#071b33",
+  "theme_color": "#e8760a",
   "lang": "de-DE",
   "icons": [
     {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
