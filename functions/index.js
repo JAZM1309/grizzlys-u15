@@ -314,3 +314,9 @@ exports.onBugReportCreated = onDocumentCreated(
 const push = require("./push");
 exports.onResultWritten = push.onResultWritten;
 exports.sendGameReminders = push.sendGameReminders;
+
+// EHV-Daten: Tabellenstand, automatische Ergebnisse, Spielplan-Abgleich
+exports.standings = require("./standings").standings;
+exports.autoResults = require("./ehv-sync").autoResults;
+exports.scheduleCheck = require("./ehv-sync").scheduleCheck;
+exports.scheduleWatch = require("./ehv-sync").scheduleWatch;
