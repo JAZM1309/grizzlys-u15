@@ -2,6 +2,25 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+## Version 1.9.0
+
+### Neu in Version 1.9.0 (Stand 1.9.0.65)
+
+- **Schreibweise der Version:** Die Version heißt jetzt z. B. `1.9.0.65`: vorn die App-Version, die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live (bisher `1.8.0-v51`)
+- **Tabellenstand vom EHV NRW:** Platz, Spiele, Punkte und Tordifferenz als kleiner Chip unter jeder Paarung (Startseite, Spielplan, Spieldetails, Gegner-Details) und in der Gegnerübersicht; darunter die Form der letzten fünf Ligaspiele als Punkte (grün Sieg, rot Niederlage, Rand = Entscheidung nach Verlängerung/Penaltyschießen)
+- **Drittelergebnisse:** stehen unter jedem Endergebnis, sofern der EHV-Endstand zum eingetragenen Ergebnis passt
+- **Neue Spielkacheln:** kommende Spiele kompakt (Kopfzeile mit Team, Heim/Auswärts, Datum und Uhrzeit; Ort und Aktionen als Symbole in einer Fußzeile), gespielte Spiele als flache Ergebniskachel (Tipp öffnet die Spieldetails); gleicher Stil in Spieldetails, Gegner-Details und bei „Nächstes Spiel“
+- **Kurznamen in den Kacheln:** U15 A „Grizzlys / Young Cats“, U15 B „Grizzlys B“ (Kalenderdateien, Teilen und PDF behalten den vollen Namen)
+- **Schulferien NRW:** im Kalender grün hinterlegt, mit Legende über dem Monat (Termine 2026/27 als Liste `nrwFerien` in `index.html`; für die nächste Saison dort neu eintragen)
+- **Ergebnisse automatisch:** Cloud Function `autoResults` trägt beendete Grizzlys-Spiele alle 30 Minuten vom EHV ein; der Ergebnis-Push geht wie bei einem Handeintrag raus (nur für Spiele der letzten 2 Tage), von Hand eingetragene Ergebnisse werden nie überschrieben
+- **Spielplan-Abgleich:** Cloud Function `scheduleWatch` vergleicht alle 3 Stunden den Spielplan der App mit dem des EHV und meldet neue Abweichungen per Push an die Admin-Geräte; im Admin-Bereich unter „Spieländerungen“ gibt es den Knopf „Mit EHV-Spielplan abgleichen“ (`scheduleCheck`) mit „Ins Formular übernehmen“
+- **Instagram-Bilder (Admin):** neuer Abschnitt im Admin-Bereich: erzeugt pro Spiel ein Bild 1080 × 1350 (Ankündigung oder Ergebnis) mit Hallenfoto, großen Logos und Vorschau; Teilen oder Speichern, es wird nichts automatisch gepostet
+- **Ordner `logos`:** alle Gegner-Logos kommen jetzt aus dem Ordner `logos/` (Dateinamen siehe `logos/LIESMICH.txt`); fehlt eine Datei, lädt die App das Logo wie bisher von der alten Adresse, im Instagram-Bild steht dann ein Kürzel
+- **Neue Cloud Functions:** `functions/standings.js` (`standings`: Tabelle und beendete Spiele, höchstens alle 30 Minuten vom EHV, nur für `jazm1309.github.io`) und `functions/ehv-sync.js` (`autoResults`, `scheduleCheck`, `scheduleWatch`); `functions/index.js` um vier Zeilen ergänzt. Die App fragt den EHV-Dienst nie direkt ab
+- **Unverändert:** Firestore-Regeln, `push.js`, Manifest und App-Symbole
+- **PWA-Cache:** auf `grizzlys-u15-v65` erneuert
+- **Dokumentation:** README (Abschnitte EHV-Daten, Logos, Instagram-Bilder, Firebase, Push) und die PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.0 aktualisiert
+
 ## Version 1.8.0
 
 ### Neu in Version 1.8.0
@@ -228,7 +247,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v51`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v65`).
+
+Die angezeigte Version hat die Form `1.9.0.65`: vorn die App-Version, die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 
@@ -236,13 +257,44 @@ Firebase-Projekt: `grizzlys-u15`
 
 Verwendete Firestore-Sammlungen:
 
-- `results` – Spielergebnisse
+- `results` – Spielergebnisse (von Hand oder automatisch vom EHV, dann mit `source: "ehv"`)
+- `scheduleOverrides` – zentral geänderte Spieltermine
 - `pushTokens` – registrierte Push-Geräte
 - `gameReminders` – Erinnerungsdaten
 - `appInstallations` – technische App-/Geräteregistrierungen
 - `bugReports` – Fehlermeldungen aus der App
+- `ehvSync` – merkt sich, welche Spielplan-Abweichungen schon gemeldet wurden (nur Cloud Function, kein Zugriff aus der App)
 
 Ergebnisse und Fehlermeldungen werden über die vorgesehenen Firebase-Regeln geschützt. Schreib- und Verwaltungszugriffe im Admin-Bereich sind auf den eingerichteten Admin-Benutzer beschränkt.
+
+## EHV-Daten (Tabelle, Ergebnisse, Spielplan)
+
+Die App zeigt Tabellenplatz, Spiele, Punkte, Tordifferenz, die Form der letzten fünf Ligaspiele und Drittelergebnisse. Die Daten stammen vom Eishockeyverband NRW. Die App fragt den Dienst des Verbands nie direkt ab, sondern nur die eigenen Cloud Functions:
+
+| Function | Datei | Aufgabe |
+|---|---|---|
+| `standings` | `functions/standings.js` | liefert Tabelle und beendete Spiele beider Ligen; holt sie höchstens alle 30 Minuten, antwortet nur `jazm1309.github.io` |
+| `autoResults` | `functions/ehv-sync.js` | trägt alle 30 Minuten beendete Grizzlys-Spiele als Ergebnis ein (Ergebnis-Push nur für Spiele der letzten 2 Tage; Handeinträge werden nie überschrieben) |
+| `scheduleWatch` | `functions/ehv-sync.js` | vergleicht alle 3 Stunden den Spielplan der App mit dem des EHV und meldet neue Abweichungen per Push an die Admin-Geräte |
+| `scheduleCheck` | `functions/ehv-sync.js` | derselbe Vergleich auf Knopfdruck im Admin-Bereich („Mit EHV-Spielplan abgleichen“) |
+
+- Die App speichert den Tabellenstand 15 Minuten auf dem Gerät und holt ihn nach jedem App-Update sofort neu.
+- Fällt der Abruf aus, bleiben Chips, Form und Drittel weg; der Spielplan funktioniert unverändert.
+- Liga-Kennungen: U15 A `21652` (Landesliga NRW), U15 B `21656` (Bezirksliga NRW). Sie stehen in `functions/standings.js` und müssen zur neuen Saison angepasst werden.
+- Der Zugriffsschlüssel in `standings.js` ist der öffentliche Schlüssel der EHV-Seite.
+- Deploy und Schalter: siehe `FUNCTIONS-ANLEITUNG.txt`.
+
+## Logos
+
+Alle Gegner-Logos liegen als Dateien im Ordner `logos/`. Die erwarteten Dateinamen stehen in `logos/LIESMICH.txt` und in `index.html` (`LOGO_FILES`). Fehlt eine Datei, lädt die App das Logo von der bisherigen Adresse (`logoUrls`); im Instagram-Bild steht dann ein Kürzel. Ein Logo wird ersetzt, indem eine Datei mit demselben Namen hochgeladen wird.
+
+## Instagram-Bilder
+
+Im Admin-Bereich erzeugt der Abschnitt „Instagram-Bilder“ pro Spiel ein Bild im Beitragsformat 4:5 (1080 × 1350): „Ankündigung“ (Spieltag, Datum, Uhrzeit, Tabellen-Chips) oder „Ergebnis“ (Heimsieg / Auswärtssieg / Endstand, Drittel). Das Bild entsteht im Browser, wird in einer Vorschau gezeigt und kann geteilt oder gespeichert werden. Es wird nichts automatisch gepostet.
+
+## Schulferien
+
+Die NRW-Ferien sind in der Kalenderansicht grün hinterlegt. Die Termine stehen als Liste `nrwFerien` in `index.html` (Schuljahr 2026/27) und müssen zur neuen Saison ersetzt werden.
 
 ## Push-Benachrichtigungen
 
@@ -252,6 +304,7 @@ Sie wird verwendet für:
 
 - neue Spielergebnisse
 - automatische Erinnerung 24 Stunden vor einem Spiel
+- Meldung an die Admin-Geräte bei einer neuen Abweichung zwischen App- und EHV-Spielplan
 
 Im Admin-Bereich werden die registrierten Push-Geräte gezählt. Zusätzlich werden App-Installationen nach Plattform angezeigt.
 

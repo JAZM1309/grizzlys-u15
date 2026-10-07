@@ -48,3 +48,36 @@ SCHRITT 4 – GitHub-Workflow abschalten (erst nach bestandenem Test)
   mit "firebase functions:delete onResultWritten sendGameReminders --region europe-west1" entfernt werden.
 
 Danach nicht mehr nötig: GitHub-Secret FIREBASE_SERVICE_ACCOUNT (außer für den Bug-Workflow, falls er aktiv bleibt).
+
+
+EHV-DATEN ALS CLOUD FUNCTIONS (ab Version 1.9.0)
+================================================
+
+Neu:
+  standings      -> liefert der App Tabellenstand und beendete Spiele beider Ligen (U15 A: 21652, U15 B: 21656).
+                    Holt die Daten höchstens alle 30 Minuten vom EHV, antwortet nur der App (jazm1309.github.io).
+  autoResults    -> trägt alle 30 Minuten beendete Grizzlys-Spiele als Ergebnis ein. Der Ergebnis-Push geht wie bei
+                    einem Handeintrag raus, aber nur für Spiele der letzten 2 Tage. Handeinträge werden nie überschrieben.
+  scheduleWatch  -> vergleicht alle 3 Stunden den Spielplan der App mit dem des EHV und meldet NEUE Abweichungen
+                    per Push an die Admin-Geräte. Merkt sich den Stand in Firestore unter ehvSync/scheduleWatch.
+  scheduleCheck  -> derselbe Vergleich auf Knopfdruck im Admin-Bereich ("Mit EHV-Spielplan abgleichen"). Liest nur.
+
+Dateien im Repo
+  functions/standings.js   (neu)
+  functions/ehv-sync.js    (neu)
+  functions/index.js       (am Ende 4 Zeilen ergänzt)
+
+Deploy in der Cloud Shell (im Ordner mit firebase.json)
+  firebase deploy --only functions:standings,functions:autoResults,functions:scheduleCheck,functions:scheduleWatch --project grizzlys-u15
+
+Schalter in functions/ehv-sync.js
+  AUTO_RESULT_PUSH = true        false = automatische Ergebnisse immer ohne Push eintragen
+  RESULT_PUSH_MAX_AGE_DAYS = 2   ältere, nachgetragene Ergebnisse lösen keinen Push aus
+
+Hinweise
+  - Der Zugriffsschlüssel in standings.js ist der öffentliche Schlüssel der EHV-Seite. Ändert der Verband ihn,
+    bleiben Chips, Form und Drittel in der App einfach weg; der Spielplan läuft normal weiter.
+  - Ein automatisch eingetragenes Ergebnis hat das Feld source: "ehv". Wird es im Admin-Bereich von Hand neu
+    gespeichert, geht der Ergebnis-Push (erneut) raus.
+  - Wichtig: Wer die Functions nach SCHRITT 2 oben neu aus dem Repo holt (git clone), braucht diese drei Dateien
+    im Repo – sonst fehlen die EHV-Functions beim nächsten Deploy.
