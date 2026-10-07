@@ -1,1 +1,27 @@
-txt neu logos
+Logos der Gegner für die Instagram-Bilder (Admin-Bereich).
+
+Jede Datei muss genau so heißen wie hier aufgeführt. Fehlt eine Datei,
+zeigt das Bild an ihrer Stelle ein Kürzel im Kreis.
+Am besten quadratische Bilder mit mindestens 400 x 400 Pixeln und
+durchsichtigem Hintergrund.
+
+aachener-ec.png
+dinslakener-kobras.png
+ec-bergisch-land.png
+ehc-essen-ruhr.webp
+ehc-gelsenkirchen.png
+ehc-neuwied.png
+eisadler-dortmund.png
+esc-darmstadt.png
+esc-rheine-young-cats.png
+ev-duisburg.png
+grefrather-ec.png
+gsc-moers.png
+herforder-ev.png
+herner-ev.png
+lippe-hockey-hamm.png
+neusser-ev.png
+ratinger-ice-aliens.png
+soester-eg.png
+tsve-bielefeld.png
+tus-wiehl.png
