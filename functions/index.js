@@ -320,3 +320,6 @@ exports.standings = require("./standings").standings;
 exports.autoResults = require("./ehv-sync").autoResults;
 exports.scheduleCheck = require("./ehv-sync").scheduleCheck;
 exports.scheduleWatch = require("./ehv-sync").scheduleWatch;
+
+// News-Hinweise: optionaler Push
+exports.onNewsCreated = require("./news").onNewsCreated;
