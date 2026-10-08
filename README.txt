@@ -2,6 +2,21 @@ ESV Grizzlys U15 App
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Version 1.9.1
+
+Neu in Version 1.9.1 (Stand 1.9.1.66)
+- Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
+- Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
+- Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
+- Kopfbereich: „Nächstes Spiel in … Tagen“ nur noch in der schmalen Leiste beim Scrollen; neu das News-Symbol
+- „Ergebnis teilen“ teilt den Endstand mit Dritteln
+- Downloads: Bilder für Social Media für alle (Spieltagsbild ab 5 Tage vorher, Ergebnisbild bis 5 Tage danach); Admin-Abschnitt heißt jetzt „Social-Media-Bilder“
+- News-Bereich: Hinweise (Freitext aus dem Admin-Bereich), Spieländerungen (automatisch) und „Neu in der App“ (Liste APP_NEWS in index.html); Zähler für Ungelesenes, neuester Hinweis als Streifen auf der Startseite
+- Admin: Abschnitt „Hinweise / News“ mit Mannschaft, Sichtbar bis und optionalem Push
+- Neue Cloud Function functions/news.js (onNewsCreated) für den optionalen Push; functions/index.js um eine Zeile ergänzt
+- Firestore-Regeln: neue Sammlung news – Regeln müssen veröffentlicht werden
+- PWA-Cache: auf grizzlys-u15-v66 erneuert
+
 Version 1.9.0
 
 Neu in Version 1.9.0 (Stand 1.9.0.65)
@@ -172,7 +187,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v51).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v66).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
@@ -195,6 +210,7 @@ Firestore-Sammlungen:
 - gameReminders
 - appInstallations
 - bugReports
+- news (Hinweise aus dem Admin-Bereich)
 - ehvSync (nur Cloud Function)
 
 EHV-Daten
@@ -207,15 +223,21 @@ Logos
 Alle Gegner-Logos liegen im Ordner logos (Dateinamen siehe logos/LIESMICH.txt). Fehlt eine Datei, lädt die
 App das Logo von der bisherigen Adresse.
 
-Instagram-Bilder
-Admin-Bereich > Instagram-Bilder: erzeugt pro Spiel ein Bild 1080 x 1350 (Ankündigung oder Ergebnis) zum
-Teilen oder Speichern. Es wird nichts automatisch gepostet.
+Social-Media-Bilder
+Admin-Bereich > Social-Media-Bilder: erzeugt pro Spiel ein Bild 1080 x 1350 (Ankündigung oder Ergebnis) zum
+Teilen oder Speichern. Es wird nichts automatisch gepostet. Im Downloadbereich für alle: Spieltagsbild ab
+5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel.
+
+News
+News-Symbol im Kopfbereich mit Zähler. Hinweise (Sammlung news, im Admin-Bereich schreiben, optional mit Push
+über onNewsCreated), Spieländerungen (automatisch aus scheduleOverrides) und „Neu in der App“ (APP_NEWS in
+index.html, bei jedem Update ergänzen).
 
 Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).
 
 Version
-Schreibweise 1.9.0.65: vorn die App-Version, die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
+Schreibweise 1.9.1.66: vorn die App-Version, die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
 
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.

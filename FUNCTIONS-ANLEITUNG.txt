@@ -81,3 +81,29 @@ Hinweise
     gespeichert, geht der Ergebnis-Push (erneut) raus.
   - Wichtig: Wer die Functions nach SCHRITT 2 oben neu aus dem Repo holt (git clone), braucht diese drei Dateien
     im Repo – sonst fehlen die EHV-Functions beim nächsten Deploy.
+
+
+NEWS-HINWEISE MIT OPTIONALEM PUSH (ab Version 1.9.1)
+====================================================
+
+Neu:
+  onNewsCreated  -> wird ausgelöst, wenn im Admin-Bereich unter "Hinweise / News" ein Hinweis veröffentlicht wird.
+                    Nur wenn der Haken "Zusätzlich als Push senden" gesetzt ist, geht ein Push an alle angemeldeten
+                    Geräte. Bei einem Hinweis nur für U15 A oder U15 B gilt die Mannschaftsauswahl der Geräte.
+                    Jeder Hinweis wird höchstens einmal verschickt (Feld pushSentAt).
+
+Dateien im Repo
+  functions/news.js        (neu)
+  functions/index.js       (am Ende 1 Zeile ergänzt)
+  firestore.rules          (neue Sammlung "news": für alle lesbar, nur Admin schreibt)
+
+Veröffentlichen in der Cloud Shell (im Ordner mit firebase.json, z. B. ~/grizzlys-u15)
+  Wichtig: die Regeln MÜSSEN veröffentlicht werden, sonst kann der Admin-Bereich keine Hinweise speichern
+  und die App zeigt keine an.
+    firebase deploy --only firestore:rules,functions:onNewsCreated --project grizzlys-u15
+
+Prüfen
+  - Firebase Console > Functions: onNewsCreated steht in der Liste.
+  - Firebase Console > Firestore > Regeln: der Block "match /news/{newsId}" ist enthalten.
+  - Im Admin-Bereich der Live-App einen Test-Hinweis ohne Push veröffentlichen -> erscheint im News-Fenster;
+    danach wieder löschen. (Die Testversion kann Hinweise nur anzeigen, nicht speichern.)

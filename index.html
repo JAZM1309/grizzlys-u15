@@ -852,6 +852,139 @@ html.dark .nextLabel .homeaway{background:rgba(255,255,255,.08);color:#c6d4e4}
 html.dark .card.gz2 .homeaway{background:rgba(255,255,255,.08);color:#c6d4e4}
 .gzOppGames{display:grid;gap:10px}
 .gzOppGames .card{margin:0}
+/* v66: Spielkarten zum Aufklappen */
+.next,#lastGameCard{display:none!important}
+.g3Home{margin-bottom:12px}
+.g3Home[hidden]{display:none}
+.card.gz3.g3Fixed{cursor:default}
+.card.gz3,html.dark .card.gz3{border-left:5px solid var(--team)}
+.g3Band{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 14px;background:var(--team);color:#fff;font-size:11.5px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}
+.g3Band span{font-weight:800;letter-spacing:.02em;text-transform:none;opacity:.92}
+.card.teamB .g3Band{color:#3a1d00}
+.card .g3Band.w{background:#1f9d55;color:#fff}
+.card .g3Band.l{background:#d6453b;color:#fff}
+.card .g3Band.d{background:#e0a100;color:#2b1d00}
+.card .g3Band.none{background:#7d8b9c;color:#fff}
+.hw .hwGameCard .g3Band:not(.w):not(.l):not(.d){background:#ff7a00;color:#1a0f05}
+.g3TogTxt{display:inline-block;min-width:54px;text-align:right}
+.card.gz3{padding:0;cursor:pointer;box-shadow:0 8px 24px rgba(16,32,51,.09);-webkit-tap-highlight-color:transparent}
+.card.gz3.nextGame{box-shadow:0 0 0 2px var(--team),0 10px 26px rgba(16,32,51,.14)}
+.card.gz3:focus-visible{outline:2px solid var(--team);outline-offset:2px}
+.mdCard.gz3{box-shadow:0 8px 24px rgba(16,32,51,.09)!important;cursor:default}
+.g3Top{display:grid;grid-template-columns:68px minmax(0,1fr)}
+.g3Date{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:10px 0;background:color-mix(in srgb,var(--team) 16%,transparent);color:var(--team);font-size:10.5px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
+.g3Date b{font-size:22px;font-weight:950;line-height:1.1;letter-spacing:0;color:var(--text)}
+.g3Date i{font-style:normal;margin-top:5px;font-size:13.5px;font-weight:950;letter-spacing:0;color:var(--text)}
+html.dark .g3Date b,html.dark .g3Date i{color:#fff}
+.g3Main{min-width:0;padding:10px 12px 12px}
+.g3Head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-height:24px}
+.g3Head .teamBadge{margin:0;padding:3px 10px;border-radius:99px;font-size:11px}
+.g3Head .nextBadge{margin:0;padding:3px 9px;border-radius:99px}
+.g3Tog{flex:none;display:inline-flex;align-items:center;gap:3px;padding-top:3px;font-size:11.5px;font-weight:850;color:#0b6fd6;white-space:nowrap}
+.g3Tog svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+.card.gz3.open .g3Tog svg{transform:rotate(180deg)}
+html.dark .g3Tog{color:#5fb0ff}
+.card.gz3 .gcMatch{border:0;padding:9px 0 0}
+.g3Det{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:0fr;transition:grid-template-rows .28s ease}
+.card.gz3.open .g3Det{grid-template-rows:1fr}
+.g3In{overflow:hidden;min-height:0;min-width:0}
+.card.gz3{min-width:0;max-width:100%}
+.g3Main,.g3Tile,.g3Venue>div{min-width:0}
+.g3Tile .gzForm{flex-wrap:wrap}
+.g3Pad{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;padding:0 9px 9px;min-width:0}
+.g3Pair{display:flex;gap:7px}
+.g3Pair .g3Tile{flex:1 1 0;min-width:0}
+.g3Tile{background:rgba(16,32,51,.05);border-radius:13px;padding:9px 11px}
+html.dark .g3Tile{background:rgba(255,255,255,.06)}
+.g3Tile small{display:block;font-size:9.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g3Pl{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 7px;margin-top:3px;font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.g3Pl span{white-space:nowrap}
+.g3Pl b{font-size:21px;font-weight:950;line-height:1.15;color:var(--text)}
+.g3Tile .gzForm{display:flex;justify-content:flex-start;margin-top:7px}
+.g3Thirds{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);text-align:center}
+.g3Thirds b{display:block;margin-top:2px;font-size:17px;font-weight:950;color:var(--text);font-variant-numeric:tabular-nums}
+.g3Venue{display:flex;align-items:center;gap:10px}
+.g3Venue>div{flex:1;min-width:0;font-size:12px;line-height:1.35;color:var(--muted)}
+.g3Venue>div b{display:block;font-size:13px;color:var(--text)}
+.g3Venue>div span{display:block;overflow-wrap:anywhere}
+.g3Route{flex:none;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:9px 14px;background:#0b6fd6;color:#fff;font:inherit;font-size:12.5px;font-weight:850;cursor:pointer}
+html.dark .g3Route{background:#168cff}
+.g3Route .ic{width:15px;height:15px}
+.g3Acts{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:7px}
+.g3Btn{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:38px;padding:0 6px;border:0;border-radius:12px;background:var(--ice);color:#0b6fd6;font:inherit;font-size:12px;font-weight:850;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.dark .g3Btn{background:rgba(22,140,255,.14);color:#6db8ff}
+.g3Btn .ic{width:15px;height:15px;flex:none}
+.hw .hwGameCard .g3Date{background:rgba(255,122,0,.2);color:#ffb066}
+.hw .hwGameCard .g3Date b,.hw .hwGameCard .g3Date i,.hw .hwGameCard .g3Pl b,.hw .hwGameCard .g3Thirds b,.hw .hwGameCard .g3Venue>div b{color:#ffe9d2}
+.hw .hwGameCard .g3Tile{background:rgba(255,122,0,.10)}
+.hw .hwGameCard .g3Tile .gzForm i.e{box-shadow:inset 0 0 0 1.5px rgba(255,200,150,.4)}
+.hw .hwGameCard .g3Tile small,.hw .hwGameCard .g3Pl,.hw .hwGameCard .g3Venue>div{color:#d9b894}
+.hw .hwGameCard .g3Tog,.hw .hwGameCard .g3Btn{color:#ffa247}
+.hw .hwGameCard .g3Btn{background:rgba(255,122,0,.2)}
+.hw .hwGameCard .g3Route{background:#ff7a00;color:#1a0f05}
+@media(max-width:370px){.g3Top{grid-template-columns:58px minmax(0,1fr)}.g3Main{padding:10px 10px 12px}.g3Btn{font-size:11px;gap:4px}.g3Pl b{font-size:18px}.g3Route{padding:9px 11px}}
+@media(max-width:340px){.g3Pair{flex-direction:column}.g3Btn .ic{display:none}}
+@media(prefers-reduced-motion:reduce){.g3Det,.g3Tog svg{transition:none}}
+/* News */
+.newsTop{right:98px}
+.newsTop svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.newsBadge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#e5322b;color:#fff;font-size:10.5px;font-weight:900;line-height:18px;text-align:center;box-shadow:0 0 0 2px rgba(3,18,35,.55)}
+.newsBadge[hidden]{display:none}
+.heroChips{padding-right:138px}
+.heroChips .heroChip{display:none!important}
+.newsBanner{display:flex;align-items:stretch;margin-bottom:12px;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 8px 22px rgba(16,32,51,.09),inset 5px 0 0 #e5322b}
+.newsBanner[hidden]{display:none}
+html.dark .newsBanner{background:#14233a}
+.newsBannerMain{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:11px 8px 11px 16px;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.newsBannerIc{font-size:20px;flex:none}
+.newsBannerTx{min-width:0;font-size:13px;font-weight:800;line-height:1.3;overflow-wrap:anywhere}
+.newsBannerTx small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#e5322b;font-weight:900}
+.newsBannerX{flex:none;width:42px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer}
+.newsSec{margin-top:14px}
+.newsSecTitle{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 2px 8px}
+.newsItem{display:block;width:100%;text-align:left;font:inherit;color:inherit;border:0;border-radius:14px;padding:11px 13px;margin-bottom:8px;background:rgba(16,32,51,.05);--team:var(--a);box-shadow:inset 4px 0 0 var(--team)}
+.newsItem[data-team=B]{--team:var(--b)}
+.newsItem.newsNote:not([data-team]),.newsItem.newsApp{box-shadow:inset 4px 0 0 #7d8b9c}
+html.dark .newsItem{background:rgba(255,255,255,.06)}
+.newsItem.newsChange{cursor:pointer}
+.newsItem.unread{background:color-mix(in srgb,#e5322b 9%,transparent)}
+.newsItem.unread .newsItemHead::after{content:"Neu";margin-left:6px;padding:1px 7px;border-radius:999px;background:#e5322b;color:#fff;font-size:10px;font-weight:900}
+.newsItemHead{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.newsItemHead .teamBadge{margin:0;padding:2px 8px;border-radius:99px;font-size:10.5px}
+.newsItemHead .teamBadge.both{background:rgba(125,139,156,.18);color:var(--muted)}
+.newsDate{margin-left:auto;font-size:11px;color:var(--muted);font-weight:700}
+.newsItem b{display:block;font-size:14px;line-height:1.3}
+.newsItem p{margin:4px 0 0;font-size:12.5px;line-height:1.45;color:var(--muted);white-space:pre-line;overflow-wrap:anywhere}
+.newsNew{color:var(--text);font-weight:800}
+.newsItem ul{margin:2px 0 0;padding-left:18px;font-size:12.5px;line-height:1.45;color:var(--muted)}
+.newsItem li{margin:2px 0}
+.newsEmpty{padding:2px 2px 6px}
+.newsForm{display:grid;gap:7px}
+.newsForm input,.newsForm textarea,.newsForm select{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;font:inherit;background:#fff;color:inherit}
+html.dark .newsForm input,html.dark .newsForm textarea,html.dark .newsForm select{background:#0f1c2f;border-color:rgba(255,255,255,.14)}
+.newsFormRow{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.newsFormRow label{display:grid;gap:3px;font-size:11px;font-weight:900;color:var(--muted)}
+.newsPushChk{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+.newsPushChk input{width:18px;height:18px}
+.newsAdminItem .adminGameHead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.newsAdminItem .newsDel{flex:none;width:auto;padding:7px 12px}
+.hw .newsTop{background:rgba(255,122,0,.22);color:#ffd2a1}
+/* Datumsbalken läuft beim Aufklappen durch */
+.card.gz3{--g3w:68px;--g3bar:color-mix(in srgb,var(--team) 16%,transparent)}
+.card.gz3 .g3Date{background:var(--g3bar)}
+.card.gz3 .g3Det{background:linear-gradient(to right,var(--g3bar) 0,var(--g3bar) var(--g3w),transparent var(--g3w))}
+.card.gz3 .g3Pad{padding:2px 9px 9px calc(var(--g3w) + 9px)}
+.card.gz3 .g3Btn{flex-direction:column;gap:3px;min-height:50px;font-size:11px;white-space:normal;line-height:1.15}
+.card.gz3 .g3Btn .ic{width:17px;height:17px}
+.hw .hwGameCard.gz3{--g3bar:rgba(255,122,0,.2)}
+@media(max-width:370px){.card.gz3{--g3w:58px}}
+@media(max-width:340px){.card.gz3 .g3Btn .ic{display:block}}
+/* Instagram-Bilder im Downloadbereich */
+.dlInsta{margin-top:14px}
+.dlInstaItem{--team:var(--a);box-shadow:0 8px 22px rgba(16,32,51,.09),inset 5px 0 0 var(--team)}
+.dlInstaItem.teamB{--team:var(--b)}
+.dlInstaItem .dlIcon{display:grid;place-items:center;background:color-mix(in srgb,var(--team) 16%,transparent);color:var(--team)}
+.dlInstaEmpty{padding:4px 2px}
 /* Instagram-Bilder (Admin) */
 .instaModal{z-index:1300}
 .instaBtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
@@ -927,7 +1060,7 @@ html.dark .gzForm i.x{box-shadow:0 0 0 1.5px rgba(255,255,255,.5)}
 <div id="updateBanner" class="updateBanner" role="status" aria-live="polite" hidden><span class="updateBannerIcon" aria-hidden="true">&#8635;</span><div class="updateBannerText"><b>Neue Version verfügbar</b><span>Kurz aktualisieren, dann bist du auf dem neuesten Stand.</span></div><button id="updateBannerReload" class="updateBannerBtn" type="button">Aktualisieren</button><button id="updateBannerClose" class="updateBannerClose" type="button" aria-label="Schließen">&times;</button></div>
 <div class="app">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="gearPath" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 8.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7z M19.4 13.5a7.7 7.7 0 0 0 0-3l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-2.6-1.5L14 2.5h-4l-.4 2.5a7.6 7.6 0 0 0-2.6 1.5l-2.4-1-2 3.4 2 1.6a7.7 7.7 0 0 0 0 3l-2 1.6 2 3.4 2.4-1a7.6 7.6 0 0 0 2.6 1.5l.4 2.5h4l.4-2.5a7.6 7.6 0 0 0 2.6-1.5l2.4 1 2-3.4z"/></g></defs></svg>
-<header class="hero"><div class="heroRink" aria-hidden="true"></div><div class="heroIce" aria-hidden="true"></div><div class="hwDeco hwWeb" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M100 0L100.0 96.0M100 0L64.0 89.0M100 0L33.3 69.1M100 0L12.3 39.0M100 0L4.0 0.0M100.0 22.0Q96.4 18.6 91.8 20.4Q89.7 15.9 84.7 15.8Q84.5 10.9 79.9 8.9Q81.5 3.9 78.0 0.0M100.0 42.0Q93.1 35.5 84.3 38.9Q80.3 30.3 70.8 30.2Q70.4 20.7 61.6 17.1Q64.7 7.5 58.0 0.0M100.0 62.0Q89.8 52.3 76.8 57.5Q71.0 44.7 56.9 44.6Q56.3 30.6 43.4 25.2Q47.8 11.1 38.0 0.0M100.0 84.0Q86.2 70.9 68.5 77.9Q60.7 60.6 41.6 60.4Q40.8 41.4 23.3 34.2Q29.3 15.0 16.0 0.0" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></div><div class="hwDeco hwBat hwBat1"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwDeco hwBat hwBat2"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwDeco hwBat hwBat3"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="heroTop"><img src="logo.png" alt="ESV Grizzlys Logo"><div><div class="kicker">ESV Grizzlys Bergkamen</div><h1>U15 Spielplan<span class="hwDeco hwPumpkin"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span></h1></div></div><div class="heroChips"><div class="season"><svg class="puckIc" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="9" rx="8" ry="3.4"/><path d="M4 9v5.4c0 1.900 3.600 3.400 8 3.400s8-1.500 8-3.400V9"/></svg>Saison 2026/27</div><div id="heroStatus" class="heroChip" hidden></div></div><button id="settingsTopBtn" class="infoTop settingsTop" type="button" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg></button><button id="infoTopBtn" class="infoTop" type="button" aria-label="Info">ⓘ</button><div class="slg" role="text" aria-label="Ein Team, zwei starke Mannschaften"><span class="a">Ein Team</span><span class="b">Zwei starke</span><span class="c">Mannschaften</span><svg viewBox="0 0 118 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C20 3 50 9 80 5 S110 4 116 2 L114 6 C95 8 70 11 45 10 S12 11 2 10Z"/><path d="M10 9 L110 5" stroke-width="1.2" opacity=".7"/></svg></div><div class="heroEdge" aria-hidden="true"></div></header>
+<header class="hero"><div class="heroRink" aria-hidden="true"></div><div class="heroIce" aria-hidden="true"></div><div class="hwDeco hwWeb" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M100 0L100.0 96.0M100 0L64.0 89.0M100 0L33.3 69.1M100 0L12.3 39.0M100 0L4.0 0.0M100.0 22.0Q96.4 18.6 91.8 20.4Q89.7 15.9 84.7 15.8Q84.5 10.9 79.9 8.9Q81.5 3.9 78.0 0.0M100.0 42.0Q93.1 35.5 84.3 38.9Q80.3 30.3 70.8 30.2Q70.4 20.7 61.6 17.1Q64.7 7.5 58.0 0.0M100.0 62.0Q89.8 52.3 76.8 57.5Q71.0 44.7 56.9 44.6Q56.3 30.6 43.4 25.2Q47.8 11.1 38.0 0.0M100.0 84.0Q86.2 70.9 68.5 77.9Q60.7 60.6 41.6 60.4Q40.8 41.4 23.3 34.2Q29.3 15.0 16.0 0.0" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></div><div class="hwDeco hwBat hwBat1"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwDeco hwBat hwBat2"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwDeco hwBat hwBat3"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="heroTop"><img src="logo.png" alt="ESV Grizzlys Logo"><div><div class="kicker">ESV Grizzlys Bergkamen</div><h1>U15 Spielplan<span class="hwDeco hwPumpkin"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span></h1></div></div><div class="heroChips"><div class="season"><svg class="puckIc" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="9" rx="8" ry="3.4"/><path d="M4 9v5.4c0 1.900 3.600 3.400 8 3.400s8-1.500 8-3.400V9"/></svg>Saison 2026/27</div><div id="heroStatus" class="heroChip" hidden></div></div><button id="newsTopBtn" class="infoTop newsTop" type="button" aria-label="Neuigkeiten"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"/><path d="M8 8h4M8 12h4M8 16h4"/></svg><span id="newsBadge" class="newsBadge" hidden>0</span></button><button id="settingsTopBtn" class="infoTop settingsTop" type="button" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg></button><button id="infoTopBtn" class="infoTop" type="button" aria-label="Info">ⓘ</button><div class="slg" role="text" aria-label="Ein Team, zwei starke Mannschaften"><span class="a">Ein Team</span><span class="b">Zwei starke</span><span class="c">Mannschaften</span><svg viewBox="0 0 118 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C20 3 50 9 80 5 S110 4 116 2 L114 6 C95 8 70 11 45 10 S12 11 2 10Z"/><path d="M10 9 L110 5" stroke-width="1.2" opacity=".7"/></svg></div><div class="heroEdge" aria-hidden="true"></div></header>
 <div id="miniBar" class="miniBar" aria-hidden="true"><div class="miniBarIn"><img src="logo.png" alt=""><b>U15 Spielplan</b><span id="miniStatus" class="miniStatus"></span></div></div>
 <main>
 <nav class="tabs"><button class="tab active" data-view="home">Start</button><button class="tab" data-view="schedule">Spielplan</button><button class="tab" data-view="opponents">Gegner</button><button class="tab" data-view="downloads">Downloads</button></nav>
@@ -954,9 +1087,9 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <div id="opponentsList" class="list"></div><div id="standNote" class="gzStandNote" hidden></div>
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
-<section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.0.65</em></div>
-<div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><div class="inTiles"><div class="inTile"><i>📅</i><b>Spielplan</b><small>Liste oder Monatskalender</small></div><div class="inTile"><i>🏒</i><b>Gegner</b><small>Spiele, Orte und Routen</small></div><div class="inTile"><i>⬇️</i><b>Downloads</b><small>Kalender und PDF</small></div><div class="inTile"><i>🔔</i><b>Push</b><small>Ergebnisse und 24-h-Erinnerung</small></div><div class="inTile"><i>🥅</i><b>Ergebnisse</b><small>direkt nach Spielende</small></div><div class="inTile"><i>🔗</i><b>Teamseiten</b><small>Tabellen und Vereinsseiten</small></div></div><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
+<section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.66</em></div>
+<div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><div class="inTiles"><div class="inTile"><i>📅</i><b>Spielplan</b><small>Liste oder Monatskalender</small></div><div class="inTile"><i>🏒</i><b>Gegner</b><small>Spiele, Orte und Routen</small></div><div class="inTile"><i>⬇️</i><b>Downloads</b><small>Kalender, PDF und Bilder</small></div><div class="inTile"><i>🔔</i><b>Push</b><small>Ergebnisse und 24-h-Erinnerung</small></div><div class="inTile"><i>🥅</i><b>Ergebnisse</b><small>direkt nach Spielende</small></div><div class="inTile"><i>🔗</i><b>Teamseiten</b><small>Tabellen und Vereinsseiten</small></div></div><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
 <p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p></section>
 <section id="settingsView" hidden><div class="settingsHead"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg><div><b>Einstellungen</b><div class="small">Darstellung, Benachrichtigungen, Feedback und Admin</div></div></div><div class="infoCard"><div class="infoTitle">Darstellung</div><div class="small" style="margin:6px 0 10px">Wähle, wie die App aussehen soll.</div><div class="themeSeg" id="themeSeg" role="radiogroup" aria-label="Darstellung"><button type="button" role="radio" data-theme="light"><span>☀️</span>Hell</button><button type="button" role="radio" data-theme="dark"><span>🌙</span>Dunkel</button><button type="button" role="radio" data-theme="auto"><span>📱</span>Automatisch</button></div><div id="themeHint" class="small" style="margin-top:9px" hidden>Das Halloween-Design ist gerade aktiv und überlagert die Darstellung. Schalte es unten aus, um Hell oder Dunkel zu sehen.</div></div><div id="hwSwitchCard" class="infoCard hwSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span><span class="hwSwitchText"><b>Halloween-Design</b><small>Gilt automatisch vom 20.10. bis 2.11.</small></span><input id="hwToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div><section id="pushCard" class="infoCard pushCard" style="margin-top:12px" data-state="off">
@@ -994,7 +1127,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
       <button id="adminLogout" class="action" type="button">Abmelden</button>
       <div class="adminAccordion" data-admin-accordion="analytics"><button class="adminAccordionHeader" type="button"><span>📊 App-Statistik</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Eigene Grizzlys-Auswertung mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div><button id="openAnalyticsDashboard" class="action" type="button">📊 Statistik öffnen</button></div></div>
       <div class="adminAccordion" data-admin-accordion="results"><button class="adminAccordionHeader" type="button"><span>🏒 Ergebnisverwaltung</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Ergebnisse eintragen, ändern oder löschen.</div><div id="adminResults" class="adminResults"></div></div></div>
-      <div class="adminAccordion" data-admin-accordion="insta"><button class="adminAccordionHeader" type="button"><span>📸 Instagram-Bilder</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Erzeugt ein Bild im Beitragsformat (4:5) zum Teilen oder Speichern. Es wird nichts automatisch gepostet.</div><div id="adminInsta" class="adminInsta"></div></div></div><div class="adminAccordion" data-admin-accordion="schedule"><button class="adminAccordionHeader" type="button"><span>📅 Spieländerungen</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Falsche oder verlegte Termine zentral ändern. Die Änderung wird für alle Nutzer übernommen.</div><button id="ehvCheckBtn" class="action ehvCheckBtn" type="button">🔎 Mit EHV-Spielplan abgleichen</button><div id="ehvCheckResult" class="ehvCheck" hidden></div><div id="adminSchedule" class="adminSchedule"></div></div></div>
+      <div class="adminAccordion" data-admin-accordion="insta"><button class="adminAccordionHeader" type="button"><span>📸 Social-Media-Bilder</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Erzeugt ein Bild im Beitragsformat (4:5) zum Teilen oder Speichern. Es wird nichts automatisch gepostet.</div><div id="adminInsta" class="adminInsta"></div></div></div><div class="adminAccordion" data-admin-accordion="news"><button class="adminAccordionHeader" type="button"><span>📰 Hinweise / News</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Freitext-Hinweis für alle Nutzer. Er erscheint im News-Bereich und auf der Startseite – wahlweise zusätzlich als Push.</div><div id="adminNews"></div></div></div><div class="adminAccordion" data-admin-accordion="schedule"><button class="adminAccordionHeader" type="button"><span>📅 Spieländerungen</span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Falsche oder verlegte Termine zentral ändern. Die Änderung wird für alle Nutzer übernommen.</div><button id="ehvCheckBtn" class="action ehvCheckBtn" type="button">🔎 Mit EHV-Spielplan abgleichen</button><div id="ehvCheckResult" class="ehvCheck" hidden></div><div id="adminSchedule" class="adminSchedule"></div></div></div>
       <div class="adminAccordion" data-admin-accordion="bugs"><button class="adminAccordionHeader" type="button"><span>💬 Rückmeldungen <span id="adminBugCount" class="adminBugBadge" hidden>0</span></span><span class="chevron">⌄</span></button><div class="adminAccordionBody"><div class="small" style="margin:0 0 8px">Fehler, Wünsche, Anregungen und Lob prüfen, archivieren oder endgültig löschen.</div><div style="display:flex;gap:7px;align-items:center;margin-bottom:8px"><label for="adminBugFilter" class="small" style="font-weight:900">Anzeige:</label><select id="adminBugFilter" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select></div><div style="display:flex;gap:7px;align-items:center;margin-bottom:8px"><label for="adminBugType" class="small" style="font-weight:900">Art:</label><select id="adminBugType" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff"><option value="all">Alle Arten</option><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></div><div id="adminBugReports" class="adminResults"></div></div></div>
       <div id="analyticsDashboardModal" class="matchModal" hidden aria-hidden="true">
         <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="analyticsDashboardTitle" style="max-width:760px">
@@ -1030,7 +1163,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 </div></section>
 
 <div id="thanksModal" class="thanksModal" hidden aria-hidden="true"><div class="thanksBox" role="dialog" aria-modal="true" aria-labelledby="thanksTitle"><div class="hwDeco hwThanksBats" aria-hidden="true"><span class="hwBat hwBat1"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span><span class="hwBat hwBat2"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span><span class="hwBat hwBat3"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span></div><img id="thanksImg" class="thanksImg" src="grizzlys-bug-icon.png" alt=""><div id="thanksTitle" class="thanksTitle"></div><div id="thanksText" class="thanksText"></div><button id="thanksClose" class="thanksBtn" type="button">Schließen</button></div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.9.0.65 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.9.1.66 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hwDeco hwFogA" aria-hidden="true"></div><div class="hwDeco hwFogB" aria-hidden="true"></div><div class="hwDeco hwGameEyes" aria-hidden="true"><i></i><i></i></div><div class="hwDeco hwGameSpider" aria-hidden="true"><b></b><span>🕷️</span></div><div class="hwDeco hwGameBat" aria-hidden="true"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwFlash" aria-hidden="true"></div><div id="hqFx" class="hqFx" aria-hidden="true"></div><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div id="hockeyIntro" class="hockeyGameIntro">Best of 5 – wer zuerst 3 Runden gewinnt. Du bist der Puck.</div><div class="hqBoard" aria-live="polite"><div class="hqTeam"><i id="hqYou">GRIZZLYS</i><b id="hqScoreP">0</b></div><div class="hqMid"><div id="hqLamp" class="hqLamp" aria-hidden="true"></div><small id="hqSeriesInfo">Runde 1 · Best of 5</small></div><div class="hqTeam"><i id="hqFoe">GEGNER</i><b id="hqScoreC">0</b></div></div><div class="hqLevels" id="hqLevels" role="group" aria-label="Schwierigkeit"><button type="button" data-lv="easy">Anfänger</button><button type="button" data-lv="pro" class="on">Profi</button><button type="button" data-lv="keeper">Torwart</button></div><div class="hockeyRink"><div class="hqBanner" aria-hidden="true"><span>ESV GRIZZLYS</span><span>BERGKAMEN</span><span>U15</span></div><div id="hockeyBoard" class="hockeyBoard"></div><div class="hqBanner hqBannerB" aria-hidden="true"><span>BERGKAMEN</span><span>ESV GRIZZLYS</span><span>U15</span></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hqTools"><button id="hqPenBtn" class="hqPen" type="button">⏱ Strafzeit ×3</button><div id="hqTrophies" class="hqTrophies" aria-label="Pokale"></div></div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neue Serie</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät. Nur deine Pokale werden hier gespeichert.</div></div></div></div></div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -1175,6 +1308,7 @@ async function loadScheduleOverrides(){
     renderNext(); renderList(); renderOpponents();
     if(window.applyResults) window.applyResults();
     if(auth.currentUser?.uid===ADMIN_UID) adminScheduleEditor();
+    window.renderNews?.();
   }catch(err){ console.warn("Spielplanänderungen konnten nicht geladen werden",err); }
 }
 function adminScheduleEditor(){
@@ -1429,7 +1563,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.9.0.65",
+      appVersion:"1.9.1.66",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1609,7 +1743,7 @@ function setupAnalyticsDashboard(){
 }
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
-  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadBugReports(); setupAnalyticsDashboard(); }
+  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; setupAdminAccordions(); adminEditor(); adminScheduleEditor(); loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); }
   else { login.hidden=false; panel.hidden=true; status.textContent=user?"Angemeldet, aber keine Admin-Berechtigung":"Nicht angemeldet"; }
 }
 
@@ -1675,6 +1809,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   syncExistingPushRegistration().then(()=>registerAppInstallation());
   loadResults();
   loadScheduleOverrides();
+  loadNews();
   isSupported().then(ok=>{
   if(ok && FIREBASE_VAPID_KEY){
     messaging=getMessaging(app);
@@ -1686,6 +1821,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         try{if(auth.currentUser&&auth.currentUser.uid===ADMIN_UID)loadBugReports();}catch(e){}
         return;
       }
+      if(payload.data&&payload.data.type==="news"){try{loadNews()}catch(e){}}
       if(n.title) alert((n.title ? n.title+"\n" : "") + (n.body||""));
     });
   }
@@ -1693,6 +1829,49 @@ document.addEventListener("DOMContentLoaded",()=>{
   alert("FCM Fehler: " + (e?.code || e?.message || String(e)));
 });
 });
+
+/* ===== v66: News – Freitext-Hinweise (Firestore-Sammlung "news") ===== */
+window.getScheduleOverrides=()=>scheduleOverrides;
+window.adminNewsEditor=()=>adminNewsEditor();
+async function loadNews(){
+  try{
+    const snap=await getDocs(collection(db,"news"));
+    const arr=[]; snap.forEach(d=>{const x=d.data()||{};arr.push({id:d.id,title:String(x.title||""),text:String(x.text||""),team:String(x.team||""),until:String(x.until||""),push:x.push===true,created:x.createdAt?.toMillis?x.createdAt.toMillis():0})});
+    window.newsNotes=arr.sort((a,b)=>b.created-a.created);
+  }catch(err){ console.warn("Hinweise konnten nicht geladen werden",err); window.newsNotes=window.newsNotes||[]; }
+  window.renderNews?.();
+  if(auth.currentUser?.uid===ADMIN_UID) adminNewsEditor();
+}
+function adminNewsEditor(){
+  const box=document.getElementById("adminNews"); if(!box) return;
+  const e=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const d=new Date(Date.now()+14*86400000), p=n=>String(n).padStart(2,"0"), def=d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+  const list=(window.newsNotes||[]);
+  box.innerHTML=`<div class="newsForm">
+    <input id="newsTitle" maxlength="80" placeholder="Überschrift (z. B. Treffpunkt geändert)">
+    <textarea id="newsText" maxlength="600" rows="4" placeholder="Text des Hinweises"></textarea>
+    <div class="newsFormRow"><label>Mannschaft<select id="newsTeam"><option value="">Beide</option><option value="A">U15 A</option><option value="B">U15 B</option></select></label><label>Sichtbar bis<input id="newsUntil" type="date" value="${def}"></label></div>
+    <label class="newsPushChk"><input id="newsPush" type="checkbox"> Zusätzlich als Push senden</label>
+    <button id="newsSave" class="action" type="button">📰 Hinweis veröffentlichen</button>
+  </div>
+  <div class="small" style="margin:12px 0 6px;font-weight:900">Veröffentlichte Hinweise</div>
+  ${list.length?list.map(n=>`<div class="adminGame newsAdminItem"><div class="adminGameHead"><div><b>${e(n.title||"(ohne Überschrift)")}</b><div class="small">${n.team?"U15 "+e(n.team):"Beide Mannschaften"} · bis ${n.until?e(n.until.split("-").reverse().join(".")):"unbegrenzt"}${n.push?" · mit Push":""}</div></div><button class="action newsDel" data-id="${e(n.id)}" type="button">Löschen</button></div><div class="small" style="white-space:pre-line;margin-top:6px">${e(n.text)}</div></div>`).join(""):'<div class="small">Noch keine Hinweise.</div>'}`;
+  box.querySelector("#newsSave").onclick=async()=>{
+    const title=box.querySelector("#newsTitle").value.trim(), text=box.querySelector("#newsText").value.trim();
+    const team=box.querySelector("#newsTeam").value, until=box.querySelector("#newsUntil").value, push=box.querySelector("#newsPush").checked;
+    if(title.length<3){alert("Bitte eine Überschrift mit mindestens 3 Zeichen eingeben.");return}
+    if(push&&!confirm("Den Hinweis jetzt auch als Push an alle angemeldeten Geräte senden?"))return;
+    try{
+      await addDoc(collection(db,"news"),{title:title.slice(0,80),text:text.slice(0,600),team,until,push,createdAt:serverTimestamp()});
+      alert(push?"Hinweis veröffentlicht. Der Push wird gleich verschickt.":"Hinweis veröffentlicht.");
+      await loadNews();
+    }catch(err){console.error(err);alert("Speichern fehlgeschlagen: "+(err.message||err))}
+  };
+  box.querySelectorAll(".newsDel").forEach(b=>b.onclick=async()=>{
+    if(!confirm("Diesen Hinweis löschen?"))return;
+    try{await deleteDoc(doc(db,"news",b.dataset.id));await loadNews()}catch(err){alert("Löschen fehlgeschlagen: "+(err.message||err))}
+  });
+}
 </script>
 <script>
 /* Fallback, falls das Firebase-Modul nicht lädt (Vorschau, offline): Spielplan bleibt nutzbar, nur ohne Ergebnisse */
@@ -2121,6 +2300,7 @@ function renderNext(){
      [["nextRoute","Route"],["nextCalendar","Termin"],["nextReminder","Erinnerung"],["nextShare","Teilen"]].forEach(([id,l])=>{const b=document.getElementById(id);if(b){b.setAttribute("aria-label",l);b.title=l}});}}
   document.getElementById("nextRoute").onclick=()=>route(g); document.getElementById("nextCalendar").onclick=()=>calendar(g); document.getElementById("nextReminder").onclick=()=>reminder(g); document.getElementById("nextShare").onclick=()=>shareGame(g);
   hwDecorate(document.querySelector(".next"),g);
+  g3HomeCard("g3HomeNext",g,"Nächstes Spiel",false);
   renderLast(); renderTeamTiles();
 }
 
@@ -2249,6 +2429,7 @@ function renderLast(){
   const now=new Date();
   const past=games.filter(g=>dt(g)<now).sort((a,b)=>dt(b)-dt(a));
   let g=past.find(x=>resInfo(x))||past[0];
+  g3HomeCard("g3HomeLast",g||null,"Letztes Spiel",false);
   if(!g){box.hidden=true;return}
   const r=resInfo(g), cls=g.team==="A"?"teamA":"teamB";
   const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};
@@ -2360,13 +2541,11 @@ window.applyResults=function(){
   content.innerHTML=
     '<div class="small" style="margin-bottom:10px">'+gs.length+" "+(gs.length===1?"Spiel":"Spiele")+" gegen diesen Gegner</div>"+
     '<div class="opponentGames gzOppGames">'+
-    cardInfo.map(x=>'<article class="card gz2 '+(x.g.team==="B"?"teamB":"teamA")+(x.past?" gzPast":"")+'" data-team="'+esc(x.g.team)+'" data-date="'+esc(x.g.date)+'">'+gameCardHtml(x.g,x.past,x.res)+'</article>').join("")+
+    cardInfo.map(x=>'<article class="card gz2 '+(x.g.team==="B"?"teamB":"teamA")+' gz3" data-team="'+esc(x.g.team)+'" data-date="'+esc(x.g.date)+'">'+gameCardHtml(x.g,x.past,x.res)+'</article>').join("")+
     '</div>';
   content.querySelectorAll(".gzOppGames .card").forEach((card,i)=>{
-    const {g,past}=cardInfo[i];
-    [["route",route],["cal",calendar],["rem",reminder],["share",shareGame]].forEach(([c,fn])=>{const b=card.querySelector("."+c);if(b)b.onclick=e=>{e.stopPropagation();fn(g)}});
-    const open=()=>{closeOpponentDetails();openMatchDetails(g)};
-    if(past){card.onclick=open;card.setAttribute("role","button");card.tabIndex=0;card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}}
+    const {g}=cardInfo[i];
+    g3Bind(card,g);g3SetOpen(card,cardInfo.length===1);
     hwDecorate(card,g);
   });
 
@@ -2395,35 +2574,97 @@ function standPeriodsShort(g){
   if(!res||Number(res.homeScore)!==x.hs||Number(res.awayScore)!==x.as)return "";
   return '<span class="gzPer" title="Drittelergebnisse">'+x.p.map(esc).join(" · ")+(x.so?" · n.P.":x.ot?" · n.V.":"")+'</span>';
 }
-function gameCardHtml(g,past,res,detail=false){
-  const home=isHome(g), word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};
-  const day=dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
+/* v66: Spielkarten zum Aufklappen – Datumsblock links, Details als Blöcke.
+   g3OpenKey: null = Standard (nächstes Spiel offen), "" = alle zu, sonst das offene Spiel. */
+let g3OpenKey=null;
+function g3Key(g){return g.date+"_"+g.time+"_"+g.team}
+function standPeriodsData(g){
+  const games=standings[g.team]&&standings[g.team].games; if(!Array.isArray(games))return null;
+  const h=standRow(g.team,g.home), a=standRow(g.team,g.away); if(!h||!a)return null;
+  const x=games.find(x=>x.d===g.date&&x.h===h.n&&x.a===a.n); if(!x||x.p.length<3)return null;
+  const res=window.resultFor&&window.resultFor(g);
+  if(!res||Number(res.homeScore)!==x.hs||Number(res.awayScore)!==x.as)return null;
+  return x;
+}
+function g3TeamTile(team,name){
+  const r=standRow(team,name); if(!r)return "";
+  const gd=Number(r.gd)||0, gdTxt=gd>0?"+"+gd:gd<0?"−"+Math.abs(gd):"±0";
+  const title="Tabelle: Platz "+r.r+" · "+r.gp+" "+(r.gp===1?"Spiel":"Spiele")+" · "+r.p+" Punkte · Tordifferenz "+gdTxt;
+  return `<div class="g3Tile"><small>${esc(shortTeam(name))}</small>`+(r.gp?`<div class="g3Pl" title="${esc(title)}"><b>${esc(r.r)}.</b><span>${esc(r.gp)} Sp · ${esc(r.p)} Pkt · ${gdTxt}</span></div>`:`<div class="g3Pl"><span>noch kein Spiel</span></div>`)+standFormHtml(team,name)+`</div>`;
+}
+function gameCardHtml(g,past,res,detail=false,label=""){
+  const home=isHome(g), word={w:"Sieg",l:"Niederlage",d:"Unentschieden"}, d=dt(g);
   const logo=(name,cls)=>/grizzlys/i.test(name)?teamLogoHtml(name,cls):logoHtml(name,cls);
-  const head=`<div class="gcHead"><div class="gcLeft"><span class="teamBadge">U15 ${esc(g.team)}</span><span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${hwBadge(g)}</div><div class="gcWhen"><span class="gcDate">${esc(day)}</span>${past&&!detail?"":`<b class="gcTime">${esc(g.time)}</b>`}</div></div>`;
-  const mid=res?`<div class="gzMid"><b class="gzScore">${res.hs}:${res.as}</b><span class="lastPill ${res.o}">${word[res.o]}</span>${standPeriodsShort(g)}</div>`
+  const wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
+  const date=`<div class="g3Date"><span>${esc(wd)}</span><b>${String(d.getDate()).padStart(2,"0")}.</b><span>${esc(mon)}</span><i>${esc(g.time)}</i></div>`;
+  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">U15 ${esc(g.team)}</span><span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
+  const mid=res?`<div class="gzMid"><b class="gzScore">${res.hs}:${res.as}</b><span class="lastPill ${res.o}">${word[res.o]}</span></div>`
                :`<div class="gzMid">${past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
-  if(past&&!detail) return head+`<div class="gzPastRow"><div class="gzPastSide l"><span>${esc(shortTeam(g.home))}</span>${logo(g.home,"gzPastLogo")}</div>${mid}<div class="gzPastSide r">${logo(g.away,"gzPastLogo")}<span>${esc(shortTeam(g.away))}</span></div></div>`;
-  const act=(c,icon,label)=>`<button class="gzAct ${c}" type="button" aria-label="${label}" title="${label}">${ic(icon)}</button>`;
-  return head+`<div class="gcMatch"><div class="gcSide">${logo(g.home,"opponentLogo")}<span>${esc(shortTeam(g.home))}</span></div>${mid}<div class="gcSide">${logo(g.away,"opponentLogo")}<span>${esc(shortTeam(g.away))}</span></div>${standPairHtml(g.team,g.home,g.away)}</div>`+(detail?
-    `<div class="gcVenue gzDetailVenue">${ic("pin")}<b>${esc(g.stadium)}</b> · ${esc(address(g))}</div><div class="matchModalActions">${actBtn("modalRoute","pin","Route")}${past?"":actBtn("modalCal","calplus","Termin")+actBtn("modalRem","bell","Erinnerung")}${actBtn("modalShare","share","Teilen")}</div>`:
-    `<div class="gzFoot"><span class="gzVenue">${ic("pin")}<b>${esc(g.stadium)}</b></span><div class="gzActs">${act("route","pin","Route")}${act("cal","calplus","Termin")}${act("rem","bell","Erinnerung")}${act("share","share","Teilen")}</div></div>`);
+  const match=`<div class="gcMatch"><div class="gcSide">${logo(g.home,"opponentLogo")}<span>${esc(shortTeam(g.home))}</span></div>${mid}<div class="gcSide">${logo(g.away,"opponentLogo")}<span>${esc(shortTeam(g.away))}</span></div></div>`;
+  const per=res?standPeriodsData(g):null;
+  const thirds=per?`<div class="g3Tile g3Thirds">`+per.p.map((v,i)=>`<div><small>${i+1}. Drittel</small><b>${esc(v)}</b></div>`).join("")+(per.so||per.ot?`<div><small>Ende</small><b>${per.so?"n.P.":"n.V."}</b></div>`:"")+`</div>`:"";
+  const tiles=g3TeamTile(g.team,g.home)+g3TeamTile(g.team,g.away);
+  const venue=`<div class="g3Tile g3Venue"><div><b>${esc(g.stadium)}</b><span>${esc(address(g))}${(km=>km?" · "+km+" km":"")(distanceForStadium(g.stadium))}</span></div><button class="g3Route route" type="button">${ic("pin")}Route</button></div>`;
+  const btn=(c,icon,label)=>`<button class="g3Btn ${c}" type="button">${ic(icon)}${label}</button>`;
+  const acts=`<div class="g3Acts">`+(past?"":btn("cal","calplus","Termin")+btn("rem","bell","Erinnerung"))+btn("share","share",res?"Ergebnis teilen":"Teilen")+`</div>`;
+  return `<div class="g3Top">${date}<div class="g3Main">${head}${match}</div></div><div class="g3Det"><div class="g3In"><div class="g3Pad">${thirds}${tiles?`<div class="g3Pair">${tiles}</div>`:""}${venue}${acts}</div></div></div>`;
+}
+function g3SetOpen(card,on){
+  card.classList.toggle("open",on);
+  const d=card.querySelector(".g3Det"); if(d)d.inert=!on;
+  const tx=card.querySelector(".g3TogTxt"); if(tx)tx.textContent=on?"Weniger":"Details";
+  if(card.getAttribute("role")==="button")card.setAttribute("aria-expanded",on?"true":"false");
+}
+/* Startseite: „Nächstes Spiel“ (dauerhaft offen) und „Letztes Spiel“ (aufklappbar) als normale Spielkarten.
+   Die bisherigen Kästen bleiben unsichtbar im Dokument, damit der restliche Code unverändert weiterläuft. */
+const g3HomeOpen={}; /* gemerkter Zustand der beiden Startkarten */
+function g3HomeCard(id,g,label,defOpen){
+  const old=document.querySelector(id==="g3HomeNext"?".next":"#lastGameCard"); if(!old)return;
+  let el=document.getElementById(id);
+  if(!el){el=document.createElement("article");el.id=id;old.parentNode.insertBefore(el,old)}
+  if(!g){el.hidden=true;return}
+  const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now(), wasOpen=el.classList.contains("open");
+  el.hidden=false;el.className="card gz2 gz3 g3Home "+(g.team==="B"?"teamB":"teamA")+(id==="g3HomeLast"&&res?" res_"+res.o:"");el.dataset.team=g.team;
+  el.innerHTML=gameCardHtml(g,past,res,false,"");
+  {const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};let sub="",k="";
+   if(id==="g3HomeLast"){k=res?res.o:"none";sub=res?word[res.o]:"Ergebnis folgt"}
+   else{const d0=new Date();d0.setHours(0,0,0,0);const d1=dt(g);d1.setHours(0,0,0,0);const n=Math.round((d1-d0)/86400000);sub=n===0?"Heute":n===1?"Morgen":n>1?"in "+n+" Tagen":""}
+   el.insertAdjacentHTML("afterbegin",`<div class="g3Band ${k}">${esc(label)}${sub?`<span>${esc(sub)}</span>`:""}</div>`);}
+  g3Bind(el,g); g3SetOpen(el,id in g3HomeOpen?g3HomeOpen[id]:defOpen);
+  hwDecorate(el,g);
+}
+/* fixed=true: Karte ist dauerhaft offen (Fenster „Spieldetails“) */
+function g3Bind(card,g,fixed=false){
+  [["route",route],["cal",calendar],["rem",reminder],["share",shareGame]].forEach(([c,fn])=>{const b=card.querySelector("."+c);if(b)b.onclick=e=>{e.stopPropagation();fn(g)}});
+  if(fixed){g3SetOpen(card,true);return}
+  card.setAttribute("role","button");card.tabIndex=0;
+  const tog=()=>{
+    const on=!card.classList.contains("open");
+    const home=card.classList.contains("g3Home");
+    (home?document.querySelectorAll(".g3Home.open"):card.parentNode.querySelectorAll(".card.gz3.open:not(.g3Fixed)")).forEach(c=>{if(c!==card){g3SetOpen(c,false);if(home)g3HomeOpen[c.id]=false}});
+    if(home)g3HomeOpen[card.id]=on;
+    g3SetOpen(card,on);
+    if(card.closest("#gamesList"))g3OpenKey=on?g3Key(g):"";
+    if(on)setTimeout(()=>{try{card.scrollIntoView({block:"nearest",behavior:"smooth"})}catch(e){}},300);
+  };
+  card.onclick=e=>{if(e.target.closest("button,a"))return;tog()};
+  card.onkeydown=e=>{if(e.target!==card)return;if(e.key==="Enter"||e.key===" "){e.preventDefault();tog()}};
 }
 function renderList(filter="all"){
   if(scheduleMode!=="chrono"){renderCalendar();return;}
   const list=document.getElementById("gamesList"); list.innerHTML="";
   const arr=games.filter(gameMatchesFilters).sort((a,b)=>dt(a)-dt(b));
   document.getElementById("scheduleTitle").textContent="Spielplan"; document.getElementById("scheduleCount").textContent=arr.length+" Spiele";
-  let month=""; const ng=nextGame();
+  let month=""; const ng=nextGame(), openKey=g3OpenKey===null?(ng?g3Key(ng):""):g3OpenKey;
   arr.forEach(g=>{
     const m=monthLabel(g); if(m!==month){month=m; const mh=document.createElement("div");mh.className="month";mh.textContent=m;list.appendChild(mh)}
     const card=document.createElement("article"); card.className="card "+(g.team==="B"?"teamB":"teamA"); card.dataset.date=g.date; card.dataset.team=g.team;
     const home=isHome(g);
     const sideL=home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home), sideR=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
     const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now();
-    card.classList.add("gz2"); if(past)card.classList.add("gzPast");
+    card.classList.add("gz2","gz3");
     card.innerHTML=gameCardHtml(g,past,res);
-    [["route",route],["cal",calendar],["rem",reminder],["share",shareGame]].forEach(([c,fn])=>{const b=card.querySelector("."+c);if(b)b.onclick=e=>{e.stopPropagation();fn(g)}});
-    if(past){card.onclick=()=>openMatchDetails(g);card.setAttribute("role","button");card.tabIndex=0;card.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openMatchDetails(g)}}}
+    g3Bind(card,g);g3SetOpen(card,g3Key(g)===openKey);
     if(g===ng){card.classList.add("nextGame");card.querySelector(".gcLeft").insertAdjacentHTML("beforeend",'<span class="nextBadge">Nächstes Spiel</span>')}
     hwDecorate(card,g);
     list.appendChild(card);
@@ -2439,7 +2680,9 @@ function icsFor(g,alarm=false){
 }
 function downloadIcs(g,alarm){const blob=new Blob([icsFor(g,alarm)],{type:"text/calendar"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(alarm?"Erinnerung-":"U15-")+g.date+"-"+g.team+".ics";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function calendar(g){downloadIcs(g,false)} function reminder(g){downloadIcs(g,true);setTimeout(()=>alert("Kalenderdatei vorbereitet – die Erinnerung ist 24 Stunden vorher hinterlegt."),250)}
-async function shareGame(g){const text="🏒 U15 "+g.team+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g);if(navigator.share){try{await navigator.share({title:"ESV Grizzlys U15",text})}catch(e){}}else alert(text)}
+async function shareGame(g){const r=resInfo(g), per=r?standPeriodsData(g):null;
+  const text=r?"🏒 U15 "+g.team+" – Endstand\n"+g.home+" "+r.hs+":"+r.as+" "+g.away+(per?"\nDrittel: "+per.p.join(" · ")+(per.so?" · n.P.":per.ot?" · n.V.":""):"")+"\n"+fmtDate(g)+" · "+g.stadium
+    :"🏒 U15 "+g.team+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g);if(navigator.share){try{await navigator.share({title:"ESV Grizzlys U15",text})}catch(e){}}else alert(text)}
 
 function openMatchDetails(g){
   const modal=document.getElementById("matchModal");
@@ -2450,12 +2693,9 @@ function openMatchDetails(g){
   const awayLogo=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
   const sideL=homeLogo, sideR=awayLogo;
   const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now();
-  content.innerHTML=`<article class="card gz2 mdCard ${g.team==="B"?"teamB":"teamA"}" data-team="${g.team}">${gameCardHtml(g,past,res,true)}</article>`;
+  content.innerHTML=`<article class="card gz2 gz3 mdCard ${g.team==="B"?"teamB":"teamA"}" data-team="${g.team}">${gameCardHtml(g,past,res,true)}</article>`;
   hwDecorate(content.querySelector(".mdCard"),g);
-  {const b=content.querySelector(".modalRoute");if(b)b.onclick=()=>route(g);}
-  {const b=content.querySelector(".modalCal");if(b)b.onclick=()=>calendar(g);}
-  {const b=content.querySelector(".modalRem");if(b)b.onclick=()=>reminder(g);}
-  {const b=content.querySelector(".modalShare");if(b)b.onclick=()=>shareGame(g);}
+  g3Bind(content.querySelector(".mdCard"),g,true);
   modal.hidden=false;
   modal.setAttribute("aria-hidden","false");
   document.body.style.overflow="hidden";
@@ -2765,10 +3005,10 @@ async function instaDraw(g,type){
   return cv;
 }
 function instaClose(){const m=document.getElementById("instaModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true")}const a=document.getElementById("adminModal");document.body.style.overflow=(a&&!a.hidden)?"hidden":""}
-async function instaOpen(g,type){
+async function instaOpen(g,type,pub=false){
   let m=document.getElementById("instaModal");
   if(!m){m=document.createElement("div");m.id="instaModal";m.className="matchModal instaModal";m.hidden=true;
-    m.innerHTML='<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="instaTitle"><div class="matchModalHead"><div id="instaTitle" class="matchModalTitle">Instagram-Bild</div><button id="instaClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div><div id="instaBody" class="instaBody"></div><div class="instaActions"><button id="instaShare" class="action" type="button">Teilen</button><button id="instaSave" class="action" type="button">Speichern</button></div><div id="instaHint" class="small" style="margin-top:8px"></div></div>';
+    m.innerHTML='<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="instaTitle"><div class="matchModalHead"><div id="instaTitle" class="matchModalTitle">Social-Media-Bild</div><button id="instaClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div><div id="instaBody" class="instaBody"></div><div class="instaActions"><button id="instaShare" class="action" type="button">Teilen</button><button id="instaSave" class="action" type="button">Speichern</button></div><div id="instaHint" class="small" style="margin-top:8px"></div></div>';
     document.body.appendChild(m);m.querySelector("#instaClose").onclick=instaClose;m.addEventListener("click",e=>{if(e.target===m)instaClose()});}
   const body=m.querySelector("#instaBody"),hint=m.querySelector("#instaHint"),bS=m.querySelector("#instaShare"),bD=m.querySelector("#instaSave");
   body.textContent="Bild wird erstellt …";hint.textContent="";bS.disabled=bD.disabled=true;m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
@@ -2776,14 +3016,14 @@ async function instaOpen(g,type){
     const cv=await instaDraw(g,type), blob=await new Promise(r=>cv.toBlob(r,"image/png"));
     if(!blob)throw new Error("Bild konnte nicht erzeugt werden");
     const name="grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(type==="result"?"ergebnis":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
-    body.innerHTML="";const img=new Image();img.src=url;img.alt="Vorschau des Instagram-Bildes";img.className="instaPreview";body.appendChild(img);
+    body.innerHTML="";const img=new Image();img.src=url;img.alt="Vorschau des Bildes";img.className="instaPreview";body.appendChild(img);
     const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     bS.hidden=!canShare;bS.disabled=false;bD.disabled=false;
     bS.onclick=async()=>{try{await navigator.share({files:[file],title:"ESV Grizzlys U15 "+g.team})}catch(e){}};
     bD.onclick=()=>{const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove()};
     const missing=[...new Set([g.home,g.away].filter(n=>!/grizzlys/i.test(n)).flatMap(n=>logoKeys(n)))].filter(k=>INSTA_LOGOS[k]);
     const loaded=await Promise.all(missing.map(k=>instaImg("logos/"+INSTA_LOGOS[k])));const lost=missing.filter((k,i)=>!loaded[i]);
-    hint.textContent=lost.length?"Logo fehlt im Ordner „logos“: "+lost.map(k=>INSTA_LOGOS[k]).join(", "):"";
+    hint.textContent=(lost.length&&!pub)?"Logo fehlt im Ordner „logos“: "+lost.map(k=>INSTA_LOGOS[k]).join(", "):"";
   }catch(e){console.error(e);body.textContent="Das Bild konnte nicht erstellt werden.";}
 }
 window.instaOpen=instaOpen;window.instaDraw=instaDraw;
@@ -2795,5 +3035,129 @@ function renderInstaList(){
 }
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderInstaList()}catch(e){console.warn(e)}};}
 renderInstaList();
+
+/* Instagram-Bilder für alle: Spieltag ab 5 Tage vorher bis Spielende, Ergebnis bis 5 Tage nach dem Spiel */
+const INSTA_DAYS=5;
+function renderInstaDownloads(){
+  const box=document.getElementById("dlInstaList"); if(!box)return;
+  const now=Date.now(), day=86400000, items=[];
+  games.forEach(g=>{
+    const t=dt(g).getTime(), r=resInfo(g);
+    if(now>=t-INSTA_DAYS*day&&now<t+2*3600000&&!r)items.push({g,type:"announce",t});
+    if(r&&now<=t+INSTA_DAYS*day)items.push({g,type:"result",t,r});
+  });
+  items.sort((a,b)=>a.type===b.type?a.t-b.t:a.type==="result"?-1:1);
+  if(!items.length){
+    const nx=games.filter(g=>dt(g).getTime()>now).sort((a,b)=>dt(a)-dt(b))[0];
+    const from=nx?new Date(dt(nx).getTime()-INSTA_DAYS*day):null;
+    box.innerHTML=`<div class="small dlInstaEmpty">Gerade gibt es keine Bilder.${from?" Das nächste Spieltagsbild gibt es ab "+esc(from.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})).replace(/\.$/,"")+".":""}</div>`;
+    return;
+  }
+  const icA='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>';
+  const icR='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1 -10 0z"/><path d="M5 9h2M17 9h2"/></svg>';
+  box.innerHTML=items.map((x,i)=>{const g=x.g, cls=g.team==="B"?"teamB":"teamA";
+    const title=x.type==="result"?"Ergebnis "+x.r.hs+":"+x.r.as:"Spieltag";
+    return `<button class="downloadCard dlInstaItem ${cls}" data-i="${i}" type="button"><span class="dlIcon">${x.type==="result"?icR:icA}</span><b>${title} · U15 ${esc(g.team)}</b><small>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))} · ${esc(dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))}</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`}).join("");
+  box.querySelectorAll(".dlInstaItem").forEach(b=>{const x=items[Number(b.dataset.i)];b.onclick=()=>instaOpen(x.g,x.type,true)});
+}
+{const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderInstaDownloads()}catch(e){console.warn(e)}};}
+renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},10*60000);
+
+/* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
+/* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
+const APP_NEWS=[
+  {v:"1.9.1.66",d:"Oktober 2026",items:[
+    "Spielkarten zum Aufklappen: Ein Tipp zeigt Tabellenplatz, Form, Halle und alle Aktionen.",
+    "Startseite: Nächstes und letztes Spiel mit Farbband – Sieg, Niederlage oder Unentschieden auf einen Blick.",
+    "„Ergebnis teilen“ teilt jetzt den Endstand mit Dritteln.",
+    "Downloads: Bilder für Social Media – Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage danach.",
+    "Neu: dieser News-Bereich mit Hinweisen, Spieländerungen und Neuigkeiten zur App."]},
+  {v:"1.9.0.65",d:"Oktober 2026",items:[
+    "Tabellenplatz, Spiele, Punkte und Tordifferenz bei jeder Paarung.",
+    "Form der letzten fünf Spiele und Drittelergebnisse.",
+    "Ergebnisse werden automatisch vom EHV NRW übernommen.",
+    "Schulferien NRW im Kalender."]}
+];
+const NEWS_SEEN_KEY="grizzlysNewsSeen";
+function newsSeen(){try{const x=JSON.parse(localStorage.getItem(NEWS_SEEN_KEY)||"null");return Array.isArray(x)?x:null}catch(e){return null}}
+function newsSave(arr){try{localStorage.setItem(NEWS_SEEN_KEY,JSON.stringify(arr.slice(-300)))}catch(e){}}
+let newsSeenMem=newsSeen();
+if(!newsSeenMem){newsSeenMem=APP_NEWS.slice(1).map(x=>"v:"+x.v);newsSave(newsSeenMem)}
+function newsToday(){const d=new Date();d.setHours(0,0,0,0);return d}
+function newsActiveNotes(){
+  const t=newsToday();
+  return (window.newsNotes||[]).filter(n=>!n.until||new Date(n.until+"T23:59:59")>=t);
+}
+function newsChanges(){
+  const ov=(window.getScheduleOverrides&&window.getScheduleOverrides())||{}, t=newsToday().getTime()-86400000, out=[];
+  games.forEach(g=>{
+    const o=ov[g._baseId]; if(!o||!g._base)return;
+    if(dt(g).getTime()<t)return;
+    const b=g._base, diff=[];
+    if(b.date!==g.date||b.time!==g.time)diff.push("vorher "+new Date(b.date+"T"+b.time).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+b.time+" Uhr");
+    if(b.stadium!==g.stadium)diff.push("Ort vorher "+b.stadium);
+    if(b.home!==g.home||b.away!==g.away)diff.push("Paarung geändert");
+    if(!diff.length)return;
+    out.push({id:"c:"+g._baseId+":"+g.date+g.time+g.stadium,g,diff});
+  });
+  return out.sort((a,b)=>dt(a.g)-dt(b.g));
+}
+function newsItemsAll(){
+  return [...newsActiveNotes().map(n=>({id:"n:"+n.id,kind:"note",n})),...newsChanges().map(c=>({...c,kind:"change"})),...APP_NEWS.map(x=>({id:"v:"+x.v,kind:"app",x}))];
+}
+function newsUnread(){const s=new Set(newsSeenMem);return newsItemsAll().filter(i=>!s.has(i.id))}
+function newsMarkSeen(ids){ids.forEach(id=>{if(!newsSeenMem.includes(id))newsSeenMem.push(id)});newsSave(newsSeenMem)}
+function newsFmtCreated(ms){return ms?new Date(ms).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"}):""}
+function newsNoteHtml(n,unread){
+  return `<div class="newsItem newsNote${unread?" unread":""}"${n.team?` data-team="${esc(n.team)}"`:""}><div class="newsItemHead">${n.team?`<span class="teamBadge">U15 ${esc(n.team)}</span>`:'<span class="teamBadge both">A + B</span>'}<span class="newsDate">${esc(newsFmtCreated(n.created))}</span></div><b>${esc(n.title)}</b>${n.text?`<p>${esc(n.text)}</p>`:""}</div>`;
+}
+function newsChangeHtml(c,unread){
+  const g=c.g, day=dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
+  return `<button class="newsItem newsChange${unread?" unread":""}" data-team="${esc(g.team)}" data-cid="${esc(c.id)}" type="button"><div class="newsItemHead"><span class="teamBadge">U15 ${esc(g.team)}</span><span class="newsDate">Spieländerung</span></div><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><p><span class="newsNew">Neu: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span><br>${c.diff.map(esc).join(" · ")}</p></button>`;
+}
+function renderNews(){
+  const items=newsUnread(), n=items.length, badge=document.getElementById("newsBadge");
+  if(badge){badge.hidden=!n;badge.textContent=n>9?"9+":String(n)}
+  const btn=document.getElementById("newsTopBtn"); if(btn)btn.setAttribute("aria-label",n?"Neuigkeiten, "+n+" ungelesen":"Neuigkeiten");
+  /* Startseite: neuester ungelesener Hinweis oder Spieländerung */
+  const top=items.find(i=>i.kind==="note")||items.find(i=>i.kind==="change");
+  let ban=document.getElementById("newsBanner"); const anchor=document.getElementById("g3HomeNext")||document.querySelector(".next");
+  if(!ban&&anchor){ban=document.createElement("div");ban.id="newsBanner";ban.className="newsBanner";anchor.parentNode.insertBefore(ban,anchor)}
+  if(ban){
+    if(!top){ban.hidden=true}
+    else{
+      ban.hidden=false;
+      const txt=top.kind==="note"?top.n.title:"Spieländerung U15 "+top.g.team+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+", jetzt "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr";
+      ban.innerHTML=`<button class="newsBannerMain" type="button"><span class="newsBannerIc">${top.kind==="note"?"📰":"📅"}</span><span class="newsBannerTx"><small>${top.kind==="note"?"Hinweis":"Spieländerung"}</small>${esc(txt)}</span></button><button class="newsBannerX" type="button" aria-label="Hinweis ausblenden">×</button>`;
+      ban.querySelector(".newsBannerMain").onclick=()=>openNews();
+      ban.querySelector(".newsBannerX").onclick=()=>{newsMarkSeen([top.id]);renderNews()};
+    }
+  }
+  const m=document.getElementById("newsModal"); if(m&&!m.hidden)newsFill();
+}
+function newsFill(){
+  const body=document.getElementById("newsBody"); if(!body)return;
+  const s=new Set(newsSeenMem), notes=newsActiveNotes(), ch=newsChanges();
+  body.innerHTML=
+    `<div class="newsSec"><div class="newsSecTitle">📰 Hinweise</div>${notes.length?notes.map(n=>newsNoteHtml(n,!s.has("n:"+n.id))).join(""):'<div class="small newsEmpty">Aktuell keine Hinweise.</div>'}</div>`+
+    `<div class="newsSec"><div class="newsSecTitle">📅 Spieländerungen</div>${ch.length?ch.map(c=>newsChangeHtml(c,!s.has(c.id))).join(""):'<div class="small newsEmpty">Keine geänderten Termine.</div>'}</div>`+
+    `<div class="newsSec"><div class="newsSecTitle">✨ Neu in der App</div>${APP_NEWS.slice(0,3).map(x=>`<div class="newsItem newsApp${s.has("v:"+x.v)?"":" unread"}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+  body.querySelectorAll(".newsItem.newsChange").forEach(b=>{const c=ch.find(x=>x.id===b.dataset.cid);b.onclick=()=>{closeNews();openMatchDetails(c.g)}});
+}
+function openNews(){
+  let m=document.getElementById("newsModal");
+  if(!m){m=document.createElement("div");m.id="newsModal";m.className="matchModal newsModal";m.hidden=true;
+    m.innerHTML='<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="newsTitle"><div class="matchModalHead"><div id="newsTitle" class="matchModalTitle">Neuigkeiten</div><button id="newsClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div><div id="newsBody"></div></div>';
+    document.body.appendChild(m);m.querySelector("#newsClose").onclick=closeNews;m.addEventListener("click",e=>{if(e.target===m)closeNews()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)closeNews()});}
+  newsFill();m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  newsMarkSeen(newsItemsAll().map(i=>i.id));
+  setTimeout(()=>{const b=document.getElementById("newsBadge");if(b)b.hidden=true;const ban=document.getElementById("newsBanner");if(ban)ban.hidden=true},0);
+}
+function closeNews(){const m=document.getElementById("newsModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true");m.querySelectorAll(".unread").forEach(x=>x.classList.remove("unread"))}document.body.style.overflow="";renderNews()}
+window.renderNews=renderNews;window.openNews=openNews;
+document.getElementById("newsTopBtn").onclick=openNews;
+{const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderNews()}catch(e){console.warn(e)}};}
+renderNews();
 </script>
 </body></html>

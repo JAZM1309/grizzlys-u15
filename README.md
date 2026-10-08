@@ -2,6 +2,23 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+## Version 1.9.1
+
+### Neu in Version 1.9.1 (Stand 1.9.1.66)
+
+- **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
+- **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
+- **Startseite:** „Nächstes Spiel“ und „Letztes Spiel“ im selben Kartenstil mit Farbband oben (nächstes Spiel in Teamfarbe mit „Heute“ / „Morgen“ / „in x Tagen“, letztes Spiel grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt, das Aufklappen der einen klappt die andere zu
+- **Kopfbereich:** „Nächstes Spiel in … Tagen“ steht nur noch rechts in der schmalen Leiste beim Scrollen; oben sitzt neu das News-Symbol
+- **„Ergebnis teilen“:** teilt bei gespielten Spielen den Endstand mit Dritteln statt der Spielinformationen
+- **Bilder für Social Media (Downloads):** für alle Nutzer im Downloadbereich: Spieltagsbild ab 5 Tage vor dem Spiel bis Spielende, Ergebnisbild ab Eintrag des Ergebnisses bis 5 Tage nach dem Spiel; im Admin-Bereich heißt der Abschnitt jetzt „Social-Media-Bilder“
+- **News-Bereich:** Symbol oben mit roter Zahl für Ungelesenes; Fenster „Neuigkeiten“ mit Hinweisen (Freitext aus dem Admin-Bereich), Spieländerungen (automatisch aus `scheduleOverrides`, mit altem und neuem Termin) und „Neu in der App“ (Liste `APP_NEWS` in `index.html`). Der neueste ungelesene Hinweis oder die neueste Spieländerung erscheint als Streifen auf der Startseite
+- **Hinweise schreiben (Admin):** Abschnitt „Hinweise / News“ mit Überschrift, Text, Mannschaft, „Sichtbar bis“ und Haken „Zusätzlich als Push senden“; veröffentlichte Hinweise können gelöscht werden
+- **Neue Cloud Function:** `functions/news.js` (`onNewsCreated`) verschickt den Push zu einem Hinweis, wenn der Haken gesetzt ist (beachtet die Mannschaftsauswahl der Geräte); `functions/index.js` um eine Zeile ergänzt
+- **Firestore-Regeln:** neue Sammlung `news` (für alle lesbar, nur Admin schreibt) – Regeln müssen veröffentlicht werden
+- **PWA-Cache:** auf `grizzlys-u15-v66` erneuert
+- **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
+
 ## Version 1.9.0
 
 ### Neu in Version 1.9.0 (Stand 1.9.0.65)
@@ -247,9 +264,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v65`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v66`).
 
-Die angezeigte Version hat die Form `1.9.0.65`: vorn die App-Version, die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
+Die angezeigte Version hat die Form `1.9.1.66`: vorn die App-Version, die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 
@@ -263,6 +280,7 @@ Verwendete Firestore-Sammlungen:
 - `gameReminders` – Erinnerungsdaten
 - `appInstallations` – technische App-/Geräteregistrierungen
 - `bugReports` – Fehlermeldungen aus der App
+- `news` – Hinweise aus dem Admin-Bereich (Überschrift, Text, Mannschaft, sichtbar bis, Push ja/nein)
 - `ehvSync` – merkt sich, welche Spielplan-Abweichungen schon gemeldet wurden (nur Cloud Function, kein Zugriff aus der App)
 
 Ergebnisse und Fehlermeldungen werden über die vorgesehenen Firebase-Regeln geschützt. Schreib- und Verwaltungszugriffe im Admin-Bereich sind auf den eingerichteten Admin-Benutzer beschränkt.
@@ -286,11 +304,23 @@ Die App zeigt Tabellenplatz, Spiele, Punkte, Tordifferenz, die Form der letzten 
 
 ## Logos
 
-Alle Gegner-Logos liegen als Dateien im Ordner `logos/`. Die erwarteten Dateinamen stehen in `logos/LIESMICH.txt` und in `index.html` (`LOGO_FILES`). Fehlt eine Datei, lädt die App das Logo von der bisherigen Adresse (`logoUrls`); im Instagram-Bild steht dann ein Kürzel. Ein Logo wird ersetzt, indem eine Datei mit demselben Namen hochgeladen wird.
+Alle Gegner-Logos liegen als Dateien im Ordner `logos/`. Die erwarteten Dateinamen stehen in `logos/LIESMICH.txt` und in `index.html` (`LOGO_FILES`). Fehlt eine Datei, lädt die App das Logo von der bisherigen Adresse (`logoUrls`); im Social-Media-Bild steht dann ein Kürzel. Ein Logo wird ersetzt, indem eine Datei mit demselben Namen hochgeladen wird.
 
-## Instagram-Bilder
+## Social-Media-Bilder
 
-Im Admin-Bereich erzeugt der Abschnitt „Instagram-Bilder“ pro Spiel ein Bild im Beitragsformat 4:5 (1080 × 1350): „Ankündigung“ (Spieltag, Datum, Uhrzeit, Tabellen-Chips) oder „Ergebnis“ (Heimsieg / Auswärtssieg / Endstand, Drittel). Das Bild entsteht im Browser, wird in einer Vorschau gezeigt und kann geteilt oder gespeichert werden. Es wird nichts automatisch gepostet.
+Im Admin-Bereich erzeugt der Abschnitt „Social-Media-Bilder“ pro Spiel ein Bild im Beitragsformat 4:5 (1080 × 1350): „Ankündigung“ (Spieltag, Datum, Uhrzeit, Tabellen-Chips) oder „Ergebnis“ (Heimsieg / Auswärtssieg / Endstand, Drittel). Das Bild entsteht im Browser, wird in einer Vorschau gezeigt und kann geteilt oder gespeichert werden. Es wird nichts automatisch gepostet.
+
+Im Downloadbereich stehen dieselben Bilder allen Nutzern zur Verfügung: das Spieltagsbild ab 5 Tage vor dem Spiel bis Spielende, das Ergebnisbild ab Eintrag des Ergebnisses bis 5 Tage nach dem Spiel (`INSTA_DAYS` in `index.html`).
+
+## News
+
+Das News-Symbol im Kopfbereich zeigt die Zahl ungelesener Einträge. Das Fenster „Neuigkeiten“ hat drei Abschnitte:
+
+- **Hinweise:** Freitexte aus dem Admin-Bereich (Sammlung `news`); abgelaufene Hinweise („Sichtbar bis“) werden nicht mehr angezeigt
+- **Spieländerungen:** kommen automatisch aus `scheduleOverrides` (neuer Termin bzw. Ort, dazu der alte); ein Tipp öffnet das Spiel
+- **Neu in der App:** die Liste `APP_NEWS` in `index.html` – bei jedem Update dort die für Nutzer sichtbaren Neuerungen eintragen (neueste Version oben)
+
+Was gelesen wurde, merkt sich jedes Gerät selbst. Der Push zu einem Hinweis kommt von der Cloud Function `onNewsCreated` (`functions/news.js`) und nur, wenn der Haken gesetzt ist.
 
 ## Schulferien
 
@@ -305,6 +335,7 @@ Sie wird verwendet für:
 - neue Spielergebnisse
 - automatische Erinnerung 24 Stunden vor einem Spiel
 - Meldung an die Admin-Geräte bei einer neuen Abweichung zwischen App- und EHV-Spielplan
+- Hinweise aus dem Admin-Bereich, wenn „Zusätzlich als Push senden“ gesetzt ist
 
 Im Admin-Bereich werden die registrierten Push-Geräte gezählt. Zusätzlich werden App-Installationen nach Plattform angezeigt.
 

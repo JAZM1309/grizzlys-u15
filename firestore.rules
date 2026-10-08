@@ -18,6 +18,20 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // News-Hinweise aus dem Adminbereich (für alle lesbar, nur Admin schreibt)
+    match /news/{newsId} {
+      allow read: if true;
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasOnly(["title","text","team","until","push","createdAt"])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 80
+        && request.resource.data.text is string && request.resource.data.text.size() <= 600
+        && request.resource.data.team in ["", "A", "B"]
+        && request.resource.data.until is string && request.resource.data.until.size() <= 10
+        && request.resource.data.push is bool;
+      allow update, delete: if isAdmin();
+    }
+
     match /pushTokens/{tokenId} {
       allow create, update: if request.resource.data.token == tokenId
         && tokenId.size() < 600
