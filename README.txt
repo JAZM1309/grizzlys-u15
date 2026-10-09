@@ -15,6 +15,7 @@ Neu in Version 1.9.1 (Stand 1.9.1.66)
 - Admin: Abschnitt „Hinweise / News“ mit Mannschaft, Sichtbar bis und optionalem Push
 - Neue Cloud Function functions/news.js (onNewsCreated) für den optionalen Push; functions/index.js um eine Zeile ergänzt
 - Firestore-Regeln: neue Sammlung news – Regeln müssen veröffentlicht werden
+- Halloween-Zeitraum jetzt 26.10. bis 2.11. (hwInSeason in index.html); neues Halloween-Logo
 - PWA-Cache: auf grizzlys-u15-v66 erneuert
 
 Version 1.9.0
@@ -41,7 +42,7 @@ Neu in Version 1.8.0
 - Kopfbereich aufgewertet: Eisnebel, Eisstaub, leuchtende Bandenlinie, Saison-Abzeichen mit Puck
 - Live-Status im Kopfbereich: Nächstes Spiel in x Tagen, Morgen 10:30 Uhr, am Spieltag GAMEDAY mit Uhrzeit
 - Mini-Leiste beim Scrollen mit kleinem Logo, Titel und Kurzstatus; Tabs bleiben sichtbar
-- Halloween-Design in Schwarz und Orange, automatisch vom 20.10. bis 2.11.
+- Halloween-Design in Schwarz und Orange, automatisch vom 20.10. bis 2.11. (seit 1.9.1: ab 26.10.)
 - Schalter Halloween-Design in den Einstellungen (nur im Halloween-Zeitraum sichtbar)
 - Halloween-Bär als Logo im Kopfbereich (halloween-logo.png), Kürbis am Titel, Spinnennetz und Fledermäuse
 - Schließbarer Gruß Happy Halloween – Zeit für Spuk auf dem Eis (wünscht das Grizzlys-Team) auf der Startseite

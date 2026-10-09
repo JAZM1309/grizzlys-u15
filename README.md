@@ -16,6 +16,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - **Hinweise schreiben (Admin):** Abschnitt „Hinweise / News“ mit Überschrift, Text, Mannschaft, „Sichtbar bis“ und Haken „Zusätzlich als Push senden“; veröffentlichte Hinweise können gelöscht werden
 - **Neue Cloud Function:** `functions/news.js` (`onNewsCreated`) verschickt den Push zu einem Hinweis, wenn der Haken gesetzt ist (beachtet die Mannschaftsauswahl der Geräte); `functions/index.js` um eine Zeile ergänzt
 - **Firestore-Regeln:** neue Sammlung `news` (für alle lesbar, nur Admin schreibt) – Regeln müssen veröffentlicht werden
+- **Halloween-Zeitraum:** jetzt 26.10. bis 2.11. (Funktion `hwInSeason` in `index.html`); neues Halloween-Logo `halloween-logo.png`
 - **PWA-Cache:** auf `grizzlys-u15-v66` erneuert
 - **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
 
@@ -45,7 +46,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - **Kopfbereich aufgewertet:** Eis-Atmosphäre (ziehender Eisnebel, funkelnder Eisstaub, leuchtende Bandenlinie unten, Schein ums Logo), „Saison“-Abzeichen mit Puck-Symbol
 - **Live-Status im Kopfbereich:** „Nächstes Spiel in x Tagen · U15 A“, am Vortag „Morgen 10:30 Uhr“, am Spieltag pulsierend **„GAMEDAY · 10:30 Uhr“** (bei zwei Spielen beide Zeiten)
 - **Mini-Leiste beim Scrollen:** schmale Leiste mit kleinem Logo, Titel und Kurzstatus („Gameday“ / „in 5 Tagen“); die Tabs bleiben darunter sichtbar, die Filterleiste im Spielplan rutscht entsprechend mit; Tipp auf die Leiste scrollt nach oben
-- **Halloween-Design** in Schwarz und Orange, automatisch vom 20.10. bis 2.11. (danach schaltet sich die App von selbst wieder auf das normale Design zurück)
+- **Halloween-Design** in Schwarz und Orange, automatisch vom 20.10. bis 2.11. (seit 1.9.1: ab 26.10.; danach schaltet sich die App von selbst wieder auf das normale Design zurück)
 - Schalter „Halloween-Design“ in den Einstellungen (nur im Halloween-Zeitraum sichtbar), Auswahl wird auf dem Gerät gemerkt
 - Halloween-Bär als Logo im Kopfbereich (`halloween-logo.png`), Kürbis neben dem Titel, Spinnennetz und fliegende Fledermäuse im Header
 - Schließbarer Gruß „Happy Halloween – Zeit für Spuk auf dem Eis“ (wünscht das Grizzlys-Team) auf der Startseite
