@@ -4,7 +4,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.83)
+Neu in Version 1.9.1 (Stand 1.9.1.86)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -18,8 +18,10 @@ Neu in Version 1.9.1 (Stand 1.9.1.83)
 - Halloween-Zeitraum jetzt 26.10. bis 2.11. (hwInSeason in index.html); neues Halloween-Logo
 - Gameday: an Spieltagen steht oben im Kopfbereich groß „GAME DAY“; der Saison-Chip wird zum Countdown („Bully in 2:15 h“, „Läuft gerade“, danach Sieg/Niederlage/Remis oder „Ergebnis folgt“). Beim ersten Öffnen am Spieltag erscheint ein Startbild mit Logo, Paarung, Uhrzeit und Halle (einmal pro Tag, schließt per Tipp oder nach ca. 3,5 s). Farbe passt sich an: blau normal, orange Halloween, rot Weihnachten
 - Halloween mit Bildern: Spielkarten mit Bildhintergründen und eisig leuchtendem Rand, dezente Augen/Krallen/Spinnennetz/Fledermäuse, Eisfläche als Kopfbild, Seitenhintergrund, Bodennebel, gelegentlicher Fledermaus-Schwarm, Mannschafts-Kacheln im Kartenstil; Bilder im Ordner halloween/ (Kleinschreibung beachten)
-- Weihnachtsdesign: automatisch im Dezember bis 6. Januar (Schalter in den Einstellungen): Weihnachtslogo (christmas-logo.png, christmas-logo-gross.png), Schnee auf Kopfbereich und Karten, Adventskalender mit 24 unsortierten Türchen und täglichem Quiz zu Regeln und Teamereignissen; Türchen öffnen sich erst ab dem jeweiligen Tag. Halloween hat Vorrang
-- PWA-Cache: auf grizzlys-u15-v83 erneuert
+- Weihnachtsdesign: automatisch im Dezember bis 6. Januar (Schalter in den Einstellungen): Weihnachtslogo (christmas-logo.png, christmas-logo-gross.png), Eisfläche mit Tannenbaum im Kopfbereich, Tannenbaum als Seitenhintergrund, Spielkarten und Mannschafts-Kacheln mit Geschenke-Bildern, einzelne Geschenke als Deko, gelegentlich fliegt der Schlitten über die Seite; folgt der Einstellung Hell/Dunkel. Adventskalender mit 24 unsortierten Türchen und täglichem Quiz zu Regeln und Teamereignissen; Türchen öffnen sich erst ab dem jeweiligen Tag. Bilder im Ordner weihnachten/. Halloween hat Vorrang
+- Gameday-Anzeige korrigiert (1.9.1.85): steht das Ergebnis schon fest, zeigt der Kopfbereich das Ergebnis statt „Läuft gerade“
+- Tabellenstand schneller aktuell (1.9.1.86): die App fragt den Tabellenstand alle 5 Minuten neu ab (auch bei offener App), die Function standings holt höchstens alle 5 Minuten neu vom EHV (vorher 30 Minuten); functions/standings.js muss neu bereitgestellt werden
+- PWA-Cache: auf grizzlys-u15-v86 erneuert
 
 Version 1.9.0
 
@@ -191,7 +193,7 @@ Zeiträume:
 Die Daten werden serverseitig über Firebase und die Google Analytics Data API abgefragt. Zugangsdaten werden nicht in der PWA gespeichert.
 
 Update-Hinweis
-Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v83).
+Sobald eine neue Version bereitsteht, erscheint unten ein Banner. „Aktualisieren“ lädt die neue Version, „×“ blendet den Banner bis zum nächsten App-Start aus. Bei jeder App-Änderung muss der Cache-Name in sw.js erhöht werden (aktuell grizzlys-u15-v86).
 
 Vorherige Funktionen
 - Zentrale Ergebnisverwaltung über Firebase Firestore
