@@ -4,7 +4,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 ## Version 1.9.1
 
-### Neu in Version 1.9.1 (Stand 1.9.1.66)
+### Neu in Version 1.9.1 (Stand 1.9.1.83)
 
 - **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
 - **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
@@ -17,7 +17,10 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - **Neue Cloud Function:** `functions/news.js` (`onNewsCreated`) verschickt den Push zu einem Hinweis, wenn der Haken gesetzt ist (beachtet die Mannschaftsauswahl der Geräte); `functions/index.js` um eine Zeile ergänzt
 - **Firestore-Regeln:** neue Sammlung `news` (für alle lesbar, nur Admin schreibt) – Regeln müssen veröffentlicht werden
 - **Halloween-Zeitraum:** jetzt 26.10. bis 2.11. (Funktion `hwInSeason` in `index.html`); neues Halloween-Logo `halloween-logo.png`
-- **PWA-Cache:** auf `grizzlys-u15-v66` erneuert
+- **Gameday:** an Spieltagen steht oben im Kopfbereich groß „GAME DAY“; der Saison-Chip wird zum Countdown („Bully in 2:15 h“, „Läuft gerade“, danach Sieg/Niederlage/Remis oder „Ergebnis folgt“). Beim ersten Öffnen am Spieltag erscheint ein Startbild mit Logo, Paarung, Uhrzeit und Halle (einmal pro Tag, schließt per Tipp oder nach ca. 3,5 s). Farbe passt sich an: blau normal, orange Halloween, rot Weihnachten
+- **Halloween mit Bildern:** Spielkarten mit Bildhintergründen und eisig leuchtendem Rand, dezente Augen/Krallen/Spinnennetz/Fledermäuse, Eisfläche als Kopfbild, Seitenhintergrund, Bodennebel, gelegentlicher Fledermaus-Schwarm, Mannschafts-Kacheln im Kartenstil; Bilder im Ordner `halloween/` (Kleinschreibung beachten)
+- **Weihnachtsdesign:** automatisch im Dezember bis 6. Januar (Schalter in den Einstellungen): Weihnachtslogo (`christmas-logo.png`, `christmas-logo-gross.png`), Schnee auf Kopfbereich und Karten, Adventskalender mit 24 unsortierten Türchen und täglichem Quiz zu Regeln und Teamereignissen; Türchen öffnen sich erst ab dem jeweiligen Tag. Halloween hat Vorrang
+- **PWA-Cache:** auf `grizzlys-u15-v83` erneuert
 - **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
 
 ## Version 1.9.0
@@ -265,7 +268,7 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v66`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v83`).
 
 Die angezeigte Version hat die Form `1.9.1.66`: vorn die App-Version, die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
