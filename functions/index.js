@@ -323,3 +323,5 @@ exports.scheduleWatch = require("./ehv-sync").scheduleWatch;
 
 // News-Hinweise: optionaler Push
 exports.onNewsCreated = require("./news").onNewsCreated;
+// Admin: Test-Push an alle Admin-Geräte (Admin-Bereich > Push-Status)
+exports.adminPushTest = require("./pushtest").adminPushTest;
