@@ -107,3 +107,30 @@ Prüfen
   - Firebase Console > Firestore > Regeln: der Block "match /news/{newsId}" ist enthalten.
   - Im Admin-Bereich der Live-App einen Test-Hinweis ohne Push veröffentlichen -> erscheint im News-Fenster;
     danach wieder löschen. (Die Testversion kann Hinweise nur anzeigen, nicht speichern.)
+
+
+TEST-PUSH AN DEN ADMIN (ab Version 1.9.1.90)
+============================================
+
+Neu:
+  adminPushTest  -> wird im Admin-Bereich unter "Push-Status" ausgelöst und schickt einen Test-Push an alle
+                    Geräte, die als Admin registriert sind. Nur der angemeldete Admin darf die Function aufrufen.
+                    "In 10 Sekunden senden" wartet vor dem Versand, damit man die App in den Hintergrund legen kann.
+                    Meldet Firebase ein Token als ungültig, wird der Eintrag in pushTokens gelöscht.
+
+Dateien im Repo
+  functions/pushtest.js    (neu)
+  functions/index.js       (am Ende 1 Zeile ergänzt)
+
+Veröffentlichen in der Cloud Shell
+  pushtest.js über das Drei-Punkte-Menü hochladen, dann:
+    mv ~/pushtest.js ~/grizzlys-u15/functions/
+    cd ~/grizzlys-u15 && firebase deploy --only functions:adminPushTest --project grizzlys-u15
+  (Die Zeile in index.js nur ergänzen, falls sie dort noch fehlt:
+    exports.adminPushTest = require("./pushtest").adminPushTest; )
+
+Prüfen
+  - Admin-Bereich > Push-Status > "Test-Push sofort senden": bei offener App erscheint eine grüne Bestätigung.
+  - "In 10 Sekunden senden" und zum Startbildschirm wechseln: die Benachrichtigung "Test-Push ✓" erscheint.
+  - Kommt nichts an, obwohl "gesendet" angezeigt wird: in den Einstellungen "Push kommt nicht an? Neu einrichten"
+    antippen (erneuert Push-Abo und Token) und den Test wiederholen.

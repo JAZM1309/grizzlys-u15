@@ -4,7 +4,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.86)
+Neu in Version 1.9.1 (Stand 1.9.1.90)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -21,7 +21,11 @@ Neu in Version 1.9.1 (Stand 1.9.1.86)
 - Weihnachtsdesign: automatisch im Dezember bis 6. Januar (Schalter in den Einstellungen): Weihnachtslogo (christmas-logo.png, christmas-logo-gross.png), Eisfläche mit Tannenbaum im Kopfbereich, Tannenbaum als Seitenhintergrund, Spielkarten und Mannschafts-Kacheln mit Geschenke-Bildern, einzelne Geschenke als Deko, gelegentlich fliegt der Schlitten über die Seite; folgt der Einstellung Hell/Dunkel. Adventskalender mit 24 unsortierten Türchen und täglichem Quiz zu Regeln und Teamereignissen; Türchen öffnen sich erst ab dem jeweiligen Tag. Bilder im Ordner weihnachten/. Halloween hat Vorrang
 - Gameday-Anzeige korrigiert (1.9.1.85): steht das Ergebnis schon fest, zeigt der Kopfbereich das Ergebnis statt „Läuft gerade“
 - Tabellenstand schneller aktuell (1.9.1.86): die App fragt den Tabellenstand alle 5 Minuten neu ab (auch bei offener App), die Function standings holt höchstens alle 5 Minuten neu vom EHV (vorher 30 Minuten); functions/standings.js muss neu bereitgestellt werden
-- PWA-Cache: auf grizzlys-u15-v86 erneuert
+- Push-Status im Admin-Bereich (1.9.1.90): neuer Abschnitt „Push-Status“ ganz oben: zeigt, ob dieses Gerät als Admin für Push angemeldet ist (Berechtigung, Token, Eintrag in Firebase, Admin-Markierung, Zahl der Admin-Geräte). „Test-Push sofort senden“ zeigt bei offener App eine grüne Bestätigung, „In 10 Sekunden senden“ die echte Benachrichtigung (vorher zum Startbildschirm wechseln). Ungültige Admin-Einträge räumt der Test-Push selbst auf. Unter „Fehlersuche“: lokale Test-Benachrichtigung (ohne Firebase) und Diagnose (Service Worker, Push-Abo, Token)
+- Push-Anmeldung wird erneuert (1.9.1.90): die App holt alle 7 Tage beim Öffnen ein neues Push-Abo und ein neues Token (renewPushRegistration in index.html, Zeitraum PUSH_RENEW_DAYS). Das behebt „tote“ Abos, bei denen Firebase den Versand annimmt, aber auf dem Gerät nichts ankommt. In den Einstellungen gibt es dafür unter dem Push-Knopf zusätzlich „Push kommt nicht an? Neu einrichten“. Alte Token-Einträge entfernt der nächste Push-Versand
+- Neue Cloud Function (1.9.1.90): functions/pushtest.js (adminPushTest, nur für den Admin aufrufbar) verschickt den Test-Push an alle Admin-Geräte; functions/index.js um eine Zeile ergänzt
+- Dunkles Design (1.9.1.90): aufgeklappte Abschnitte im Admin-Bereich haben wieder einen lesbaren Kopf
+- PWA-Cache: auf grizzlys-u15-v90 erneuert
 
 Version 1.9.0
 
