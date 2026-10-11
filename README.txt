@@ -4,7 +4,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.94)
+Neu in Version 1.9.1 (Stand 1.9.1.96)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -28,7 +28,9 @@ Neu in Version 1.9.1 (Stand 1.9.1.94)
 - Admin-Bereich neu (1.9.1.91): oben der Kasten „Zu tun“ (fehlende Ergebnisse, offene Rückmeldungen, EHV-Abweichungen, Spiele von heute, fehlender Admin-Push), darunter die Reiter Spiele · News · Feedback · Status. Im Reiter Spiele eine einzige kompakte Spielliste (Kommende / Gespielt / Alle, A/B); ein Tipp öffnet das Spiel-Fenster mit Ergebnis, Termin & Ort, Social-Media-Bildern und „News zu diesem Spiel“. EHV-Abweichungen bleiben stehen, bis sie übernommen oder abgelehnt werden; abgelehnte stehen in ehvSync/dismissed und werden auch vom Push (scheduleWatch) nicht mehr gemeldet. Push-Status (mit Test-Push und Fehlersuche) und App-Statistik liegen im Reiter Status. Neue Firestore-Regel für ehvSync; functions/ehv-sync.js geändert
 - Push-Status aufklappbar (1.9.1.92): im Reiter Status ist der Push-Status zugeklappt; die Überschrift zeigt das Ergebnis der Prüfung als Zähler (z. B. „5 von 5 ✓“ grün oder „4 von 5 ✓ · 1 ✗“ rot), aufgeklappt stehen alle Prüfpunkte, Test-Push und Fehlersuche
 - Nächste und letzte Spiele beider Mannschaften (1.9.1.94): die Startseite zeigt immer das nächste Spiel von U15 A und von U15 B als „Nächstes Spiel“ (oben das frühere) und ebenso das zuletzt gespielte Spiel beider Mannschaften als „Letztes Spiel“ (oben das neuere, ohne Ergebnis „Ergebnis folgt“), jeweils in Teamfarbe (1.9.1.93 zeigte nur zwei Spiele am selben Tag)
-- PWA-Cache: auf grizzlys-u15-v94 erneuert
+- Übersichtlicher (1.9.1.95): Spielplan zeigt gespielte Spiele zugeklappt („Gespielte Spiele anzeigen“, Zähler); Startseite ohne den alten Hinweis „38 Spiele · chronologisch sortiert“, Mannschafts-Kacheln kompakt nebeneinander (Platz, Bilanz, Form, Fortschritt); Einstellungen: Halloween und Weihnachten in einem Kasten „Saison-Designs“, die Beispiel-Meldungen verschwinden bei aktivem Push, Admin-Bereich nur noch als kleiner Link unten, „Push kommt nicht an? Neu einrichten“ nur bei aktivem Push; Info ohne die sechs Kacheln, die nur die Reiter wiederholten. News-Eintrag 1.9.1.95
+- Admin-Fenster fest (1.9.1.96): das Admin-Fenster hat nach der Anmeldung immer die volle Höhe und springt beim Wechsel zwischen den Reitern nicht mehr; ist man nach unten gescrollt, beginnt der neue Reiter direkt unter der Reiterleiste
+- PWA-Cache: auf grizzlys-u15-v96 erneuert
 
 Version 1.9.0
 
