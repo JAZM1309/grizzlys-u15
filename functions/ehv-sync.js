@@ -315,7 +315,18 @@ async function runScheduleWatch() {
   const prevSnap = await ref.get();
   const first = !prevSnap.exists;
   const known = new Set(first ? [] : (prevSnap.data().keys || []));
-  const fresh = all.filter(d => !known.has(diffKey(d)));
+  // Im Admin-Bereich abgelehnte Abweichungen (ehvSync/dismissed) nicht melden.
+  // Eine Ablehnung gilt nur für genau diesen EHV-Stand: ändert der EHV erneut, ergibt das einen neuen Schlüssel.
+  const disRef = admin.firestore().collection("ehvSync").doc("dismissed");
+  const disSnap = await disRef.get();
+  const dismissedList = disSnap.exists ? (disSnap.data().keys || []) : [];
+  const dismissed = new Set(dismissedList);
+  const fresh = all.filter(d => !known.has(diffKey(d)) && !dismissed.has(diffKey(d)));
+  // Abgelehnte Abweichungen, die es nicht mehr gibt (EHV wieder gleich, Spiel gespielt), aufräumen.
+  const stillThere = dismissedList.filter(k => keys.includes(k));
+  if (disSnap.exists && stillThere.length !== dismissedList.length) {
+    await disRef.set({ keys: stillThere, updatedAt: admin.firestore.FieldValue.serverTimestamp() }, { merge: true });
+  }
 
   let pushed = false;
   if (!first && fresh.length) {
