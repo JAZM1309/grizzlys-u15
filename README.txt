@@ -4,7 +4,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.92)
+Neu in Version 1.9.1 (Stand 1.9.1.93)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -27,7 +27,8 @@ Neu in Version 1.9.1 (Stand 1.9.1.92)
 - Dunkles Design (1.9.1.90): aufgeklappte Abschnitte im Admin-Bereich haben wieder einen lesbaren Kopf
 - Admin-Bereich neu (1.9.1.91): oben der Kasten „Zu tun“ (fehlende Ergebnisse, offene Rückmeldungen, EHV-Abweichungen, Spiele von heute, fehlender Admin-Push), darunter die Reiter Spiele · News · Feedback · Status. Im Reiter Spiele eine einzige kompakte Spielliste (Kommende / Gespielt / Alle, A/B); ein Tipp öffnet das Spiel-Fenster mit Ergebnis, Termin & Ort, Social-Media-Bildern und „News zu diesem Spiel“. EHV-Abweichungen bleiben stehen, bis sie übernommen oder abgelehnt werden; abgelehnte stehen in ehvSync/dismissed und werden auch vom Push (scheduleWatch) nicht mehr gemeldet. Push-Status (mit Test-Push und Fehlersuche) und App-Statistik liegen im Reiter Status. Neue Firestore-Regel für ehvSync; functions/ehv-sync.js geändert
 - Push-Status aufklappbar (1.9.1.92): im Reiter Status ist der Push-Status zugeklappt; die Überschrift zeigt das Ergebnis der Prüfung als Zähler (z. B. „5 von 5 ✓“ grün oder „4 von 5 ✓ · 1 ✗“ rot), aufgeklappt stehen alle Prüfpunkte, Test-Push und Fehlersuche
-- PWA-Cache: auf grizzlys-u15-v92 erneuert
+- Zwei Spiele am selben Tag (1.9.1.93): sind am Tag des nächsten Spiels zwei Spiele (z. B. U15 A und U15 B), zeigt die Startseite beide als „Nächstes Spiel“ untereinander, jeweils in Teamfarbe
+- PWA-Cache: auf grizzlys-u15-v93 erneuert
 
 Version 1.9.0
 
