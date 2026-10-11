@@ -4,7 +4,7 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 ## Version 1.9.1
 
-### Neu in Version 1.9.1 (Stand 1.9.1.90)
+### Neu in Version 1.9.1 (Stand 1.9.1.92)
 
 - **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
 - **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
@@ -26,7 +26,9 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - **Push-Anmeldung wird erneuert (1.9.1.90):** die App holt alle 7 Tage beim Öffnen ein neues Push-Abo und ein neues Token (`renewPushRegistration` in `index.html`, Zeitraum `PUSH_RENEW_DAYS`). Das behebt „tote“ Abos, bei denen Firebase den Versand annimmt, aber auf dem Gerät nichts ankommt. In den Einstellungen gibt es dafür unter dem Push-Knopf zusätzlich „Push kommt nicht an? Neu einrichten“. Alte Token-Einträge entfernt der nächste Push-Versand
 - **Neue Cloud Function (1.9.1.90):** `functions/pushtest.js` (`adminPushTest`, nur für den Admin aufrufbar) verschickt den Test-Push an alle Admin-Geräte; `functions/index.js` um eine Zeile ergänzt
 - **Dunkles Design (1.9.1.90):** aufgeklappte Abschnitte im Admin-Bereich haben wieder einen lesbaren Kopf
-- **PWA-Cache:** auf `grizzlys-u15-v90` erneuert
+- **Admin-Bereich neu (1.9.1.91):** oben der Kasten „Zu tun“ (fehlende Ergebnisse, offene Rückmeldungen, EHV-Abweichungen, Spiele von heute, fehlender Admin-Push), darunter die Reiter Spiele · News · Feedback · Status. Im Reiter Spiele eine einzige kompakte Spielliste (Kommende / Gespielt / Alle, A/B); ein Tipp öffnet das Spiel-Fenster mit Ergebnis, Termin & Ort, Social-Media-Bildern und „News zu diesem Spiel“. EHV-Abweichungen bleiben stehen, bis sie übernommen oder abgelehnt werden; abgelehnte stehen in `ehvSync/dismissed` und werden auch vom Push (`scheduleWatch`) nicht mehr gemeldet. Push-Status (mit Test-Push und Fehlersuche) und App-Statistik liegen im Reiter Status. Neue Firestore-Regel für `ehvSync`; `functions/ehv-sync.js` geändert
+- **Push-Status aufklappbar (1.9.1.92):** im Reiter Status ist der Push-Status zugeklappt; die Überschrift zeigt das Ergebnis der Prüfung als Zähler (z. B. „5 von 5 ✓“ grün oder „4 von 5 ✓ · 1 ✗“ rot), aufgeklappt stehen alle Prüfpunkte, Test-Push und Fehlersuche
+- **PWA-Cache:** auf `grizzlys-u15-v92` erneuert
 - **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
 
 ## Version 1.9.0
