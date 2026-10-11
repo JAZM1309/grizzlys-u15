@@ -1471,7 +1471,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.93</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.94</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><div class="inTiles"><div class="inTile"><i>📅</i><b>Spielplan</b><small>Liste oder Monatskalender</small></div><div class="inTile"><i>🏒</i><b>Gegner</b><small>Spiele, Orte und Routen</small></div><div class="inTile"><i>⬇️</i><b>Downloads</b><small>Kalender, PDF und Bilder</small></div><div class="inTile"><i>🔔</i><b>Push</b><small>Ergebnisse und 24-h-Erinnerung</small></div><div class="inTile"><i>🥅</i><b>Ergebnisse</b><small>direkt nach Spielende</small></div><div class="inTile"><i>🔗</i><b>Teamseiten</b><small>Tabellen und Vereinsseiten</small></div></div><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
 <p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p></section>
@@ -1995,7 +1995,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.9.1.93",
+      appVersion:"1.9.1.94",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -3110,9 +3110,9 @@ function renderNext(){
   document.getElementById("nextRoute").onclick=()=>route(g); document.getElementById("nextCalendar").onclick=()=>calendar(g); document.getElementById("nextReminder").onclick=()=>reminder(g); document.getElementById("nextShare").onclick=()=>shareGame(g);
   hwDecorate(document.querySelector(".next"),g);
   g3HomeCard("g3HomeNext",g,"Nächstes Spiel",false);
-  /* Zweites Spiel am selben Tag (z. B. U15 A und U15 B) ebenfalls als „Nächstes Spiel“ zeigen */
-  {const day=x=>{const d=dt(x);return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate()};
-   const g2=dt(g)>=new Date()?games.filter(x=>x!==g&&dt(x)>=new Date()&&day(x)===day(g)).sort((a,b)=>dt(a)-dt(b))[0]:null;
+  /* Immer das nächste Spiel beider Mannschaften zeigen: oben das frühere, darunter das der anderen Mannschaft */
+  {const now=new Date(), other=g.team==="A"?"B":"A";
+   const g2=dt(g)>=now?games.filter(x=>x.team===other&&dt(x)>=now).sort((a,b)=>dt(a)-dt(b))[0]:null;
    g3HomeCard("g3HomeNext2",g2||null,"Nächstes Spiel",false);}
   renderLast(); renderTeamTiles();
 }
@@ -3246,8 +3246,12 @@ function renderLast(){
   const box=document.getElementById("lastGameCard"); if(!box)return;
   const now=new Date();
   const past=games.filter(g=>dt(g)<now).sort((a,b)=>dt(b)-dt(a));
-  let g=past.find(x=>resInfo(x))||past[0];
+  /* Letztes Spiel beider Mannschaften: je Team das zuletzt gespielte Spiel (ohne Ergebnis „Ergebnis folgt“), oben das neuere */
+  const lastOf=t=>past.find(x=>x.team===t)||null;
+  const both=["A","B"].map(lastOf).filter(Boolean).sort((a,b)=>dt(b)-dt(a));
+  let g=both[0]||past.find(x=>resInfo(x))||past[0];
   g3HomeCard("g3HomeLast",g||null,"Letztes Spiel",false);
+  g3HomeCard("g3HomeLast2",both[1]||null,"Letztes Spiel",false);
   if(!g){box.hidden=true;return}
   const r=resInfo(g), cls=g.team==="A"?"teamA":"teamB";
   const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};
@@ -3437,15 +3441,15 @@ function g3SetOpen(card,on){
    Die bisherigen Kästen bleiben unsichtbar im Dokument, damit der restliche Code unverändert weiterläuft. */
 const g3HomeOpen={}; /* gemerkter Zustand der beiden Startkarten */
 function g3HomeCard(id,g,label,defOpen){
-  const old=document.querySelector(id==="g3HomeNext"?".next":id==="g3HomeNext2"?"#g3HomeNext":"#lastGameCard"); if(!old)return;
+  const old=document.querySelector(id==="g3HomeNext"?".next":id==="g3HomeNext2"?"#g3HomeNext":id==="g3HomeLast2"?"#g3HomeLast":"#lastGameCard"); if(!old)return;
   let el=document.getElementById(id);
-  if(!el){el=document.createElement("article");el.id=id;if(id==="g3HomeNext2")old.after(el);else old.parentNode.insertBefore(el,old)}
+  if(!el){el=document.createElement("article");el.id=id;if(id==="g3HomeNext2"||id==="g3HomeLast2")old.after(el);else old.parentNode.insertBefore(el,old)}
   if(!g){el.hidden=true;return}
   const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now(), wasOpen=el.classList.contains("open");
-  el.hidden=false;el.className="card gz2 gz3 g3Home "+(g.team==="B"?"teamB":"teamA")+(id==="g3HomeLast"&&res?" res_"+res.o:"");el.dataset.team=g.team;
+  el.hidden=false;el.className="card gz2 gz3 g3Home "+(g.team==="B"?"teamB":"teamA")+(id.startsWith("g3HomeLast")&&res?" res_"+res.o:"");el.dataset.team=g.team;
   el.innerHTML=gameCardHtml(g,past,res,false,"");
   {const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};let sub="",k="";
-   if(id==="g3HomeLast"){k=res?res.o:"none";sub=res?word[res.o]:"Ergebnis folgt"}
+   if(id.startsWith("g3HomeLast")){k=res?res.o:"none";sub=res?word[res.o]:"Ergebnis folgt"}
    else{const d0=new Date();d0.setHours(0,0,0,0);const d1=dt(g);d1.setHours(0,0,0,0);const n=Math.round((d1-d0)/86400000);sub=n===0?"Heute":n===1?"Morgen":n>1?"in "+n+" Tagen":""}
    el.insertAdjacentHTML("afterbegin",`<div class="g3Band ${k}">${esc(label)}${sub?`<span>${esc(sub)}</span>`:""}</div>`);}
   g3Bind(el,g); g3SetOpen(el,id in g3HomeOpen?g3HomeOpen[id]:defOpen);
