@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#071b33">
 <meta name="description" content="ESV Grizzlys Bergkamen U15 – Spielplan 2026/27">
+<meta name="author" content="JAZM">
+<!-- ESV Grizzlys U15 App – entwickelt von JAZM -->
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -720,6 +722,7 @@ html.dark .pushList i{background:#16422a;color:#7fe0a3}
 .inTile i{font-style:normal;font-size:22px;line-height:1.2}.inTile b{font-size:13.5px}.inTile small{font-size:11.5px;color:var(--muted);line-height:1.25}
 .inShare{width:100%;justify-content:center;margin-top:12px}
 .inCard .infoLinks{margin-top:10px}
+.inMade{margin:10px 6px 4px;text-align:center;font-size:12px;color:var(--muted);letter-spacing:.02em}.inMade b{color:var(--a,#168cff);font-weight:900;letter-spacing:.12em}html.dark .inMade b,.xm .inMade b{color:#6fb6ff}.hw .inMade b{color:#ff8a00}
 .inNote{margin:14px 6px 4px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.4}
 html.dark .inTile{background:#102641;border-color:#2b4a74}
 .hw .inHero{background:linear-gradient(135deg,#1c0d05,#4a2208)}.hw .inHero::after{background:linear-gradient(90deg,#ff7a00,#c24a00)}.hw .inTile{background:#2a1608;border-color:#4a2a10}
@@ -1169,6 +1172,16 @@ html.dark .admSum{background:#1a2638;color:#93a7bd}html.dark .admSum.ok{backgrou
 .teamCard .tcProgTxt{font-size:10.5px}
 .teamCard::after{font-size:70px!important}
 .pastToggle{display:flex;align-items:center;gap:8px;width:100%;margin:10px 0 2px;padding:11px 14px;border:1px dashed color-mix(in srgb,var(--muted) 45%,transparent);border-radius:14px;background:transparent;color:var(--muted);font:inherit;font-size:13.5px;font-weight:800;cursor:pointer}
+html.dark .pastToggle,.hw .pastToggle,.xm .pastToggle{background:rgba(10,20,38,.82);color:#dbe6f3;border-color:rgba(255,255,255,.3)}html.dark .pastToggle b,.hw .pastToggle b,.xm .pastToggle b{background:rgba(255,255,255,.14)}html.xm:not(.dark) .pastToggle{background:rgba(255,255,255,.88);color:#33506f;border-color:rgba(11,42,82,.3)}html.xm:not(.dark) .pastToggle b{background:rgba(11,42,82,.1)}
+html.swiping,html.swiping body{overflow-x:hidden}.swView{will-change:transform,opacity}
+.swHint{position:fixed;top:50%;z-index:55;display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:99px;background:var(--navy,#071b33);color:#fff;font-weight:900;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.28);pointer-events:none;opacity:0;transform:translateY(-50%)}
+.swHint.r{right:10px}.swHint.l{left:10px}html.dark .swHint,.hw .swHint,.xm .swHint{background:#1d4f86}
+.swDots{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:55;display:flex;gap:7px;padding:7px 10px;border-radius:99px;background:rgba(7,27,51,.55);transform:translateX(-50%);pointer-events:none;opacity:0;transition:opacity .2s}
+.scrBar{position:fixed;right:3px;top:22vh;bottom:22vh;width:4px;z-index:54;border-radius:99px;background:rgba(7,27,51,.12);pointer-events:none;opacity:0;transition:opacity .35s}
+.scrBar.on{opacity:1;transition:opacity .12s}.scrBar i{position:absolute;left:0;right:0;border-radius:99px;background:var(--a,#168cff);min-height:22px;transition:left .15s,right .15s}.scrBar i::before{content:"";position:absolute;top:-10px;bottom:-10px;right:-4px;width:40px;touch-action:none}.scrBar.on i{pointer-events:auto;cursor:grab;touch-action:none}.scrBar.drag{opacity:1;width:6px;right:2px}.scrBar.drag i{cursor:grabbing;box-shadow:0 0 0 3px rgba(22,140,255,.25)}
+.scrBar b{position:absolute;right:10px;transform:translateY(-50%);white-space:nowrap;padding:5px 10px;border-radius:99px;background:var(--navy,#071b33);color:#fff;font-size:12px;font-weight:900;box-shadow:0 4px 14px rgba(0,0,0,.25)}.scrBar b:empty{display:none}
+html.dark .scrBar,.hw .scrBar,.xm .scrBar{background:rgba(255,255,255,.14)}html.dark .scrBar b,.hw .scrBar b,.xm .scrBar b{background:#1d4f86}.hw .scrBar i{background:#ff7a00}
+.swDots.on{opacity:1}.swDots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.45);transition:all .2s}.swDots i.on{width:18px;border-radius:99px;background:#fff}
 .pastToggle b{margin-left:auto;min-width:24px;height:22px;padding:0 7px;border-radius:99px;background:color-mix(in srgb,var(--muted) 16%,transparent);display:grid;place-items:center;font-size:12px}
 .pastToggle i{font-style:normal;transition:transform .2s}.pastToggle.open i{transform:rotate(180deg)}
 .pastWrap[hidden]{display:none}
@@ -1198,6 +1211,20 @@ html.dark .admSum{background:#1a2638;color:#93a7bd}html.dark .admSum.ok{backgrou
 .dlInstaItem.teamB{--team:var(--b)}
 .dlInstaItem .dlIcon{display:grid;place-items:center;background:color-mix(in srgb,var(--team) 16%,transparent);color:var(--team)}
 .dlInstaEmpty{padding:4px 2px}
+.hwScareRow{margin-top:12px;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--muted) 25%,transparent)}
+/* 1.9.1.107: Gruselmoment – Gestalt lugt kurz von unten herein; blockiert nichts */
+.hwScare{position:fixed;left:50%;bottom:0;z-index:50;width:min(78vw,380px);pointer-events:none;transform:translate(-50%,105%);filter:drop-shadow(0 -10px 40px rgba(255,90,0,.35))}
+.hwScare img{display:block;width:100%;height:auto}
+.hwScare.go{animation:hwScareUp 2.6s cubic-bezier(.2,.9,.25,1) forwards}
+@keyframes hwScareUp{0%{transform:translate(-50%,105%)}12%{transform:translate(-50%,6%)}16%{transform:translate(-51.5%,8%) rotate(-1.5deg)}20%{transform:translate(-48.5%,6%) rotate(1.5deg)}24%{transform:translate(-50%,7%)}78%{transform:translate(-50%,8%)}100%{transform:translate(-50%,105%)}}
+.hwScareDim{position:fixed;inset:0;z-index:49;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(0,0,0,0),rgba(0,0,0,.55) 75%);opacity:0;animation:hwScareDim 2.6s ease forwards}
+@keyframes hwScareDim{0%{opacity:0}12%{opacity:1}78%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.hwScare.go{animation:hwScareFade 2.6s ease forwards}@keyframes hwScareFade{0%,100%{opacity:0;transform:translate(-50%,8%)}15%,80%{opacity:1;transform:translate(-50%,8%)}}}
+/* 1.9.1.105: Halloween (hell) – Download-Karten dunkel, damit die hellen Überschriften lesbar sind */
+html.hw:not(.dark) .downloadCard,html.hw:not(.dark) .downloadCard.dlCal,html.hw:not(.dark) #downloadPdf{background:rgba(8,14,30,.86);border:1px solid rgba(255,140,40,.35)}
+html.hw:not(.dark) .downloadCard.dlCal{box-shadow:0 8px 22px rgba(0,0,0,.3),inset 5px 0 0 #ff7a00}
+html.hw:not(.dark) .downloadCard b{color:#fff}html.hw:not(.dark) #downloadsView .dlTitle{color:#fff}html.hw:not(.dark) #downloadsView .infoCard>.small{color:#d9c3ab}html.hw:not(.dark) .downloadCard small{color:#d9c3ab}html.hw:not(.dark) .downloadCard .dlGo{color:#ffb066}
+html.hw:not(.dark) .downloadCard .dlIcon[style*="var(--navy)"]{background:#ff7a00!important}
 /* Adventskalender: Quiz-Karte */
 .xmTop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .xmProg{font-size:12px;font-weight:800;color:#f2c14e}
@@ -1270,7 +1297,7 @@ html:not(.xm) .xmDeco,html:not(.xm) .xmGreet,html:not(.xm) .xmAdv{display:none!i
 .xm .xmLights{display:none}
 html.xm{background:#060d1c!important}
 .xm body{background:transparent!important}
-.xm body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(6,13,28,.66) 0%,rgba(6,13,28,.46) 55%,rgba(6,13,28,.42) 100%),url("weihnachten/seite.webp") center bottom/auto min(86vh,760px) no-repeat,radial-gradient(ellipse 80% 55% at 50% 100%,#1b3a68,#060d1c 75%)}
+.xm body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(6,13,28,.9) 0%,rgba(6,13,28,.8) 55%,rgba(6,13,28,.72) 100%),url("weihnachten/seite.webp") center bottom/auto min(86vh,760px) no-repeat,radial-gradient(ellipse 80% 55% at 50% 100%,#1b3a68,#060d1c 75%)}
 .xm .card.gz3{--xmImg:url("weihnachten/karte1.webp");--neon:#4fb3ff;--text:#eef4ff;--muted:#b4c6dc;--border:rgba(255,255,255,.12);color:#eef4ff;border-left-color:var(--neon);background:linear-gradient(90deg,rgba(6,14,32,.95) 0%,rgba(6,14,32,.82) 32%,rgba(6,14,32,.32) 62%,rgba(6,14,32,.05) 86%),linear-gradient(rgba(4,10,24,.28),rgba(4,10,24,.28)),var(--xmImg) right center/cover no-repeat,#081428!important;box-shadow:0 0 0 1px rgba(255,255,255,.6),0 0 0 2.5px color-mix(in srgb,var(--neon) 80%,transparent),0 0 14px 2px color-mix(in srgb,var(--neon) 55%,transparent),0 0 30px 6px rgba(242,193,78,.16),0 10px 24px rgba(0,0,0,.4)!important}
 .xm .card.gz3.teamB{--neon:#ff8a1f}
 .xm .card.gz3:nth-of-type(3n+2){--xmImg:url("weihnachten/karte3.webp")}
@@ -1317,7 +1344,7 @@ html.xm{background:#060d1c!important}
 .xm .gdSplash::before{content:"";position:absolute;inset:0;background:url("weihnachten/header.webp") center/cover;opacity:.24}
 /* Weihnachten HELL: gleiche Bilder, aber verschneit-helle Flächen (Dunkel-Modus bleibt wie oben) */
 html.xm:not(.dark){background:#e9f2fb!important}
-html.xm:not(.dark) body::before{background:linear-gradient(180deg,rgba(236,244,252,.9) 0%,rgba(236,244,252,.72) 55%,rgba(236,244,252,.6) 100%),url("weihnachten/seite.webp") center bottom/auto min(86vh,760px) no-repeat,radial-gradient(ellipse 80% 55% at 50% 100%,#cfe2f6,#eef5fc 75%)}
+html.xm:not(.dark) body::before{background:linear-gradient(180deg,rgba(236,244,252,.94) 0%,rgba(236,244,252,.84) 55%,rgba(236,244,252,.76) 100%),url("weihnachten/seite.webp") center bottom/auto min(86vh,760px) no-repeat,radial-gradient(ellipse 80% 55% at 50% 100%,#cfe2f6,#eef5fc 75%)}
 html.xm:not(.dark) .card.gz3{--text:#0b2a52;--muted:#4d6582;--border:rgba(11,42,82,.12);--neon:#1f7fd6;color:#0b2a52;background:linear-gradient(90deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.92) 34%,rgba(255,255,255,.62) 62%,rgba(255,255,255,.38) 100%),var(--xmImg) right center/cover no-repeat,#fff!important;box-shadow:0 0 0 1px rgba(11,42,82,.08),0 0 0 2px color-mix(in srgb,var(--neon) 55%,transparent),0 0 16px 2px color-mix(in srgb,var(--neon) 28%,transparent),0 8px 20px rgba(11,42,82,.14)!important}
 html.xm:not(.dark) .card.gz3.teamB{--neon:#e8760a}
 html.xm:not(.dark) .card.gz3.nextGame{box-shadow:0 0 0 1px #fff,0 0 0 3px var(--neon),0 0 18px 4px color-mix(in srgb,var(--neon) 40%,transparent),0 0 34px 8px rgba(242,193,78,.28),0 8px 20px rgba(11,42,82,.14)!important}
@@ -1375,6 +1402,10 @@ html:not(.xm) .xmSleigh{display:none}
 .xmD.done small{display:none}
 .xmD.done .mk{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;font-size:12px;text-shadow:none}
 .xmD.done.ok .mk{background:#1f9d55;color:#fff}.xmD.done.no .mk{background:#d6453b;color:#fff}.xmD.done.gift .mk{background:#f2c14e;color:#3b2604}
+.xmStat{margin-top:12px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(242,193,78,.3);font-size:12.5px;line-height:1.5;color:#e6eef8}.xmStat b{display:block;font-size:13px;margin-bottom:2px}.xmStat span{display:block}
+.advTiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}.advTiles div{border:1px solid var(--border);border-radius:12px;padding:8px 10px}.advTiles b{display:block;font-size:19px}.advTiles span{font-size:11.5px;color:var(--muted)}
+.advRow{margin:0 0 10px}.advRow .h{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:800}.advRow .h span{font-weight:700;color:var(--muted);font-size:12px;white-space:nowrap}.advBar{display:flex;height:10px;border-radius:99px;overflow:hidden;background:var(--border);margin:5px 0 3px;gap:2px}.advBar i{display:block;height:100%}.advBar .ok{background:#1f9d55}.advBar .no{background:#d6453d}.advRow .d{font-size:12px;color:var(--muted)}
+.advDoors{margin-top:4px;font-size:12.5px}.advDoors summary{cursor:pointer;font-weight:800;padding:6px 0}.advDoors table{width:100%;border-collapse:collapse}.advDoors td,.advDoors th{padding:5px 4px;border-top:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}.advDoors th{font-size:11px;color:var(--muted);font-weight:700}.advDoors td:first-child,.advDoors th:first-child{text-align:left}
 .xmHint{margin-top:10px;font-size:12.5px;color:#ffd6db;text-align:center}
 .xmBack{border:0;background:none;color:#9fd2ff;font:inherit;font-weight:800;font-size:13px;padding:2px 0 10px;cursor:pointer}
 .xmDoorBox{border-radius:18px;background:#0d2140;padding:16px;border:1px solid rgba(242,193,78,.35)}
@@ -1500,11 +1531,11 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.96</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.108</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
-<p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p></section>
-<section id="settingsView" hidden><div class="settingsHead"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg><div><b>Einstellungen</b><div class="small">Darstellung, Benachrichtigungen, Feedback und Admin</div></div></div><div class="infoCard"><div class="infoTitle">Darstellung</div><div class="small" style="margin:6px 0 10px">Wähle, wie die App aussehen soll.</div><div class="themeSeg" id="themeSeg" role="radiogroup" aria-label="Darstellung"><button type="button" role="radio" data-theme="light"><span>☀️</span>Hell</button><button type="button" role="radio" data-theme="dark"><span>🌙</span>Dunkel</button><button type="button" role="radio" data-theme="auto"><span>📱</span>Automatisch</button></div><div id="themeHint" class="small" style="margin-top:9px" hidden>Das Halloween-Design ist gerade aktiv und überlagert die Darstellung. Schalte es unten aus, um Hell oder Dunkel zu sehen. Das Weihnachts-Design gibt es hell und dunkel.</div></div><div class="infoCard seasonCard"><div class="seasonTitle">Saison-Designs</div><div id="hwSwitchCard" class="infoCard hwSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span><span class="hwSwitchText"><b>Halloween-Design</b><small>Gilt automatisch vom 26.10. bis 2.11.</small></span><input id="hwToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div><div id="xmSwitchCard" class="infoCard hwSwitchCard xmSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon xmSwitchIcon" aria-hidden="true">🎄</span><span class="hwSwitchText"><b>Weihnachts-Design</b><small>Gilt automatisch vom 1.12. bis 6.1. – mit Adventskalender</small></span><input id="xmToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div></div><section id="pushCard" class="infoCard pushCard" style="margin-top:12px" data-state="off">
+<p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p><p class="inMade">App entwickelt von <b>JAZM</b><span id="inMadeVer"></span></p></section>
+<section id="settingsView" hidden><div class="settingsHead"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg><div><b>Einstellungen</b><div class="small">Darstellung, Benachrichtigungen, Feedback und Admin</div></div></div><div class="infoCard"><div class="infoTitle">Darstellung</div><div class="small" style="margin:6px 0 10px">Wähle, wie die App aussehen soll.</div><div class="themeSeg" id="themeSeg" role="radiogroup" aria-label="Darstellung"><button type="button" role="radio" data-theme="light"><span>☀️</span>Hell</button><button type="button" role="radio" data-theme="dark"><span>🌙</span>Dunkel</button><button type="button" role="radio" data-theme="auto"><span>📱</span>Automatisch</button></div><div id="themeHint" class="small" style="margin-top:9px" hidden>Das Halloween-Design ist gerade aktiv und überlagert die Darstellung. Schalte es unten aus, um Hell oder Dunkel zu sehen. Das Weihnachts-Design gibt es hell und dunkel.</div></div><div class="infoCard seasonCard"><div class="seasonTitle">Saison-Designs</div><div id="hwSwitchCard" class="infoCard hwSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span><span class="hwSwitchText"><b>Halloween-Design</b><small>Gilt automatisch vom 26.10. bis 2.11.</small></span><input id="hwToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label><label class="hwSwitchRow hwScareRow"><span class="hwSwitchIcon" aria-hidden="true" style="font-size:24px;display:grid;place-items:center">👻</span><span class="hwSwitchText"><b>Gruselmoment</b><small>Im Halloween-Design taucht ab und zu kurz eine Gestalt auf</small></span><input id="hwScareToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div><div id="xmSwitchCard" class="infoCard hwSwitchCard xmSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon xmSwitchIcon" aria-hidden="true">🎄</span><span class="hwSwitchText"><b>Weihnachts-Design</b><small>Gilt automatisch vom 1.12. bis 6.1. – mit Adventskalender</small></span><input id="xmToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div></div><section id="pushCard" class="infoCard pushCard" style="margin-top:12px" data-state="off">
 <div class="pushTop"><div class="pushBell"><svg class="pushBellSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg><i class="pushDot" aria-hidden="true"></i></div><div class="pushHead"><b>Nichts mehr verpassen</b><span>Spielergebnisse und Erinnerungen direkt aufs Handy</span></div><span id="pushState" class="pushState">Aus</span></div>
 <div class="pushPreview" aria-hidden="true"><div class="pushLabel">So sehen die Meldungen aus</div>
 <div class="pushMsg m1"><span class="pmIcon"><img src="icon-192.png" alt=""></span><span class="pmText"><span class="pmApp">ESV Grizzlys U15 · jetzt</span><b>🏒 ESV Grizzlys U15</b><span>Ergebnis: Grizzlys 5:2 Gegner</span></span></div>
@@ -1541,7 +1572,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
       <section class="admPane" data-adm-pane="games"><div id="admEhv" class="admEhv"></div><div id="admFilters" class="admFlt"></div><div id="admGameList"></div></section>
       <section class="admPane" data-adm-pane="news" hidden><div id="adminNews"></div></section>
       <section class="admPane" data-adm-pane="bugs" hidden><div class="admFbBar" aria-label="Anzeige und Art"><select id="adminBugFilter"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select><select id="adminBugType"><option value="all">Alle Arten</option><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></div><div id="adminBugReports"></div></section>
-      <section class="admPane" data-adm-pane="stats" hidden><div class="admBox admFold" id="admPushBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admPushBody"><span class="t">🔔 Push-Status</span><span id="adminPushSum" class="admSum">wird geprüft …</span><span id="adminPushDot" hidden></span><span class="chev" aria-hidden="true">⌄</span></button><div id="admPushBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 8px">Prüft, ob dieses Gerät als Admin für Push registriert ist (z. B. für Rückmeldungen).</div><div id="adminPushStatus"><div class="small">Wird geprüft …</div></div><div class="apBtns"><button id="adminPushTestBtn" class="action" type="button">📨 Test-Push sofort senden</button><button id="adminPushTestLater" class="action" type="button">⏱ In 10 Sekunden senden</button><button id="adminPushRegister" class="action" type="button" hidden>🔔 Dieses Gerät als Admin registrieren</button><button id="adminPushRefresh" class="action" type="button">↻ Neu prüfen</button></div><div class="small" style="margin-top:8px">Ist die App sichtbar geöffnet, zeigt Android keine Benachrichtigung – dann erscheint hier nur eine grüne Bestätigung. Für die echte Benachrichtigung „In 10 Sekunden senden“ antippen und gleich zum Startbildschirm wechseln.</div><div id="adminPushTestResult" class="apResult" hidden></div><div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border)"><b style="font-size:13px">Fehlersuche</b><div class="apBtns"><button id="adminPushLocal" class="action" type="button">🔔 Lokale Test-Benachrichtigung</button><button id="adminPushDiagBtn" class="action" type="button">🔎 Diagnose</button></div><div id="adminPushLocalResult" class="apResult" hidden></div><div id="adminPushDiag" style="margin-top:8px"></div></div></div></div><div class="admBox"><h5>📊 App-Statistik</h5><div class="small" style="margin:0 0 8px">Eigene Grizzlys-Auswertung mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div><button id="openAnalyticsDashboard" class="action" type="button">📊 Statistik öffnen</button></div></section>
+      <section class="admPane" data-adm-pane="stats" hidden><div class="admBox admFold" id="admPushBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admPushBody"><span class="t">🔔 Push-Status</span><span id="adminPushSum" class="admSum">wird geprüft …</span><span id="adminPushDot" hidden></span><span class="chev" aria-hidden="true">⌄</span></button><div id="admPushBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 8px">Prüft, ob dieses Gerät als Admin für Push registriert ist (z. B. für Rückmeldungen).</div><div id="adminPushStatus"><div class="small">Wird geprüft …</div></div><div class="apBtns"><button id="adminPushTestBtn" class="action" type="button">📨 Test-Push sofort senden</button><button id="adminPushTestLater" class="action" type="button">⏱ In 10 Sekunden senden</button><button id="adminPushRegister" class="action" type="button" hidden>🔔 Dieses Gerät als Admin registrieren</button><button id="adminPushRefresh" class="action" type="button">↻ Neu prüfen</button></div><div class="small" style="margin-top:8px">Ist die App sichtbar geöffnet, zeigt Android keine Benachrichtigung – dann erscheint hier nur eine grüne Bestätigung. Für die echte Benachrichtigung „In 10 Sekunden senden“ antippen und gleich zum Startbildschirm wechseln.</div><div id="adminPushTestResult" class="apResult" hidden></div><div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border)"><b style="font-size:13px">Fehlersuche</b><div class="apBtns"><button id="adminPushLocal" class="action" type="button">🔔 Lokale Test-Benachrichtigung</button><button id="adminPushDiagBtn" class="action" type="button">🔎 Diagnose</button></div><div id="adminPushLocalResult" class="apResult" hidden></div><div id="adminPushDiag" style="margin-top:8px"></div></div></div></div><div class="admBox admFold" id="admAdvBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admAdvBody"><span class="t">🎄 Adventskalender</span><span id="admAdvSum" class="admSum">Auswertung</span><span class="chev" aria-hidden="true">⌄</span></button><div id="admAdvBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 10px">Wie viele Antworten im Adventskalender richtig und falsch waren – getrennt nach Regel- und Mannschaftsfragen.</div><div id="admAdvStats"><div class="small">Wird geladen …</div></div><button id="admAdvRefresh" class="action" type="button" style="margin-top:8px">↻ Aktualisieren</button></div></div><div class="admBox"><h5>📊 App-Statistik</h5><div class="small" style="margin:0 0 8px">Eigene Grizzlys-Auswertung mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div><button id="openAnalyticsDashboard" class="action" type="button">📊 Statistik öffnen</button></div></section>
       <div id="admSheet" class="admSheetWrap" hidden><div class="admSheet" role="dialog" aria-modal="true" aria-label="Spiel bearbeiten"></div></div>
       <div id="analyticsDashboardModal" class="matchModal" hidden aria-hidden="true">
         <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="analyticsDashboardTitle" style="max-width:760px">
@@ -2024,7 +2055,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.9.1.96",
+      appVersion:"1.9.1.108",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -2347,6 +2378,59 @@ function setupAdminPushStatus(){
   }
   refreshAdminPushStatus();
 }
+/* ===== v97: Adventskalender-Auswertung =====
+   Jedes Gerät überträgt je Türchen nur „Regel- oder Mannschaftsfrage“ und „richtig/falsch“ (Sammlung adventAnswers,
+   ein Dokument pro Gerät und Saison). Der Admin-Bereich zählt daraus zusammen. */
+window.xmSyncAnswers=async function(year,answers){
+  try{
+    if(!answers||!Object.keys(answers).length) return;
+    const id=year+"_"+getInstallationId();
+    await setDoc(doc(db,"adventAnswers",id),{id,year,answers,updatedAt:serverTimestamp()});
+  }catch(e){console.warn("Adventskalender-Antworten konnten nicht übertragen werden",e);}
+};
+function advPct(ok,n){return n?Math.round(ok/n*100):0}
+function advRow(label,t){
+  const n=t.ok+t.no;
+  if(!n) return '<div class="advRow"><div class="h">'+label+'<span>noch keine Antworten</span></div></div>';
+  return '<div class="advRow"><div class="h">'+label+'<span>'+advPct(t.ok,n)+' % richtig</span></div><div class="advBar" aria-hidden="true">'+(t.ok?'<i class="ok" style="flex:'+t.ok+'"></i>':'')+(t.no?'<i class="no" style="flex:'+t.no+'"></i>':'')+'</div><div class="d">✓ '+t.ok+' richtig · ✗ '+t.no+' falsch · '+n+' Antworten</div></div>';
+}
+async function loadAdventStats(){
+  const box=document.getElementById("admAdvStats"), sum=document.getElementById("admAdvSum"); if(!box) return;
+  if(!auth.currentUser||auth.currentUser.uid!==ADMIN_UID) return;
+  box.innerHTML='<div class="small">Wird geladen …</div>';
+  const year=typeof xmSeasonYear==="function"?xmSeasonYear():new Date().getFullYear();
+  let devices=[];
+  try{
+    const snap=await getDocs(collection(db,"adventAnswers"));
+    snap.forEach(d=>{const x=d.data()||{}; if(x.year===year&&x.answers&&typeof x.answers==="object") devices.push(x.answers);});
+  }catch(e){
+    console.error(e);
+    box.innerHTML='<div class="small analyticsError">Auswertung konnte nicht geladen werden. Sind die Firestore-Regeln mit der Sammlung „adventAnswers“ veröffentlicht?</div>';
+    if(sum){sum.textContent="Fehler";sum.className="admSum bad";} return;
+  }
+  let note="";
+  if(window.GRIZZLYS_TEST){ let own={}; try{own=window.xmStatAnswers?window.xmStatAnswers():{}}catch(e){}
+    if(Object.keys(own).length){devices.push(own);note='<div class="small" style="margin-bottom:8px">Testversion: Die Antworten dieses Geräts sind zur Vorschau mitgezählt, sie werden nicht gespeichert.</div>';} }
+  const all={ok:0,no:0}, R={ok:0,no:0}, T={ok:0,no:0}, doors={}; let people=0;
+  for(const a of devices){ let any=false;
+    for(const k in a){ const d=Number(k), v=a[k]; if(!(d>=1&&d<=23)||!v||typeof v.ok!=="boolean") continue; any=true;
+      const kind=v.k==="T"?"T":"R", t=kind==="T"?T:R, key=d+kind;
+      doors[key]=doors[key]||{d,kind,ok:0,no:0};
+      if(v.ok){all.ok++;t.ok++;doors[key].ok++}else{all.no++;t.no++;doors[key].no++} }
+    if(any) people++; }
+  const n=all.ok+all.no;
+  if(sum){ sum.textContent=n?advPct(all.ok,n)+" % richtig":"noch keine Antworten"; sum.className="admSum"; }
+  if(!n){ box.innerHTML=note+'<div class="small">Für die Saison '+year+' gibt es noch keine Antworten. Der Adventskalender läuft vom 1. bis 24. Dezember.</div>'; return; }
+  const rows=Object.values(doors).sort((a,b)=>a.d-b.d||a.kind.localeCompare(b.kind));
+  box.innerHTML=note
+    +'<div class="advTiles"><div><b>'+people+'</b><span>'+(people===1?"Gerät hat":"Geräte haben")+' mitgemacht</span></div><div><b>'+n+'</b><span>Antworten insgesamt</span></div></div>'
+    +advRow("Alle Fragen",all)+advRow("📘 Regelfragen",R)+advRow("🏒 Mannschaftsfragen",T)
+    +'<details class="advDoors"><summary>Je Türchen</summary><table><tr><th>Türchen</th><th>✓ richtig</th><th>✗ falsch</th><th>Quote</th></tr>'
+    +rows.map(r=>'<tr><td>'+r.d+' · '+(r.kind==="T"?"🏒 Mannschaft":"📘 Regel")+'</td><td>'+r.ok+'</td><td>'+r.no+'</td><td>'+advPct(r.ok,r.ok+r.no)+' %</td></tr>').join("")
+    +'</table></details>';
+}
+document.getElementById("admAdvRefresh")?.addEventListener("click",loadAdventStats);
+document.querySelector("#admAdvBox .admFoldHead")?.addEventListener("click",()=>{ if(document.getElementById("admAdvBody")?.hidden) loadAdventStats(); });
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
   if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); }
@@ -3577,8 +3661,162 @@ function closeMatchDetails(){
   document.body.style.overflow="";
 }
 
-function showView(name){trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":name==="settings"?"settings_opened":"info_opened");["home","schedule","opponents","downloads","info","settings"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
+function showView(name){if(["home","schedule","opponents","downloads"].includes(name))window.__lastMain=name;trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":name==="settings"?"settings_opened":"info_opened");["home","schedule","opponents","downloads","info","settings"].forEach(v=>document.getElementById(v+"View").hidden=v!==name);document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+{const v=document.querySelector(".inVer"),t=document.getElementById("inMadeVer");if(v&&t)t.textContent=" · Version "+v.textContent.trim();}
+/* 1.9.1.107: Gruselmoment im Halloween-Design – höchstens einmal am Tag, nie über offenen Fenstern, nicht anklickbar */
+(function(){
+  const KEY="grizzlysHwScare", DAY="grizzlysHwScareDay";
+  const on=()=>{try{return localStorage.getItem(KEY)!=="off"}catch(e){return true}};
+  const tg=document.getElementById("hwScareToggle");
+  if(tg){tg.checked=on();tg.addEventListener("change",()=>{try{localStorage.setItem(KEY,tg.checked?"on":"off")}catch(e){}})}
+  const today=()=>new Date().toISOString().slice(0,10);
+  const busy=()=>document.hidden||document.documentElement.classList.contains("swiping")||[...document.querySelectorAll(".matchModal,.adminModal,.bugReportModal,.thanksModal,.hockeyGameModal,.admSheetWrap,.gdSplash")].some(m=>!m.hidden&&m.offsetParent!==null)||/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||"");
+  function show(force){
+    if(!force){
+      if(!window.hwActive||!window.hwActive()||!on())return;
+      if(!window.GRIZZLYS_TEST){try{if(localStorage.getItem(DAY)===today())return}catch(e){}}
+      if(busy()){setTimeout(()=>show(false),15000);return}
+      try{localStorage.setItem(DAY,today())}catch(e){}
+    }
+    const dim=document.createElement("div");dim.className="hwScareDim";dim.setAttribute("aria-hidden","true");
+    const el=document.createElement("div");el.className="hwScare";el.setAttribute("aria-hidden","true");el.innerHTML='<img src="halloween/gestalt.webp" alt="">';
+    const img=el.firstChild;
+    const go=()=>{document.body.appendChild(dim);document.body.appendChild(el);void el.offsetWidth;el.classList.add("go");setTimeout(()=>{el.remove();dim.remove()},2800)};
+    if(img.complete&&img.naturalWidth)go();else{img.onload=go;img.onerror=()=>{}}
+  }
+  window.hwScareNow=()=>show(true);
+  // Zufällig nach dem Öffnen: live 25–70 s, in der Testversion schon nach 6–10 s
+  const wait=window.GRIZZLYS_TEST?6000+Math.random()*4000:25000+Math.random()*45000;
+  setTimeout(()=>show(false),wait);
+})();
+/* 1.9.1.103: News-Fenster per Wisch nach rechts oder unten schließen */
+(function(){
+  let st=null;
+  document.addEventListener("touchstart",e=>{
+    st=null; const m=document.getElementById("newsModal"); if(!m||m.hidden||e.touches.length!==1)return;
+    const box=m.querySelector(".matchModalBox"), t=e.touches[0]; if(!box||e.target.closest("input,textarea,select,a"))return;
+    st={x:t.clientX,y:t.clientY,box,m,lock:null,dx:0,dy:0,top:box.scrollTop<=0,t:Date.now()};
+  },{passive:true});
+  document.addEventListener("touchmove",e=>{
+    if(!st||st.lock==="no")return;
+    const t=e.touches[0], dx=t.clientX-st.x, dy=t.clientY-st.y;
+    if(!st.lock){
+      if(dx>10&&Math.abs(dx)>Math.abs(dy)*1.2)st.lock="x";
+      else if(dy>10&&st.top&&dy>Math.abs(dx)*1.2)st.lock="y";
+      else if(Math.abs(dx)>10||Math.abs(dy)>10){st.lock="no";return}
+      else return;
+    }
+    e.preventDefault();
+    st.dx=st.lock==="x"?Math.max(0,dx):0; st.dy=st.lock==="y"?Math.max(0,dy):0;
+    st.box.style.transition="none"; st.box.style.transform="translate("+st.dx+"px,"+st.dy+"px)"; st.box.style.opacity=String(1-Math.min(.6,(st.dx+st.dy)/600));
+  },{passive:false});
+  document.addEventListener("touchend",()=>{
+    if(!st||!st.lock||st.lock==="no"){st=null;return}
+    const s0=st; st=null; const d=s0.dx+s0.dy, fast=d/Math.max(1,Date.now()-s0.t)>.6&&d>40;
+    s0.box.style.transition="transform .2s ease-out,opacity .2s";
+    if(d>100||fast){
+      s0.box.style.transform=s0.lock==="x"?"translateX(100vw)":"translateY(100vh)"; s0.box.style.opacity="0";
+      setTimeout(()=>{closeNews();s0.box.style.transition="";s0.box.style.transform="";s0.box.style.opacity=""},190);
+    }else{ s0.box.style.transform=""; s0.box.style.opacity=""; setTimeout(()=>{s0.box.style.transition=""},220); }
+  },{passive:true});
+})();
+/* 1.9.1.101: Seitliche Leiste zeigt beim Scrollen, wo man auf der Seite ist; im Spielplan mit Monat */
+(function(){
+  const bar=document.createElement("div");bar.className="scrBar";bar.setAttribute("aria-hidden","true");bar.innerHTML="<i></i><b></b>";document.body.appendChild(bar);
+  const th=bar.firstChild, lab=bar.lastChild; let hideT=0, raf=0, drag=null;
+  function update(){
+    raf=0;
+    const de=document.documentElement, total=de.scrollHeight, vh=innerHeight;
+    if(total<vh*1.4){bar.classList.remove("on");return}
+    const track=bar.clientHeight, size=Math.max(22,track*vh/total), max=Math.max(1,total-vh), pos=(track-size)*Math.min(1,scrollY/max);
+    th.style.height=size+"px"; th.style.top=pos+"px";
+    let m="";
+    const sv=document.getElementById("scheduleView");
+    if(sv&&!sv.hidden){const hs=[...sv.querySelectorAll(".month")].filter(h=>h.offsetParent!==null);for(const h of hs){if(h.getBoundingClientRect().top<vh*.35)m=h.textContent;else break}if(!m&&hs[0])m=hs[0].textContent}
+    lab.textContent=m; lab.style.top=(pos+size/2)+"px";
+    bar.classList.add("on"); clearTimeout(hideT); if(!drag)hideT=setTimeout(()=>bar.classList.remove("on"),1300);
+  }
+  /* Balken anfassen und ziehen: springt direkt an die Stelle (im Spielplan mit Monatsanzeige) */
+  th.addEventListener("pointerdown",e=>{
+    if(!bar.classList.contains("on"))return;
+    e.preventDefault(); e.stopPropagation();
+    const r=th.getBoundingClientRect(); drag={off:e.clientY-r.top};
+    try{th.setPointerCapture(e.pointerId)}catch(_){}
+    bar.classList.add("drag"); clearTimeout(hideT);
+    try{navigator.vibrate&&navigator.vibrate(8)}catch(_){}
+  });
+  th.addEventListener("pointermove",e=>{
+    if(!drag)return; e.preventDefault();
+    const tr=bar.getBoundingClientRect(), size=th.offsetHeight, max=document.documentElement.scrollHeight-innerHeight;
+    const ratio=Math.min(1,Math.max(0,(e.clientY-drag.off-tr.top)/Math.max(1,tr.height-size)));
+    window.scrollTo({top:ratio*max,behavior:"instant"});
+  });
+  const end=()=>{if(!drag)return;drag=null;bar.classList.remove("drag");clearTimeout(hideT);hideT=setTimeout(()=>bar.classList.remove("on"),1300)};
+  th.addEventListener("pointerup",end); th.addEventListener("pointercancel",end); th.addEventListener("lostpointercapture",end);
+  addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(update)},{passive:true});
+})();
+/* 1.9.1.100: Wischen nach links/rechts wechselt zwischen Start, Spielplan, Gegner und Downloads – die Seite folgt dem Finger */
+(function(){
+  const ORDER=["home","schedule","opponents","downloads"];
+  const label=v=>(document.querySelector('.tab[data-view="'+v+'"]')||{}).textContent||v;
+  const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let st=null;
+  const hint=document.createElement("div");hint.className="swHint";hint.setAttribute("aria-hidden","true");document.body.appendChild(hint);
+  const dots=document.createElement("div");dots.className="swDots";dots.setAttribute("aria-hidden","true");dots.innerHTML=ORDER.map(()=>"<i></i>").join("");document.body.appendChild(dots);
+  let dotsT=0;
+  function showDots(v){[...dots.children].forEach((d,k)=>d.classList.toggle("on",ORDER[k]===v));dots.classList.add("on");clearTimeout(dotsT);dotsT=setTimeout(()=>dots.classList.remove("on"),900)}
+  const cur=()=>ORDER.concat(["settings","info"]).find(v=>!document.getElementById(v+"View").hidden);
+  const overlayOpen=()=>[...document.querySelectorAll(".matchModal,.adminModal,.bugReportModal,.thanksModal,.hockeyGameModal,.admSheetWrap,.gdSplash")].some(m=>!m.hidden&&m.offsetParent!==null);
+  function setPos(el,x,anim,ms){el.style.transition=anim?"transform "+ms+"ms cubic-bezier(.2,.8,.2,1),opacity "+ms+"ms":"none";el.style.transform=x?"translateX("+x+"px)":"";el.style.opacity=x?String(Math.max(.35,1-Math.abs(x)/innerWidth*.7)):"";}
+  function cleanup(el){el.style.transition="";el.style.transform="";el.style.opacity="";el.classList.remove("swView");document.documentElement.classList.remove("swiping");hint.style.transition="opacity .15s";hint.style.opacity="0";}
+  document.addEventListener("touchstart",e=>{
+    st=null; if(e.touches.length!==1)return;
+    const t=e.touches[0], el=e.target;
+    if(t.clientX<24||t.clientX>innerWidth-24)return;          // Rand frei für die Zurück-Geste von Android
+    const c=cur(); if(!c||overlayOpen())return;
+    if(!el.closest||!el.closest("#homeView,#scheduleView,#opponentsView,#downloadsView,#settingsView,#infoView"))return;
+    if(el.closest("input,select,textarea,canvas,[data-noswipe]"))return;
+    for(let n=el;n&&n!==document.body;n=n.parentElement){if(n.scrollWidth>n.clientWidth+4&&/(auto|scroll)/.test(getComputedStyle(n).overflowX))return;}
+    st={x:t.clientX,y:t.clientY,t:Date.now(),lock:null,dx:0,c,view:document.getElementById(c+"View"),lx:t.clientX,lt:Date.now(),v:0};
+  },{passive:true});
+  document.addEventListener("touchmove",e=>{
+    if(!st||st.lock==="v")return;
+    const t=e.touches[0], dx=t.clientX-st.x, dy=t.clientY-st.y;
+    if(!st.lock){
+      if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){st.lock="v";return}
+      if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)*1.2){st.lock="h";st.view.classList.add("swView");document.documentElement.classList.add("swiping")}
+      else return;
+    }
+    e.preventDefault();
+    const now=Date.now();st.v=(t.clientX-st.lx)/Math.max(1,now-st.lt);st.lx=t.clientX;st.lt=now;
+    const i=ORDER.indexOf(st.c), n=i<0?(dx>0?(window.__lastMain||"home"):null):ORDER[i+(dx<0?1:-1)];  // Einstellungen/Info: nur zurück
+    st.n=n; st.dx=n?dx:dx*.25;                                 // an den Enden nur leicht nachgeben
+    setPos(st.view,st.dx,false);
+    if(n){hint.className="swHint "+(dx<0?"r":"l");hint.textContent=dx<0?label(n)+" ›":"‹ "+label(n);hint.style.transition="none";hint.style.opacity=String(Math.min(1,Math.abs(dx)/(innerWidth*.28)));}
+    else hint.style.opacity="0";
+  },{passive:false});
+  function finish(cancel){
+    if(!st||st.lock!=="h"){st=null;return}
+    const s0=st; st=null;
+    const w=innerWidth, go=!cancel&&s0.n&&(Math.abs(s0.dx)>w*.28||(Math.abs(s0.v)>.45&&Math.abs(s0.dx)>40&&Math.sign(s0.v)===Math.sign(s0.dx)));
+    if(window.getSelection)try{window.getSelection().removeAllRanges()}catch(e){}
+    if(!go){setPos(s0.view,0,true,220);setTimeout(()=>cleanup(s0.view),230);hint.style.transition="opacity .2s";hint.style.opacity="0";return}
+    const dir=s0.dx<0?-1:1;
+    setPos(s0.view,dir*w,!reduce,reduce?0:170);
+    setTimeout(()=>{
+      cleanup(s0.view);
+      showView(s0.n); showDots(s0.n);
+      const v=document.getElementById(s0.n+"View");
+      if(reduce)return;
+      v.classList.add("swView");document.documentElement.classList.add("swiping");
+      setPos(v,-dir*w*.45,false);void v.offsetWidth;setPos(v,0,true,240);
+      setTimeout(()=>cleanup(v),260);
+    },reduce?0:170);
+  }
+  document.addEventListener("touchend",()=>finish(false),{passive:true});
+  document.addEventListener("touchcancel",()=>finish(true),{passive:true});
+})();
 document.getElementById("infoTopBtn").onclick=()=>showView("info");
 document.getElementById("settingsTopBtn").onclick=()=>showView("settings");
 
@@ -3749,7 +3987,20 @@ if("serviceWorker" in navigator){(function(){
   let reloadRequested=false,reloaded=false,dismissed=false,waitingWorker=null,suppressUntil=0;
   try{const t=Number(sessionStorage.getItem(RELOAD_KEY)||0);if(t&&Date.now()-t<120000)suppressUntil=t+120000;}catch(e){}
   function go(){if(reloaded)return;reloaded=true;location.reload();}
-  function showBanner(worker){
+  const pageBuild=Number(((document.querySelector(".inVer")||{}).textContent||"").split(".").pop())||0;
+  function workerBuild(worker){
+    return new Promise(res=>{
+      let done=false;const fin=v=>{if(!done){done=true;res(v)}};
+      try{const ch=new MessageChannel();ch.port1.onmessage=e=>{const m=String((e.data&&e.data.cache)||"").match(/(\d+)$/);fin(m?Number(m[1]):0)};worker.postMessage({type:"GET_VERSION"},[ch.port2]);}catch(e){fin(0)}
+      setTimeout(()=>fin(0),1500);
+    });
+  }
+  async function showBanner(worker){
+    /* Die Seite selbst kommt immer frisch aus dem Netz. Ist sie schon so neu wie der wartende Service Worker,
+       wird er still übernommen; ist er älter (veraltete Kopie vom Server), wird er ignoriert. */
+    const wb=await workerBuild(worker);
+    if(pageBuild&&wb<pageBuild)return;
+    if(pageBuild&&wb===pageBuild){try{worker.postMessage({type:"SKIP_WAITING"})}catch(e){}return}
     waitingWorker=worker;if(dismissed)return;
     const wait=suppressUntil-Date.now();
     if(wait>0){setTimeout(()=>{if(!dismissed&&waitingWorker)banner.hidden=false;},wait);return;}
@@ -3870,7 +4121,7 @@ async function instaDraw(g,type){
   const line=g.stadium+" · "+(res&&parts.length>1?full:(home?"Heimspiel":"Auswärtsspiel"));
   c.save();c.translate(62,1202);c.scale(1.5,1.5);c.strokeStyle="#ff8a00";c.lineWidth=2;c.lineCap="round";c.lineJoin="round";c.stroke(new Path2D("M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"));c.stroke(new Path2D("M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"));c.restore();
   instaFont(c,700,31);c.fillStyle="#d5e1ef";c.fillText(line,112,1232);
-  instaFont(c,700,22);instaSpace(c,3);c.fillStyle="#9fb3ca";c.fillText(((INSTA_LEAGUE[g.team]||"")+" · Saison 2026/27").toUpperCase(),62,1288);instaSpace(c,0);
+  instaFont(c,700,22);instaSpace(c,3);c.fillStyle="#9fb3ca";c.fillText(((INSTA_LEAGUE[g.team]||"")+" · Saison 2026/27").toUpperCase(),62,1288);c.textAlign="right";c.fillStyle="rgba(159,179,202,.75)";c.fillText("APP: JAZM",W-62,1288);c.textAlign="left";instaSpace(c,0);
   return cv;
 }
 function instaClose(){const m=document.getElementById("instaModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true")}const a=document.getElementById("adminModal");document.body.style.overflow=(a&&!a.hidden)?"hidden":""}
@@ -3935,6 +4186,8 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.9.1.108",d:"Oktober 2026",items:["Schneller: Logos und Bilder sind deutlich kleiner – die App lädt beim ersten Öffnen schneller und braucht weniger Datenvolumen."]},
+  {v:"1.9.1.103",d:"Oktober 2026",items:["In Einstellungen und Info bringt dich ein Wisch nach rechts zurück; das News-Fenster schließt sich mit einem Wisch nach rechts oder unten.","Beim Scrollen zeigt eine schmale Leiste rechts, wo du auf der Seite bist – im Spielplan mit dem Monat. Den Balken kannst du anfassen und ziehen, um schnell zu springen.","Wischen: Mit einem Wisch nach links oder rechts wechselst du zwischen Start, Spielplan, Gegner und Downloads – die Seite folgt dabei deinem Finger."]},
   {v:"1.9.1.95",d:"Oktober 2026",items:[
     "Startseite: nächstes und letztes Spiel von U15 A und U15 B auf einen Blick, die Mannschafts-Kacheln sind kompakter.",
     "Spielplan: Gespielte Spiele sind eingeklappt – „Gespielte Spiele anzeigen“ blendet sie wieder ein.",
@@ -4183,6 +4436,10 @@ function xmAnswers(){try{return JSON.parse(localStorage.getItem(xmStoreKey())||"
 function xmSaveAnswer(d,v){const a=xmAnswers();a[d]=v;try{localStorage.setItem(xmStoreKey(),JSON.stringify(a))}catch(e){}}
 function xmToday(){const n=new Date();if(n.getMonth()!==11)return n.getMonth()===0?25:0;return n.getDate()}
 function xmCanOpen(d){return !!window.GRIZZLYS_TEST||xmToday()>=d}
+function xmStatAnswers(){const a=xmAnswers(),o={};for(const k in a){if(k==="24")continue;const v=a[k];if(!v||typeof v.ok!=="boolean")continue;let kind=v.k;if(kind!=="R"&&kind!=="T"){try{kind=xmDoor(Number(k)).kind==="Regel-Quiz"?"R":"T"}catch(e){kind="R"}}o[k]={k:kind,ok:v.ok}}return o}
+window.xmStatAnswers=xmStatAnswers;
+function xmStatHtml(){const a=xmStatAnswers(),R={ok:0,n:0},T={ok:0,n:0};for(const k in a){const t=a[k].k==="T"?T:R;t.n++;if(a[k].ok)t.ok++}const n=R.n+T.n;if(!n)return "";const ok=R.ok+T.ok;
+  return `<div class="xmStat"><b>Deine Auswertung</b><span>✓ ${ok} richtig · ✗ ${n-ok} falsch</span>${R.n?`<span>📘 Regelfragen: ${R.ok} von ${R.n} richtig</span>`:""}${T.n?`<span>🏒 Mannschaftsfragen: ${T.ok} von ${T.n} richtig</span>`:""}</div>`}
 function xmScore(){const a=xmAnswers();let r=0,t=0;for(const k in a){if(k==="24")continue;t++;if(a[k]&&a[k].ok)r++}return {r,t}}
 function xmGreetText(){const n=new Date(),m=n.getMonth(),d=n.getDate(),y=xmSeasonYear(n);
   if(m===11&&d<24)return {k:"advent",t:"Schöne Adventszeit!",s:"Jeden Tag ein neues Türchen im Adventskalender – euer Grizzlys-Team"};
@@ -4231,7 +4488,7 @@ function xmOpenCalendar(){
     XM_ORDER.map(d=>{const ans=a[d],can=xmCanOpen(d);
       const cls=ans?(d===24?"done gift":ans.ok?"done ok":"done no"):d===td?"today":can?"open":"locked";
       const inner=ans?`<span class="mk">${d===24?"⭐":ans.ok?"✓":"✗"}</span>`:`<span class="n">${d===24?"🎁 24":d}</span>`;
-      return `<button type="button" class="xmD ${cls}${d===24?" big":XM_WIDE.includes(d)?" w2":""}" data-d="${d}" aria-label="Türchen ${d}${ans?" (geöffnet)":can?"":" (noch geschlossen)"}">${inner}</button>`}).join("")+`</div><div id="xmHint" class="xmHint" hidden></div>`;
+      return `<button type="button" class="xmD ${cls}${d===24?" big":XM_WIDE.includes(d)?" w2":""}" data-d="${d}" aria-label="Türchen ${d}${ans?" (geöffnet)":can?"":" (noch geschlossen)"}">${inner}</button>`}).join("")+`</div><div id="xmHint" class="xmHint" hidden></div>`+xmStatHtml();
   body.querySelectorAll(".xmD").forEach(b=>b.onclick=()=>{const d=Number(b.dataset.d);if(!xmCanOpen(d)){const h=body.querySelector("#xmHint");h.hidden=false;h.textContent="Türchen "+d+" lässt sich ab dem "+d+". Dezember öffnen.";return}xmOpenDoor(d)});
   if(m.hidden){m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
 }
@@ -4262,7 +4519,7 @@ function xmOpenDoor(d){
     }
   };
   if(prev&&typeof prev.pick==="number"){show(prev.pick,false);return}
-  body.querySelectorAll(".xmOpts button").forEach(b=>b.onclick=()=>{const pick=Number(b.dataset.i);xmSaveAnswer(d,{pick,ok:pick===item.correct});show(pick,true)});
+  body.querySelectorAll(".xmOpts button").forEach(b=>b.onclick=()=>{const pick=Number(b.dataset.i);xmSaveAnswer(d,{pick,ok:pick===item.correct,k:rules?"R":"T"});try{window.xmSyncAnswers&&window.xmSyncAnswers(xmSeasonYear(),xmStatAnswers())}catch(e){}show(pick,true)});
 }
 window.xmOpenCalendar=xmOpenCalendar;
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{xmRefresh()}catch(e){console.warn(e)}};}

@@ -79,6 +79,17 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Adventskalender: jedes Gerät überträgt je Türchen nur Fragenart und richtig/falsch; nur der Admin liest
+    match /adventAnswers/{docId} {
+      allow create, update: if request.resource.data.id == docId
+        && docId.size() <= 100
+        && request.resource.data.keys().hasOnly(["id","year","answers","updatedAt"])
+        && request.resource.data.year is int
+        && request.resource.data.answers is map
+        && request.resource.data.answers.size() <= 24;
+      allow read, delete: if isAdmin();
+    }
+
     match /gameReminders/{reminderId} {
       allow read, write: if isAdmin();
     }

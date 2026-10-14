@@ -2,9 +2,11 @@
 
 Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
 
+Entwickelt von **JAZM**.
+
 ## Version 1.9.1
 
-### Neu in Version 1.9.1 (Stand 1.9.1.96)
+### Neu in Version 1.9.1 (Stand 1.9.1.108)
 
 - **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
 - **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
@@ -31,7 +33,18 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 - **Nächste und letzte Spiele beider Mannschaften (1.9.1.94):** die Startseite zeigt immer das nächste Spiel von U15 A und von U15 B als „Nächstes Spiel“ (oben das frühere) und ebenso das zuletzt gespielte Spiel beider Mannschaften als „Letztes Spiel“ (oben das neuere, ohne Ergebnis „Ergebnis folgt“), jeweils in Teamfarbe (1.9.1.93 zeigte nur zwei Spiele am selben Tag)
 - **Übersichtlicher (1.9.1.95):** Spielplan zeigt gespielte Spiele zugeklappt („Gespielte Spiele anzeigen“, Zähler); Startseite ohne den alten Hinweis „38 Spiele · chronologisch sortiert“, Mannschafts-Kacheln kompakt nebeneinander (Platz, Bilanz, Form, Fortschritt); Einstellungen: Halloween und Weihnachten in einem Kasten „Saison-Designs“, die Beispiel-Meldungen verschwinden bei aktivem Push, Admin-Bereich nur noch als kleiner Link unten, „Push kommt nicht an? Neu einrichten“ nur bei aktivem Push; Info ohne die sechs Kacheln, die nur die Reiter wiederholten. News-Eintrag 1.9.1.95
 - **Admin-Fenster fest (1.9.1.96):** das Admin-Fenster hat nach der Anmeldung immer die volle Höhe und springt beim Wechsel zwischen den Reitern nicht mehr; ist man nach unten gescrollt, beginnt der neue Reiter direkt unter der Reiterleiste
-- **PWA-Cache:** auf `grizzlys-u15-v96` erneuert
+- **Adventskalender-Auswertung (1.9.1.97):** Admin-Bereich > Status > „Adventskalender“: Geräte, Antworten, richtig/falsch gesamt sowie getrennt nach Regel- und Mannschaftsfragen, aufklappbar je Türchen. Jedes Gerät überträgt dafür je Türchen nur Fragenart und richtig/falsch (neue Sammlung `adventAnswers`, keine Namen). Unter dem Kalender steht für jeden Nutzer „Deine Auswertung“. **Firestore-Regeln müssen veröffentlicht werden**
+- **Weihnachten und Dunkelmodus (1.9.1.98):** Tannenbaum im Hintergrund dezenter; „Gespielte Spiele anzeigen“ im Dunkelmodus und in den Themen-Designs lesbar
+- **Update-Banner (1.9.1.98):** erscheint nur noch, wenn die wartende Version wirklich neuer ist als die angezeigte; gleich neue Versionen werden still übernommen. Live- und Test-App löschen sich nicht mehr gegenseitig den Offline-Speicher
+- **Wischen (1.9.1.99–1.9.1.100):** Wisch nach links/rechts wechselt zwischen Start, Spielplan, Gegner und Downloads; die Seite folgt dem Finger, am Rand erscheint die Zielseite, danach zeigen Punkte die Position. Senkrechtes Scrollen, Bildschirmrand (Android-Zurück-Geste) und offene Fenster lösen nichts aus
+- **Scroll-Leiste (1.9.1.101–1.9.1.102):** beim Scrollen zeigt rechts eine schmale Leiste die Position, im Spielplan mit Monat; der Balken lässt sich anfassen und ziehen
+- **Zurückwischen (1.9.1.103):** in Einstellungen und Info führt ein Wisch nach rechts zurück; das News-Fenster schließt sich mit einem Wisch nach rechts oder unten
+- **Kennzeichnung (1.9.1.104):** „App entwickelt von JAZM“ unten auf der Info-Seite, „APP: JAZM“ klein auf den Social-Media-Bildern, Autor-Angabe im Code
+- **Halloween lesbar (1.9.1.105):** Download-Karten im Halloween-Design (heller Modus) dunkel, damit die Schrift lesbar ist
+- **Updates sofort (1.9.1.106):** der Service Worker holt Seite und Programmdateien immer frisch vom Server (nicht aus dem 10-Minuten-Zwischenspeicher von GitHub Pages)
+- **Gruselmoment (1.9.1.107):** im Halloween-Design lugt höchstens einmal am Tag kurz eine Gestalt von unten herein (`halloween/gestalt.webp`); nicht anklickbar, nie über offenen Fenstern; eigener Schalter in den Einstellungen
+- **Kleinere Bilder (1.9.1.108):** `logo.png` (2 MB → 58 KB), App- und Push-Symbole und große Gegner-Logos verkleinert, Dateinamen unverändert; die App lädt beim ersten Öffnen deutlich schneller
+- **PWA-Cache:** auf `grizzlys-u15-v108` erneuert
 - **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
 
 ## Version 1.9.0

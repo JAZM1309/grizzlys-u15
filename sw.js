@@ -57,7 +57,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v96";
+const CACHE = "grizzlys-u15-v108";
 
 const CORE = [
   "./",
@@ -82,20 +82,28 @@ self.addEventListener("install", event => {
 
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
+  // Die Seite fragt, welche Version hier wartet (Update-Banner nur bei wirklich neuerer Version).
+  if (event.data && event.data.type === "GET_VERSION" && event.ports && event.ports[0]) event.ports[0].postMessage({ cache: CACHE });
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+      // Nur eigene alte Caches löschen: Live- und Test-App teilen sich den Speicher und löschten sich sonst gegenseitig.
+      .then(keys => Promise.all(keys.filter(key => key !== CACHE && key.startsWith(CACHE.replace(/\d+$/, ""))).map(key => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  // Seite und Programmdateien immer beim Server nachfragen (nicht aus dem 10-Minuten-Zwischenspeicher
+  // des Browsers), damit ein Update sofort ankommt. Bilder dürfen weiter aus dem Zwischenspeicher kommen.
+  const req = event.request, url = new URL(req.url);
+  const fresh = url.origin === self.location.origin && (req.mode === "navigate" || /\.(html|js|json|webmanifest)$/.test(url.pathname) || url.pathname.endsWith("/"));
+  const load = fresh ? fetch(req.url, { cache: "no-cache", credentials: "same-origin" }) : fetch(req);
   event.respondWith(
-    fetch(event.request)
+    load
       .then(response => {
         if (response.ok) {
           const copy = response.clone();

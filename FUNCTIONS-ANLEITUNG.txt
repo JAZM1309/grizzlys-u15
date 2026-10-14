@@ -134,3 +134,20 @@ Prüfen
   - "In 10 Sekunden senden" und zum Startbildschirm wechseln: die Benachrichtigung "Test-Push ✓" erscheint.
   - Kommt nichts an, obwohl "gesendet" angezeigt wird: in den Einstellungen "Push kommt nicht an? Neu einrichten"
     antippen (erneuert Push-Abo und Token) und den Test wiederholen.
+
+
+ADVENTSKALENDER-AUSWERTUNG (ab Version 1.9.1.97)
+================================================
+
+Keine neue Function, aber neue Firestore-Regeln: Sammlung "adventAnswers"
+(jedes Gerät schreibt sein eigenes Dokument mit Fragenart und richtig/falsch je Türchen, nur der Admin liest).
+Ohne veröffentlichte Regeln speichert die App nichts, und die Auswertung im Admin-Bereich meldet einen Fehler.
+
+Veröffentlichen in der Cloud Shell
+  firestore.rules über das Drei-Punkte-Menü hochladen, dann:
+    mv ~/firestore.rules ~/grizzlys-u15/
+    cd ~/grizzlys-u15 && firebase deploy --only firestore:rules --project grizzlys-u15
+
+Prüfen
+  - Firebase Console > Firestore > Regeln: der Block "match /adventAnswers/{docId}" ist enthalten.
+  - Ab 1. Dezember: Admin-Bereich > Status > "Adventskalender" zeigt die Zahlen.
