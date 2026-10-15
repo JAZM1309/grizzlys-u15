@@ -1211,6 +1211,18 @@ html.dark .scrBar,.hw .scrBar,.xm .scrBar{background:rgba(255,255,255,.14)}html.
 .dlInstaItem.teamB{--team:var(--b)}
 .dlInstaItem .dlIcon{display:grid;place-items:center;background:color-mix(in srgb,var(--team) 16%,transparent);color:var(--team)}
 .dlInstaEmpty{padding:4px 2px}
+/* 1.9.1.110: Veröffentlichen aus dem Admin-Bereich */
+.pubStand{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 4px}
+.pubStand>div{flex:1 1 130px;border:1px solid var(--border);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--muted)}
+.pubStand>div b{display:block;font-size:16px;color:var(--text);margin-top:2px}
+.pubHint{font-size:12.5px;margin:6px 0 0;color:var(--muted)}
+.pubBack{margin-top:10px;border:1px solid var(--border);border-radius:12px;padding:10px}
+.pubBack select{font:inherit;padding:7px 8px;border-radius:10px;border:1px solid var(--border);background:var(--card,#fff);color:var(--text);max-width:100%}
+.pubRuns{margin-top:10px}
+.pubRuns .apRow span{white-space:normal;word-break:break-word}
+.pubRuns a{color:inherit;text-decoration:underline}
+.pubRuns .apBtns{margin-top:6px}
+html.dark .pubBack select{background:#13202f}
 /* 1.9.1.109: Lesbarkeit – von der automatischen Prüfung gefundene Stellen */
 html.xm:not(.dark) .xmBadge{background:#d7263d;color:#fff}
 html.xm:not(.dark) .g3Acts .g3Btn,html.xm:not(.dark) .card.gz3 .g3Acts .g3Btn{background:rgba(255,255,255,.92);color:#0b5fb8}
@@ -1537,7 +1549,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.109</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.110</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
 <p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p><p class="inMade">App entwickelt von <b>JAZM</b><span id="inMadeVer"></span></p></section>
@@ -1578,7 +1590,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
       <section class="admPane" data-adm-pane="games"><div id="admEhv" class="admEhv"></div><div id="admFilters" class="admFlt"></div><div id="admGameList"></div></section>
       <section class="admPane" data-adm-pane="news" hidden><div id="adminNews"></div></section>
       <section class="admPane" data-adm-pane="bugs" hidden><div class="admFbBar" aria-label="Anzeige und Art"><select id="adminBugFilter"><option value="active">Aktive</option><option value="archived">Archiv</option><option value="all">Alle</option></select><select id="adminBugType"><option value="all">Alle Arten</option><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></div><div id="adminBugReports"></div></section>
-      <section class="admPane" data-adm-pane="stats" hidden><div class="admBox admFold" id="admPushBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admPushBody"><span class="t">🔔 Push-Status</span><span id="adminPushSum" class="admSum">wird geprüft …</span><span id="adminPushDot" hidden></span><span class="chev" aria-hidden="true">⌄</span></button><div id="admPushBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 8px">Prüft, ob dieses Gerät als Admin für Push registriert ist (z. B. für Rückmeldungen).</div><div id="adminPushStatus"><div class="small">Wird geprüft …</div></div><div class="apBtns"><button id="adminPushTestBtn" class="action" type="button">📨 Test-Push sofort senden</button><button id="adminPushTestLater" class="action" type="button">⏱ In 10 Sekunden senden</button><button id="adminPushRegister" class="action" type="button" hidden>🔔 Dieses Gerät als Admin registrieren</button><button id="adminPushRefresh" class="action" type="button">↻ Neu prüfen</button></div><div class="small" style="margin-top:8px">Ist die App sichtbar geöffnet, zeigt Android keine Benachrichtigung – dann erscheint hier nur eine grüne Bestätigung. Für die echte Benachrichtigung „In 10 Sekunden senden“ antippen und gleich zum Startbildschirm wechseln.</div><div id="adminPushTestResult" class="apResult" hidden></div><div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border)"><b style="font-size:13px">Fehlersuche</b><div class="apBtns"><button id="adminPushLocal" class="action" type="button">🔔 Lokale Test-Benachrichtigung</button><button id="adminPushDiagBtn" class="action" type="button">🔎 Diagnose</button></div><div id="adminPushLocalResult" class="apResult" hidden></div><div id="adminPushDiag" style="margin-top:8px"></div></div></div></div><div class="admBox admFold" id="admAdvBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admAdvBody"><span class="t">🎄 Adventskalender</span><span id="admAdvSum" class="admSum">Auswertung</span><span class="chev" aria-hidden="true">⌄</span></button><div id="admAdvBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 10px">Wie viele Antworten im Adventskalender richtig und falsch waren – getrennt nach Regel- und Mannschaftsfragen.</div><div id="admAdvStats"><div class="small">Wird geladen …</div></div><button id="admAdvRefresh" class="action" type="button" style="margin-top:8px">↻ Aktualisieren</button></div></div><div class="admBox"><h5>📊 App-Statistik</h5><div class="small" style="margin:0 0 8px">Eigene Grizzlys-Auswertung mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div><button id="openAnalyticsDashboard" class="action" type="button">📊 Statistik öffnen</button></div></section>
+      <section class="admPane" data-adm-pane="stats" hidden><div class="admBox admFold" id="admPubBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admPubBody"><span class="t">🚀 Veröffentlichen</span><span id="admPubSum" class="admSum">Test → Live</span><span class="chev" aria-hidden="true">⌄</span></button><div id="admPubBody" class="admFoldBody" hidden><div id="admPubStand" class="pubStand"><div>Test-App<b>…</b></div><div>Live-App<b>…</b></div></div><div id="admPubHint" class="pubHint"></div><div class="apBtns"><button id="admPubTest" class="action" type="button">📦 Test-Paket hochladen</button><button id="admPubLive" class="action" type="button">🚀 Live gehen</button><button id="admPubBack" class="action" type="button">↩ Live zurücksetzen</button><button id="admPubRefresh" class="action" type="button" aria-label="Neu laden">↻</button></div><input id="admPubFile" type="file" accept=".zip,application/zip,application/x-zip-compressed" hidden><div id="admPubBackBox" class="pubBack" hidden></div><div id="admPubMsg" class="apResult" hidden></div><div id="admPubRuns" class="pubRuns"></div><div class="small" style="margin-top:10px">Test-Paket = die Zip-Datei mit der Testversion (höchstens 7 MB). „Live gehen“ übernimmt den aktuellen Stand der Test-App. Alles läuft bei GitHub mit Lesbarkeitsprüfung und dauert etwa 2–4 Minuten.</div></div></div><div class="admBox admFold" id="admPushBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admPushBody"><span class="t">🔔 Push-Status</span><span id="adminPushSum" class="admSum">wird geprüft …</span><span id="adminPushDot" hidden></span><span class="chev" aria-hidden="true">⌄</span></button><div id="admPushBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 8px">Prüft, ob dieses Gerät als Admin für Push registriert ist (z. B. für Rückmeldungen).</div><div id="adminPushStatus"><div class="small">Wird geprüft …</div></div><div class="apBtns"><button id="adminPushTestBtn" class="action" type="button">📨 Test-Push sofort senden</button><button id="adminPushTestLater" class="action" type="button">⏱ In 10 Sekunden senden</button><button id="adminPushRegister" class="action" type="button" hidden>🔔 Dieses Gerät als Admin registrieren</button><button id="adminPushRefresh" class="action" type="button">↻ Neu prüfen</button></div><div class="small" style="margin-top:8px">Ist die App sichtbar geöffnet, zeigt Android keine Benachrichtigung – dann erscheint hier nur eine grüne Bestätigung. Für die echte Benachrichtigung „In 10 Sekunden senden“ antippen und gleich zum Startbildschirm wechseln.</div><div id="adminPushTestResult" class="apResult" hidden></div><div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border)"><b style="font-size:13px">Fehlersuche</b><div class="apBtns"><button id="adminPushLocal" class="action" type="button">🔔 Lokale Test-Benachrichtigung</button><button id="adminPushDiagBtn" class="action" type="button">🔎 Diagnose</button></div><div id="adminPushLocalResult" class="apResult" hidden></div><div id="adminPushDiag" style="margin-top:8px"></div></div></div></div><div class="admBox admFold" id="admAdvBox"><button type="button" class="admFoldHead" aria-expanded="false" aria-controls="admAdvBody"><span class="t">🎄 Adventskalender</span><span id="admAdvSum" class="admSum">Auswertung</span><span class="chev" aria-hidden="true">⌄</span></button><div id="admAdvBody" class="admFoldBody" hidden><div class="small" style="margin:0 0 10px">Wie viele Antworten im Adventskalender richtig und falsch waren – getrennt nach Regel- und Mannschaftsfragen.</div><div id="admAdvStats"><div class="small">Wird geladen …</div></div><button id="admAdvRefresh" class="action" type="button" style="margin-top:8px">↻ Aktualisieren</button></div></div><div class="admBox"><h5>📊 App-Statistik</h5><div class="small" style="margin:0 0 8px">Eigene Grizzlys-Auswertung mit Zeitraum, Nutzern, Sitzungen, Events und App-Nutzung.</div><button id="openAnalyticsDashboard" class="action" type="button">📊 Statistik öffnen</button></div></section>
       <div id="admSheet" class="admSheetWrap" hidden><div class="admSheet" role="dialog" aria-modal="true" aria-label="Spiel bearbeiten"></div></div>
       <div id="analyticsDashboardModal" class="matchModal" hidden aria-hidden="true">
         <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="analyticsDashboardTitle" style="max-width:760px">
@@ -2061,7 +2073,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.9.1.109",
+      appVersion:"1.9.1.110",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -2435,6 +2447,110 @@ async function loadAdventStats(){
     +rows.map(r=>'<tr><td>'+r.d+' · '+(r.kind==="T"?"🏒 Mannschaft":"📘 Regel")+'</td><td>'+r.ok+'</td><td>'+r.no+'</td><td>'+advPct(r.ok,r.ok+r.no)+' %</td></tr>').join("")
     +'</table></details>';
 }
+/* ===== 1.9.1.110: Veröffentlichen aus dem Admin-Bereich (Cloud Function deployControl → GitHub-Abläufe) ===== */
+const pubEl=id=>document.getElementById(id);
+const pubE=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let pubData=null, pubWait=null, pubTimer=0, pubPollUntil=0, pubBusy=false;
+function pubAgo(t){ if(!t) return ""; const m=Math.round((Date.now()-new Date(t).getTime())/60000); if(m<1) return "gerade eben"; if(m<60) return "vor "+m+" Min."; const h=Math.round(m/60); return h<24?"vor "+h+" Std.":new Date(t).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}); }
+function pubCmp(a,b){ const x=String(a||"").split(".").map(Number), y=String(b||"").split(".").map(Number); for(let i=0;i<Math.max(x.length,y.length);i++){const d=(x[i]||0)-(y[i]||0); if(d) return d<0?-1:1;} return 0; }
+function pubMsg(text,cls){ const m=pubEl("admPubMsg"); if(!m) return; if(!text){m.hidden=true;m.innerHTML="";return;} m.hidden=false; m.innerHTML='<div class="apVerdict '+(cls||"warn")+'">'+text+'</div>'; }
+function pubErr(e){ const c=String(e?.code||""), msg=String(e?.message||"");
+  if(c.includes("not-found")||c.includes("unavailable")||(c.includes("internal")&&!msg)) return "Die Cloud Function „deployControl“ ist noch nicht eingerichtet oder nicht erreichbar (./knoepfe-einrichten.sh in der Cloud Shell).";
+  if(c.includes("permission-denied")||c.includes("unauthenticated")) return "Nur für den angemeldeten Admin.";
+  return pubE(msg||c||"Unbekannter Fehler"); }
+async function pubCall(data){ return (await httpsCallable(functions,"deployControl",{timeout:130000})(data)).data||{}; }
+function pubLaeuft(x){ return !!(x && x.status && x.status!=="completed"); }
+function pubRow(label, ziel, lauf, pages){
+  let html="";
+  const wartet=pubWait && pubWait.ziel===ziel && (!lauf || lauf.titel!==pubWait.auftrag);
+  if(wartet){ html+='<div class="apRow warn"><i>⏳</i><div><b>'+label+': Auftrag angenommen</b><span>GitHub startet den Ablauf …</span></div></div>'; }
+  else if(lauf){
+    const run=pubLaeuft(lauf), ok=lauf.ergebnis==="success", cls=run?"warn":ok?"ok":"bad", icon=run?"⏳":ok?"✓":"✗";
+    const titel=String(lauf.titel||"").replace(/ · [0-9a-z]+$/,"");
+    const msgs=(lauf.meldungen||[]).map(m=>(m.stufe==="failure"?"✗ ":m.stufe==="warning"?"⚠ ":"")+pubE(m.text)).join("<br>");
+    let extra="";
+    if(!run && !ok){
+      const all=(lauf.meldungen||[]).map(m=>m.text).join(" ");
+      if(ziel==="test" && /ÄLTER/.test(all)) extra='<div class="apBtns"><button class="action" type="button" data-pub="aelter">Trotzdem hochladen (älteres Paket)</button></div>';
+      if(ziel==="live" && /LESBARKEIT/.test(all)) extra='<div class="apBtns"><button class="action" type="button" data-pub="trotzdem">Trotzdem live gehen</button></div>';
+    }
+    html+='<div class="apRow '+cls+'"><i>'+icon+'</i><div><b>'+label+': '+pubE(titel)+'</b><span>'+(run?"läuft … ("+pubAgo(lauf.zeit)+")":(ok?"fertig":"abgebrochen")+" · "+pubAgo(lauf.zeit))
+      +(msgs?'<br>'+msgs:(!run&&!ok?'<br>Keine Meldung – Details bei GitHub.':''))+' · <a href="'+pubE(lauf.url)+'" target="_blank" rel="noopener">Details bei GitHub</a></span>'+extra+'</div></div>';
+  }
+  if(pages){
+    const run=pubLaeuft(pages), ok=pages.ergebnis==="success", cls=run?"warn":ok?"ok":"bad";
+    const lang=run && (Date.now()-new Date(pages.zeit).getTime())>8*60000;
+    html+='<div class="apRow '+cls+'"><i>'+(run?"⏳":ok?"✓":"✗")+'</i><div><b>'+label+'-App veröffentlichen (GitHub Pages)</b><span>'
+      +(run?(pages.status==="queued"?"wartet":"läuft")+" seit "+pubAgo(pages.zeit).replace("vor ",""):ok?"fertig · "+pubAgo(pages.zeit):"fehlgeschlagen · "+pubAgo(pages.zeit))
+      +' · <a href="'+pubE(pages.url)+'" target="_blank" rel="noopener">Details</a></span>'
+      +((!ok&&!run)||lang?'<div class="apBtns"><button class="action" type="button" data-pub="neu-'+ziel+'">↻ Neu bereitstellen</button></div>':'')+'</div></div>';
+  }
+  return html;
+}
+function pubRender(){
+  const d=pubData||{}, t=d.test||{}, l=d.live||{};
+  const st=pubEl("admPubStand"); if(st) st.innerHTML='<div>Test-App<b>'+pubE(t.version||"–")+'</b></div><div>Live-App<b>'+pubE(l.version||"–")+'</b></div>';
+  const hint=pubEl("admPubHint"), cmp=pubCmp(t.version,l.version);
+  if(hint) hint.textContent=!t.version||!l.version?"":cmp>0?"Die Test-App ist neuer – bereit für „Live gehen“.":cmp===0?"Test und Live sind auf demselben Stand.":"Live ist neuer als die Test-App.";
+  const runs=pubEl("admPubRuns"); if(runs) runs.innerHTML=pubRow("Test","test",t.lauf,t.pages)+pubRow("Live","live",l.lauf,l.pages);
+  const sum=pubEl("admPubSum"), busy=pubWait||pubLaeuft(t.lauf)||pubLaeuft(l.lauf)||pubLaeuft(t.pages)||pubLaeuft(l.pages);
+  if(sum){ sum.className="admSum"+(busy?" warn":l.version?" ok":""); sum.textContent=busy?"läuft …":l.version?("Live "+l.version):"Test → Live"; }
+}
+async function pubLoad(){
+  try{
+    pubData=await pubCall({aktion:"status"});
+    if(pubWait){ const z=(pubData[pubWait.ziel]||{}).lauf; if(z && z.titel===pubWait.auftrag) pubWait=null; else if(Date.now()-pubWait.seit>120000){ pubWait=null; pubMsg("GitHub hat den Ablauf nicht gestartet. Bitte „↻“ antippen oder später erneut versuchen.","bad"); } }
+    pubRender();
+  }catch(e){ console.warn(e); pubMsg(pubErr(e),"bad"); }
+  const d=pubData||{}, busy=pubWait||[d.test,d.live].some(x=>x&&(pubLaeuft(x.lauf)||pubLaeuft(x.pages)));
+  clearTimeout(pubTimer);
+  if(busy && Date.now()<pubPollUntil) pubTimer=setTimeout(pubLoad,6000);
+}
+function pubFollow(ziel,auftrag){ pubWait={ziel,auftrag,seit:Date.now()}; pubPollUntil=Date.now()+20*60000; pubRender(); clearTimeout(pubTimer); pubTimer=setTimeout(pubLoad,4000); }
+async function pubDo(data, ziel, startText){
+  if(pubBusy) return; pubBusy=true; document.querySelectorAll("#admPubBox button.action").forEach(b=>b.disabled=true);
+  pubMsg(startText,"warn");
+  try{ const r=await pubCall(data); pubMsg(""); pubFollow(ziel,r.auftrag); }
+  catch(e){ console.warn(e); pubMsg(pubErr(e),"bad"); }
+  finally{ pubBusy=false; document.querySelectorAll("#admPubBox button.action").forEach(b=>b.disabled=false); }
+}
+pubEl("admPubRefresh")?.addEventListener("click",()=>{ pubMsg(""); pubPollUntil=Date.now()+20*60000; pubLoad(); });
+document.querySelector("#admPubBox .admFoldHead")?.addEventListener("click",()=>{ if(pubEl("admPubBody")?.hidden){ pubPollUntil=Date.now()+20*60000; pubLoad(); } });
+pubEl("admPubTest")?.addEventListener("click",()=>{ const f=pubEl("admPubFile"); if(f){ f.value=""; f.click(); } });
+pubEl("admPubFile")?.addEventListener("change",e=>{
+  const file=e.target.files&&e.target.files[0]; if(!file) return;
+  if(!/\.zip$/i.test(file.name)){ pubMsg("Bitte die Zip-Datei mit der Testversion auswählen.","bad"); return; }
+  if(file.size>7*1024*1024){ pubMsg("Das Paket ist zu groß (höchstens 7 MB).","bad"); return; }
+  if(!/test/i.test(file.name) && !confirm("„"+file.name+"“ hat kein „test“ im Namen. Trotzdem als Test-Paket hochladen?")) return;
+  const rd=new FileReader();
+  rd.onload=()=>{ const b64=String(rd.result||"").split(",")[1]||""; pubDo({aktion:"testHochladen",zip:b64,name:file.name},"test","„"+pubE(file.name)+"“ wird hochgeladen …"); };
+  rd.onerror=()=>pubMsg("Die Datei konnte nicht gelesen werden.","bad");
+  rd.readAsDataURL(file);
+});
+pubEl("admPubLive")?.addEventListener("click",()=>{
+  const t=pubData?.test?.version, l=pubData?.live?.version;
+  if(t&&l&&pubCmp(t,l)<=0){ pubMsg(pubCmp(t,l)===0?"Live ist schon auf "+pubE(l)+" – nichts zu tun.":"Die Test-App ("+pubE(t)+") ist älter als Live ("+pubE(l)+"). Dafür „Live zurücksetzen“ verwenden.","warn"); return; }
+  if(!confirm("Live gehen: "+(l||"?")+" → "+(t||"aktueller Test-Stand")+"?\n\nDie Live-App wird für alle Nutzer aktualisiert.")) return;
+  pubDo({aktion:"liveGehen"},"live","Auftrag wird an GitHub übergeben …");
+});
+pubEl("admPubBack")?.addEventListener("click",()=>{
+  const box=pubEl("admPubBackBox"); if(!box) return;
+  if(!box.hidden){ box.hidden=true; return; }
+  const l=pubData?.live?.version, list=(pubData?.staende||[]).filter(v=>v!==l);
+  box.hidden=false;
+  box.innerHTML=list.length?'<div class="small" style="margin-bottom:6px">Live (jetzt '+pubE(l||"?")+') auf einen früheren Stand zurücksetzen. Firestore-Regeln und Functions bleiben unverändert.</div><select id="admPubBackSel">'+list.map(v=>'<option value="'+pubE(v)+'">'+pubE(v)+'</option>').join("")+'</select><div class="apBtns"><button id="admPubBackGo" class="action" type="button">↩ Zurücksetzen</button><button id="admPubBackNo" class="action" type="button">Abbrechen</button></div>'
+    :'<div class="small">Noch keine früheren Stände gespeichert (entstehen bei jedem „Live gehen“).</div>';
+  pubEl("admPubBackNo")?.addEventListener("click",()=>{box.hidden=true;});
+  pubEl("admPubBackGo")?.addEventListener("click",()=>{ const v=pubEl("admPubBackSel")?.value; if(!v) return;
+    if(!confirm("Live wirklich von "+(l||"?")+" auf "+v+" zurücksetzen?")) return;
+    box.hidden=true; pubDo({aktion:"zurueck",version:v},"live","Auftrag wird an GitHub übergeben …"); });
+});
+pubEl("admPubRuns")?.addEventListener("click",e=>{
+  const b=e.target.closest("[data-pub]"); if(!b) return; const a=b.dataset.pub;
+  if(a==="aelter"){ if(confirm("Das ältere Paket trotzdem in die Test-App übernehmen?")) pubDo({aktion:"testHochladen",nochmal:true,aelter:true,name:"erneut"},"test","Auftrag wird an GitHub übergeben …"); }
+  else if(a==="trotzdem"){ if(confirm("Trotz kaum lesbarer Stellen live gehen?")) pubDo({aktion:"liveGehen",trotzdem:true},"live","Auftrag wird an GitHub übergeben …"); }
+  else if(a==="neu-test"||a==="neu-live"){ const z=a.slice(4); pubDo({aktion:"neu",ziel:z},z,"Veröffentlichung wird neu angestoßen …"); }
+});
 document.getElementById("admAdvRefresh")?.addEventListener("click",loadAdventStats);
 document.querySelector("#admAdvBox .admFoldHead")?.addEventListener("click",()=>{ if(document.getElementById("admAdvBody")?.hidden) loadAdventStats(); });
 function setAdminUi(user){
