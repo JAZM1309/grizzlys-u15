@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Live gehen / Live zurücksetzen / Veröffentlichung neu anstoßen – gestartet aus dem Admin-Bereich.
+# Gleiche Logik wie ./live-gehen.sh und ./zurueck.sh im Grizzlys-Werkzeug.
+WZ="$(cd "$(dirname "$0")" && pwd)"; source "$WZ/gemeinsam.sh"
+cd "$GITHUB_WORKSPACE"; git_name
+TEST_REPO="${TEST_REPO:-https://github.com/${GITHUB_REPOSITORY}-test.git}"
+# Bleiben in Live unverändert (Test hat eigene Varianten bzw. gehören nur zu Live)
+NUR_LIVE=(README.md README.txt FUNCTIONS-ANLEITUNG.txt manifest.webmanifest icon-192.png icon-512.png icon-maskable-512.png
+          firebase.json firestore.rules functions .github .git .gitignore .nojekyll index.html sw.js)
+L=$(version_von .)
+
+case "$AKTION" in
+neu)
+  pages_neu; info "Veröffentlichung der Live-App neu angestoßen ($L)."; exit 0 ;;
+
+zurueck)
+  [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+)+$ ]] || fehler "Ungültiger Stand: $VERSION"
+  git rev-parse -q --verify "refs/tags/live-$VERSION" >/dev/null || fehler "Den Stand $VERSION gibt es nicht."
+  [ "$VERSION" = "$L" ] && { info "Live ist schon auf $L – nichts zu tun."; exit 0; }
+  git tag -l "live-$L" | grep -q . || { git tag "live-$L"; git push -q origin "refs/tags/live-$L"; }
+  git read-tree -u --reset "live-$VERSION" || fehler "Zurücksetzen fehlgeschlagen."
+  git commit -q -m "Zurück auf $VERSION (Admin-Bereich)" || fehler "Zurücksetzen: nichts zu ändern."
+  git push -q origin HEAD:main || fehler "Hochladen ins Live-Repo fehlgeschlagen."
+  pages_neu
+  info "Live: $L → $VERSION zurückgesetzt. In 1–2 Minuten in der App. Firestore-Regeln und Functions bleiben unverändert."
+  ;;
+
+live)
+  T="$RUNNER_TEMP/test"
+  rm -rf "$T"; git clone -q --depth 1 "$TEST_REPO" "$T" || fehler "Test-Repo konnte nicht geladen werden."
+  V=$(version_von "$T")
+  [ -n "$V" ] || fehler "In der Test-App wurde keine Versionsnummer gefunden."
+  grep -q 'class="testRibbon"' "$T/index.html" || fehler "Die Test-App hat keinen Test-Balken – Aufbau unerwartet, nichts geändert."
+  [ "$V" = "$L" ] && { info "Live ist schon auf $V – nichts zu tun."; exit 0; }
+  if [ "$(printf '%s\n%s\n' "$L" "$V" | sort -V | tail -1)" = "$L" ]; then
+    fehler "Die Test-App ($V) ist älter als Live ($L). Dafür bitte „Live zurücksetzen“ verwenden."
+  fi
+  # alten Live-Stand markieren (für „Live zurücksetzen“)
+  git tag -l "live-$L" | grep -q . || { git tag "live-$L"; git push -q origin "refs/tags/live-$L" || warnung "Markierung live-$L nicht gespeichert."; }
+
+  AUSNAHMEN=(); for f in "${NUR_LIVE[@]}"; do AUSNAHMEN+=(--exclude="./$f"); done
+  ( cd "$T" && tar -cf - "${AUSNAHMEN[@]}" . ) | tar -xf - || fehler "Dateien konnten nicht übernommen werden."
+  python3 "$WZ/tolive.py" "$T/index.html" index.html "$T/sw.js" sw.js 2>"$RUNNER_TEMP/tolive.log" \
+    || { git checkout -q -- . ; fehler "$(tail -2 "$RUNNER_TEMP/tolive.log" | tr '\n' ' ')"; }
+  [ "$(version_von .)" = "$V" ] || fehler "Nach dem Umwandeln stimmt die Version nicht ($(version_von .) statt $V)."
+
+  # Dateien, die nur in Live liegen (nicht im Test) – nur als Hinweis
+  NUR_HIER=$(cd . && git ls-files | grep -v '^\.github/\|^functions/\|^\.' | while read -r f; do [ -e "$T/$f" ] || echo "$f"; done \
+             | grep -v -x -F -f <(printf '%s\n' "${NUR_LIVE[@]}") | head -8 | tr '\n' ' ')
+
+  git add -A 2>/dev/null; git reset -q -- functions/node_modules 2>/dev/null
+  GEAENDERT=$(git diff --cached --name-only | wc -l)
+
+  pruefung "$GITHUB_WORKSPACE"
+  if [ "$PRUEF_RC" = 2 ] && [ "$TROTZDEM" != "ja" ]; then
+    fehler "LESBARKEIT: Live wurde NICHT geändert, weil kaum lesbare Stellen gefunden wurden. Mit „Trotzdem live gehen“ geht es ohne diese Sperre."
+  fi
+
+  git commit -q -m "Live $V (Admin-Bereich, aus Test übernommen)"
+  git tag -f "live-$V" >/dev/null
+  git push -q origin HEAD:main || fehler "Hochladen ins Live-Repo fehlgeschlagen."
+  git push -q -f origin "refs/tags/live-$V" || warnung "Markierung live-$V nicht gespeichert."
+  pages_neu
+  info "Live: $L → $V ($GEAENDERT Dateien). In 1–2 Minuten in der App."
+  [ -n "$NUR_HIER" ] && info "Nur in Live (nicht im Test, bleiben unverändert): $NUR_HIER"
+  info "Daran denken: README und Seitenübersicht bei Gelegenheit auf $V bringen (über ./live-dateien.sh)."
+  ;;
+*) fehler "Unbekannte Aktion: $AKTION" ;;
+esac

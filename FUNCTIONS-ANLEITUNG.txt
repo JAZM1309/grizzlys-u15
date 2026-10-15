@@ -151,3 +151,32 @@ Veröffentlichen in der Cloud Shell
 Prüfen
   - Firebase Console > Firestore > Regeln: der Block "match /adventAnswers/{docId}" ist enthalten.
   - Ab 1. Dezember: Admin-Bereich > Status > "Adventskalender" zeigt die Zahlen.
+
+
+VERÖFFENTLICHEN AUS DEM ADMIN-BEREICH (ab Version 1.9.1.110)
+============================================================
+
+Neu:
+  deployControl  -> Admin-Bereich > Status > "Veröffentlichen". Nur der angemeldete Admin darf sie aufrufen.
+                    Nimmt die Aufträge "Test-Paket hochladen", "Live gehen", "Live zurücksetzen" und
+                    "Neu bereitstellen" an und startet dafür die GitHub-Abläufe:
+                      Test-Repo  .github/workflows/test-hochladen.yml  (+ .github/werkzeug/)
+                      Live-Repo  .github/workflows/live-gehen.yml      (+ .github/werkzeug/)
+                    Liefert außerdem die Versionen von Test und Live, das Ergebnis der letzten Abläufe,
+                    den Stand der GitHub-Pages-Veröffentlichung und die früheren Live-Stände (Tags live-…).
+
+Geheimnis (Secret)
+  GRIZZLYS_GITHUB_TOKEN = GitHub-Zugangsschlüssel (Fine-grained, nur grizzlys-u15 und grizzlys-u15-test,
+  Contents + Actions + Workflows: Read and write). Wird von ./knoepfe-einrichten.sh aus der Cloud Shell
+  übernommen. Nach einem neuen Schlüssel: ./einrichten.sh --neuer-schluessel und ./knoepfe-einrichten.sh
+
+Dateien im Repo
+  functions/deploy.js      (neu)
+  functions/index.js       (am Ende 1 Zeile ergänzt: exports.deployControl = require("./deploy").deployControl;)
+
+Einrichten (einmalig) in der Cloud Shell
+  cd ~/grizzlys-werkzeug && ./knoepfe-einrichten.sh
+
+Prüfen
+  - Admin-Bereich > Status > "Veröffentlichen" aufklappen: Test- und Live-Version werden angezeigt.
+  - Fehlermeldung "Schlüssel abgelaufen": siehe oben (Geheimnis).

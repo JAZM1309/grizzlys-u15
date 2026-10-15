@@ -325,3 +325,6 @@ exports.scheduleWatch = require("./ehv-sync").scheduleWatch;
 exports.onNewsCreated = require("./news").onNewsCreated;
 // Admin: Test-Push an alle Admin-Geräte (Admin-Bereich > Push-Status)
 exports.adminPushTest = require("./pushtest").adminPushTest;
+
+// 1.9.1.110: Veröffentlichen aus dem Admin-Bereich (Knöpfe Test hochladen / Live gehen / Live zurücksetzen)
+exports.deployControl = require("./deploy").deployControl;

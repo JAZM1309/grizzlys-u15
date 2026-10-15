@@ -1,0 +1,49 @@
+# Wird vom Admin-Bereich der App gestartet (Knöpfe „Live gehen“ und „Live zurücksetzen“) – nicht von Hand nötig.
+name: Grizzlys Live gehen
+run-name: ${{ inputs.auftrag }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      aktion:   { description: "live, zurueck oder neu", default: "live", required: false }
+      version:  { description: "Stand für zurueck, z. B. 1.9.1.108", default: "", required: false }
+      trotzdem: { description: "trotz Lesbarkeitsproblemen live gehen (ja/nein)", default: "nein", required: false }
+      auftrag:  { description: "Auftrag", default: "von Hand", required: false }
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: grizzlys-veroeffentlichen
+  cancel-in-progress: false
+
+jobs:
+  ablauf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Live-Repo laden
+        uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        if: inputs.aktion == 'live'
+        with: { python-version: "3.12" }
+      - name: Browser für die Lesbarkeitsprüfung
+        if: inputs.aktion == 'live'
+        continue-on-error: true
+        timeout-minutes: 6
+        run: |
+          pip install -q playwright pillow
+          python3 -m playwright install --with-deps chromium >/dev/null
+      - name: Ausführen
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AKTION: ${{ inputs.aktion }}
+          VERSION: ${{ inputs.version }}
+          TROTZDEM: ${{ inputs.trotzdem }}
+        run: bash .github/werkzeug/live.sh
+      - name: Prüfbericht ablegen
+        if: always() && inputs.aktion == 'live'
+        uses: actions/upload-artifact@v4
+        with: { name: lesbarkeit, path: "${{ runner.temp }}/pruefung", retention-days: 14, if-no-files-found: ignore }

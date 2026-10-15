@@ -6,7 +6,7 @@ Entwickelt von JAZM.
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.109)
+Neu in Version 1.9.1 (Stand 1.9.1.110)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -44,6 +44,7 @@ Neu in Version 1.9.1 (Stand 1.9.1.109)
 - Gruselmoment (1.9.1.107): im Halloween-Design lugt höchstens einmal am Tag kurz eine Gestalt von unten herein (halloween/gestalt.webp); nicht anklickbar, nie über offenen Fenstern; eigener Schalter in den Einstellungen
 - Kleinere Bilder (1.9.1.108): logo.png (2 MB → 58 KB), App- und Push-Symbole und große Gegner-Logos verkleinert, Dateinamen unverändert; die App lädt beim ersten Öffnen deutlich schneller
 - Lesbarkeit (1.9.1.109): von der automatischen Prüfung gefundene Stellen verbessert (JAZM auf der Info-Seite, Plakette und Knöpfe im Weihnachtsdesign, Wochentag U15 B, Admin-Status dunkel)
+- Veröffentlichen aus dem Admin-Bereich (1.9.1.110): Admin-Bereich > Status > Veröffentlichen mit den Knöpfen Test-Paket hochladen, Live gehen und Live zurücksetzen (Cloud Function deployControl + GitHub-Abläufe, mit Lesbarkeitsprüfung)
 - Veröffentlichen mit dem Grizzlys-Werkzeug: Skripte in der Cloud Shell (~/grizzlys-werkzeug, Anleitung in LIESMICH.txt)
 - PWA-Cache: auf grizzlys-u15-v109 erneuert
 
