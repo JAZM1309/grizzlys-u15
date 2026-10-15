@@ -6,7 +6,7 @@ Entwickelt von **JAZM**.
 
 ## Version 1.9.1
 
-### Neu in Version 1.9.1 (Stand 1.9.1.108)
+### Neu in Version 1.9.1 (Stand 1.9.1.109)
 
 - **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
 - **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
@@ -44,7 +44,9 @@ Entwickelt von **JAZM**.
 - **Updates sofort (1.9.1.106):** der Service Worker holt Seite und Programmdateien immer frisch vom Server (nicht aus dem 10-Minuten-Zwischenspeicher von GitHub Pages)
 - **Gruselmoment (1.9.1.107):** im Halloween-Design lugt höchstens einmal am Tag kurz eine Gestalt von unten herein (`halloween/gestalt.webp`); nicht anklickbar, nie über offenen Fenstern; eigener Schalter in den Einstellungen
 - **Kleinere Bilder (1.9.1.108):** `logo.png` (2 MB → 58 KB), App- und Push-Symbole und große Gegner-Logos verkleinert, Dateinamen unverändert; die App lädt beim ersten Öffnen deutlich schneller
-- **PWA-Cache:** auf `grizzlys-u15-v108` erneuert
+- **Lesbarkeit (1.9.1.109):** von der automatischen Prüfung gefundene Stellen verbessert: „JAZM“ auf der Info-Seite, Plakette „Letztes Spiel“, Knöpfe und „VS“ auf den Spielkarten im Weihnachtsdesign, Wochentag bei U15-B-Karten, Status-Chip im Admin-Bereich (dunkel)
+- **Veröffentlichen mit dem Grizzlys-Werkzeug:** Test-Pakete, Live-Gang, Live-Dateien, Lesbarkeitsprüfung und Zurücksetzen laufen über Skripte in der Cloud Shell (`~/grizzlys-werkzeug`, Anleitung in dessen `LIESMICH.txt`)
+- **PWA-Cache:** auf `grizzlys-u15-v109` erneuert
 - **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
 
 ## Version 1.9.0
