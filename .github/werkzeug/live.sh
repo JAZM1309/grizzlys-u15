@@ -8,6 +8,13 @@ TEST_REPO="${TEST_REPO:-https://github.com/${GITHUB_REPOSITORY}-test.git}"
 NUR_LIVE=(README.md README.txt FUNCTIONS-ANLEITUNG.txt manifest.webmanifest icon-192.png icon-512.png icon-maskable-512.png
           firebase.json firestore.rules functions .github .git .gitignore .nojekyll index.html sw.js)
 L=$(version_von .)
+doku_kopieren() {   # Doku für Live, die mit dem Test-Paket kam (README, Anleitung, PDF) → setzt DOKU
+  DOKU=""
+  [ -d "$T/.github/live-doku" ] || return 0
+  for f in "$T/.github/live-doku"/*; do
+    b=$(basename "$f"); case "$b" in *.md|*.txt|*.pdf) cmp -s "$f" "./$b" || { cp "$f" "./$b"; DOKU="$DOKU $b"; } ;; esac
+  done
+}
 
 case "$AKTION" in
 neu)
@@ -31,7 +38,13 @@ live)
   V=$(version_von "$T")
   [ -n "$V" ] || fehler "In der Test-App wurde keine Versionsnummer gefunden."
   grep -q 'class="testRibbon"' "$T/index.html" || fehler "Die Test-App hat keinen Test-Balken – Aufbau unerwartet, nichts geändert."
-  [ "$V" = "$L" ] && { info "Live ist schon auf $V – nichts zu tun."; exit 0; }
+  if [ "$V" = "$L" ]; then
+    doku_kopieren
+    [ -n "$DOKU" ] || { info "Live ist schon auf $V – nichts zu tun."; exit 0; }
+    git add -A; git commit -q -m "Live-Doku $V (Admin-Bereich)"
+    git push -q origin HEAD:main || fehler "Hochladen ins Live-Repo fehlgeschlagen."
+    pages_neu; info "Live ist schon auf $V – nur die Doku übernommen:$DOKU"; exit 0
+  fi
   if [ "$(printf '%s\n%s\n' "$L" "$V" | sort -V | tail -1)" = "$L" ]; then
     fehler "Die Test-App ($V) ist älter als Live ($L). Dafür bitte „Live zurücksetzen“ verwenden."
   fi
@@ -43,6 +56,7 @@ live)
   python3 "$WZ/tolive.py" "$T/index.html" index.html "$T/sw.js" sw.js 2>"$RUNNER_TEMP/tolive.log" \
     || { git checkout -q -- . ; fehler "$(tail -2 "$RUNNER_TEMP/tolive.log" | tr '\n' ' ')"; }
   [ "$(version_von .)" = "$V" ] || fehler "Nach dem Umwandeln stimmt die Version nicht ($(version_von .) statt $V)."
+  doku_kopieren
 
   # Dateien, die nur in Live liegen (nicht im Test) – nur als Hinweis
   NUR_HIER=$(cd . && git ls-files | grep -v '^\.github/\|^functions/\|^\.' | while read -r f; do [ -e "$T/$f" ] || echo "$f"; done \
@@ -63,7 +77,8 @@ live)
   pages_neu
   info "Live: $L → $V ($GEAENDERT Dateien). In 1–2 Minuten in der App."
   [ -n "$NUR_HIER" ] && info "Nur in Live (nicht im Test, bleiben unverändert): $NUR_HIER"
-  info "Daran denken: README und Seitenübersicht bei Gelegenheit auf $V bringen (über ./live-dateien.sh)."
+  if [ -n "$DOKU" ]; then info "Doku mit übernommen:$DOKU"
+  else grep -q "Stand $V" README.md 2>/dev/null || info "Hinweis: Die README beschreibt noch nicht $V (kam keine Doku mit dem Test-Paket)."; fi
   ;;
 *) fehler "Unbekannte Aktion: $AKTION" ;;
 esac
