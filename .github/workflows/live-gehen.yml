@@ -8,6 +8,7 @@ on:
       aktion:   { description: "live, zurueck oder neu", default: "live", required: false }
       version:  { description: "Stand für zurueck, z. B. 1.9.1.108", default: "", required: false }
       trotzdem: { description: "trotz Lesbarkeitsproblemen live gehen (ja/nein)", default: "nein", required: false }
+      hinweis:  { description: "Update-Hinweis für Nutzer anzeigen (ja/nein)", default: "nein", required: false }
       auftrag:  { description: "Auftrag", default: "von Hand", required: false }
 
 permissions:
@@ -42,6 +43,7 @@ jobs:
           AKTION: ${{ inputs.aktion }}
           VERSION: ${{ inputs.version }}
           TROTZDEM: ${{ inputs.trotzdem }}
+          HINWEIS: ${{ inputs.hinweis }}
         run: bash .github/werkzeug/live.sh
       - name: Prüfbericht ablegen
         if: always() && inputs.aktion == 'live'

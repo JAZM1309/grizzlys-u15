@@ -150,8 +150,9 @@ exports.deployControl = onCall(
 
       if (aktion === "liveGehen") {
         const trotzdem = d.trotzdem === true ? "ja" : "nein";
-        const auftrag = auftragsName("Live gehen" + (trotzdem === "ja" ? " (trotz Lesbarkeit)" : ""));
-        await starten("live", { aktion: "live", auftrag, trotzdem });
+        const hinweis = d.hinweis === true ? "ja" : "nein";
+        const auftrag = auftragsName("Live gehen" + (hinweis === "ja" ? " mit Update-Hinweis" : "") + (trotzdem === "ja" ? " (trotz Lesbarkeit)" : ""));
+        await starten("live", { aktion: "live", auftrag, trotzdem, hinweis });
         return { ok: true, auftrag };
       }
 

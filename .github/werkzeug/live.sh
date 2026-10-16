@@ -26,6 +26,8 @@ zurueck)
   [ "$VERSION" = "$L" ] && { info "Live ist schon auf $L – nichts zu tun."; exit 0; }
   git tag -l "live-$L" | grep -q . || { git tag "live-$L"; git push -q origin "refs/tags/live-$L"; }
   git read-tree -u --reset "live-$VERSION" || fehler "Zurücksetzen fehlgeschlagen."
+  # Nur die App zurücksetzen: Abläufe, Functions und Firebase-Dateien bleiben auf dem aktuellen Stand
+  for f in .github functions firebase.json firestore.rules .gitignore .nojekyll; do git checkout -q HEAD -- "$f" 2>/dev/null; done
   git commit -q -m "Zurück auf $VERSION (Admin-Bereich)" || fehler "Zurücksetzen: nichts zu ändern."
   git push -q origin HEAD:main || fehler "Hochladen ins Live-Repo fehlgeschlagen."
   pages_neu
@@ -57,6 +59,14 @@ live)
     || { git checkout -q -- . ; fehler "$(tail -2 "$RUNNER_TEMP/tolive.log" | tr '\n' ' ')"; }
   [ "$(version_von .)" = "$V" ] || fehler "Nach dem Umwandeln stimmt die Version nicht ($(version_von .) statt $V)."
   doku_kopieren
+  # Update-Hinweis für Nutzer ja/nein (Häkchen im Admin-Bereich); ältere Versionen kennen den Schalter noch nicht
+  if grep -q '^const UPDATE_HINWEIS = ' sw.js; then
+    [ "$HINWEIS" = "ja" ] && W=true || W=false
+    sed -i "s/^const UPDATE_HINWEIS = [a-z]*;/const UPDATE_HINWEIS = $W;/" sw.js
+    [ "$W" = true ] && HINWEIS_TEXT="Nutzer sehen den Update-Hinweis." || HINWEIS_TEXT="Ohne Update-Hinweis – Nutzer bekommen die Version still beim nächsten Öffnen."
+  else
+    HINWEIS_TEXT="Update-Hinweis: diese Version kennt den Schalter noch nicht (Hinweis erscheint wie bisher)."
+  fi
 
   # Dateien, die nur in Live liegen (nicht im Test) – nur als Hinweis
   NUR_HIER=$(cd . && git ls-files | grep -v '^\.github/\|^functions/\|^\.' | while read -r f; do [ -e "$T/$f" ] || echo "$f"; done \
@@ -75,7 +85,7 @@ live)
   git push -q origin HEAD:main || fehler "Hochladen ins Live-Repo fehlgeschlagen."
   git push -q -f origin "refs/tags/live-$V" || warnung "Markierung live-$V nicht gespeichert."
   pages_neu
-  info "Live: $L → $V ($GEAENDERT Dateien). In 1–2 Minuten in der App."
+  info "Live: $L → $V ($GEAENDERT Dateien). In 1–2 Minuten in der App. $HINWEIS_TEXT"
   [ -n "$NUR_HIER" ] && info "Nur in Live (nicht im Test, bleiben unverändert): $NUR_HIER"
   if [ -n "$DOKU" ]; then info "Doku mit übernommen:$DOKU"
   else grep -q "Stand $V" README.md 2>/dev/null || info "Hinweis: Die README beschreibt noch nicht $V (kam keine Doku mit dem Test-Paket)."; fi
