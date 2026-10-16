@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Anzeigetafel bedienen – Stramatel 452</title>
+<meta name="author" content="JAZM">
+<style>
+:root{--bg:#eef4fa;--card:#fff;--text:#102033;--muted:#5b6d80;--line:#d6e2ee;--navy:#071b33;--blue:#1673d1;--red:#d6342c;--yellow:#f2a900;--green:#1a9c4b;--grey:#5f6b78;--chip:#eef3f8}
+@media (prefers-color-scheme:dark){:root{--bg:#08111d;--card:#111d2d;--text:#e7eef8;--muted:#9fb1c5;--line:#24364d;--chip:#1a2a3f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:linear-gradient(135deg,#071b33,#0d3a6b);color:#fff;padding:22px 16px 26px}
+header .in,main{max-width:860px;margin:0 auto}
+header small{opacity:.8;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:11.5px}
+header h1{margin:4px 0 6px;font-size:24px;line-height:1.2}
+header p{margin:0;opacity:.88;font-size:14px}
+main{padding:14px 16px 40px}
+section{background:var(--card);border-radius:18px;padding:16px;margin:0 0 14px;box-shadow:0 6px 20px rgba(8,31,55,.07)}
+h2{font-size:18px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+h2 .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;flex:0 0 auto}
+@media (prefers-color-scheme:dark){h2 .n{background:#2b5d96}}
+h3{font-size:15px;margin:14px 0 6px}
+p{margin:6px 0}
+.muted{color:var(--muted);font-size:13.5px}
+.k{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;font-weight:800;font-size:13px;color:#fff;background:var(--grey);vertical-align:middle;margin:0 1px;line-height:1}
+.k.b{background:var(--blue)}.k.r{background:var(--red)}.k.y{background:var(--yellow);color:#2a1c00}.k.g{background:var(--green)}.k.d{background:#3a4552}.k.n{background:#fff;color:#102033;border:2px solid #9aa8b6}
+.plus{font-weight:900;color:var(--muted);margin:0 2px}
+.steps{display:grid;gap:8px;margin:8px 0 0;padding:0;list-style:none;counter-reset:s}
+.steps li{position:relative;padding:10px 12px 10px 44px;border:1px solid var(--line);border-radius:14px;background:var(--chip)}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:12px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center}
+@media (prefers-color-scheme:dark){.steps li::before{background:#2b5d96}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:9px}
+.tile{border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--chip)}
+.tile>b:first-child,.tile>.keys+b{display:block;font-size:14px;margin-bottom:4px}
+.tile .keys{margin:2px 0 4px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.flow .box{border:2px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--chip);font-size:13.5px;text-align:center}
+.flow .box b{display:block;font-size:12px;color:var(--muted);font-weight:700}
+.flow .arr{font-weight:900;color:var(--muted)}
+.svgwrap{overflow-x:auto;margin:6px -6px 0;padding:0 6px}
+svg.pult{width:100%;min-width:500px;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.warn{border-left:5px solid var(--yellow);background:rgba(242,169,0,.1);border-radius:10px;padding:9px 12px;margin:10px 0 0;font-size:14px}
+.tip{border-left:5px solid var(--blue);background:rgba(22,115,209,.08);border-radius:10px;padding:9px 12px;margin:10px 0 0;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:7px 6px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{white-space:nowrap;width:1%}
+table.hilfe td:first-child{white-space:normal;width:36%;font-weight:700}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#0b7a35;border-radius:14px;padding:8px;margin-top:6px}
+.slots div{background:#0e9442;color:#e9fff0;border-radius:9px;padding:8px;text-align:center;font-size:13px;line-height:1.3}
+.slots b{display:block;font-size:13.5px}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+nav.toc a{background:var(--card);color:var(--text);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:6px 11px;font-size:13px;font-weight:700}
+footer{max-width:860px;margin:0 auto;padding:0 16px 30px;font-size:12px;color:var(--muted)}
+footer a{color:inherit}
+.hbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.back{display:inline-block;color:#fff;font:700 13px/1.2 inherit;font-family:inherit;text-decoration:none;background:rgba(255,255,255,.14);padding:8px 13px;border-radius:99px;border:0;cursor:pointer}
+.back.print{background:#f2a900;color:#2a1c00}
+@media print{header{background:#071b33!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}nav.toc,.hbtns,.back{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<header><div class="in">
+<small>ESV Grizzlys Bergkamen · Kampfgericht</small>
+<h1>Anzeigetafel bedienen<br>Stramatel 452 – Eishockey</h1>
+<p>Hauptpult für Uhr, Tore und Auszeiten · zwei Strafzeitpulte (Heim und Gast) für die Strafen</p>
+<div class="hbtns"><a class="back" href="./">‹ Zurück zur App</a><button class="back print" type="button" onclick="window.print()">🖨 Drucken / als PDF speichern</button></div>
+</div></header>
+<main>
+<nav class="toc"><a href="#start">Vor dem Spiel</a><a href="#pult">Hauptpult</a><a href="#spiel">Während des Spiels</a><a href="#korr">Korrigieren</a><a href="#strafe">Strafzeitpulte</a><a href="#ende">Spielende</a><a href="#hilfe">Hilfe</a></nav>
+
+<section>
+<p><b>So liest du diese Anleitung:</b> Jede Taste hat <b>klein daneben eine Nummer</b> (z. B. <span class="k y">18</span>). Die Anleitung nennt immer diese Nummer. <span class="k d">16</span><span class="plus">+</span><span class="k b">10</span> heißt: Taste 16 gedrückt halten und dabei 10 drücken.</p>
+</section>
+
+<section id="start">
+<h2><span class="n">1</span>Vor dem Spiel</h2>
+<ol class="steps">
+<li><b>Anzeigetafel einschalten</b> (Strom an). Danach die Pulte anschließen – die Reihenfolge der Kabel ist egal.</li>
+<li><b>Hauptpult einschalten:</b> Taste <span class="k g">ON/OFF</span> gedrückt halten, bis die Begrüßung im Display erscheint.</li>
+<li><b>Eishockey wählen:</b> <span class="k d">16</span><span class="plus">+</span><span class="k d">15</span> gleichzeitig, dann <span class="k d">27</span> PROG so oft drücken, bis die Sportauswahl erscheint, und <span class="k n">1</span> für <b>Eishockey</b> wählen.</li>
+<li><b>Einstellungen prüfen:</b> Das Display zeigt kurz die gespeicherten Werte (Vorspielzeit, Anzahl und Dauer der Drittel, Pausen, Verlängerung, Auszeiten). <span class="k n">9</span> = übernehmen · <span class="k n">0</span> = ändern. Beim Ändern jede Frage mit Zahlen beantworten und mit <span class="k g">25</span> V bestätigen, <span class="k d">11</span> geht eine Frage zurück.</li>
+<li><b>Strafzeitpulte einschalten:</b> an jedem Pult <span class="k g">ON/OFF</span> drücken, bis die Begrüßung erscheint. Sie arbeiten nur, wenn das Hauptpult auf Eishockey steht.</li>
+<li><b>Vorspielzeit / Aufwärmen:</b> <span class="k y">18</span> startet und stoppt den Countdown bis Spielbeginn. Mit <span class="k y">28</span> geht es zum 1. Drittel.</li>
+</ol>
+<div class="tip">Mannschaftsnamen lassen sich nicht am Pult eintippen, sondern über die Stramatel-App „Icesport“ (Android).</div>
+</section>
+
+<section id="pult">
+<h2><span class="n">2</span>Das Hauptpult</h2>
+<p class="muted" style="margin:0 0 4px">Auf dem Handy quer halten oder seitlich wischen, um das ganze Pult zu sehen.</p>
+<div class="svgwrap">
+<svg class="pult" viewBox="0 0 700 330" role="img" aria-label="Hauptpult mit nummerierten Tasten">
+<defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9edf1"/><stop offset="1" stop-color="#c9d0d7"/></linearGradient></defs>
+<rect x="4" y="4" width="692" height="322" rx="26" fill="url(#pg)" stroke="#39434e" stroke-width="5"/>
+<text x="350" y="34" text-anchor="middle" font-size="18" font-weight="800" fill="#b8202a" font-family="system-ui,sans-serif">STRAMATEL</text>
+<text x="190" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#33404d" font-family="system-ui,sans-serif">HEIM</text>
+<text x="500" y="62" text-anchor="middle" font-size="12" font-weight="700" fill="#33404d" font-family="system-ui,sans-serif">GAST</text>
+<rect x="150" y="70" width="400" height="54" rx="4" fill="#0b7a35"/>
+<text x="350" y="104" text-anchor="middle" font-size="14" fill="#c8f5d5" font-family="ui-monospace,monospace">Display</text>
+<path d="M10 170 Q350 150 690 170" stroke="#9aa5b0" stroke-width="5" fill="none"/>
+<path d="M440 160 L560 158" stroke="#c0262f" stroke-width="7"/><path d="M560 158 L640 160" stroke="#e8770b" stroke-width="7"/>
+<g font-family="system-ui,sans-serif" font-weight="800" text-anchor="middle">
+<!-- Ein/Aus, PROG, 28 -->
+<circle cx="28" cy="34" r="13" fill="#1a9c4b"/><text x="28" y="39" font-size="12" fill="#fff">⏻</text>
+<g id="k27"><circle cx="78" cy="97" r="22" fill="#4a5562"/><text x="78" y="101" font-size="11" fill="#fff">PROG</text><circle cx="96" cy="117" r="10" fill="#111"/><text x="96" y="121" font-size="10" fill="#fff">27</text></g>
+<g><circle cx="612" cy="97" r="22" fill="#f2a900"/><text x="612" y="102" font-size="12" fill="#2a1c00">◷→</text><circle cx="594" cy="117" r="10" fill="#e8770b"/><text x="594" y="121" font-size="10" fill="#fff">28</text></g>
+<!-- Ziffern -->
+<g font-size="13" fill="#222">
+<circle cx="140" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="140" y="151">0</text>
+<circle cx="186" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="186" y="151">1</text>
+<circle cx="232" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="232" y="151">2</text>
+<circle cx="278" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="278" y="151">3</text>
+<circle cx="324" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="324" y="151">4</text>
+<circle cx="370" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="370" y="151">5</text>
+<circle cx="416" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="416" y="151">6</text>
+<circle cx="462" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="462" y="151">7</text>
+<circle cx="508" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="508" y="151">8</text>
+<circle cx="554" cy="146" r="14" fill="#f4f6f8" stroke="#8a96a3" stroke-width="2"/><text x="554" y="151">9</text>
+</g>
+<!-- Reihe 3: 11 13 15 17 19 21 23 25 -->
+<g font-size="11">
+<circle cx="78" cy="214" r="22" fill="#4a5562"/><text x="78" y="219" font-size="16" fill="#fff">↶</text><circle cx="96" cy="234" r="10" fill="#111"/><text x="96" y="238" font-size="10" fill="#fff">11</text>
+<circle cx="150" cy="214" r="22" fill="#e04b45" opacity=".55"/><circle cx="168" cy="234" r="10" fill="#c0262f"/><text x="168" y="238" font-size="10" fill="#fff">13</text>
+<circle cx="228" cy="214" r="22" fill="#4a5562"/><text x="228" y="218" font-size="10" fill="#fff">RESET</text><circle cx="246" cy="234" r="10" fill="#111"/><text x="246" y="238" font-size="10" fill="#fff">15</text>
+<circle cx="300" cy="214" r="22" fill="#f2a900"/><text x="300" y="220" font-size="16" fill="#2a1c00">T</text><circle cx="318" cy="234" r="10" fill="#e8770b"/><text x="318" y="238" font-size="10" fill="#fff">17</text>
+<circle cx="385" cy="214" r="22" fill="#f2a900"/><text x="385" y="219" font-size="15" fill="#2a1c00">📣</text><circle cx="403" cy="234" r="10" fill="#e8770b"/><text x="403" y="238" font-size="10" fill="#fff">19</text>
+<circle cx="463" cy="214" r="22" fill="#4a5562"/><text x="463" y="219" font-size="13" fill="#fff">⇅</text><circle cx="481" cy="234" r="10" fill="#111"/><text x="481" y="238" font-size="10" fill="#fff">21</text>
+<circle cx="540" cy="214" r="22" fill="#e04b45" opacity=".55"/><circle cx="558" cy="234" r="10" fill="#c0262f"/><text x="558" y="238" font-size="10" fill="#fff">23</text>
+<circle cx="615" cy="214" r="22" fill="#1a9c4b"/><text x="615" y="220" font-size="16" fill="#fff">V</text><circle cx="633" cy="234" r="10" fill="#0d6a31"/><text x="633" y="238" font-size="10" fill="#fff">25</text>
+</g>
+<!-- Reihe 4: 10 12 14 16 18 20 22 24 26 -->
+<g font-size="11">
+<circle cx="38" cy="282" r="24" fill="#1673d1"/><text x="38" y="289" font-size="20" fill="#fff">1</text><circle cx="56" cy="304" r="10" fill="#0b4f94"/><text x="56" y="308" font-size="10" fill="#fff">10</text>
+<circle cx="112" cy="282" r="22" fill="#e04b45" opacity=".35"/><circle cx="130" cy="302" r="10" fill="#c0262f" opacity=".6"/><text x="130" y="306" font-size="10" fill="#fff">12</text>
+<circle cx="187" cy="282" r="22" fill="#e04b45" opacity=".55"/><text x="187" y="287" font-size="11" fill="#fff">−10s</text><circle cx="205" cy="302" r="10" fill="#c0262f"/><text x="205" y="306" font-size="10" fill="#fff">14</text>
+<circle cx="264" cy="282" r="22" fill="#4a5562"/><text x="264" y="288" font-size="17" fill="#fff">C</text><circle cx="282" cy="302" r="10" fill="#111"/><text x="282" y="306" font-size="10" fill="#fff">16</text>
+<circle cx="345" cy="282" r="25" fill="#f2a900" stroke="#b07800" stroke-width="3"/><text x="345" y="288" font-size="15" fill="#2a1c00">⏱</text><circle cx="365" cy="304" r="10" fill="#e8770b"/><text x="365" y="308" font-size="10" fill="#fff">18</text>
+<circle cx="427" cy="282" r="22" fill="#4a5562"/><text x="427" y="287" font-size="11" fill="#fff">+1s</text><circle cx="445" cy="302" r="10" fill="#111"/><text x="445" y="306" font-size="10" fill="#fff">20</text>
+<circle cx="503" cy="282" r="22" fill="#e04b45" opacity=".55"/><text x="503" y="287" font-size="11" fill="#fff">+10s</text><circle cx="521" cy="302" r="10" fill="#c0262f"/><text x="521" y="306" font-size="10" fill="#fff">22</text>
+<circle cx="578" cy="282" r="22" fill="#e04b45" opacity=".35"/><circle cx="596" cy="302" r="10" fill="#c0262f" opacity=".6"/><text x="596" y="306" font-size="10" fill="#fff">24</text>
+<circle cx="660" cy="282" r="24" fill="#1673d1"/><text x="660" y="289" font-size="20" fill="#fff">1</text><circle cx="642" cy="304" r="10" fill="#0b4f94"/><text x="642" y="308" font-size="10" fill="#fff">26</text>
+</g>
+</g>
+</svg>
+</div>
+<div class="legend"><span><i style="background:#f2a900"></i>Uhr, Auszeit, Hupe, Drittel</span><span><i style="background:#1673d1"></i>Tore</span><span><i style="background:#4a5562"></i>Korrektur &amp; Programmierung</span><span><i style="background:#1a9c4b"></i>Bestätigen</span><span><i style="background:#e04b45;opacity:.5"></i>blass = im Eishockey ohne eigene Funktion</span></div>
+<div class="grid" style="margin-top:12px">
+<div class="tile"><div class="keys"><span class="k y">18</span></div><b>Uhr Start / Stopp</b>Spielzeit, Pause, Verlängerung und Vorspielzeit.</div>
+<div class="tile"><div class="keys"><span class="k b">10</span> <span class="k b">26</span></div><b>Tor Heim / Gast</b>+1 Tor. Im Auszeit-Modus: Auszeit dazuzählen.</div>
+<div class="tile"><div class="keys"><span class="k y">17</span></div><b>Auszeit</b>Erst <span class="k y">18</span> Uhr stoppen, dann <span class="k y">17</span>.</div>
+<div class="tile"><div class="keys"><span class="k y">19</span></div><b>Hupe</b>Von Hand. Am Ende jeder Zeit hupt es automatisch.</div>
+<div class="tile"><div class="keys"><span class="k y">28</span></div><b>Nächstes Drittel / Periode laden</b>Auch: von der Vorspielzeit zum 1. Drittel.</div>
+<div class="tile"><div class="keys"><span class="k d">16</span> C</div><b>Korrekturtaste</b>Immer festhalten und eine zweite Taste drücken.</div>
+<div class="tile"><div class="keys"><span class="k d">21</span></div><b>Uhr vorwärts / rückwärts</b>Zeigt abgelaufene oder verbleibende Zeit.</div>
+<div class="tile"><div class="keys"><span class="k d">27</span> <span class="k g">25</span> <span class="k d">11</span></div><b>Programmieren</b>PROG · V = bestätigen · ↶ = zurück.</div>
+</div>
+</section>
+
+<section id="spiel">
+<h2><span class="n">3</span>Während des Spiels</h2>
+<div class="grid">
+<div class="tile"><b>🟢 Bully / Spiel läuft</b><span class="k y">18</span> drücken – die Uhr läuft. Beim Pfiff wieder <span class="k y">18</span>.</div>
+<div class="tile"><b>🥅 Tor</b>Uhr steht nach dem Pfiff. <span class="k b">10</span> Heim oder <span class="k b">26</span> Gast. Bei einem Überzahltor die kleine Strafe am Strafzeitpult löschen (siehe unten).</div>
+<div class="tile"><b>⏸ Auszeit</b><span class="k y">18</span> Uhr stoppen → <span class="k y">17</span> Auszeit startet (Countdown, Hupe am Ende).</div>
+<div class="tile"><b>🔔 Ende des Drittels</b>Die Hupe kommt automatisch, die <b>Pause startet von selbst</b>. Nach der Pause ist das nächste Drittel geladen → mit <span class="k y">18</span> starten.</div>
+<div class="tile"><b>⏭ Nach dem letzten Drittel / Verlängerung</b>Hier startet die Pause <b>nicht</b> von selbst: bei Bedarf mit <span class="k y">18</span> starten.</div>
+<div class="tile"><b>⛔ Strafe</b>Wird an den <b>Strafzeitpulten</b> eingegeben. Strafzeiten laufen nur, wenn die Spieluhr läuft.</div>
+</div>
+</section>
+
+<section id="korr">
+<h2><span class="n">4</span>Korrigieren</h2>
+<table>
+<tr><td><span class="k d">16</span><span class="plus">+</span><span class="k b">10</span> / <span class="k b">26</span></td><td>Ein Tor abziehen (Heim / Gast). Im Auszeit-Modus: eine Auszeit abziehen.</td></tr>
+<tr><td><span class="k d">16</span><span class="plus">+</span><span class="k y">18</span></td><td><b>Spieluhr korrigieren</b> (Uhr vorher mit <span class="k y">18</span> stoppen). Dann:</td></tr>
+</table>
+<div class="flow"><div class="box"><b>−10 s</b><span class="k r">14</span></div><div class="box"><b>−1 s</b><span class="k d">16</span></div><div class="box"><b>+1 s</b><span class="k d">20</span></div><div class="box"><b>+10 s</b><span class="k r">22</span></div><span class="arr">→</span><div class="box"><b>fertig</b><span class="k y">18</span></div></div>
+<table>
+<tr><td><span class="k d">16</span><span class="plus">+</span><span class="k r">13</span> / <span class="k r">23</span></td><td><b>Strafzeit am Hauptpult korrigieren</b> (Heim / Gast): mit <span class="k n">1</span>–<span class="k n">4</span> die Strafzeit wählen, mit 14 / 16 / 20 / 22 korrigieren, mit <span class="k y">18</span> bestätigen.</td></tr>
+<tr><td><span class="k d">16</span><span class="plus">+</span><span class="k y">28</span></td><td>Nummer des Drittels korrigieren.</td></tr>
+<tr><td><span class="k d">16</span><span class="plus">+</span><span class="k y">18</span></td><td>Zu spät gestoppt und schon in der Pause? Damit zurück zum Ende des Drittels.</td></tr>
+</table>
+</section>
+
+<section id="strafe">
+<h2><span class="n">5</span>Strafzeitpulte (Heim und Gast)</h2>
+<p>Jede Mannschaft hat ihr eigenes Pult. Die Tafel zeigt pro Mannschaft <b>zwei Strafzeiten (2 / 5 Min)</b> und <b>zwei 10-Minuten-Strafen</b>. Weitere Strafen kommen in eine <b>Warteliste</b> (bis zu 10) und starten automatisch, sobald ein Platz frei wird.</p>
+<h3>Strafe eingeben</h3>
+<div class="flow">
+<div class="box"><b>Spielernummer</b><span class="k n">0</span>–<span class="k n">9</span></div><span class="arr">→</span>
+<div class="box"><b>OK</b><span class="k g">19</span></div><span class="arr">→</span>
+<div class="box"><b>Strafe</b><span class="k n">2</span> 2 Min · <span class="k n">5</span> 5 Min · <span class="k d">20</span> 10 Min</div><span class="arr">→</span>
+<div class="box"><b>OK</b><span class="k g">19</span></div>
+</div>
+<div class="grid">
+<div class="tile"><b>Beispiel: Nr. 17, 2 Minuten</b><span class="k n">1</span> <span class="k n">7</span> <span class="k g">19</span> <span class="k n">2</span> <span class="k g">19</span></div>
+<div class="tile"><b>2 + 2 oder 2 + 5</b>Bei der Strafart nacheinander drücken, z. B. <span class="k n">2</span> <span class="k n">5</span>, dann <span class="k g">19</span>.</div>
+<div class="tile"><b>Vertippt?</b><span class="k d">18</span> korrigiert und geht einen Schritt zurück.</div>
+<div class="tile"><b>Auch möglich</b><span class="k n">1</span> und <span class="k n">3</span> für 1 bzw. 3 Minuten (falls die Liga das nutzt).</div>
+</div>
+<h3>Strafe löschen – z. B. nach einem Tor in Überzahl</h3>
+<p class="muted">Die Tasten 10–13 gehören zu den vier Plätzen im Display des Strafzeitpults:</p>
+<div class="slots"><div><b>10 Min · oben links</b>löschen: <span class="k d">11</span></div><div><b>2/5 Min · oben rechts</b>löschen: 2 × <span class="k d">13</span></div><div><b>10 Min · unten links</b>löschen: <span class="k d">10</span></div><div><b>2/5 Min · unten rechts</b>löschen: 2 × <span class="k d">12</span></div></div>
+<div class="grid" style="margin-top:9px">
+<div class="tile"><b>2/5-Minuten-Strafe löschen</b><span class="k d">13</span> oder <span class="k d">12</span> <b>zweimal</b> drücken.</div>
+<div class="tile"><b>Aus Versehen gelöscht?</b>Innerhalb von 2 Sekunden <span class="k d">18</span> drücken – die Strafe ist wieder da.</div>
+<div class="tile"><b>Falsche Spielernummer</b><span class="k d">13</span> / <span class="k d">12</span> einmal, neue Nummer eintippen, <span class="k g">19</span>.</div>
+<div class="tile"><b>Warteliste</b><span class="k d">14</span> öffnen/schließen · <span class="k d">15</span> <span class="k d">16</span> blättern · <span class="k d">17</span> 2× löschen, 1× Nummer ändern.</div>
+<div class="tile"><b>Alles löschen</b><span class="k d">21</span> <b>2 Sekunden</b> halten – laufende und wartende Strafen sind weg.</div>
+</div>
+<div class="warn"><b>Merke:</b> Bei einem Tor in Überzahl endet <b>nur die kleine Strafe</b> (2 Min). 5- und 10-Minuten-Strafen laufen weiter.</div>
+</section>
+
+<section id="ende">
+<h2><span class="n">6</span>Spielende und nächstes Spiel</h2>
+<ol class="steps">
+<li><b>Gleiches Spielformat:</b> <span class="k d">16</span><span class="plus">+</span><span class="k d">15</span> lädt ein neues Spiel mit denselben Einstellungen (Tore und Zeiten auf null).</li>
+<li><b>Anderes Format</b> (z. B. andere Drittellänge): <span class="k d">16</span><span class="plus">+</span><span class="k d">15</span>, dann <span class="k d">27</span>, <span class="k n">1</span> Eishockey und mit <span class="k n">0</span> die Einstellungen ändern (siehe „Vor dem Spiel“, Schritt 4).</li>
+<li><b>Ausschalten:</b> erst die Uhr mit <span class="k y">18</span> stoppen, dann <span class="k g">ON/OFF</span> gedrückt halten – an allen Pulten.</li>
+</ol>
+</section>
+
+<section id="hilfe">
+<h2><span class="n">7</span>Wenn etwas nicht klappt</h2>
+<table class="hilfe">
+<tr><td>Strafzeitpult zeigt nichts</td><td>Hauptpult eingeschaltet und auf Eishockey? Kabel zwischen den Pulten richtig eingesteckt? Dann am Strafzeitpult <span class="k g">ON/OFF</span>.</td></tr>
+<tr><td>Strafzeit läuft nicht</td><td>Strafzeiten laufen nur mit der Spieluhr – <span class="k y">18</span> starten.</td></tr>
+<tr><td>Strafe erscheint nicht</td><td>Beide Plätze belegt? Dann steht sie in der Warteliste (<span class="k d">14</span>) und startet automatisch.</td></tr>
+<tr><td>Strafen halb so lang</td><td>In den Einstellungen ist „Halbstrafbankzeit“ an (im Display „s“ statt „S“). Ändern: <span class="k d">16</span><span class="plus">+</span><span class="k d">15</span> → <span class="k d">27</span> → <span class="k n">1</span> Eishockey → <span class="k n">0</span>.</td></tr>
+<tr><td>Uhr zählt falsch herum</td><td><span class="k d">21</span> wechselt zwischen abgelaufener und verbleibender Zeit.</td></tr>
+</table>
+</section>
+</main>
+<footer>Kurzanleitung nach den Stramatel-Bedienungsanleitungen für das Hauptbedienpult 452G und die Strafzeitpulte 452G. Tastennummern stehen klein neben den Tasten. Bei Abweichungen gilt die Originalanleitung: <a href="https://pimage.sport-thieme.de/pdf/Bedienungsanleitung_Hauptbedienpult_Stramatel_Anzeigetafel_3971909_INT.pdf" target="_blank" rel="noopener">Hauptbedienpult (PDF)</a> · <a href="https://www.stramatel.com/wp-content/uploads/2023/03/UF452GPT_G-Pupitres-penalites-452G.pdf" target="_blank" rel="noopener">Strafzeitpulte (PDF, französisch)</a> · Erstellt von JAZM für den ESV Grizzlys Bergkamen.</footer>
+</body>
+</html>

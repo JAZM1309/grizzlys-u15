@@ -57,7 +57,10 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v111";
+const CACHE = "grizzlys-u15-v117";
+// Update-Hinweis („Neue Version verfügbar“) für diese Version zeigen? false = Nutzer bekommen sie still beim nächsten Öffnen.
+// In Live wird der Wert beim „Live gehen“ aus dem Häkchen im Admin-Bereich gesetzt.
+const UPDATE_HINWEIS = false;
 
 const CORE = [
   "./",
@@ -83,7 +86,7 @@ self.addEventListener("install", event => {
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
   // Die Seite fragt, welche Version hier wartet (Update-Banner nur bei wirklich neuerer Version).
-  if (event.data && event.data.type === "GET_VERSION" && event.ports && event.ports[0]) event.ports[0].postMessage({ cache: CACHE });
+  if (event.data && event.data.type === "GET_VERSION" && event.ports && event.ports[0]) event.ports[0].postMessage({ cache: CACHE, hinweis: UPDATE_HINWEIS });
 });
 
 self.addEventListener("activate", event => {
