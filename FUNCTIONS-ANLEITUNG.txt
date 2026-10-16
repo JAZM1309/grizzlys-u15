@@ -180,3 +180,20 @@ Einrichten (einmalig) in der Cloud Shell
 Prüfen
   - Admin-Bereich > Status > "Veröffentlichen" aufklappen: Test- und Live-Version werden angezeigt.
   - Fehlermeldung "Schlüssel abgelaufen": siehe oben (Geheimnis).
+
+
+ZUSTELLUNG MIT HOHER PRIORITÄT (Oktober 2026)
+=============================================
+
+Geändert: functions/push.js (sendGameReminders, onResultWritten)
+  - Ergebnis-Push und 24h-Erinnerung gehen mit "Urgency: high" (wie der Admin-Test-Push) und TTL 6 Stunden.
+    Grund: Am 16.10.2026 kam die 24h-Erinnerung für U15 A (8:36 Uhr) auf einem Android-Handy im Ruhezustand
+    nicht an, obwohl Google sie angenommen hatte; die für U15 B (9:36 Uhr) kam an.
+  - Protokoll zeigt jetzt adminOk / adminFehler (wie viele Admin-Geräte die Meldung bekommen haben),
+    bei Fehlern auch die letzten 8 Zeichen des Geräte-Tokens.
+
+Veröffentlichen
+  cd ~/grizzlys-werkzeug && ./live-dateien.sh ~/grizzlys-push-prioritaet.zip --functions=sendGameReminders,onResultWritten
+
+Prüfen (Protokoll der Erinnerungen, Zeiten in UTC)
+  gcloud logging read 'resource.labels.service_name="sendgamereminders" AND jsonPayload.message="24h-Erinnerung gesendet"' --project grizzlys-u15 --limit 10 --format='value(timestamp,jsonPayload.reminderId,jsonPayload.success,jsonPayload.failed,jsonPayload.adminOk,jsonPayload.adminFehler)'

@@ -28,12 +28,16 @@ function wantsTeam(tokenDoc, team) {
 async function loadTokens() {
   const snap = await admin.firestore().collection("pushTokens").get();
   return snap.docs
-    .map(d => ({ token: d.data().token, ref: d.ref, prefs: prefsOf(d.data()) }))
+    .map(d => ({ token: d.data().token, ref: d.ref, prefs: prefsOf(d.data()), admin: d.data().admin === true }))
     .filter(x => Boolean(x.token));
 }
 
+// Hohe Priorität: sonst hält Android Meldungen im Ruhezustand („Doze“) zurück oder verwirft sie (1.9.1.112).
+const DRINGEND = { Urgency: "high", TTL: String(6 * 3600) };
+
 async function sendPush(tokens, notification, webpush) {
-  let success = 0, failed = 0;
+  let success = 0, failed = 0, adminOk = 0, adminFehler = 0;
+  if (webpush) webpush = { ...webpush, headers: { ...DRINGEND, ...(webpush.headers || {}) } };
   const invalid = [];
   for (let i = 0; i < tokens.length; i += 500) {
     const batch = tokens.slice(i, i + 500);
@@ -44,17 +48,18 @@ async function sendPush(tokens, notification, webpush) {
     });
     success += response.successCount;
     response.responses.forEach((r, idx) => {
+      if (batch[idx].admin) { if (r.success) adminOk += 1; else adminFehler += 1; }
       if (r.success) return;
       failed += 1;
       const code = r.error?.code;
-      logger.warn("FCM Fehler", { code, message: r.error?.message });
+      logger.warn("FCM Fehler", { code, fehler: r.error?.message, admin: batch[idx].admin, token: String(batch[idx].token).slice(-8) });
       if (code === "messaging/registration-token-not-registered" || code === "messaging/invalid-registration-token") {
         invalid.push(batch[idx].ref);
       }
     });
   }
   for (const ref of invalid) { try { await ref.delete(); } catch (e) { /* ignorieren */ } }
-  return { total: tokens.length, success, failed };
+  return { total: tokens.length, success, failed, adminOk, adminFehler };
 }
 
 function teamOfResult(r, id) {
