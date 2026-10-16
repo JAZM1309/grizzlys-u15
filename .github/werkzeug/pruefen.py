@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Lesbarkeitsprüfung der Grizzlys-App.
 
-Öffnet jede Seite (Start, Spielplan, Gegner, Downloads, Einstellungen, Info, Admin-Bereich)
+Öffnet jede Seite (Start, Spielplan, Gegner, Regeln, Downloads, Einstellungen, Info, Admin-Bereich)
 in allen sechs Design-Kombinationen (normal/dunkel, Halloween hell/dunkel, Weihnachten hell/dunkel)
 in einem unsichtbaren Browser und misst bei jedem Text den Kontrast zum tatsächlich sichtbaren
 Hintergrund (aus dem Bildschirmfoto, damit auch Bilder und Verläufe zählen).
@@ -21,8 +21,8 @@ for f in os.listdir(OUT):
 STARK, HINWEIS = 2.0, 3.0   # Kontrast unter 2,0 = kaum lesbar, unter 3,0 = schwach
 DESIGNS = [("normal", ""), ("dunkel", "dark"), ("halloween-hell", "hw"), ("halloween-dunkel", "hw dark"),
            ("weihnachten-hell", "xm"), ("weihnachten-dunkel", "xm dark")]
-SEITEN = ["home", "schedule", "opponents", "downloads", "settings", "info", "admin"]
-NAMEN = {"home": "Start", "schedule": "Spielplan", "opponents": "Gegner", "downloads": "Downloads",
+SEITEN = ["home", "schedule", "opponents", "rules", "downloads", "settings", "info", "admin"]
+NAMEN = {"home": "Start", "schedule": "Spielplan", "opponents": "Gegner", "rules": "Regeln", "downloads": "Downloads",
          "settings": "Einstellungen", "info": "Info", "admin": "Admin-Bereich"}
 
 # Firebase wird nicht wirklich angesprochen: kleine Ersatz-Module (es wird nichts gelesen oder geschrieben)
