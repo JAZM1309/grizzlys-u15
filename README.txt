@@ -6,7 +6,7 @@ Entwickelt von JAZM.
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.121)
+Neu in Version 1.9.1 (Stand 1.9.1.122)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -47,6 +47,7 @@ Neu in Version 1.9.1 (Stand 1.9.1.121)
 - Veröffentlichen aus dem Admin-Bereich (1.9.1.110): Admin-Bereich > Status > Veröffentlichen mit den Knöpfen Test-Paket hochladen, Live gehen und Live zurücksetzen (Cloud Function deployControl + GitHub-Abläufe, mit Lesbarkeitsprüfung)
 - Doku beim Live-Gang (1.9.1.111): README, Anleitung und PDFs im Test-Paket im Ordner nur-live werden bei Live gehen automatisch übernommen
 - Kacheln deutlicher (1.9.1.121): Rahmen, Farbleiste und Schatten in Downloads und Info
+- Einstellungen im gleichen Look (1.9.1.122): Rahmen, Farbleiste und Schatten auch dort
 - Regeln Nachwuchs NRW + Themen-Menü (1.9.1.120): 17 Einträge aus EHV-NRW Anhang 4 (Stand 13.05.2026), Themen über Menü ☰ im Suchfeld
 - Handzeichen (1.9.1.117): 30 Schiedsrichter-Handzeichen mit Bild im Reiter Regeln (IIHF Anhang I)
 - Anleitung Anzeigetafel (1.9.1.115): Downloads > Für das Kampfgericht, Seite anleitung-anzeigetafel.html (Stramatel 452, Hauptpult + Strafzeitpulte)
