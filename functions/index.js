@@ -328,3 +328,6 @@ exports.adminPushTest = require("./pushtest").adminPushTest;
 
 // 1.9.1.110: Veröffentlichen aus dem Admin-Bereich (Knöpfe Test hochladen / Live gehen / Live zurücksetzen)
 exports.deployControl = require("./deploy").deployControl;
+
+// 1.9.1.129: Spieldetails vom EHV für den Spielbericht-Entwurf (nur Admin)
+exports.gameReport = require("./game-report").gameReport;
