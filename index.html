@@ -1140,6 +1140,20 @@ html.gameday .heroChips .season.gdMulti{flex-direction:column;align-items:flex-s
 .admForm label{display:grid;gap:3px;font-size:11px;font-weight:900;color:var(--muted);min-width:0}
 .admForm input{width:100%;min-width:0;padding:9px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:13px;background:#fff;color:var(--text)}
 .admForm .full{grid-column:1/-1}
+.admNewsChk span{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text)}
+.admNewsChk input{width:18px;height:18px;flex:none}
+.admNewsChk small{font-weight:700}
+.admChg{--team:var(--a);box-shadow:inset 4px 0 0 var(--team)}.admChg[data-team=B]{--team:var(--b)}
+.admChg.off{opacity:.62}
+.admChgWas{margin-top:6px;line-height:1.45}
+.admChgSt{margin-top:6px;font-size:12px;color:var(--muted)}
+.admChgAuto{border:0;background:none;padding:0;font:inherit;color:#1f6fb8;text-decoration:underline;cursor:pointer}
+.admSw{position:relative;flex:none;width:46px;height:26px;cursor:pointer}
+.admSw input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.admSw span{position:absolute;inset:0;border-radius:99px;background:#c3ccd7;transition:.2s;pointer-events:none}
+.admSw span::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.2s}
+.admSw input:checked+span{background:#2e9e5b}
+.admSw input:checked+span::after{transform:translateX(20px)}
 .admNewsBtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;border-radius:14px;border:2px dashed #9fc3e6;color:#1f6fb8;font:inherit;font-weight:900;font-size:14px;margin-bottom:10px;background:#fff;cursor:pointer}
 .admNewsForm[hidden]{display:none}
 .admFbBar{display:flex;gap:7px;margin-bottom:8px}.admFbBar select{flex:1;min-width:0;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--text);font:inherit;font-size:13px}
@@ -1633,7 +1647,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></svg>Für das Kampfgericht</div><div class="small" style="margin-bottom:14px">Kurzanleitungen für die Technik in der Eishalle.</div><div class="downloadCards"><a id="downloadScoreboard" class="downloadCard" href="anleitung-anzeigetafel.html" style="text-decoration:none;color:inherit"><span class="dlIcon" style="background:#fff3d6;color:#b26b00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M12 10v3l2 2"/><path d="M7 4l-2.75 2"/><path d="M17 4l2.75 2"/></svg></span><b>Anzeigetafel bedienen</b><small>Stramatel 452 · Hauptpult und Strafzeitpulte · Schritt für Schritt</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.125</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.127</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
 <p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p><p class="inMade">App entwickelt von <b>JAZM</b><span id="inMadeVer"></span></p></section>
@@ -1854,7 +1868,7 @@ async function loadScheduleOverrides(){
     applyScheduleOverrides();
     renderNext(); renderList(); renderOpponents();
     if(window.applyResults) window.applyResults();
-    if(auth.currentUser?.uid===ADMIN_UID) adminScheduleEditor();
+    if(auth.currentUser?.uid===ADMIN_UID){ adminScheduleEditor(); adminNewsEditor(); }
     window.renderNews?.();
   }catch(err){ console.warn("Spielplanänderungen konnten nicht geladen werden",err); }
 }
@@ -2157,7 +2171,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.9.1.125",
+      appVersion:"1.9.1.127",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -2770,6 +2784,45 @@ async function loadNews(){
   window.renderNews?.();
   if(auth.currentUser?.uid===ADMIN_UID) adminNewsEditor();
 }
+/* 1.9.1.127: Spieländerungen im Admin-News-Reiter – pro Änderung entscheiden, ob sie für alle in den News steht */
+function admChgList(){
+  const t=newsToday().getTime()-86400000, shown=new Set(newsChanges().map(c=>c.g));
+  return games.filter(g=>scheduleOverrides[scheduleGameId(g)]&&g._base&&dt(g).getTime()>=t).sort((a,b)=>dt(a)-dt(b)).map(g=>{
+    const o=scheduleOverrides[scheduleGameId(g)], b=g._base, f=chgFields(b,g);
+    const raw=["date","time","stadium","home","away"].filter(k=>(b[k]||"")!==(g[k]||""));
+    return {g,id:scheduleGameId(g),o,f,raw,on:shown.has(g),auto:typeof o.news!=="boolean"};
+  }).filter(x=>x.raw.length);
+}
+function admChgSection(e){
+  const L=admChgList(); if(!L.length)return `<div class="admSec">📅 Spieländerungen</div><div class="small">Keine kommenden Spieländerungen.</div>`;
+  const lbl={date:"Datum",time:"Uhrzeit",stadium:"Spielort",home:"Heimteam",away:"Gastteam"};
+  const row=x=>{const g=x.g,b=g._base,day=dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
+    const was=x.raw.map(k=>k==="date"||k==="time"?null:`${lbl[k]}: ${e(b[k])} → ${e(g[k])}`).filter(Boolean);
+    if(x.raw.includes("date")||x.raw.includes("time"))was.unshift(`Termin: ${e(admFd(b.date))} · ${e(b.time)} → ${e(admFd(g.date))} · ${e(g.time)} Uhr`);
+    const why=x.auto?(x.f.length?"automatisch: echte Änderung":"automatisch: nur Schreibweise"):"von dir festgelegt";
+    return `<div class="adminGame newsAdminItem admChg${x.on?"":" off"}" data-team="${e(g.team)}"><div class="adminGameHead"><div><b>U15 ${e(g.team)} · ${e(shortTeam(g.home))} – ${e(shortTeam(g.away))}</b><div class="small">${e(day)} · ${e(g.time)} Uhr · ${e(g.stadium)}</div></div>
+      <label class="admSw" title="In den News für alle anzeigen"><input type="checkbox" data-chg="${e(x.id)}"${x.on?" checked":""}><span></span></label></div>
+      <div class="small admChgWas">${was.join("<br>")}</div>
+      <div class="admChgSt"><b>${x.on?"📰 In den News für alle":"🙈 Nicht in den News"}</b> · ${why}${x.auto?"":` · <button type="button" class="admChgAuto" data-auto="${e(x.id)}">automatisch</button>`}</div></div>`};
+  return `<div class="admSec">📅 Spieländerungen</div><div class="small" style="margin:-2px 2px 8px">Schalter an = alle Nutzer sehen die Änderung in den News.</div>${L.map(row).join("")}`;
+}
+async function admChgSet(id,val){
+  const o=scheduleOverrides[id]; if(!o)return;
+  const local=()=>{if(val===null)delete o.news;else o.news=val};
+  try{
+    const {deleteField}=await import("https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js");
+    await setDoc(doc(db,"scheduleOverrides",id),{news:val===null?deleteField():val,updatedAt:serverTimestamp()},{merge:true});
+    local();
+  }catch(err){
+    if(String(err.message||err).startsWith("Testversion")){local();alert("Testversion: nur auf diesem Gerät umgestellt, nicht gespeichert.")}
+    else{console.error(err);alert("Speichern nicht möglich: "+(err.message||err))}
+  }
+  window.renderNews?.(); adminNewsEditor(); if(adm.sheet)admRenderSheet();
+}
+function admChgBind(box){
+  box.querySelectorAll("[data-chg]").forEach(c=>c.onchange=()=>{c.disabled=true;admChgSet(c.dataset.chg,c.checked)});
+  box.querySelectorAll("[data-auto]").forEach(b=>b.onclick=()=>admChgSet(b.dataset.auto,null));
+}
 function adminNewsEditor(){
   const box=document.getElementById("adminNews"); if(!box) return;
   const e=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -2784,7 +2837,8 @@ function adminNewsEditor(){
     <label class="newsPushChk"><input id="newsPush" type="checkbox"> Zusätzlich als Push senden</label>
     <button id="newsSave" class="action" type="button">📰 Hinweis veröffentlichen</button>
   </div>
-  <div class="admSec">Sichtbar</div>${vis.length?vis.map(item).join(""):'<div class="small">Gerade kein Hinweis sichtbar.</div>'}
+  ${admChgSection(e)}
+  <div class="admSec">Hinweise · sichtbar</div>${vis.length?vis.map(item).join(""):'<div class="small">Gerade kein Hinweis sichtbar.</div>'}
   ${old.length?`<div class="admSec">Abgelaufen</div>${old.map(item).join("")}`:""}`;
   box.querySelector("#newsNewBtn").onclick=()=>{const f=box.querySelector("#newsFormBox");f.hidden=!f.hidden;if(!f.hidden)box.querySelector("#newsTitle").focus()};
   box.querySelector("#newsSave").onclick=async()=>{
@@ -2798,6 +2852,7 @@ function adminNewsEditor(){
       await loadNews();
     }catch(err){console.error(err);alert("Speichern fehlgeschlagen: "+(err.message||err))}
   };
+  admChgBind(box);
   box.querySelectorAll(".newsDel").forEach(b=>b.onclick=async()=>{
     if(!confirm("Diesen Hinweis löschen?"))return;
     try{await deleteDoc(doc(db,"news",b.dataset.id));await loadNews()}catch(err){alert("Löschen fehlgeschlagen: "+(err.message||err))}
@@ -2943,8 +2998,8 @@ function admRenderSheet(){
      <div class="admBtns"><button type="button" class="admBtn pri" data-res="save">Speichern</button>${has?'<button type="button" class="admBtn del" data-res="del">Löschen</button>':""}</div></div>${hint}</div>
    <div class="admBox"><h5>📅 Termin &amp; Ort ${d?'<span class="admSt chg">EHV weicht ab</span>':adm.ehv&&!adm.ehvErr?'<span class="admSt ok">stimmt mit EHV</span>':""}</h5>${cmp}
      <div class="admKv"><div><small>Datum</small>${esc(fmtDate(g))}</div><div><small>Uhrzeit</small>${esc(g.time)} Uhr</div><div style="grid-column:span 2"><small>Spielort</small>${esc(g.stadium)}</div></div>
-     ${mod?`<div class="admHint">Geändert – ursprünglich ${esc(admFd(base.date))} · ${esc(base.time)} Uhr · ${esc(base.stadium)}</div>`:""}
-     ${adm.edit?`<div class="admForm"><label>Datum<input id="admFDate" type="date" value="${esc(g.date)}"></label><label>Uhrzeit<input id="admFTime" type="time" value="${esc(g.time)}"></label><label class="full">Heimteam<input id="admFHome" value="${esc(g.home)}"></label><label class="full">Gastteam<input id="admFAway" value="${esc(g.away)}"></label><label class="full">Spielort<input id="admFStad" value="${esc(g.stadium)}"></label></div>
+     ${mod?`<div class="admHint">Geändert – ursprünglich ${esc(admFd(base.date))} · ${esc(base.time)} Uhr · ${esc(base.stadium)}<br>${admNewsState(g)}</div>`:""}
+     ${adm.edit?`<div class="admForm"><label>Datum<input id="admFDate" type="date" value="${esc(g.date)}"></label><label>Uhrzeit<input id="admFTime" type="time" value="${esc(g.time)}"></label><label class="full">Heimteam<input id="admFHome" value="${esc(g.home)}"></label><label class="full">Gastteam<input id="admFAway" value="${esc(g.away)}"></label><label class="full">Spielort<input id="admFStad" value="${esc(g.stadium)}"></label><label class="full admNewsChk"><span><input id="admFNews" type="checkbox"${scheduleOverrides[id]&&typeof scheduleOverrides[id].news==="boolean"?(scheduleOverrides[id].news?" checked":"")+' data-man="1"':""}> In den News als Spieländerung melden</span><small id="admFNewsHint"></small></label></div>
        <div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn pri" data-sch="save">💾 Für alle speichern</button><button type="button" class="admBtn no" data-sch="cancel">Abbrechen</button></div>`
       :`<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-sch="edit">✏️ Termin ändern</button>${mod?'<button type="button" class="admBtn no" data-sch="reset">↩️ Original</button>':""}</div>`}
    </div>
@@ -2954,6 +3009,7 @@ function admRenderSheet(){
   box.querySelector("[data-x]").onclick=admCloseSheet;
   w.onclick=e=>{if(e.target===w)admCloseSheet()};
   admBindDiffs(box);
+  admBindNewsChk(box,g);
   box.querySelector('[data-res="save"]').onclick=async e=>{
     const hs=box.querySelector("#admHs").value, as=box.querySelector("#admAs").value;
     if(hs===""||as===""){alert("Bitte beide Tore eintragen.");return}
@@ -2972,6 +3028,7 @@ function admRenderSheet(){
       try{await deleteDoc(doc(db,"scheduleOverrides",id));delete scheduleOverrides[id];applyScheduleOverrides();renderNext();renderList();renderOpponents();window.applyResults?.()}catch(err){alert("Zurücksetzen nicht möglich: "+(err.message||err))}
       return admRenderAll()}
     const v={date:box.querySelector("#admFDate").value,time:box.querySelector("#admFTime").value,home:box.querySelector("#admFHome").value.trim(),away:box.querySelector("#admFAway").value.trim(),stadium:box.querySelector("#admFStad").value.trim()};
+    const nc=box.querySelector("#admFNews"); if(nc)v.news=nc.checked;
     if(!v.date||!v.time||!v.home||!v.away||!v.stadium){alert("Bitte alle Felder ausfüllen.");return}
     b.disabled=true;
     try{await admSaveOverride(g,v);adm.edit=false;alert("Gespeichert – gilt sofort für alle Nutzer.")}catch(err){console.error(err);alert("Speichern nicht möglich: "+(err.message||err))}
@@ -2980,11 +3037,33 @@ function admRenderSheet(){
   box.querySelectorAll("[data-img]").forEach(b=>b.onclick=()=>{if(typeof instaOpen==="function")instaOpen(g,b.dataset.img)});
   box.querySelector("[data-news]").onclick=()=>{admCloseSheet();admSetTab("news");window.admNewsPrefill?.(g)};
 }
+/* 1.9.1.126: News-Häkchen beim Termin ändern – folgt automatisch der Erkennung, bis man es selbst anfasst */
+const CHG_LBL={date:"Datum",time:"Uhrzeit",stadium:"Spielort",home:"Heimteam",away:"Gastteam"};
+function admNewsState(g){
+  const o=scheduleOverrides[scheduleGameId(g)]; if(!o)return "";
+  if(o.news===false)return "📰 Nicht in den News (als Korrektur gespeichert)";
+  if(o.news===true)return "📰 Steht in den News";
+  return chgFields(g._base||g,g).length?"📰 Steht in den News":"📰 Nicht in den News – nur Schreibweise korrigiert";
+}
+function admBindNewsChk(box,g){
+  const c=box.querySelector("#admFNews"), h=box.querySelector("#admFNewsHint"); if(!c)return;
+  const ids={date:"#admFDate",time:"#admFTime",home:"#admFHome",away:"#admFAway",stadium:"#admFStad"};
+  const upd=()=>{
+    const v={};Object.keys(ids).forEach(k=>v[k]=(box.querySelector(ids[k])||{}).value?.trim?.()??"");
+    const b=g._base||g, f=chgFields(b,v), typo=!f.length&&Object.keys(ids).some(k=>(b[k]||"")!==v[k]);
+    if(!c.dataset.man)c.checked=f.length>0;
+    h.textContent=f.length?"Erkannt: "+f.map(k=>CHG_LBL[k]).join(", ")+" geändert":typo?"Erkannt: nur Schreibweise korrigiert – keine News":"Keine Änderung zum Originaltermin";
+  };
+  Object.values(ids).forEach(q=>{const el=box.querySelector(q);if(el)el.addEventListener("input",upd)});
+  c.addEventListener("change",()=>{c.dataset.man="1"});
+  upd();
+}
 async function admSaveOverride(g,v){
   const id=scheduleGameId(g), base=g._base||g, day=new Date(v.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long"});
   const data={gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day,date:v.date,time:v.time,home:v.home,away:v.away,stadium:v.stadium};
+  if(typeof v.news==="boolean")data.news=v.news; /* fehlt = automatisch erkennen */
   await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});
-  scheduleOverrides[id]=data; applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.();
+  scheduleOverrides[id]=data; applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.(); adminNewsEditor();
 }
 async function admAdopt(d){
   const g=admGame(d.id); if(!g||!d.ehv||d.ehv.open)return;
@@ -4660,15 +4739,33 @@ function newsActiveNotes(){
   const t=newsToday();
   return (window.newsNotes||[]).filter(n=>!n.until||new Date(n.until+"T23:59:59")>=t);
 }
+/* 1.9.1.126: Tippfehler-Korrekturen nicht als Spieländerung melden */
+function chgNorm(x){return String(x||"").toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]/g,"")}
+function chgDist(a,b){/* Damerau-Levenshtein (Vertauschung zählt als 1) */
+  const m=a.length,n=b.length,d=[];for(let i=0;i<=m;i++){d[i]=[i];for(let j=1;j<=n;j++)d[i][j]=i?0:j}
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){const c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c);if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}
+  return d[m][n];
+}
+/* gleich = identisch oder nur Schreibweise (Groß/klein, Leerzeichen, Umlaute, 1–2 vertippte Buchstaben). Andere Ziffern (z. B. „1b“) zählen immer als echte Änderung. */
+function chgSame(a,b){
+  if(a===b)return true;const x=chgNorm(a),y=chgNorm(b);if(x===y)return true;
+  if(x.replace(/\D/g,"")!==y.replace(/\D/g,""))return false;
+  const m=Math.max(x.length,y.length);if(m<4)return false;
+  return chgDist(x,y)<=(m>=12?2:1);
+}
+/* Was hat sich gegenüber dem Original wirklich geändert? */
+function chgFields(b,v){const f=[];if(b.date!==v.date)f.push("date");if(b.time!==v.time)f.push("time");["stadium","home","away"].forEach(k=>{if(!chgSame(b[k],v[k]))f.push(k)});return f}
+window.chgFields=chgFields;
 function newsChanges(){
   const ov=(window.getScheduleOverrides&&window.getScheduleOverrides())||{}, t=newsToday().getTime()-86400000, out=[];
   games.forEach(g=>{
     const o=ov[g._baseId]; if(!o||!g._base)return;
+    if(o.news===false)return; /* im Admin bewusst „nicht in den News“ */
     if(dt(g).getTime()<t)return;
-    const b=g._base, diff=[];
+    const b=g._base, diff=[], same=o.news===true?(x,y)=>x===y:chgSame;
     if(b.date!==g.date||b.time!==g.time)diff.push("vorher "+new Date(b.date+"T"+b.time).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+b.time+" Uhr");
-    if(b.stadium!==g.stadium)diff.push("Ort vorher "+b.stadium);
-    if(b.home!==g.home||b.away!==g.away)diff.push("Paarung geändert");
+    if(!same(b.stadium,g.stadium))diff.push("Ort vorher "+b.stadium);
+    if(!same(b.home,g.home)||!same(b.away,g.away))diff.push("Paarung geändert");
     if(!diff.length)return;
     out.push({id:"c:"+g._baseId+":"+g.date+g.time+g.stadium,g,diff});
   });
