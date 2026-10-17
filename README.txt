@@ -6,7 +6,7 @@ Entwickelt von JAZM.
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.124)
+Neu in Version 1.9.1 (Stand 1.9.1.125)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -50,6 +50,7 @@ Neu in Version 1.9.1 (Stand 1.9.1.124)
 - Einstellungen im gleichen Look (1.9.1.122): Rahmen, Farbleiste und Schatten auch dort
 - Strafzeitpult bebildert (1.9.1.123): Grafik mit Tastennummern, Ablauf Nummer → V → Minuten → V bestätigt
 - Push bei offener App (1.9.1.124): echte Systembenachrichtigung statt Hinweisfenster
+- Gameday mit zwei Spielen (1.9.1.125): beide Spiele mit Countdown bzw. Ergebnis im Kopfbereich
 - Regeln Nachwuchs NRW + Themen-Menü (1.9.1.120): 17 Einträge aus EHV-NRW Anhang 4 (Stand 13.05.2026), Themen über Menü ☰ im Suchfeld
 - Handzeichen (1.9.1.117): 30 Schiedsrichter-Handzeichen mit Bild im Reiter Regeln (IIHF Anhang I)
 - Anleitung Anzeigetafel (1.9.1.115): Downloads > Für das Kampfgericht, Seite anleitung-anzeigetafel.html (Stramatel 452, Hauptpult + Strafzeitpulte)
