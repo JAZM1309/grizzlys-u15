@@ -90,6 +90,17 @@ service cloud.firestore {
       allow read, delete: if isAdmin();
     }
 
+    // Spielberichte (1.9.1.129): veröffentlichte für alle lesbar, Entwürfe nur für den Admin
+    match /reports/{reportId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasOnly(["gameId","team","date","title","text","published","publishedAt","updatedAt"])
+        && request.resource.data.title is string && request.resource.data.title.size() <= 120
+        && request.resource.data.text is string && request.resource.data.text.size() <= 2000
+        && request.resource.data.published is bool;
+      allow delete: if isAdmin();
+    }
+
     match /gameReminders/{reminderId} {
       allow read, write: if isAdmin();
     }
