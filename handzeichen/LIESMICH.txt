@@ -1,0 +1,12 @@
+Schiedsrichter-Handzeichen in der App (ab 1.9.1.140)
+
+Je Zeichen eine Datei <schluessel>.webp, 320 x 360 Pixel, transparenter Hintergrund,
+Figur auf die Fläche zugeschnitten und unten bündig (Füße auf gleicher Höhe).
+Bild ersetzen = Datei mit demselben Namen hochladen. Fehlt ein Bild, zeigt die App die alte gezeichnete Figur.
+Bild 03 gilt für „Angezeigte Strafe“ und „Abseits angezeigt“ (gleiches Zeichen).
+
+Zuordnung (Nummer der Vorlage -> Datei):
+01 tor, 02 abwinken, 03 strafe, 04 abseits, 05 icing, 06 penalty, 07 auszeit, 08 sechs,
+09 halten, 10 haken, 11 bein, 12 behinderung, 13 hoch, 14 stockschlag, 15 crosscheck, 16 bande,
+17 hinten, 18 kopf, 19 charging, 20 ellbogen, 21 knie, 22 stechen, 23 endstoss, 24 verzoegerung,
+25 huefte2 (Unsportlich/Schwalbe), 26 huefte (Disziplinarstrafe), 27 match, 28 handpass, 29 bully
