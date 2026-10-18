@@ -197,3 +197,39 @@ Veröffentlichen
 
 Prüfen (Protokoll der Erinnerungen, Zeiten in UTC)
   gcloud logging read 'resource.labels.service_name="sendgamereminders" AND jsonPayload.message="24h-Erinnerung gesendet"' --project grizzlys-u15 --limit 10 --format='value(timestamp,jsonPayload.reminderId,jsonPayload.success,jsonPayload.failed,jsonPayload.adminOk,jsonPayload.adminFehler)'
+
+
+SPIELBERICHT MIT EHV-SPIELDETAILS (ab Test 1.9.1.129)
+====================================================
+
+Neu:
+  gameReport  -> holt für den Admin die Spieldetails eines Spiels vom EHV (hockeydata "GetGameReport"):
+                 Tore mit Spielzeit und Über-/Unterzahl, Strafen, Zeit in Führung, Zuschauer.
+                 Nur für den Admin abrufbar (Anmeldung nötig). Spielernamen nur, wenn im Admin
+                 der Schalter "Namen nennen" an ist. Strafen nie mit Namen.
+  Firestore-Regel "reports" -> veröffentlichte Spielberichte für alle lesbar, Entwürfe nur für den Admin.
+
+Geänderte/neue Dateien im Live-Repo (grizzlys-u15)
+  functions/game-report.js  (neu)
+  functions/index.js        (am Ende 2 Zeilen ergänzt)
+  firestore.rules           (Abschnitt "reports" ergänzt)
+
+SCHRITT 1 – Dateien ins GitHub-Repo grizzlys-u15 hochladen
+  game-report.js und index.js in den Ordner functions, firestore.rules ins Hauptverzeichnis.
+
+SCHRITT 2 – Deploy in der Cloud Shell
+  cd ~ && rm -rf grizzlys-u15 && git clone https://github.com/jazm1309/grizzlys-u15.git
+  cd grizzlys-u15/functions && npm install && cd ..
+  firebase deploy --only functions:gameReport,firestore:rules --project grizzlys-u15
+
+  (Falls nach Login gefragt wird: firebase login --no-localhost, Link öffnen, Code einfügen.)
+
+SCHRITT 3 – Testen (Testversion 1.9.1.129)
+  Admin anmelden > Spiele > ein gespieltes Spiel öffnen > Block "Spielbericht".
+  Unter dem Text steht nach ein paar Sekunden:
+    "✓ Spieldetails vom EHV eingerechnet ..."     -> alles gut
+    "Function „gameReport“ ist noch nicht deployt" -> Schritt 2 prüfen
+  Der Schalter "Namen von Torschützen und Torhütern nennen" ist standardmäßig aus.
+
+Hinweis: In der Testversion wird ein veröffentlichter Bericht nicht gespeichert (nur auf dem Gerät).
+Die Function und die Regel gelten aber schon – der Abruf der Spieldetails funktioniert auch im Test.

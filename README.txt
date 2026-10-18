@@ -6,7 +6,7 @@ Entwickelt von JAZM.
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.125)
+Neu in Version 1.9.1 (Stand 1.9.1.136)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -59,6 +59,12 @@ Neu in Version 1.9.1 (Stand 1.9.1.125)
 - Update-Hinweis wählbar (1.9.1.112): Häkchen beim Live gehen; ohne Häkchen kommt die neue Version still beim nächsten Öffnen (UPDATE_HINWEIS in sw.js)
 - Veröffentlichen mit dem Grizzlys-Werkzeug: Skripte in der Cloud Shell (~/grizzlys-werkzeug, Anleitung in LIESMICH.txt)
 - PWA-Cache: auf grizzlys-u15-v109 erneuert
+- Tippfehler sind keine Spieländerung (1.9.1.126): reine Schreibweise-Korrekturen bei Ort und Teams erscheinen nicht in den News; Datum, Uhrzeit und Ziffern zählen immer. Häkchen im Spiel-Fenster zum Überstimmen (Feld news in scheduleOverrides)
+- Spieländerungen in den News steuern (1.9.1.127): Admin › News › Spieländerungen mit Schalter je Spiel, „automatisch“ setzt zurück
+- Spielberichte (1.9.1.128–1.9.1.130): Entwurf als Fließtext im Spiel-Fenster (Einstieg, Verlauf nach Dritteln, Special Teams, Tabelle, Ausblick) aus Ergebnis, Dritteln, Tabelle und EHV-Spielbericht (Function gameReport). Bearbeiten, neu erzeugen, kopieren, veröffentlichen. Namen nur mit Schalter, Strafen nie mit Namen. Anzeige 14 Tage in den News, im Startseiten-Streifen und in den Spieldetails. Neue Sammlung reports und Firestore-Regel
+- Spielbericht auf der Startseite (1.9.1.131–1.9.1.133): Zeile „Spielbericht“ auf der Karte Letztes Spiel, Knopf „Bericht“ im Spielplan, beide Berichte im Streifen bei zwei Spielen am Tag; gespielte Spiele ohne Route, nur „Gespielt in …“
+- Schlagworte für den Spielbericht (1.9.1.134): Feld „Schlagworte“ im Spiel-Fenster, die App macht daraus passende Sätze je nach Ergebnis (Satzbausteine REP_KW in index.html); gespeichert im Feld keywords in reports
+- Angaben im Spielbericht auswählen (1.9.1.136): Schalter „Im Bericht verwenden“ mit echten Werten und sinnvoller Vorbelegung (z. B. Zuschauer ab 100, Überzahl ab 2 Toren), dazu Normal / Kurz; gespeichert in reports (use, len)
 
 Version 1.9.0
 
@@ -261,6 +267,7 @@ Tabelle, Form, Drittel, automatische Ergebnisse und Spielplan-Abgleich laufen ü
 standings (functions/standings.js) sowie autoResults, scheduleWatch und scheduleCheck (functions/ehv-sync.js).
 Liga-Kennungen: U15 A 21652, U15 B 21656 (zur neuen Saison in standings.js anpassen).
 Deploy und Schalter: siehe FUNCTIONS-ANLEITUNG.txt.
+- gameReport (functions/game-report.js): Spieldetails für den Spielbericht-Entwurf (Tore, Über-/Unterzahl, Führung, Zuschauer), nur Admin, Namen nur auf Anforderung, Geburtsdaten nie. Schlüssel wie standings.js (öffentlicher Schlüssel der EHV-Seite, keine ausdrückliche Erlaubnis – Anfrage beim EHV empfohlen)
 
 Logos
 Alle Gegner-Logos liegen im Ordner logos (Dateinamen siehe logos/LIESMICH.txt). Fehlt eine Datei, lädt die
@@ -275,6 +282,7 @@ News
 News-Symbol im Kopfbereich mit Zähler. Hinweise (Sammlung news, im Admin-Bereich schreiben, optional mit Push
 über onNewsCreated), Spieländerungen (automatisch aus scheduleOverrides) und „Neu in der App“ (APP_NEWS in
 index.html, bei jedem Update ergänzen).
+- Spielberichte: veröffentlichte Berichte (Sammlung reports, Entwürfe nur für den Admin lesbar) stehen 14 Tage in den News
 
 Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).

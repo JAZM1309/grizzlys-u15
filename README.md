@@ -6,7 +6,7 @@ Entwickelt von **JAZM**.
 
 ## Version 1.9.1
 
-### Neu in Version 1.9.1 (Stand 1.9.1.125)
+### Neu in Version 1.9.1 (Stand 1.9.1.136)
 
 - **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
 - **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
@@ -52,6 +52,12 @@ Entwickelt von **JAZM**.
 - **Strafzeitpult bebildert (1.9.1.123):** Die Anzeigetafel-Anleitung zeigt das Strafzeitpult als Grafik nach dem echten Pult (Foto aus der Halle) mit Tastennummern und Eingabe-Reihenfolge. Ablauf in der Halle bestätigt: Nummer → V → Minuten → V
 - **Push bei offener App (1.9.1.124):** Ist die App beim Eintreffen eines Pushs gerade geöffnet, erscheint jetzt eine echte Systembenachrichtigung (mit Ergebnis- bzw. 24h-Symbol) statt nur eines Hinweisfensters; beim Ergebnis-Push werden die Ergebnisse sofort neu geladen
 - **Gameday mit zwei Spielen (1.9.1.125):** An Tagen mit zwei Spielen zeigt der Chip im Kopfbereich beide Spiele untereinander – jeweils Countdown („Bully in …“), „Läuft gerade“, „Ergebnis folgt“ oder das Ergebnis (Sieg/Niederlage/Remis)
+- **Tippfehler sind keine Spieländerung (1.9.1.126):** Ändert der Admin bei Spielort, Heim- oder Gastteam nur die Schreibweise (Groß/klein, Leerzeichen, ä/ae, 1–2 vertippte Buchstaben), erscheint keine Spieländerung in den News. Datum, Uhrzeit und andere Ziffern (z. B. „1b“) zählen immer als echte Änderung. Im Spiel-Fenster zeigt „In den News als Spieländerung melden“ die Erkennung an und lässt sich überstimmen (Feld `news` in `scheduleOverrides`; fehlt es, entscheidet die Erkennung). Funktionen `chgSame` / `chgFields` in `index.html`
+- **Spieländerungen in den News steuern (1.9.1.127):** Admin-Bereich › News › „Spieländerungen“ listet alle kommenden geänderten Spiele mit Vorher/Nachher. Ein Schalter je Spiel legt fest, ob die Änderung für alle in den News steht; „automatisch“ setzt zurück auf die Erkennung
+- **Spielberichte (1.9.1.128–1.9.1.130):** Im Spiel-Fenster des Admin-Bereichs entsteht nach dem Ergebnis automatisch ein Berichtsentwurf als Fließtext in Absätzen: Einstieg passend zum Spiel (Kantersieg, Zittersieg, Aufholjagd, Verlängerung, Niederlage …), Spielverlauf Drittel für Drittel, Special Teams und Mannschaftsleistung, Tabelle, erstes Duell und Ausblick. Grundlage sind Ergebnis, Drittel, Tabelle und – über die neue Cloud Function `gameReport` – der EHV-Spielbericht (Tore mit Spielzeit, Über-/Unterzahl, Führungszeit, Zuschauer). Überschrift und Text lassen sich bearbeiten; „↻ Neu erzeugen“ liefert eine andere Formulierung, „📋 Kopieren“ den Text für Social Media. Spielernamen nur mit dem Schalter „Namen von Torschützen und Torhütern nennen“ (aus, Einstellung je Gerät); Strafen nie mit Namen. Veröffentlichte Berichte stehen 14 Tage in den News („📝 Spielberichte“), im Streifen auf der Startseite und in den Spieldetails. Neue Sammlung `reports`, neue Firestore-Regel
+- **Spielbericht auf der Startseite (1.9.1.131–1.9.1.133):** Die Karte „Letztes Spiel“ zeigt bei vorhandenem Bericht die Zeile „📝 Spielbericht“ mit Überschrift; ein Tipp öffnet die Spieldetails direkt beim Bericht. Im Spielplan gibt es dafür den Knopf „Bericht“. Haben beide Mannschaften am selben Tag gespielt, zeigt der Streifen beide Berichte untereinander. Gespielte Spiele zeigen keine Route und Adresse mehr, nur „Gespielt in …“
+- **Schlagworte für den Spielbericht (1.9.1.134):** Im Spiel-Fenster gibt es das Feld „Schlagworte“ (mit Komma getrennt, z. B. „Teamgeist, Kampfgeist, starker Torhüter“). Die App macht daraus passende Sätze – je nach Sieg, Niederlage oder Unentschieden – und setzt sie als eigenen Absatz nach dem Spielverlauf ein. Bekannte Begriffe (Teamgeist/Geschlossenheit, Kampfgeist/Einsatz, Torhüter, Defensive, Tempo, Disziplin, Chancen, Fans, Strafzeiten, dünner Kader, Spaß, Fortschritte, nie aufgegeben) haben eigene Satzbausteine (`REP_KW` in `index.html`); andere Begriffe erscheinen als Aufzählung („Was das Team heute auszeichnete: …“), Begriffe mit „mit …“ als „Die Mannschaft trat mit … auf.“ Die Schlagworte werden mit dem Bericht gespeichert (Feld `keywords` in `reports`, Firestore-Regel angepasst). Ab 1.9.1.135 mit Knopf „Übernehmen“ (oder Enter); der Formularstand übersteht das Neuzeichnen des Spiel-Fensters, und ein gespeicherter, unveränderter Entwurf bleibt automatisch
+- **Angaben im Spielbericht auswählen (1.9.1.136):** Im Spiel-Fenster unter „Im Bericht verwenden“ steht für jede verfügbare Angabe ein Schalter mit dem echten Wert (z. B. „👥 45 Zuschauer“, „🎯 Überzahl (2 von 3)“). Vorbelegt ist, was meist interessant ist: Zuschauer ab 100 (`REP_ATT_MIN`), Traumstart nur bei einem Tor in den ersten 5 Minuten, Überzahl ab 2 Toren, Unterzahl ab 3 überstandenen, verschiedene Torschützen ab 5, Siegesserie ab 3; Spielverlauf, Doppelschlag, spätes Siegtor/Ehrentreffer, wenige Strafminuten, Zu null, Tabelle, erstes Duell und Ausblick immer. Angaben, die es im Spiel nicht gibt, erscheinen nicht. Dazu „Normal / Kurz“ (Kurz: Einstieg, Drittel, Schlagworte, Tabelle, Ausblick – z. B. für Instagram). Auswahl und Länge werden mit dem Bericht gespeichert (Felder `use` und `len` in `reports`, Firestore-Regel angepasst). Die Logik steckt in `repDraft` (`facts`)
 - **Regeln: Nachwuchs NRW und Themen-Menü (1.9.1.120):** 17 neue Einträge aus den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026): Altersklassen, Hochspielen, Bodycheck ab U15 (U7–U13 verboten), Zahnschutz-Pflicht U15–U20, A-/B-Mannschaft und Ummeldung, Einsatz in den ersten beiden Spielen, höchstens zwei Mannschaften pro Spieler, Torhüter-Einsatzzeiten U13/U15 (mind. 10 %, max. 75 %), Antritts- und Meldestärken, Doppellizenz, Spielerinnen, Kontingentspieler, Tabelle bei Punktgleichheit, Spielzeiten, Spielverlegung, Meldeliga. Die Themen-Knöpfe sind durch ein Menü ☰ rechts im Suchfeld ersetzt; ein gewähltes Thema erscheint als „Thema: … ✕“. Anleitung Anzeigetafel: Tipp „Pause verkürzen“ (Taste 28). Versionen 1.9.1.118/119 (Grizzly-Kopf) wurden nicht veröffentlicht
 - **Handzeichen (1.9.1.117):** Im Reiter „Regeln“ neues Thema „Handzeichen“ mit 30 Zeichen von Schiedsrichter und Linienrichter, jeweils mit gezeichnetem Piktogramm (SVG, Funktion `sigSvg`, Posen in `SIG_POSE`) und kurzer Erklärung; Grundlage IIHF Official Rule Book, Anhang I „Game Official Signals“. Einträge im Feld `RULES` mit `c:"Handzeichen"` und `p` = Bild
 - **Anleitung Anzeigetafel (1.9.1.115):** Downloads › „Für das Kampfgericht“ › „Anzeigetafel bedienen“ öffnet die eigene Seite `anleitung-anzeigetafel.html` (hell/dunkel, mit Knopf „Drucken / als PDF speichern“): Stramatel 452 Hauptpult als Tastenbild mit Nummern, Vorbereitung, Spielbetrieb, Korrekturen, Strafzeitpulte (Eingabe, Löschen, Warteliste) und Hilfe. Grundlage: Stramatel-Anleitungen Hauptbedienpult 452G und Strafzeitpulte 452G
@@ -325,6 +331,8 @@ Verwendete Firestore-Sammlungen:
 - `bugReports` – Fehlermeldungen aus der App
 - `news` – Hinweise aus dem Admin-Bereich (Überschrift, Text, Mannschaft, sichtbar bis, Push ja/nein)
 - `ehvSync` – merkt sich, welche Spielplan-Abweichungen schon gemeldet wurden (nur Cloud Function, kein Zugriff aus der App)
+- `reports` – Spielberichte (Dokument-ID = Ergebnis-Schlüssel; Überschrift, Text, veröffentlicht ja/nein). Veröffentlichte sind für alle lesbar, Entwürfe nur für den Admin
+- `scheduleOverrides.news` – optional: `true`/`false` legt fest, ob eine Spieländerung in den News steht (fehlt = automatische Erkennung)
 
 Ergebnisse und Fehlermeldungen werden über die vorgesehenen Firebase-Regeln geschützt. Schreib- und Verwaltungszugriffe im Admin-Bereich sind auf den eingerichteten Admin-Benutzer beschränkt.
 
@@ -338,11 +346,13 @@ Die App zeigt Tabellenplatz, Spiele, Punkte, Tordifferenz, die Form der letzten 
 | `autoResults` | `functions/ehv-sync.js` | trägt alle 30 Minuten beendete Grizzlys-Spiele als Ergebnis ein (Ergebnis-Push nur für Spiele der letzten 2 Tage; Handeinträge werden nie überschrieben) |
 | `scheduleWatch` | `functions/ehv-sync.js` | vergleicht alle 3 Stunden den Spielplan der App mit dem des EHV und meldet neue Abweichungen per Push an die Admin-Geräte |
 | `scheduleCheck` | `functions/ehv-sync.js` | derselbe Vergleich auf Knopfdruck im Admin-Bereich („Mit EHV-Spielplan abgleichen“) |
+| `gameReport` | `functions/game-report.js` | holt für den Spielbericht-Entwurf die Spieldetails eines Spiels (hockeydata `GetGameReport`): Tore mit Spielzeit und Spielsituation, Strafen, Über-/Unterzahl, Führungszeit, Zuschauer. Nur für den Admin, nur auf Knopfdruck bzw. beim Öffnen des Spiel-Fensters, 10 Minuten zwischengespeichert. Namen nur auf Anforderung, Geburtsdaten nie |
 
 - Die App speichert den Tabellenstand 15 Minuten auf dem Gerät und holt ihn nach jedem App-Update sofort neu.
 - Fällt der Abruf aus, bleiben Chips, Form und Drittel weg; der Spielplan funktioniert unverändert.
 - Liga-Kennungen: U15 A `21652` (Landesliga NRW), U15 B `21656` (Bezirksliga NRW). Sie stehen in `functions/standings.js` und müssen zur neuen Saison angepasst werden.
-- Der Zugriffsschlüssel in `standings.js` ist der öffentliche Schlüssel der EHV-Seite.
+- Der Zugriffsschlüssel in `standings.js` und `game-report.js` ist der öffentliche Schlüssel der EHV-Seite. Eine ausdrückliche Erlaubnis von EHV / hockeydata zur Nutzung in der App liegt nicht vor – Anfrage beim EHV empfohlen.
+- Überzahltore zählt `gameReport` aus den Toren selbst (`gameStrength` PP/SH), weil die Teamstatistik des EHV dafür teils 0 liefert. Schüsse aufs Tor werden in der U15 nicht erfasst und deshalb nicht verwendet.
 - Deploy und Schalter: siehe `FUNCTIONS-ANLEITUNG.txt`.
 
 ## Logos
@@ -357,10 +367,11 @@ Im Downloadbereich stehen dieselben Bilder allen Nutzern zur Verfügung: das Spi
 
 ## News
 
-Das News-Symbol im Kopfbereich zeigt die Zahl ungelesener Einträge. Das Fenster „Neuigkeiten“ hat drei Abschnitte:
+Das News-Symbol im Kopfbereich zeigt die Zahl ungelesener Einträge. Das Fenster „Neuigkeiten“ hat bis zu vier Abschnitte:
 
 - **Hinweise:** Freitexte aus dem Admin-Bereich (Sammlung `news`); abgelaufene Hinweise („Sichtbar bis“) werden nicht mehr angezeigt
 - **Spieländerungen:** kommen automatisch aus `scheduleOverrides` (neuer Termin bzw. Ort, dazu der alte); ein Tipp öffnet das Spiel
+- **Spielberichte:** veröffentlichte Berichte (Sammlung `reports`) der letzten 14 Tage; ein Tipp öffnet die Spieldetails beim Bericht
 - **Neu in der App:** die Liste `APP_NEWS` in `index.html` – bei jedem Update dort die für Nutzer sichtbaren Neuerungen eintragen (neueste Version oben)
 
 Was gelesen wurde, merkt sich jedes Gerät selbst. Der Push zu einem Hinweis kommt von der Cloud Function `onNewsCreated` (`functions/news.js`) und nur, wenn der Haken gesetzt ist.
