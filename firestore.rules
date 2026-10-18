@@ -94,9 +94,10 @@ service cloud.firestore {
     match /reports/{reportId} {
       allow read: if resource.data.published == true || isAdmin();
       allow create, update: if isAdmin()
-        && request.resource.data.keys().hasOnly(["gameId","team","date","title","text","published","publishedAt","updatedAt"])
+        && request.resource.data.keys().hasOnly(["gameId","team","date","title","text","keywords","published","publishedAt","updatedAt"])
         && request.resource.data.title is string && request.resource.data.title.size() <= 120
         && request.resource.data.text is string && request.resource.data.text.size() <= 2000
+        && request.resource.data.get("keywords", "") is string && request.resource.data.get("keywords", "").size() <= 200
         && request.resource.data.published is bool;
       allow delete: if isAdmin();
     }
