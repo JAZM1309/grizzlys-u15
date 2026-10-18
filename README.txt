@@ -6,7 +6,7 @@ Entwickelt von JAZM.
 
 Version 1.9.1
 
-Neu in Version 1.9.1 (Stand 1.9.1.137)
+Neu in Version 1.9.1 (Stand 1.9.1.138)
 - Spielkarten zum Aufklappen: Datumsblock links (blau U15 A, orange U15 B), Paarung mit Logos; ein Tipp zeigt Tabellenplatz und Form je Team, Halle mit Route, Termin / Erinnerung / Teilen und bei gespielten Spielen die Drittel. Der Datumsbalken läuft beim Aufklappen durch. Immer nur eine Karte offen
 - Teamfarbe seitlich an allen Spielkarten; Wasserzeichen A und B bleiben
 - Startseite: Nächstes und letztes Spiel mit Farbband (Teamfarbe mit Heute / Morgen / in x Tagen bzw. grün Sieg, rot Niederlage, gelb Unentschieden); beide starten eingeklappt und klappen sich gegenseitig zu
@@ -66,6 +66,7 @@ Neu in Version 1.9.1 (Stand 1.9.1.137)
 - Schlagworte für den Spielbericht (1.9.1.134): Feld „Schlagworte“ im Spiel-Fenster, die App macht daraus passende Sätze je nach Ergebnis (Satzbausteine REP_KW in index.html); gespeichert im Feld keywords in reports
 - Angaben im Spielbericht auswählen (1.9.1.136): Schalter „Im Bericht verwenden“ mit echten Werten und sinnvoller Vorbelegung (z. B. Zuschauer ab 100, Überzahl ab 2 Toren), dazu Normal / Kurz; gespeichert in reports (use, len)
 - Ergebnisbild mit Kurzbericht (1.9.1.137): Kurzfassung des Spielberichts als Text zum Ergebnisbild (bearbeitbar, mit teilen, Text kopieren; für Instagram automatisch in der Zwischenablage)
+- Übersicht in der Info (1.9.1.138): aufklappbare Karte „So findest du dich zurecht“, jeder Bereich antippbar, dazu drei Tipps
 
 Version 1.9.0
 
