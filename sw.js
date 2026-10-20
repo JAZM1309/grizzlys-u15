@@ -57,10 +57,10 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v140";
+const CACHE = "grizzlys-u15-v148";
 // Update-Hinweis („Neue Version verfügbar“) für diese Version zeigen? false = Nutzer bekommen sie still beim nächsten Öffnen.
 // In Live wird der Wert beim „Live gehen“ aus dem Häkchen im Admin-Bereich gesetzt.
-const UPDATE_HINWEIS = false;
+const UPDATE_HINWEIS = true;
 
 const CORE = [
   "./",
@@ -98,8 +98,18 @@ self.addEventListener("activate", event => {
   );
 });
 
+// Datenschutz (1.21.0): Google-Analytics-Dateien nur laden, wenn in der App „Nutzungsstatistik erlauben“ an ist.
+const ANALYTICS_HOST = /(^|\.)(googletagmanager|google-analytics)\.com$/;
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  if (ANALYTICS_HOST.test(new URL(event.request.url).hostname)) {
+    event.respondWith(
+      caches.open("grizzlys-consent").then(c => c.match("consent")).then(r => r ? r.text() : "")
+        .then(v => v === "granted" ? fetch(event.request) : new Response("", { status: 204 }))
+        .catch(() => new Response("", { status: 204 }))
+    );
+    return;
+  }
   // Seite und Programmdateien immer beim Server nachfragen (nicht aus dem 10-Minuten-Zwischenspeicher
   // des Browsers), damit ein Update sofort ankommt. Bilder dürfen weiter aus dem Zwischenspeicher kommen.
   const req = event.request, url = new URL(req.url);

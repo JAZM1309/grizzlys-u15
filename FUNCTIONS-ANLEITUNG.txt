@@ -109,7 +109,7 @@ Prüfen
     danach wieder löschen. (Die Testversion kann Hinweise nur anzeigen, nicht speichern.)
 
 
-TEST-PUSH AN DEN ADMIN (ab Version 1.9.1.90)
+TEST-PUSH AN DEN ADMIN (ab Version 1.11.0, bisher 1.9.1.90)
 ============================================
 
 Neu:
@@ -136,7 +136,7 @@ Prüfen
     antippen (erneuert Push-Abo und Token) und den Test wiederholen.
 
 
-ADVENTSKALENDER-AUSWERTUNG (ab Version 1.9.1.97)
+ADVENTSKALENDER-AUSWERTUNG (ab Version 1.13.0, bisher 1.9.1.108)
 ================================================
 
 Keine neue Function, aber neue Firestore-Regeln: Sammlung "adventAnswers"
@@ -153,7 +153,7 @@ Prüfen
   - Ab 1. Dezember: Admin-Bereich > Status > "Adventskalender" zeigt die Zahlen.
 
 
-VERÖFFENTLICHEN AUS DEM ADMIN-BEREICH (ab Version 1.9.1.110)
+VERÖFFENTLICHEN AUS DEM ADMIN-BEREICH (ab Version 1.14.0, bisher 1.9.1.110)
 ============================================================
 
 Neu:
@@ -199,7 +199,7 @@ Prüfen (Protokoll der Erinnerungen, Zeiten in UTC)
   gcloud logging read 'resource.labels.service_name="sendgamereminders" AND jsonPayload.message="24h-Erinnerung gesendet"' --project grizzlys-u15 --limit 10 --format='value(timestamp,jsonPayload.reminderId,jsonPayload.success,jsonPayload.failed,jsonPayload.adminOk,jsonPayload.adminFehler)'
 
 
-SPIELBERICHT MIT EHV-SPIELDETAILS (ab Test 1.9.1.129)
+SPIELBERICHT MIT EHV-SPIELDETAILS (ab Test 1.9.1.129, live ab 1.17.0)
 ====================================================
 
 Neu:

@@ -4,9 +4,285 @@ Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/
 
 Entwickelt von **JAZM**.
 
+## Versionsnummern
+
+Schreibweise `1.ZWEITE.DRITTE.CACHE`:
+
+- **zweite Stelle:** größere Änderungen und neue Funktionen (die dritte Stelle beginnt wieder bei 0)
+- **dritte Stelle:** optische Änderungen, Fehlerbehebungen und kleine Verbesserungen
+- **letzte Stelle:** Cache-Nummer aus `sw.js` (steigt bei fast jedem Stand)
+
+Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ und wurden am 19.10.2026 nach diesem Schema nachträglich nummeriert. Die GitHub-Markierungen (`live-1.9.1.…`, wichtig für „Live zurücksetzen“) behalten ihren alten Namen:
+
+| Neue Version | Alte Bezeichnung | Datum | Art |
+|---|---|---|---|
+| 1.22.3.148 | – | 20.10.2026 | Fehlerbehebung |
+| 1.22.2.147 | – (nur Test) | 20.10.2026 | Kleine Änderung |
+| 1.22.1.146 | – (nur Test) | 20.10.2026 | Fehlerbehebung |
+| 1.22.0.144 | – (nur Test) | 20.10.2026 | Neue Funktion |
+| 1.21.1.143 | – (nur Test) | 19.10.2026 | Optisch |
+| 1.21.0.142 | – (nur Test) | 19.10.2026 | Neue Funktion |
+| 1.20.0.141 | – (nur Test) | 19.10.2026 | Neue Funktion |
+| 1.19.2.140 | 1.9.1.140 | 18.10.2026 | Optisch |
+| 1.19.1.138 | 1.9.1.138 | 18.10.2026 | Kleine Verbesserung |
+| 1.19.0.137 | 1.9.1.137 | 18.10.2026 | Neue Funktion |
+| 1.18.0.136 | 1.9.1.136 | 18.10.2026 | Neue Funktion |
+| 1.17.1.132 | 1.9.1.132 | 17.10.2026 | Optisch |
+| 1.17.0.131 | 1.9.1.131 | 17.10.2026 | Neue Funktion |
+| 1.16.0.127 | 1.9.1.127 | 17.10.2026 | Neue Funktion |
+| 1.15.6.125 | 1.9.1.125 | 17.10.2026 | Verbesserung |
+| 1.15.5.124 | 1.9.1.124 | 17.10.2026 | Verbesserung |
+| 1.15.4.123 | 1.9.1.123 | 17.10.2026 | Optisch |
+| 1.15.3.122 | 1.9.1.122 | 17.10.2026 | Optisch |
+| 1.15.2.121 | 1.9.1.121 | 16.10.2026 | Optisch |
+| 1.15.1.120 | 1.9.1.120 | 16.10.2026 | Kleine Ergänzung |
+| 1.15.0.117 | 1.9.1.117 | 16.10.2026 | Neue Funktion |
+| 1.14.1.111 | 1.9.1.111 | 15.10.2026 | Kleine Ergänzung |
+| 1.14.0.110 | 1.9.1.110 | 15.10.2026 | Neue Funktion |
+| 1.13.1.109 | 1.9.1.109 | 15.10.2026 | Optisch |
+| 1.13.0.108 | 1.9.1.108 | 14.10.2026 | Neue Funktion |
+| 1.12.2.96 | 1.9.1.96 | 11.10.2026 | Optisch |
+| 1.12.1.94 | 1.9.1.93 / 1.9.1.94 | 11.10.2026 | Kleine Änderung und Fehlerbehebung |
+| 1.12.0.92 | 1.9.1.92 | 11.10.2026 | Neue Funktion |
+| 1.11.0.90 | 1.9.1.90 | 10.10.2026 | Neue Funktion |
+| 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
+| 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
+| 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.22.3
+
+### Neu in Version 1.22.3 (Stand 1.22.3.148, 20.10.2026) – Fehlerbehebung
+
+- **Gegner-Karte öffnete als Weltkarte:** Leaflet hatte beim Anlegen noch keinen Ausschnitt, die Logos konnten dann nicht gesetzt werden; und wurde die Karte bei verstecktem Reiter erzeugt (App merkt sich „Karte“), berechnete sie den Ausschnitt mit Größe 0. Jetzt startet die Karte mit einem NRW-Ausschnitt und wird erst eingepasst, wenn sie sichtbar ist (`omFit` + ResizeObserver) – auch bei jedem erneuten Öffnen des Reiters und nach dem Filtern
+- **Möglichst nah:** Einpassen mit 26 px Rand und Zoom in Viertelstufen (`zoomSnap 0.25`), sodass alle angezeigten Hallen gerade so draufpassen
+
+## Version 1.22.2
+
+### Neu in Version 1.22.2 (Stand 1.22.2.147, 20.10.2026, nur in der Test-App) – Kleine Änderung
+
+- **„Datenschutz & Kontakt“ statt „Datenschutz & Impressum“:** keine Platzhalter mehr für Name und Anschrift. Abschnitt „Kontakt“: privates, nicht kommerzielles Angebot ohne Werbung, App entwickelt von JAZM, E-Mail grizzlys-app@gmx.de. Verantwortlich laut Datenschutzhinweis: der Entwickler (JAZM), erreichbar über dieselbe Adresse. Alle Verweise (Abfrage, Einstellungen, Info) umbenannt
+- **Hinweis:** Ein vollständiges Impressum nach § 18 MStV (Name und ladungsfähige Anschrift) ist das nicht. Sobald geklärt ist, ob der Verein die App als Anbieter übernimmt, kann im Fenster `legalModal` wieder ein Abschnitt „Impressum“ ergänzt werden
+
+## Version 1.22.1
+
+### Neu in Version 1.22.1 (Stand 1.22.1.146, 20.10.2026, nur in der Test-App) – Fehlerbehebung
+
+- **Entfernungen neu berechnet (`rinkDistanceKm`):** alle Werte jetzt als Fahrstrecke Eishalle Bergkamen → Eishalle des Gegners (OSRM auf OpenStreetMap-Daten, schnellste Route, Stand 20.10.2026; gegengeprüft mit Routenplanern: Ratingen, Dinslaken, Darmstadt ±1–2 km). Vorher waren viele Werte zu niedrig, einzelne sogar unter der Luftlinie. Alt → neu: Gelsenkirchen 43→47, Neuss 91→103, Duisburg 68→82, Hamm 24→17, Herford 91→112, Grefrath 80→123, Dinslaken 60→73, Essen 53→65, Dortmund 24→30, Bielefeld 91→95, Solingen 67→79, Aachen 155→170, Ratingen 62→94, Wiehl 95→122, Möhnesee 43→52, Neuwied 185→188, neu Darmstadt 262. Grundlage sind die Hallen-Koordinaten aus `RINK_GEO` (auf etwa 1 km genau)
+- **ESC Darmstadt auf der Karte an der eigenen Halle:** Eishalle Darmstadt, Alsfelder Straße 45, 64289 Darmstadt (262 km). Im Fenster steht „Heimspiel wird nicht hier ausgetragen – beide Spiele finden in Bergkamen statt“, ohne Route-Knopf. Steuerung über `OPP_HOME` in `index.html` (Gegner → Halle für die Karte). In der Gegner-Liste bleibt es bei Bergkamen / 0 km, weil dort die Spiele stattfinden
+- **Unsere Halle** steht jetzt immer auf der Karte, auch wenn dort kein Gegner einsortiert ist
+
+## Version 1.22.0
+
+### Neu in Version 1.22.0 (Stand 1.22.0.144, 20.10.2026, nur in der Test-App) – Neue Funktion
+
+- **Gegner-Karte:** im Reiter „Gegner“ oben der Umschalter „☰ Liste / 🗺️ Karte“. Die Karte zeigt jeden Gegner mit Logo an der Halle seines Auswärtsspiels (wie Route und Entfernung in der Liste), Rand blau = U15 A, orange = U15 B, beide = zweifarbig; unsere Halle in Bergkamen mit gelbem Ring (ESC Darmstadt seit 1.22.1 an der eigenen Halle). Filter „Alle / U15 A / U15 B“. Ein Tipp auf ein Logo zeigt Halle, Adresse, Entfernung, die Mannschaften mit Knopf „Spiele“ (öffnet das Gegner-Fenster) und „Route“. Die zuletzt gewählte Ansicht merkt sich die App
+- **Datenschutz bei der Karte:** Leaflet (cdnjs) und Kartenbilder (OpenStreetMap) werden erst nach „Karte laden“ geholt; mit „Nicht mehr fragen“ merkt sich die App das (`grizzlysMapOk`). Abschnitt 7 der Datenschutzerklärung ergänzt. Ohne Internet bleibt die Karte leer, der Knopf zeigt „Erneut versuchen“
+- **Koordinaten:** `RINK_GEO` in `index.html` – ungefähre Lage der Hallen (Schlüssel wie in `rinkAddresses`). Kommt eine neue Halle dazu, muss sie dort mit Breiten- und Längengrad ergänzt werden, sonst fehlt der Gegner auf der Karte
+- **Wischen:** auf der Karte verschiebt ein Wisch die Karte und wechselt nicht den Reiter (`data-noswipe`)
+
+## Version 1.21.1
+
+### Neu in Version 1.21.1 (Stand 1.21.1.143, 19.10.2026, nur in der Test-App) – Optisch
+
+- **Letzte Ergebnisse kompakt (Startseite):** statt zweier großer „Letztes Spiel“-Karten eine Karte mit je einer Zeile pro Mannschaft (Datum, Teams mit Logos, Ergebnis, Sieg/Niederlage, Teamfarbe am Rand). Ein Tipp öffnet die Spieldetails; gibt es einen Spielbericht, steht darunter „📝 Spielbericht“. Funktion `lrRender` in `index.html`; die großen Karten `g3HomeLast`/`g3HomeLast2` bleiben unsichtbar im Dokument. Eigene Stile für Dunkel und Halloween
+- **Mindestschriftgröße:** 56 Stellen im Stil mit 9–10,5 px auf 11 px (≤ 9,5 px) bzw. 12 px angehoben (u. a. Gegnerliste, Heim/Auswärts, Tabellen-Chips, Drittel, Admin-Bereich). Ausgenommen: News-Zähler am Symbol, Mini-Spiel und PDF-Druck
+- **Neu in der App:** ein gemeinsamer Eintrag für 1.20.0 bis 1.22.0 (keine davon war einzeln live)
+
+## Version 1.21.0
+
+### Neu in Version 1.21.0 (Stand 1.21.0.142, 19.10.2026, nur in der Test-App) – Neue Funktion
+
+- **Datenschutz & Impressum:** neue Seite, erreichbar über Info (unten), Einstellungen › Datenschutz und die Zustimmungs-Abfrage. seit 1.22.2 als „Datenschutz & Kontakt“ ohne Anschrift (siehe dort)
+- **Nutzungsstatistik nur mit Zustimmung:** beim ersten Start fragt die App „Darf die App mitzählen?“ (Erlauben / Nein danke, gleich groß). Ohne Zustimmung landet nichts im `dataLayer`, es geht also nichts an Google Analytics; die `sw.js` liefert die Analytics-Datei dann gar nicht erst aus. Änderbar unter Einstellungen › Datenschutz („Nutzungsstatistik erlauben“), beim Widerruf werden die `_ga`-Cookies gelöscht. Gespeichert in `localStorage` (`grizzlysConsent`) und für die `sw.js` im Speicher `grizzlys-consent`. Die Ankerzeilen für `tolive.py` sind unverändert
+- **Geräte-Zählung:** `appInstallations` wird nur noch mit Zustimmung oder bei eingeschaltetem Push geschrieben – die Gerätezahl in der App-Statistik fällt dadurch niedriger aus
+- **Regeln mit Themen-Chips:** unter der Suche steht eine waagerecht wischbare Reihe mit allen Themen und Anzahl; ein Tipp filtert, „Alle“ zeigt wieder alles. Das alte Themen-Menü (☰) ist ausgeblendet
+- **Push bei Spieländerung:** im Spiel-Fenster (Admin › Termin ändern) gibt es das Häkchen „📲 Push an alle senden“. Es lässt sich nur setzen, wenn Datum, Uhrzeit oder Spielort wirklich geändert wurden, und ist standardmäßig aus; der Hinweis darunter zeigt den genauen Push-Text. Versand über den bestehenden News-Push (`onNewsCreated`, beachtet die Mannschaftsauswahl der Geräte) – keine neue Cloud Function, keine Regeländerung. Der Hinweis wird mit „Sichtbar bis gestern“ angelegt, erscheint also nicht doppelt in den News, steht aber im Admin-Bereich unter den abgelaufenen Hinweisen als Nachweis. EHV-Übernahmen verschicken keinen Push
+
+## Version 1.20.0
+
+### Neu in Version 1.20.0 (Stand 1.20.0.141, 19.10.2026, nur in der Test-App) – Neue Funktion
+
+- **Versandstatus bei Rückmeldungen:** im Admin-Bereich zeigt jede Rückmeldung, ob Push und E-Mail verschickt wurden (grün „gesendet“, grau „wird gesendet“ in den ersten 15 Minuten, rot „fehlt“)
+- **Rückmeldungen gehen nicht mehr verloren:** ohne Verbindung meldet das Formular den Fehler nach spätestens 15 Sekunden direkt im Formular (statt endlos zu warten); der Text bleibt auf dem Gerät gespeichert, auch wenn die App geschlossen wird, und lässt sich mit „Nochmal senden“ erneut abschicken
+- **Keine doppelten Rückmeldungen:** jede Meldung bekommt beim ersten Versuch eine feste ID; kam der erste Versuch doch an, legt „Nochmal senden“ keine zweite Meldung an
+- **Versionsanzeige einheitlich:** Formular, Info-Seite und gespeicherte Meldungen zeigen dieselbe Version (im Formular stand zuvor noch 1.9.1.86)
+- **Versionsnummern nachgetragen:** alle Live-Stände seit 1.9.1 haben nach dem neuen Schema eine eigene Version bekommen (siehe „Versionsnummern“)
+- Push- und E-Mail-Versand (Cloud Function und GitHub-Workflow) sind unverändert
+
+## Version 1.19.2
+
+### Neu in Version 1.19.2 (Stand 1.19.2.140, 18.10.2026, bisher 1.9.1.140) – Optisch
+
+- **Neue Bilder bei den Handzeichen:** Die 29 Bilder im Thema „Handzeichen“ zeigen jetzt einen gezeichneten Schiedsrichter auf dem Eis mit gut erkennbaren Händen. Dateien im Ordner `handzeichen/` als `<schlüssel>.webp` (320 × 360, transparent, Figur unten bündig, zusammen ca. 560 KB; Zuordnung in `handzeichen/LIESMICH.txt`). Ein Bild wird ersetzt, indem eine Datei mit demselben Namen hochgeladen wird; fehlt eines, zeigt die App die bisherige gezeichnete Figur (`sigSvgOld`). Die Bilder werden beim ersten Ansehen zwischengespeichert und sind danach offline verfügbar
+
+## Version 1.19.1
+
+### Neu in Version 1.19.1 (Stand 1.19.1.138, 18.10.2026, bisher 1.9.1.138) – Kleine Verbesserung
+
+- **Übersicht in der Info:** Aufklappbare Karte „So findest du dich zurecht“ mit allen Bereichen (Start, Spielplan, Gegner, Regeln, Downloads, News, Einstellungen) und je einer Zeile Erklärung; ein Tipp springt direkt dorthin. Darunter drei Tipps (Wischen, Spielkarte antippen, Teilen). Der Admin-Bereich steht dort bewusst nicht. Neue Bereiche als weitere Zeile im Block `#appMap` in `index.html` ergänzen
+
+## Version 1.19.0
+
+### Neu in Version 1.19.0 (Stand 1.19.0.137, 18.10.2026, bisher 1.9.1.137) – Neue Funktion
+
+- **Ergebnisbild mit Kurzbericht:** Im Fenster „Social-Media-Bild“ steht beim Ergebnisbild die Kurzfassung des Spielberichts (bearbeitbar, Häkchen „Kurzbericht mit teilen“, Knopf „Text kopieren“). Beim Teilen gehen Bild und Text zusammen raus (z. B. WhatsApp, Facebook); weil Instagram keinen Text übernimmt, kopiert die App ihn zusätzlich in die Zwischenablage. Ist der Bericht in „Kurz“ gespeichert, wird dieser Text genommen, sonst wird die Kurzfassung aus Schlagworten und Auswahl erzeugt (`instaCaption`). Nutzer sehen nur veröffentlichte Berichte, der Admin auch Entwürfe
+
+## Version 1.18.0
+
+### Neu in Version 1.18.0 (Stand 1.18.0.136, 18.10.2026, bisher 1.9.1.136) – Neue Funktion
+
+- **Schlagworte für den Spielbericht:** Im Spiel-Fenster gibt es das Feld „Schlagworte“ (mit Komma getrennt, z. B. „Teamgeist, Kampfgeist, starker Torhüter“). Die App macht daraus passende Sätze – je nach Sieg, Niederlage oder Unentschieden – und setzt sie als eigenen Absatz nach dem Spielverlauf ein. Bekannte Begriffe (Teamgeist/Geschlossenheit, Kampfgeist/Einsatz, Torhüter, Defensive, Tempo, Disziplin, Chancen, Fans, Strafzeiten, dünner Kader, Spaß, Fortschritte, nie aufgegeben) haben eigene Satzbausteine (`REP_KW` in `index.html`); andere Begriffe erscheinen als Aufzählung („Was das Team heute auszeichnete: …“), Begriffe mit „mit …“ als „Die Mannschaft trat mit … auf.“ Die Schlagworte werden mit dem Bericht gespeichert (Feld `keywords` in `reports`, Firestore-Regel angepasst). Ab Cache-Stand 135 (live mit 1.18.0) mit Knopf „Übernehmen“ (oder Enter); der Formularstand übersteht das Neuzeichnen des Spiel-Fensters, und ein gespeicherter, unveränderter Entwurf bleibt automatisch
+- **Angaben im Spielbericht auswählen:** Im Spiel-Fenster unter „Im Bericht verwenden“ steht für jede verfügbare Angabe ein Schalter mit dem echten Wert (z. B. „👥 45 Zuschauer“, „🎯 Überzahl (2 von 3)“). Vorbelegt ist, was meist interessant ist: Zuschauer ab 100 (`REP_ATT_MIN`), Traumstart nur bei einem Tor in den ersten 5 Minuten, Überzahl ab 2 Toren, Unterzahl ab 3 überstandenen, verschiedene Torschützen ab 5, Siegesserie ab 3; Spielverlauf, Doppelschlag, spätes Siegtor/Ehrentreffer, wenige Strafminuten, Zu null, Tabelle, erstes Duell und Ausblick immer. Angaben, die es im Spiel nicht gibt, erscheinen nicht. Dazu „Normal / Kurz“ (Kurz: Einstieg, Drittel, Schlagworte, Tabelle, Ausblick – z. B. für Instagram). Auswahl und Länge werden mit dem Bericht gespeichert (Felder `use` und `len` in `reports`, Firestore-Regel angepasst). Die Logik steckt in `repDraft` (`facts`)
+
+## Version 1.17.1
+
+### Neu in Version 1.17.1 (Stand 1.17.1.132, 17.10.2026, bisher 1.9.1.132) – Optisch
+
+- **Zwei Spielberichte am selben Tag:** der Streifen auf der Startseite zeigt beide Berichte untereinander; gespielte Spiele zeigen statt Route und Adresse nur „Gespielt in …“
+
+## Version 1.17.0
+
+### Neu in Version 1.17.0 (Stand 1.17.0.131, 17.10.2026, bisher 1.9.1.131) – Neue Funktion
+
+- **Spielberichte:** Im Spiel-Fenster des Admin-Bereichs entsteht nach dem Ergebnis automatisch ein Berichtsentwurf als Fließtext in Absätzen: Einstieg passend zum Spiel (Kantersieg, Zittersieg, Aufholjagd, Verlängerung, Niederlage …), Spielverlauf Drittel für Drittel, Special Teams und Mannschaftsleistung, Tabelle, erstes Duell und Ausblick. Grundlage sind Ergebnis, Drittel, Tabelle und – über die neue Cloud Function `gameReport` – der EHV-Spielbericht (Tore mit Spielzeit, Über-/Unterzahl, Führungszeit, Zuschauer). Überschrift und Text lassen sich bearbeiten; „↻ Neu erzeugen“ liefert eine andere Formulierung, „📋 Kopieren“ den Text für Social Media. Spielernamen nur mit dem Schalter „Namen von Torschützen und Torhütern nennen“ (aus, Einstellung je Gerät); Strafen nie mit Namen. Veröffentlichte Berichte stehen 14 Tage in den News („📝 Spielberichte“), im Streifen auf der Startseite und in den Spieldetails. Neue Sammlung `reports`, neue Firestore-Regel
+- **Spielbericht auf der Startseite:** Die Karte „Letztes Spiel“ zeigt bei vorhandenem Bericht die Zeile „📝 Spielbericht“ mit Überschrift; ein Tipp öffnet die Spieldetails direkt beim Bericht. Im Spielplan gibt es dafür den Knopf „Bericht“. Haben beide Mannschaften am selben Tag gespielt, zeigt der Streifen beide Berichte untereinander. Gespielte Spiele zeigen keine Route und Adresse mehr, nur „Gespielt in …“
+
+## Version 1.16.0
+
+### Neu in Version 1.16.0 (Stand 1.16.0.127, 17.10.2026, bisher 1.9.1.127) – Neue Funktion
+
+- **Tippfehler sind keine Spieländerung:** Ändert der Admin bei Spielort, Heim- oder Gastteam nur die Schreibweise (Groß/klein, Leerzeichen, ä/ae, 1–2 vertippte Buchstaben), erscheint keine Spieländerung in den News. Datum, Uhrzeit und andere Ziffern (z. B. „1b“) zählen immer als echte Änderung. Im Spiel-Fenster zeigt „In den News als Spieländerung melden“ die Erkennung an und lässt sich überstimmen (Feld `news` in `scheduleOverrides`; fehlt es, entscheidet die Erkennung). Funktionen `chgSame` / `chgFields` in `index.html`
+- **Spieländerungen in den News steuern:** Admin-Bereich › News › „Spieländerungen“ listet alle kommenden geänderten Spiele mit Vorher/Nachher. Ein Schalter je Spiel legt fest, ob die Änderung für alle in den News steht; „automatisch“ setzt zurück auf die Erkennung
+
+## Version 1.15.6
+
+### Neu in Version 1.15.6 (Stand 1.15.6.125, 17.10.2026, bisher 1.9.1.125) – Verbesserung
+
+- **Gameday mit zwei Spielen:** An Tagen mit zwei Spielen zeigt der Chip im Kopfbereich beide Spiele untereinander – jeweils Countdown („Bully in …“), „Läuft gerade“, „Ergebnis folgt“ oder das Ergebnis (Sieg/Niederlage/Remis)
+
+## Version 1.15.5
+
+### Neu in Version 1.15.5 (Stand 1.15.5.124, 17.10.2026, bisher 1.9.1.124) – Verbesserung
+
+- **Push bei offener App:** Ist die App beim Eintreffen eines Pushs gerade geöffnet, erscheint jetzt eine echte Systembenachrichtigung (mit Ergebnis- bzw. 24h-Symbol) statt nur eines Hinweisfensters; beim Ergebnis-Push werden die Ergebnisse sofort neu geladen
+
+## Version 1.15.4
+
+### Neu in Version 1.15.4 (Stand 1.15.4.123, 17.10.2026, bisher 1.9.1.123) – Optisch
+
+- **Strafzeitpult bebildert:** Die Anzeigetafel-Anleitung zeigt das Strafzeitpult als Grafik nach dem echten Pult (Foto aus der Halle) mit Tastennummern und Eingabe-Reihenfolge. Ablauf in der Halle bestätigt: Nummer → V → Minuten → V
+
+## Version 1.15.3
+
+### Neu in Version 1.15.3 (Stand 1.15.3.122, 17.10.2026, bisher 1.9.1.122) – Optisch
+
+- **Einstellungen im gleichen Look:** Auch die Karten in den Einstellungen haben jetzt Rahmen, Farbleiste (Darstellung blau bzw. Designfarbe, Saison-Designs lila, Push gelb, Feedback grün) und kräftigeren Schatten
+
+## Version 1.15.2
+
+### Neu in Version 1.15.2 (Stand 1.15.2.121, 16.10.2026, bisher 1.9.1.121) – Optisch
+
+- **Kacheln deutlicher:** In Downloads und Info haben die Kacheln einen feinen Rahmen, links eine Farbleiste (Kalender/Info blau bzw. Designfarbe, PDF rot, Anzeigetafel gelb, Social-Media-Bilder in Teamfarbe) und einen kräftigeren Schatten – in allen Designs
+
+## Version 1.15.1
+
+### Neu in Version 1.15.1 (Stand 1.15.1.120, 16.10.2026, bisher 1.9.1.120) – Kleine Ergänzung
+
+- **Regeln: Nachwuchs NRW und Themen-Menü:** 17 neue Einträge aus den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026): Altersklassen, Hochspielen, Bodycheck ab U15 (U7–U13 verboten), Zahnschutz-Pflicht U15–U20, A-/B-Mannschaft und Ummeldung, Einsatz in den ersten beiden Spielen, höchstens zwei Mannschaften pro Spieler, Torhüter-Einsatzzeiten U13/U15 (mind. 10 %, max. 75 %), Antritts- und Meldestärken, Doppellizenz, Spielerinnen, Kontingentspieler, Tabelle bei Punktgleichheit, Spielzeiten, Spielverlegung, Meldeliga. Die Themen-Knöpfe sind durch ein Menü ☰ rechts im Suchfeld ersetzt; ein gewähltes Thema erscheint als „Thema: … ✕“. Anleitung Anzeigetafel: Tipp „Pause verkürzen“ (Taste 28). Die Cache-Stände 118/119 (Grizzly-Kopf) wurden nicht veröffentlicht
+
+## Version 1.15.0
+
+### Neu in Version 1.15.0 (Stand 1.15.0.117, 16.10.2026, bisher 1.9.1.117) – Neue Funktion
+
+- **Handzeichen:** Im Reiter „Regeln“ neues Thema „Handzeichen“ mit 30 Zeichen von Schiedsrichter und Linienrichter, jeweils mit gezeichnetem Piktogramm (SVG, Funktion `sigSvg`, Posen in `SIG_POSE`) und kurzer Erklärung; Grundlage IIHF Official Rule Book, Anhang I „Game Official Signals“. Einträge im Feld `RULES` mit `c:"Handzeichen"` und `p` = Bild
+- **Anleitung Anzeigetafel:** Downloads › „Für das Kampfgericht“ › „Anzeigetafel bedienen“ öffnet die eigene Seite `anleitung-anzeigetafel.html` (hell/dunkel, mit Knopf „Drucken / als PDF speichern“): Stramatel 452 Hauptpult als Tastenbild mit Nummern, Vorbereitung, Spielbetrieb, Korrekturen, Strafzeitpulte (Eingabe, Löschen, Warteliste) und Hilfe. Grundlage: Stramatel-Anleitungen Hauptbedienpult 452G und Strafzeitpulte 452G
+- **Veröffentlichen robuster:** Kurze Verbindungsaussetzer beim automatischen Nachladen im Bereich „Veröffentlichen“ werden still überbrückt; statt „internal“ erscheint eine verständliche Meldung, und beim Zurückkehren in die App wird der Stand neu geladen
+- **Reiter „Regeln“:** neuer fünfter Reiter zwischen Gegner und Downloads (auch per Wischen) mit rund 60 kurz erklärten Regeln in acht Themen (Spielablauf, Abseits & Icing, Strafen, Fouls, Torhüter, Tore & Statistik, Nachwuchs, Begriffe). Freitextsuche über Titel, Text und Stichworte, umlaut-unabhängig, Treffer markiert und nach Relevanz sortiert. Grundlage: IIHF-Regelbuch in der DEB-Fassung 2026/27; Liga-Details (Drittellänge, Körperspiel, Verlängerung) verweisen auf die Durchführungsbestimmungen des EHV NRW. Inhalte stehen in `index.html` im Feld `RULES` (Felder c = Thema, t = Titel, x = Text, k = Suchwörter). Die Lesbarkeitsprüfung umfasst die neue Seite
+- **Update-Hinweis wählbar:** Beim „Live gehen“ legt das Häkchen „Update-Hinweis für Nutzer anzeigen“ fest, ob Nutzer „Neue Version verfügbar“ sehen. Ohne Häkchen kommt die neue Version still beim nächsten Öffnen der App. Technisch: `UPDATE_HINWEIS` in der `sw.js` (wird beim Live-Gang gesetzt; Werkzeug: `./live-gehen.sh --mit-hinweis`). Wirkt für Nutzer, die schon 1.15.0 oder neuer haben
+- **Veröffentlichen mit dem Grizzlys-Werkzeug:** Test-Pakete, Live-Gang, Live-Dateien, Lesbarkeitsprüfung und Zurücksetzen laufen über Skripte in der Cloud Shell (`~/grizzlys-werkzeug`, Anleitung in dessen `LIESMICH.txt`)
+
+## Version 1.14.1
+
+### Neu in Version 1.14.1 (Stand 1.14.1.111, 15.10.2026, bisher 1.9.1.111) – Kleine Ergänzung
+
+- **Doku beim Live-Gang:** README.md, README.txt, FUNCTIONS-ANLEITUNG.txt und PDFs kommen im Test-Paket im Ordner `nur-live` mit (im Test-Repo unter `.github/live-doku` abgelegt) und werden bei „Live gehen“ automatisch nach Live übernommen; ist die Version schon live, lässt sich nur die Doku übernehmen
+
+## Version 1.14.0
+
+### Neu in Version 1.14.0 (Stand 1.14.0.110, 15.10.2026, bisher 1.9.1.110) – Neue Funktion
+
+- **Veröffentlichen aus dem Admin-Bereich:** Admin-Bereich › Status › „🚀 Veröffentlichen“ mit den Knöpfen „Test-Paket hochladen“, „Live gehen“ und „Live zurücksetzen“. Die Cloud Function `deployControl` nimmt den Auftrag an (nur Admin) und startet die GitHub-Abläufe `test-hochladen.yml` (Test-Repo) bzw. `live-gehen.yml` (Live-Repo) mit Lesbarkeitsprüfung; Ergebnis und Veröffentlichungsstatus erscheinen im Admin-Bereich. Ablage der Pakete im Zweig `eingang` des Test-Repos
+
+## Version 1.13.1
+
+### Neu in Version 1.13.1 (Stand 1.13.1.109, 15.10.2026, bisher 1.9.1.109) – Optisch
+
+- **Lesbarkeit:** von der automatischen Prüfung gefundene Stellen verbessert: „JAZM“ auf der Info-Seite, Plakette „Letztes Spiel“, Knöpfe und „VS“ auf den Spielkarten im Weihnachtsdesign, Wochentag bei U15-B-Karten, Status-Chip im Admin-Bereich (dunkel)
+
+## Version 1.13.0
+
+### Neu in Version 1.13.0 (Stand 1.13.0.108, 14.10.2026, bisher 1.9.1.108) – Neue Funktion
+
+- **Adventskalender-Auswertung:** Admin-Bereich > Status > „Adventskalender“: Geräte, Antworten, richtig/falsch gesamt sowie getrennt nach Regel- und Mannschaftsfragen, aufklappbar je Türchen. Jedes Gerät überträgt dafür je Türchen nur Fragenart und richtig/falsch (neue Sammlung `adventAnswers`, keine Namen). Unter dem Kalender steht für jeden Nutzer „Deine Auswertung“. **Firestore-Regeln müssen veröffentlicht werden**
+- **Weihnachten und Dunkelmodus:** Tannenbaum im Hintergrund dezenter; „Gespielte Spiele anzeigen“ im Dunkelmodus und in den Themen-Designs lesbar
+- **Update-Banner:** erscheint nur noch, wenn die wartende Version wirklich neuer ist als die angezeigte; gleich neue Versionen werden still übernommen. Live- und Test-App löschen sich nicht mehr gegenseitig den Offline-Speicher
+- **Wischen:** Wisch nach links/rechts wechselt zwischen Start, Spielplan, Gegner und Downloads; die Seite folgt dem Finger, am Rand erscheint die Zielseite, danach zeigen Punkte die Position. Senkrechtes Scrollen, Bildschirmrand (Android-Zurück-Geste) und offene Fenster lösen nichts aus
+- **Scroll-Leiste:** beim Scrollen zeigt rechts eine schmale Leiste die Position, im Spielplan mit Monat; der Balken lässt sich anfassen und ziehen
+- **Zurückwischen:** in Einstellungen und Info führt ein Wisch nach rechts zurück; das News-Fenster schließt sich mit einem Wisch nach rechts oder unten
+- **Kennzeichnung:** „App entwickelt von JAZM“ unten auf der Info-Seite, „APP: JAZM“ klein auf den Social-Media-Bildern, Autor-Angabe im Code
+- **Halloween lesbar:** Download-Karten im Halloween-Design (heller Modus) dunkel, damit die Schrift lesbar ist
+- **Updates sofort:** der Service Worker holt Seite und Programmdateien immer frisch vom Server (nicht aus dem 10-Minuten-Zwischenspeicher von GitHub Pages)
+- **Gruselmoment:** im Halloween-Design lugt höchstens einmal am Tag kurz eine Gestalt von unten herein (`halloween/gestalt.webp`); nicht anklickbar, nie über offenen Fenstern; eigener Schalter in den Einstellungen
+- **Kleinere Bilder:** `logo.png` (2 MB → 58 KB), App- und Push-Symbole und große Gegner-Logos verkleinert, Dateinamen unverändert; die App lädt beim ersten Öffnen deutlich schneller
+
+## Version 1.12.2
+
+### Neu in Version 1.12.2 (Stand 1.12.2.96, 11.10.2026, bisher 1.9.1.96) – Optisch
+
+- **Übersichtlicher:** Spielplan zeigt gespielte Spiele zugeklappt („Gespielte Spiele anzeigen“, Zähler); Startseite ohne den alten Hinweis „38 Spiele · chronologisch sortiert“, Mannschafts-Kacheln kompakt nebeneinander (Platz, Bilanz, Form, Fortschritt); Einstellungen: Halloween und Weihnachten in einem Kasten „Saison-Designs“, die Beispiel-Meldungen verschwinden bei aktivem Push, Admin-Bereich nur noch als kleiner Link unten, „Push kommt nicht an? Neu einrichten“ nur bei aktivem Push; Info ohne die sechs Kacheln, die nur die Reiter wiederholten. News-Eintrag 1.9.1.95
+- **Admin-Fenster fest:** das Admin-Fenster hat nach der Anmeldung immer die volle Höhe und springt beim Wechsel zwischen den Reitern nicht mehr; ist man nach unten gescrollt, beginnt der neue Reiter direkt unter der Reiterleiste
+
+## Version 1.12.1
+
+### Neu in Version 1.12.1 (Stand 1.12.1.94, 11.10.2026, bisher 1.9.1.93 / 1.9.1.94) – Kleine Änderung und Fehlerbehebung
+
+- **Nächste und letzte Spiele beider Mannschaften:** die Startseite zeigt immer das nächste Spiel von U15 A und von U15 B als „Nächstes Spiel“ (oben das frühere) und ebenso das zuletzt gespielte Spiel beider Mannschaften als „Letztes Spiel“ (oben das neuere, ohne Ergebnis „Ergebnis folgt“), jeweils in Teamfarbe (1.9.1.93 zeigte nur zwei Spiele am selben Tag)
+
+## Version 1.12.0
+
+### Neu in Version 1.12.0 (Stand 1.12.0.92, 11.10.2026, bisher 1.9.1.92) – Neue Funktion
+
+- **Admin-Bereich neu:** oben der Kasten „Zu tun“ (fehlende Ergebnisse, offene Rückmeldungen, EHV-Abweichungen, Spiele von heute, fehlender Admin-Push), darunter die Reiter Spiele · News · Feedback · Status. Im Reiter Spiele eine einzige kompakte Spielliste (Kommende / Gespielt / Alle, A/B); ein Tipp öffnet das Spiel-Fenster mit Ergebnis, Termin & Ort, Social-Media-Bildern und „News zu diesem Spiel“. EHV-Abweichungen bleiben stehen, bis sie übernommen oder abgelehnt werden; abgelehnte stehen in `ehvSync/dismissed` und werden auch vom Push (`scheduleWatch`) nicht mehr gemeldet. Push-Status (mit Test-Push und Fehlersuche) und App-Statistik liegen im Reiter Status. Neue Firestore-Regel für `ehvSync`; `functions/ehv-sync.js` geändert
+- **Push-Status aufklappbar:** im Reiter Status ist der Push-Status zugeklappt; die Überschrift zeigt das Ergebnis der Prüfung als Zähler (z. B. „5 von 5 ✓“ grün oder „4 von 5 ✓ · 1 ✗“ rot), aufgeklappt stehen alle Prüfpunkte, Test-Push und Fehlersuche
+
+## Version 1.11.0
+
+### Neu in Version 1.11.0 (Stand 1.11.0.90, 10.10.2026, bisher 1.9.1.90) – Neue Funktion
+
+- **Push-Status im Admin-Bereich:** neuer Abschnitt „Push-Status“ ganz oben: zeigt, ob dieses Gerät als Admin für Push angemeldet ist (Berechtigung, Token, Eintrag in Firebase, Admin-Markierung, Zahl der Admin-Geräte). „Test-Push sofort senden“ zeigt bei offener App eine grüne Bestätigung, „In 10 Sekunden senden“ die echte Benachrichtigung (vorher zum Startbildschirm wechseln). Ungültige Admin-Einträge räumt der Test-Push selbst auf. Unter „Fehlersuche“: lokale Test-Benachrichtigung (ohne Firebase) und Diagnose (Service Worker, Push-Abo, Token)
+- **Push-Anmeldung wird erneuert:** die App holt alle 7 Tage beim Öffnen ein neues Push-Abo und ein neues Token (`renewPushRegistration` in `index.html`, Zeitraum `PUSH_RENEW_DAYS`). Das behebt „tote“ Abos, bei denen Firebase den Versand annimmt, aber auf dem Gerät nichts ankommt. In den Einstellungen gibt es dafür unter dem Push-Knopf zusätzlich „Push kommt nicht an? Neu einrichten“. Alte Token-Einträge entfernt der nächste Push-Versand
+- **Neue Cloud Function:** `functions/pushtest.js` (`adminPushTest`, nur für den Admin aufrufbar) verschickt den Test-Push an alle Admin-Geräte; `functions/index.js` um eine Zeile ergänzt
+- **Dunkles Design:** aufgeklappte Abschnitte im Admin-Bereich haben wieder einen lesbaren Kopf
+
+## Version 1.10.1
+
+### Neu in Version 1.10.1 (Stand 1.10.1.86, 10.10.2026, bisher 1.9.1.86) – Fehlerbehebung und Verbesserung
+
+- **Gameday-Anzeige korrigiert:** steht das Ergebnis schon fest, zeigt der Kopfbereich das Ergebnis statt „Läuft gerade“
+- **Tabellenstand schneller aktuell:** die App fragt den Tabellenstand alle 5 Minuten neu ab (auch bei offener App), die Function `standings` holt höchstens alle 5 Minuten neu vom EHV (vorher 30 Minuten); `functions/standings.js` muss neu bereitgestellt werden
+
+## Version 1.10.0
+
+### Neu in Version 1.10.0 (Stand 1.10.0.83, 10.10.2026, bisher 1.9.1.83) – Neue Funktion
+
+- **Halloween-Zeitraum:** jetzt 26.10. bis 2.11. (Funktion `hwInSeason` in `index.html`); neues Halloween-Logo `halloween-logo.png`
+- **Gameday:** an Spieltagen steht oben im Kopfbereich groß „GAME DAY“; der Saison-Chip wird zum Countdown („Bully in 2:15 h“, „Läuft gerade“, danach Sieg/Niederlage/Remis oder „Ergebnis folgt“). Beim ersten Öffnen am Spieltag erscheint ein Startbild mit Logo, Paarung, Uhrzeit und Halle (einmal pro Tag, schließt per Tipp oder nach ca. 3,5 s). Farbe passt sich an: blau normal, orange Halloween, rot Weihnachten
+- **Halloween mit Bildern:** Spielkarten mit Bildhintergründen und eisig leuchtendem Rand, dezente Augen/Krallen/Spinnennetz/Fledermäuse, Eisfläche als Kopfbild, Seitenhintergrund, Bodennebel, gelegentlicher Fledermaus-Schwarm, Mannschafts-Kacheln im Kartenstil; Bilder im Ordner `halloween/` (Kleinschreibung beachten)
+- **Weihnachtsdesign:** automatisch im Dezember bis 6. Januar (Schalter in den Einstellungen): Weihnachtslogo (`christmas-logo.png`, `christmas-logo-gross.png`), Eisfläche mit Tannenbaum im Kopfbereich, Tannenbaum als Seitenhintergrund, Spielkarten und Mannschafts-Kacheln mit Geschenke-Bildern, einzelne Geschenke als Deko, gelegentlich fliegt der Schlitten über die Seite; folgt der Einstellung Hell/Dunkel. Adventskalender mit 24 unsortierten Türchen und täglichem Quiz zu Regeln und Teamereignissen; Türchen öffnen sich erst ab dem jeweiligen Tag. Bilder im Ordner `weihnachten/`. Halloween hat Vorrang
+
 ## Version 1.9.1
 
-### Neu in Version 1.9.1 (Stand 1.9.1.140)
+### Neu in Version 1.9.1 (Stand 1.9.1.66, 08.10.2026, bisher 1.9.1.66) – Neue Funktion
 
 - **Spielkarten zum Aufklappen:** jede Karte zeigt links einen Datumsblock (blau U15 A, orange U15 B) und rechts die Paarung mit Logos; ein Tipp klappt die Details als Blöcke aus: Tabellenplatz und Form je Team, Halle mit Adresse, Entfernung und Route-Knopf, Termin / Erinnerung / Teilen, bei gespielten Spielen zusätzlich die Drittel. Der Datumsbalken läuft beim Aufklappen bis zum Kartenende durch. Immer nur eine Karte ist offen; im Spielplan ist das nächste Spiel beim Öffnen aufgeklappt
 - **Teamfarbe seitlich:** alle Spielkarten haben links einen Streifen in Teamfarbe; die Wasserzeichen A und B bleiben
@@ -18,57 +294,6 @@ Entwickelt von **JAZM**.
 - **Hinweise schreiben (Admin):** Abschnitt „Hinweise / News“ mit Überschrift, Text, Mannschaft, „Sichtbar bis“ und Haken „Zusätzlich als Push senden“; veröffentlichte Hinweise können gelöscht werden
 - **Neue Cloud Function:** `functions/news.js` (`onNewsCreated`) verschickt den Push zu einem Hinweis, wenn der Haken gesetzt ist (beachtet die Mannschaftsauswahl der Geräte); `functions/index.js` um eine Zeile ergänzt
 - **Firestore-Regeln:** neue Sammlung `news` (für alle lesbar, nur Admin schreibt) – Regeln müssen veröffentlicht werden
-- **Halloween-Zeitraum:** jetzt 26.10. bis 2.11. (Funktion `hwInSeason` in `index.html`); neues Halloween-Logo `halloween-logo.png`
-- **Gameday:** an Spieltagen steht oben im Kopfbereich groß „GAME DAY“; der Saison-Chip wird zum Countdown („Bully in 2:15 h“, „Läuft gerade“, danach Sieg/Niederlage/Remis oder „Ergebnis folgt“). Beim ersten Öffnen am Spieltag erscheint ein Startbild mit Logo, Paarung, Uhrzeit und Halle (einmal pro Tag, schließt per Tipp oder nach ca. 3,5 s). Farbe passt sich an: blau normal, orange Halloween, rot Weihnachten
-- **Halloween mit Bildern:** Spielkarten mit Bildhintergründen und eisig leuchtendem Rand, dezente Augen/Krallen/Spinnennetz/Fledermäuse, Eisfläche als Kopfbild, Seitenhintergrund, Bodennebel, gelegentlicher Fledermaus-Schwarm, Mannschafts-Kacheln im Kartenstil; Bilder im Ordner `halloween/` (Kleinschreibung beachten)
-- **Weihnachtsdesign:** automatisch im Dezember bis 6. Januar (Schalter in den Einstellungen): Weihnachtslogo (`christmas-logo.png`, `christmas-logo-gross.png`), Eisfläche mit Tannenbaum im Kopfbereich, Tannenbaum als Seitenhintergrund, Spielkarten und Mannschafts-Kacheln mit Geschenke-Bildern, einzelne Geschenke als Deko, gelegentlich fliegt der Schlitten über die Seite; folgt der Einstellung Hell/Dunkel. Adventskalender mit 24 unsortierten Türchen und täglichem Quiz zu Regeln und Teamereignissen; Türchen öffnen sich erst ab dem jeweiligen Tag. Bilder im Ordner `weihnachten/`. Halloween hat Vorrang
-- **Gameday-Anzeige korrigiert (1.9.1.85):** steht das Ergebnis schon fest, zeigt der Kopfbereich das Ergebnis statt „Läuft gerade“
-- **Tabellenstand schneller aktuell (1.9.1.86):** die App fragt den Tabellenstand alle 5 Minuten neu ab (auch bei offener App), die Function `standings` holt höchstens alle 5 Minuten neu vom EHV (vorher 30 Minuten); `functions/standings.js` muss neu bereitgestellt werden
-- **Push-Status im Admin-Bereich (1.9.1.90):** neuer Abschnitt „Push-Status“ ganz oben: zeigt, ob dieses Gerät als Admin für Push angemeldet ist (Berechtigung, Token, Eintrag in Firebase, Admin-Markierung, Zahl der Admin-Geräte). „Test-Push sofort senden“ zeigt bei offener App eine grüne Bestätigung, „In 10 Sekunden senden“ die echte Benachrichtigung (vorher zum Startbildschirm wechseln). Ungültige Admin-Einträge räumt der Test-Push selbst auf. Unter „Fehlersuche“: lokale Test-Benachrichtigung (ohne Firebase) und Diagnose (Service Worker, Push-Abo, Token)
-- **Push-Anmeldung wird erneuert (1.9.1.90):** die App holt alle 7 Tage beim Öffnen ein neues Push-Abo und ein neues Token (`renewPushRegistration` in `index.html`, Zeitraum `PUSH_RENEW_DAYS`). Das behebt „tote“ Abos, bei denen Firebase den Versand annimmt, aber auf dem Gerät nichts ankommt. In den Einstellungen gibt es dafür unter dem Push-Knopf zusätzlich „Push kommt nicht an? Neu einrichten“. Alte Token-Einträge entfernt der nächste Push-Versand
-- **Neue Cloud Function (1.9.1.90):** `functions/pushtest.js` (`adminPushTest`, nur für den Admin aufrufbar) verschickt den Test-Push an alle Admin-Geräte; `functions/index.js` um eine Zeile ergänzt
-- **Dunkles Design (1.9.1.90):** aufgeklappte Abschnitte im Admin-Bereich haben wieder einen lesbaren Kopf
-- **Admin-Bereich neu (1.9.1.91):** oben der Kasten „Zu tun“ (fehlende Ergebnisse, offene Rückmeldungen, EHV-Abweichungen, Spiele von heute, fehlender Admin-Push), darunter die Reiter Spiele · News · Feedback · Status. Im Reiter Spiele eine einzige kompakte Spielliste (Kommende / Gespielt / Alle, A/B); ein Tipp öffnet das Spiel-Fenster mit Ergebnis, Termin & Ort, Social-Media-Bildern und „News zu diesem Spiel“. EHV-Abweichungen bleiben stehen, bis sie übernommen oder abgelehnt werden; abgelehnte stehen in `ehvSync/dismissed` und werden auch vom Push (`scheduleWatch`) nicht mehr gemeldet. Push-Status (mit Test-Push und Fehlersuche) und App-Statistik liegen im Reiter Status. Neue Firestore-Regel für `ehvSync`; `functions/ehv-sync.js` geändert
-- **Push-Status aufklappbar (1.9.1.92):** im Reiter Status ist der Push-Status zugeklappt; die Überschrift zeigt das Ergebnis der Prüfung als Zähler (z. B. „5 von 5 ✓“ grün oder „4 von 5 ✓ · 1 ✗“ rot), aufgeklappt stehen alle Prüfpunkte, Test-Push und Fehlersuche
-- **Nächste und letzte Spiele beider Mannschaften (1.9.1.94):** die Startseite zeigt immer das nächste Spiel von U15 A und von U15 B als „Nächstes Spiel“ (oben das frühere) und ebenso das zuletzt gespielte Spiel beider Mannschaften als „Letztes Spiel“ (oben das neuere, ohne Ergebnis „Ergebnis folgt“), jeweils in Teamfarbe (1.9.1.93 zeigte nur zwei Spiele am selben Tag)
-- **Übersichtlicher (1.9.1.95):** Spielplan zeigt gespielte Spiele zugeklappt („Gespielte Spiele anzeigen“, Zähler); Startseite ohne den alten Hinweis „38 Spiele · chronologisch sortiert“, Mannschafts-Kacheln kompakt nebeneinander (Platz, Bilanz, Form, Fortschritt); Einstellungen: Halloween und Weihnachten in einem Kasten „Saison-Designs“, die Beispiel-Meldungen verschwinden bei aktivem Push, Admin-Bereich nur noch als kleiner Link unten, „Push kommt nicht an? Neu einrichten“ nur bei aktivem Push; Info ohne die sechs Kacheln, die nur die Reiter wiederholten. News-Eintrag 1.9.1.95
-- **Admin-Fenster fest (1.9.1.96):** das Admin-Fenster hat nach der Anmeldung immer die volle Höhe und springt beim Wechsel zwischen den Reitern nicht mehr; ist man nach unten gescrollt, beginnt der neue Reiter direkt unter der Reiterleiste
-- **Adventskalender-Auswertung (1.9.1.97):** Admin-Bereich > Status > „Adventskalender“: Geräte, Antworten, richtig/falsch gesamt sowie getrennt nach Regel- und Mannschaftsfragen, aufklappbar je Türchen. Jedes Gerät überträgt dafür je Türchen nur Fragenart und richtig/falsch (neue Sammlung `adventAnswers`, keine Namen). Unter dem Kalender steht für jeden Nutzer „Deine Auswertung“. **Firestore-Regeln müssen veröffentlicht werden**
-- **Weihnachten und Dunkelmodus (1.9.1.98):** Tannenbaum im Hintergrund dezenter; „Gespielte Spiele anzeigen“ im Dunkelmodus und in den Themen-Designs lesbar
-- **Update-Banner (1.9.1.98):** erscheint nur noch, wenn die wartende Version wirklich neuer ist als die angezeigte; gleich neue Versionen werden still übernommen. Live- und Test-App löschen sich nicht mehr gegenseitig den Offline-Speicher
-- **Wischen (1.9.1.99–1.9.1.100):** Wisch nach links/rechts wechselt zwischen Start, Spielplan, Gegner und Downloads; die Seite folgt dem Finger, am Rand erscheint die Zielseite, danach zeigen Punkte die Position. Senkrechtes Scrollen, Bildschirmrand (Android-Zurück-Geste) und offene Fenster lösen nichts aus
-- **Scroll-Leiste (1.9.1.101–1.9.1.102):** beim Scrollen zeigt rechts eine schmale Leiste die Position, im Spielplan mit Monat; der Balken lässt sich anfassen und ziehen
-- **Zurückwischen (1.9.1.103):** in Einstellungen und Info führt ein Wisch nach rechts zurück; das News-Fenster schließt sich mit einem Wisch nach rechts oder unten
-- **Kennzeichnung (1.9.1.104):** „App entwickelt von JAZM“ unten auf der Info-Seite, „APP: JAZM“ klein auf den Social-Media-Bildern, Autor-Angabe im Code
-- **Halloween lesbar (1.9.1.105):** Download-Karten im Halloween-Design (heller Modus) dunkel, damit die Schrift lesbar ist
-- **Updates sofort (1.9.1.106):** der Service Worker holt Seite und Programmdateien immer frisch vom Server (nicht aus dem 10-Minuten-Zwischenspeicher von GitHub Pages)
-- **Gruselmoment (1.9.1.107):** im Halloween-Design lugt höchstens einmal am Tag kurz eine Gestalt von unten herein (`halloween/gestalt.webp`); nicht anklickbar, nie über offenen Fenstern; eigener Schalter in den Einstellungen
-- **Kleinere Bilder (1.9.1.108):** `logo.png` (2 MB → 58 KB), App- und Push-Symbole und große Gegner-Logos verkleinert, Dateinamen unverändert; die App lädt beim ersten Öffnen deutlich schneller
-- **Lesbarkeit (1.9.1.109):** von der automatischen Prüfung gefundene Stellen verbessert: „JAZM“ auf der Info-Seite, Plakette „Letztes Spiel“, Knöpfe und „VS“ auf den Spielkarten im Weihnachtsdesign, Wochentag bei U15-B-Karten, Status-Chip im Admin-Bereich (dunkel)
-- **Veröffentlichen aus dem Admin-Bereich (1.9.1.110):** Admin-Bereich › Status › „🚀 Veröffentlichen“ mit den Knöpfen „Test-Paket hochladen“, „Live gehen“ und „Live zurücksetzen“. Die Cloud Function `deployControl` nimmt den Auftrag an (nur Admin) und startet die GitHub-Abläufe `test-hochladen.yml` (Test-Repo) bzw. `live-gehen.yml` (Live-Repo) mit Lesbarkeitsprüfung; Ergebnis und Veröffentlichungsstatus erscheinen im Admin-Bereich. Ablage der Pakete im Zweig `eingang` des Test-Repos
-- **Doku beim Live-Gang (1.9.1.111):** README.md, README.txt, FUNCTIONS-ANLEITUNG.txt und PDFs kommen im Test-Paket im Ordner `nur-live` mit (im Test-Repo unter `.github/live-doku` abgelegt) und werden bei „Live gehen“ automatisch nach Live übernommen; ist die Version schon live, lässt sich nur die Doku übernehmen
-- **Kacheln deutlicher (1.9.1.121):** In Downloads und Info haben die Kacheln einen feinen Rahmen, links eine Farbleiste (Kalender/Info blau bzw. Designfarbe, PDF rot, Anzeigetafel gelb, Social-Media-Bilder in Teamfarbe) und einen kräftigeren Schatten – in allen Designs
-- **Einstellungen im gleichen Look (1.9.1.122):** Auch die Karten in den Einstellungen haben jetzt Rahmen, Farbleiste (Darstellung blau bzw. Designfarbe, Saison-Designs lila, Push gelb, Feedback grün) und kräftigeren Schatten
-- **Strafzeitpult bebildert (1.9.1.123):** Die Anzeigetafel-Anleitung zeigt das Strafzeitpult als Grafik nach dem echten Pult (Foto aus der Halle) mit Tastennummern und Eingabe-Reihenfolge. Ablauf in der Halle bestätigt: Nummer → V → Minuten → V
-- **Push bei offener App (1.9.1.124):** Ist die App beim Eintreffen eines Pushs gerade geöffnet, erscheint jetzt eine echte Systembenachrichtigung (mit Ergebnis- bzw. 24h-Symbol) statt nur eines Hinweisfensters; beim Ergebnis-Push werden die Ergebnisse sofort neu geladen
-- **Gameday mit zwei Spielen (1.9.1.125):** An Tagen mit zwei Spielen zeigt der Chip im Kopfbereich beide Spiele untereinander – jeweils Countdown („Bully in …“), „Läuft gerade“, „Ergebnis folgt“ oder das Ergebnis (Sieg/Niederlage/Remis)
-- **Tippfehler sind keine Spieländerung (1.9.1.126):** Ändert der Admin bei Spielort, Heim- oder Gastteam nur die Schreibweise (Groß/klein, Leerzeichen, ä/ae, 1–2 vertippte Buchstaben), erscheint keine Spieländerung in den News. Datum, Uhrzeit und andere Ziffern (z. B. „1b“) zählen immer als echte Änderung. Im Spiel-Fenster zeigt „In den News als Spieländerung melden“ die Erkennung an und lässt sich überstimmen (Feld `news` in `scheduleOverrides`; fehlt es, entscheidet die Erkennung). Funktionen `chgSame` / `chgFields` in `index.html`
-- **Spieländerungen in den News steuern (1.9.1.127):** Admin-Bereich › News › „Spieländerungen“ listet alle kommenden geänderten Spiele mit Vorher/Nachher. Ein Schalter je Spiel legt fest, ob die Änderung für alle in den News steht; „automatisch“ setzt zurück auf die Erkennung
-- **Spielberichte (1.9.1.128–1.9.1.130):** Im Spiel-Fenster des Admin-Bereichs entsteht nach dem Ergebnis automatisch ein Berichtsentwurf als Fließtext in Absätzen: Einstieg passend zum Spiel (Kantersieg, Zittersieg, Aufholjagd, Verlängerung, Niederlage …), Spielverlauf Drittel für Drittel, Special Teams und Mannschaftsleistung, Tabelle, erstes Duell und Ausblick. Grundlage sind Ergebnis, Drittel, Tabelle und – über die neue Cloud Function `gameReport` – der EHV-Spielbericht (Tore mit Spielzeit, Über-/Unterzahl, Führungszeit, Zuschauer). Überschrift und Text lassen sich bearbeiten; „↻ Neu erzeugen“ liefert eine andere Formulierung, „📋 Kopieren“ den Text für Social Media. Spielernamen nur mit dem Schalter „Namen von Torschützen und Torhütern nennen“ (aus, Einstellung je Gerät); Strafen nie mit Namen. Veröffentlichte Berichte stehen 14 Tage in den News („📝 Spielberichte“), im Streifen auf der Startseite und in den Spieldetails. Neue Sammlung `reports`, neue Firestore-Regel
-- **Spielbericht auf der Startseite (1.9.1.131–1.9.1.133):** Die Karte „Letztes Spiel“ zeigt bei vorhandenem Bericht die Zeile „📝 Spielbericht“ mit Überschrift; ein Tipp öffnet die Spieldetails direkt beim Bericht. Im Spielplan gibt es dafür den Knopf „Bericht“. Haben beide Mannschaften am selben Tag gespielt, zeigt der Streifen beide Berichte untereinander. Gespielte Spiele zeigen keine Route und Adresse mehr, nur „Gespielt in …“
-- **Schlagworte für den Spielbericht (1.9.1.134):** Im Spiel-Fenster gibt es das Feld „Schlagworte“ (mit Komma getrennt, z. B. „Teamgeist, Kampfgeist, starker Torhüter“). Die App macht daraus passende Sätze – je nach Sieg, Niederlage oder Unentschieden – und setzt sie als eigenen Absatz nach dem Spielverlauf ein. Bekannte Begriffe (Teamgeist/Geschlossenheit, Kampfgeist/Einsatz, Torhüter, Defensive, Tempo, Disziplin, Chancen, Fans, Strafzeiten, dünner Kader, Spaß, Fortschritte, nie aufgegeben) haben eigene Satzbausteine (`REP_KW` in `index.html`); andere Begriffe erscheinen als Aufzählung („Was das Team heute auszeichnete: …“), Begriffe mit „mit …“ als „Die Mannschaft trat mit … auf.“ Die Schlagworte werden mit dem Bericht gespeichert (Feld `keywords` in `reports`, Firestore-Regel angepasst). Ab 1.9.1.135 mit Knopf „Übernehmen“ (oder Enter); der Formularstand übersteht das Neuzeichnen des Spiel-Fensters, und ein gespeicherter, unveränderter Entwurf bleibt automatisch
-- **Angaben im Spielbericht auswählen (1.9.1.136):** Im Spiel-Fenster unter „Im Bericht verwenden“ steht für jede verfügbare Angabe ein Schalter mit dem echten Wert (z. B. „👥 45 Zuschauer“, „🎯 Überzahl (2 von 3)“). Vorbelegt ist, was meist interessant ist: Zuschauer ab 100 (`REP_ATT_MIN`), Traumstart nur bei einem Tor in den ersten 5 Minuten, Überzahl ab 2 Toren, Unterzahl ab 3 überstandenen, verschiedene Torschützen ab 5, Siegesserie ab 3; Spielverlauf, Doppelschlag, spätes Siegtor/Ehrentreffer, wenige Strafminuten, Zu null, Tabelle, erstes Duell und Ausblick immer. Angaben, die es im Spiel nicht gibt, erscheinen nicht. Dazu „Normal / Kurz“ (Kurz: Einstieg, Drittel, Schlagworte, Tabelle, Ausblick – z. B. für Instagram). Auswahl und Länge werden mit dem Bericht gespeichert (Felder `use` und `len` in `reports`, Firestore-Regel angepasst). Die Logik steckt in `repDraft` (`facts`)
-- **Ergebnisbild mit Kurzbericht (1.9.1.137):** Im Fenster „Social-Media-Bild“ steht beim Ergebnisbild die Kurzfassung des Spielberichts (bearbeitbar, Häkchen „Kurzbericht mit teilen“, Knopf „Text kopieren“). Beim Teilen gehen Bild und Text zusammen raus (z. B. WhatsApp, Facebook); weil Instagram keinen Text übernimmt, kopiert die App ihn zusätzlich in die Zwischenablage. Ist der Bericht in „Kurz“ gespeichert, wird dieser Text genommen, sonst wird die Kurzfassung aus Schlagworten und Auswahl erzeugt (`instaCaption`). Nutzer sehen nur veröffentlichte Berichte, der Admin auch Entwürfe
-- **Übersicht in der Info (1.9.1.138):** Aufklappbare Karte „So findest du dich zurecht“ mit allen Bereichen (Start, Spielplan, Gegner, Regeln, Downloads, News, Einstellungen) und je einer Zeile Erklärung; ein Tipp springt direkt dorthin. Darunter drei Tipps (Wischen, Spielkarte antippen, Teilen). Der Admin-Bereich steht dort bewusst nicht. Neue Bereiche als weitere Zeile im Block `#appMap` in `index.html` ergänzen
-- **Neue Bilder bei den Handzeichen (1.9.1.139–1.9.1.140):** Die 29 Bilder im Thema „Handzeichen“ zeigen jetzt einen gezeichneten Schiedsrichter auf dem Eis mit gut erkennbaren Händen. Dateien im Ordner `handzeichen/` als `<schlüssel>.webp` (320 × 360, transparent, Figur unten bündig, zusammen ca. 560 KB; Zuordnung in `handzeichen/LIESMICH.txt`). Ein Bild wird ersetzt, indem eine Datei mit demselben Namen hochgeladen wird; fehlt eines, zeigt die App die bisherige gezeichnete Figur (`sigSvgOld`). Die Bilder werden beim ersten Ansehen zwischengespeichert und sind danach offline verfügbar
-- **Regeln: Nachwuchs NRW und Themen-Menü (1.9.1.120):** 17 neue Einträge aus den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026): Altersklassen, Hochspielen, Bodycheck ab U15 (U7–U13 verboten), Zahnschutz-Pflicht U15–U20, A-/B-Mannschaft und Ummeldung, Einsatz in den ersten beiden Spielen, höchstens zwei Mannschaften pro Spieler, Torhüter-Einsatzzeiten U13/U15 (mind. 10 %, max. 75 %), Antritts- und Meldestärken, Doppellizenz, Spielerinnen, Kontingentspieler, Tabelle bei Punktgleichheit, Spielzeiten, Spielverlegung, Meldeliga. Die Themen-Knöpfe sind durch ein Menü ☰ rechts im Suchfeld ersetzt; ein gewähltes Thema erscheint als „Thema: … ✕“. Anleitung Anzeigetafel: Tipp „Pause verkürzen“ (Taste 28). Versionen 1.9.1.118/119 (Grizzly-Kopf) wurden nicht veröffentlicht
-- **Handzeichen (1.9.1.117):** Im Reiter „Regeln“ neues Thema „Handzeichen“ mit 30 Zeichen von Schiedsrichter und Linienrichter, jeweils mit gezeichnetem Piktogramm (SVG, Funktion `sigSvg`, Posen in `SIG_POSE`) und kurzer Erklärung; Grundlage IIHF Official Rule Book, Anhang I „Game Official Signals“. Einträge im Feld `RULES` mit `c:"Handzeichen"` und `p` = Bild
-- **Anleitung Anzeigetafel (1.9.1.115):** Downloads › „Für das Kampfgericht“ › „Anzeigetafel bedienen“ öffnet die eigene Seite `anleitung-anzeigetafel.html` (hell/dunkel, mit Knopf „Drucken / als PDF speichern“): Stramatel 452 Hauptpult als Tastenbild mit Nummern, Vorbereitung, Spielbetrieb, Korrekturen, Strafzeitpulte (Eingabe, Löschen, Warteliste) und Hilfe. Grundlage: Stramatel-Anleitungen Hauptbedienpult 452G und Strafzeitpulte 452G
-- **Veröffentlichen robuster (1.9.1.114):** Kurze Verbindungsaussetzer beim automatischen Nachladen im Bereich „Veröffentlichen“ werden still überbrückt; statt „internal“ erscheint eine verständliche Meldung, und beim Zurückkehren in die App wird der Stand neu geladen
-- **Reiter „Regeln“ (1.9.1.113):** neuer fünfter Reiter zwischen Gegner und Downloads (auch per Wischen) mit rund 60 kurz erklärten Regeln in acht Themen (Spielablauf, Abseits & Icing, Strafen, Fouls, Torhüter, Tore & Statistik, Nachwuchs, Begriffe). Freitextsuche über Titel, Text und Stichworte, umlaut-unabhängig, Treffer markiert und nach Relevanz sortiert. Grundlage: IIHF-Regelbuch in der DEB-Fassung 2026/27; Liga-Details (Drittellänge, Körperspiel, Verlängerung) verweisen auf die Durchführungsbestimmungen des EHV NRW. Inhalte stehen in `index.html` im Feld `RULES` (Felder c = Thema, t = Titel, x = Text, k = Suchwörter). Die Lesbarkeitsprüfung umfasst die neue Seite
-- **Update-Hinweis wählbar (1.9.1.112):** Beim „Live gehen“ legt das Häkchen „Update-Hinweis für Nutzer anzeigen“ fest, ob Nutzer „Neue Version verfügbar“ sehen. Ohne Häkchen kommt die neue Version still beim nächsten Öffnen der App. Technisch: `UPDATE_HINWEIS` in der `sw.js` (wird beim Live-Gang gesetzt; Werkzeug: `./live-gehen.sh --mit-hinweis`). Wirkt für Nutzer, die schon 1.9.1.112 oder neuer haben
-- **Veröffentlichen mit dem Grizzlys-Werkzeug:** Test-Pakete, Live-Gang, Live-Dateien, Lesbarkeitsprüfung und Zurücksetzen laufen über Skripte in der Cloud Shell (`~/grizzlys-werkzeug`, Anleitung in dessen `LIESMICH.txt`)
-- **PWA-Cache:** auf `grizzlys-u15-v109` erneuert
 - **Dokumentation:** README, `FUNCTIONS-ANLEITUNG.txt` und PDF `Grizzlys-U15-App-Seitenuebersicht.pdf` auf 1.9.1 aktualisiert
 
 ## Version 1.9.0
@@ -316,9 +541,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v86`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v148`).
 
-Die angezeigte Version hat die Form `1.9.1.66`: vorn die App-Version, die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
+Die angezeigte Version hat die Form `1.22.3.148`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 

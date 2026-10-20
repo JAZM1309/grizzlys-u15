@@ -15,7 +15,11 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJ539PL04L"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  /* Datenschutz: Google Analytics zählt erst nach Zustimmung (Einstellungen › Datenschutz). Ohne Zustimmung
+     landet nichts im dataLayer, es werden also keine Daten an Google gesendet. */
+  window.GA_OK = (function(){ try { return localStorage.getItem("grizzlysConsent") === "granted"; } catch(e) { return false; } })();
+  window.gaQueue = [];
+  function gtag(){ if (window.GA_OK) dataLayer.push(arguments); else if (arguments[0] === "js" || arguments[0] === "config") gaQueue.push(arguments); }
   gtag("js", new Date());
   gtag("config", "G-WJ539PL04L");
   function trackAnalyticsEvent(name, params) { try { gtag("event", name, params || {}); } catch(e) {} }
@@ -37,7 +41,7 @@ main{padding:14px 14px 0}.tabs{display:flex;gap:5px;margin-bottom:14px}
 .opponentCard .opponentLogo{width:42px;height:42px}
 .opponentCardInfo{min-width:0}
 .opponentCardName{font-size:16px;font-weight:950;line-height:1.2}
-.opponentCardMeta{font-size:10px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px;white-space:nowrap}.opponentCardMeta .opponentTeamBadge{margin-left:0}.opponentTeamBadge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:950;margin-left:3px}
+.opponentCardMeta{font-size:12px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:4px;white-space:nowrap}.opponentCardMeta .opponentTeamBadge{margin-left:0}.opponentTeamBadge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:11px;font-weight:950;margin-left:3px}
 .opponentTeamBadge.A{background:color-mix(in srgb,var(--a) 14%,white);color:var(--a)}.opponentTeamBadge.B{background:color-mix(in srgb,var(--b) 18%,white);color:#b65d00}.opponentCard.opponentA{border-left:6px solid var(--a)}.opponentCard.opponentB{border-left:6px solid var(--b)}
 .opponentRoute{white-space:nowrap;padding:9px 12px}
 @media(max-width:600px){.opponentCard{grid-template-columns:auto minmax(0,1fr) auto;gap:8px;padding:11px}.opponentCard .opponentLogo{width:40px;height:40px}.opponentCardName{font-size:16px}.opponentRoute{padding:9px 10px;font-size:11px}}
@@ -46,14 +50,14 @@ main{padding:14px 14px 0}.tabs{display:flex;gap:5px;margin-bottom:14px}
 .opponentGame.A{--team:var(--a)}.opponentGame.B{--team:var(--b)}
 .opponentGameTop{position:absolute;top:9px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;align-items:center}
 .opponentGameDate{font-size:12px;font-weight:900;color:var(--text)}
-.opponentGameTeam{font-size:10px;font-weight:950;padding:5px 9px;border-radius:999px;background:color-mix(in srgb,var(--team) 14%,white);color:var(--team);border:1px solid color-mix(in srgb,var(--team) 28%,white)}
+.opponentGameTeam{font-size:12px;font-weight:950;padding:5px 9px;border-radius:999px;background:color-mix(in srgb,var(--team) 14%,white);color:var(--team);border:1px solid color-mix(in srgb,var(--team) 28%,white)}
 .opponentGameMatchup{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin-top:2px}
 .opponentGameSide{min-width:0;text-align:center}.opponentGameSide.right{text-align:center}
-.opponentGameRole{font-size:9px;font-weight:950;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.opponentGameRole{font-size:11px;font-weight:950;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
 .opponentGameLogo{width:48px;height:48px;object-fit:contain;border-radius:0;background:transparent;display:block;margin:0 auto 5px}
 .opponentGameName{font-size:12px;font-weight:900;line-height:1.15;overflow-wrap:anywhere}
 .opponentGameVs{font-size:11px;font-weight:950;color:var(--muted);padding:5px 4px;border-radius:999px;background:#edf3f8}
-.opponentGameHomeAway{margin-top:10px;text-align:center;font-size:10px;font-weight:950;color:var(--team);background:color-mix(in srgb,var(--team) 9%,white);border-radius:9px;padding:6px 8px}
+.opponentGameHomeAway{margin-top:10px;text-align:center;font-size:12px;font-weight:950;color:var(--team);background:color-mix(in srgb,var(--team) 9%,white);border-radius:9px;padding:6px 8px}
 .opponentGameVenue{font-size:11px;color:var(--muted);margin-top:8px;text-align:center;line-height:1.35}
 .opponentGameResult{text-align:center;margin-top:7px}.opponentGameResult .resultBadge{display:inline-block}
 .opponentGameActions{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:10px}
@@ -80,22 +84,22 @@ main{padding:14px 14px 0}.tabs{display:flex;gap:5px;margin-bottom:14px}
 .scheduleHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0 8px;flex-wrap:wrap}.scheduleModes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 8px}.scheduleModes button{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:12px;padding:10px 8px;font-size:12px;font-weight:900;cursor:pointer}.scheduleModes button.active{background:var(--navy);color:#fff;border-color:var(--navy)} .scheduleFilters{position:relative;margin:0 0 12px}.filterToggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:13px;padding:11px 14px;font-size:13px;font-weight:900;cursor:pointer}.filterToggle.active{background:var(--navy);color:#fff;border-color:var(--navy)}.filterSummary{font-size:11px;font-weight:800;opacity:.82}.filterPanel{display:none;margin-top:7px;padding:10px;border:1px solid var(--border);background:#fff;border-radius:14px;box-shadow:0 8px 22px rgba(13,36,61,.10)}.filterPanel.open{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.filterOption{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:10px;padding:9px 7px;font-size:11px;font-weight:900;cursor:pointer}.filterOption.selected{background:#eaf3fb;border-color:#9fc5e8}.filterOption.selected.teamAOpt{background:rgba(22,140,255,.12);border-color:var(--a);color:#0b6fca}.filterOption.selected.teamBOpt{background:rgba(255,138,0,.14);border-color:var(--b);color:#a65b00}.filterOption.selected.homeOpt,.filterOption.selected.awayOpt{background:#edf3f8;border-color:#9db2c4}.filterReset{grid-column:1/-1;border:0;background:transparent;color:#68798a;font-size:11px;font-weight:900;padding:5px;cursor:pointer}.scheduleTitle{font-size:21px;font-weight:950}.tableLinks{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.tableLinks a{display:inline-block;text-decoration:none;padding:7px 10px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--navy);font-size:11px;font-weight:900}.tableLinks a:hover{background:var(--ice)}
 .stickyFilters{position:sticky;top:0;z-index:5;background:rgba(247,251,255,.95);backdrop-filter:blur(8px);padding:7px 0 10px}
 .filters{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.calendarDownloads{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}.calendarDownloads button{border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;padding:8px 6px;font-size:11px;font-weight:900;cursor:pointer}.filter.active[data-filter="A"]{background:var(--a);color:#fff;border-color:var(--a)}.filter.active[data-filter="B"]{background:var(--b);color:#fff;border-color:var(--b)}.filter.active[data-filter="all"]{background:var(--navy);color:#fff;border-color:var(--navy)}
-.pdfFilterGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.pdfFilterBtn:not(.calChip){border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:12px;padding:11px 8px;font-size:12px;font-weight:900;cursor:pointer}.pdfFilterBtn:not(.calChip).active{background:var(--navy);border-color:var(--navy);color:#fff}.pdfFilterActions{display:flex;gap:8px;margin-top:14px}.pdfFilterActions button{flex:1}.pdfFilterHint{font-size:11px;color:var(--muted);margin-top:4px}.downloadCards{display:grid;gap:10px}.downloadCard{border:1px solid var(--border);background:#fff;border-radius:16px;padding:14px;text-align:left;display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:10px;cursor:pointer;box-shadow:0 4px 14px rgba(8,31,55,.05)}.downloadCard span{grid-row:1 / span 2;font-size:28px;display:grid;place-items:center}.downloadCard b{font-size:16px;color:var(--navy)}.downloadCard small{color:var(--muted);font-size:11px;margin-top:3px}.list{display:grid;gap:10px}.calendarWrap{background:#fff;border:1px solid var(--border);border-radius:18px;padding:10px;box-shadow:var(--shadow);overflow:hidden}.calendarHint{font-size:10px;color:var(--muted);text-align:center;margin:-3px 0 8px}.calendarMonthGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.calendarMonthGrid .dayCell{min-height:92px}.calendarNav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.calendarNav button{border:1px solid var(--border);background:#fff;border-radius:9px;padding:6px 9px;font-weight:900;cursor:pointer}.calendarTodayBtn{padding:6px 10px!important;background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important}.calendarNavCenter{display:flex;align-items:center;gap:6px}.calendarTitle{font-size:16px;font-weight:950}.calendarGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.weekday{font-size:10px;color:var(--muted);font-weight:900;text-align:center;padding:4px 0}.dayCell{min-height:72px;border:1px solid #e5edf5;border-radius:9px;background:#fbfdff;padding:4px;cursor:pointer}.dayNum{font-size:10px;font-weight:900;color:var(--muted)}.dayGames{display:grid;gap:2px;margin-top:3px}.dayGame{font-size:9px;font-weight:950;border-radius:5px;padding:2px 3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.dayGame.A{background:color-mix(in srgb,var(--a) 15%,white);color:#0864b7}.dayGame.B{background:color-mix(in srgb,var(--b) 18%,white);color:#b65d00}.dayCell.today{outline:2px solid var(--navy);outline-offset:-2px}.dayGame.A{border-left:3px solid var(--a)}.dayGame.B{border-left:3px solid var(--b)}.dayGame .gameTime{display:block;font-size:9px;font-weight:950}.dayGame .gameOpp{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dayGame .gameVenue{display:block;font-size:7px;opacity:.8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.month{font-size:17px;font-weight:950;margin:9px 2px 0;padding:8px 10px;border-radius:12px;background:var(--navy);color:#fff}
+.pdfFilterGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.pdfFilterBtn:not(.calChip){border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:12px;padding:11px 8px;font-size:12px;font-weight:900;cursor:pointer}.pdfFilterBtn:not(.calChip).active{background:var(--navy);border-color:var(--navy);color:#fff}.pdfFilterActions{display:flex;gap:8px;margin-top:14px}.pdfFilterActions button{flex:1}.pdfFilterHint{font-size:11px;color:var(--muted);margin-top:4px}.downloadCards{display:grid;gap:10px}.downloadCard{border:1px solid var(--border);background:#fff;border-radius:16px;padding:14px;text-align:left;display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:10px;cursor:pointer;box-shadow:0 4px 14px rgba(8,31,55,.05)}.downloadCard span{grid-row:1 / span 2;font-size:28px;display:grid;place-items:center}.downloadCard b{font-size:16px;color:var(--navy)}.downloadCard small{color:var(--muted);font-size:11px;margin-top:3px}.list{display:grid;gap:10px}.calendarWrap{background:#fff;border:1px solid var(--border);border-radius:18px;padding:10px;box-shadow:var(--shadow);overflow:hidden}.calendarHint{font-size:12px;color:var(--muted);text-align:center;margin:-3px 0 8px}.calendarMonthGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.calendarMonthGrid .dayCell{min-height:92px}.calendarNav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.calendarNav button{border:1px solid var(--border);background:#fff;border-radius:9px;padding:6px 9px;font-weight:900;cursor:pointer}.calendarTodayBtn{padding:6px 10px!important;background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important}.calendarNavCenter{display:flex;align-items:center;gap:6px}.calendarTitle{font-size:16px;font-weight:950}.calendarGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.weekday{font-size:12px;color:var(--muted);font-weight:900;text-align:center;padding:4px 0}.dayCell{min-height:72px;border:1px solid #e5edf5;border-radius:9px;background:#fbfdff;padding:4px;cursor:pointer}.dayNum{font-size:12px;font-weight:900;color:var(--muted)}.dayGames{display:grid;gap:2px;margin-top:3px}.dayGame{font-size:11px;font-weight:950;border-radius:5px;padding:2px 3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.dayGame.A{background:color-mix(in srgb,var(--a) 15%,white);color:#0864b7}.dayGame.B{background:color-mix(in srgb,var(--b) 18%,white);color:#b65d00}.dayCell.today{outline:2px solid var(--navy);outline-offset:-2px}.dayGame.A{border-left:3px solid var(--a)}.dayGame.B{border-left:3px solid var(--b)}.dayGame .gameTime{display:block;font-size:11px;font-weight:950}.dayGame .gameOpp{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dayGame .gameVenue{display:block;font-size:11px;opacity:.8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.month{font-size:17px;font-weight:950;margin:9px 2px 0;padding:8px 10px;border-radius:12px;background:var(--navy);color:#fff}
 .card{--team:var(--a);background:#fff;border:1px solid var(--border);border-left:6px solid var(--team);border-radius:16px;padding:12px;box-shadow:0 4px 16px rgba(8,31,55,.06)}
 .card.teamB{--team:var(--b)}.top{display:flex;align-items:flex-start;gap:10px}.dateBlock{min-width:76px}.date{font-size:12px;color:var(--muted);font-weight:850}.time{font-size:17px;font-weight:950;margin-top:2px}
 .teamBadge{display:inline-flex;padding:4px 7px;border-radius:8px;font-size:11px;font-weight:950;margin-bottom:7px}
 .matchRow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;flex:1}.opponentLine{display:flex;align-items:center;gap:8px;font-weight:900;line-height:1.15}.opponentLogo{width:32px;height:32px;object-fit:contain;flex-shrink:0;border-radius:0;background:transparent}
-.homeaway{display:inline-block;margin-top:6px;font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px;background:#eef3f7;color:#526170}
+.homeaway{display:inline-block;margin-top:6px;font-size:12px;font-weight:900;padding:4px 7px;border-radius:999px;background:#eef3f7;color:#526170}
 .venue{font-size:11px;color:var(--muted);margin-top:6px}.cardActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.cardActions .action{font-size:11px;padding:7px 9px}
 .empty{padding:18px;border:1px dashed var(--border);border-radius:16px;background:#fff;color:var(--muted)}.infoCard{background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px;line-height:1.5}.infoLinks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.infoLink{display:block;text-align:center;text-decoration:none;padding:11px 10px}.teamALink{background:color-mix(in srgb,var(--a) 12%,white);color:var(--a)}.teamBLink{background:color-mix(in srgb,var(--b) 15%,white);color:#b65d00}
-.hockeyGameCard{margin-top:12px}.hockeyGameBtn{position:relative;overflow:hidden;width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;border:1px solid rgba(22,140,255,.28);border-radius:16px;background:linear-gradient(135deg,#061c34 0%,#0d4d7c 52%,#ff8a00 160%);color:#fff;text-align:left;cursor:pointer;box-shadow:0 10px 24px rgba(7,27,51,.18);transition:transform .18s ease,box-shadow .18s ease}.hockeyGameBtn:before{content:"";position:absolute;right:-35px;top:-55px;width:150px;height:150px;border:2px solid rgba(255,255,255,.16);border-radius:50%;box-shadow:0 0 0 18px rgba(255,255,255,.05),0 0 0 36px rgba(255,255,255,.04);pointer-events:none}.hockeyGameBtn:after{content:"";position:absolute;left:-30px;bottom:-36px;width:110px;height:55px;border-top:2px solid rgba(255,255,255,.12);border-radius:50%;transform:rotate(-12deg);pointer-events:none}.hockeyGameBtn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(7,27,51,.24)}.hockeyGameBtn:active{transform:translateY(1px)}.hockeyGameIcon{position:relative;z-index:1;display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:15px;background:rgba(255,255,255,.14);font-size:27px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}.hockeyGameCopy{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0;flex:1}.hockeyGameCopy strong{font-size:16px;line-height:1.1}.hockeyGameCopy small{margin-top:4px;font-size:11px;color:rgba(255,255,255,.78)}.hockeyGameArrow{position:relative;z-index:1;font-size:32px;font-weight:300;line-height:1;opacity:.9}.hockeyGameModal{position:fixed;inset:0;z-index:1000;background:rgba(6,24,42,.58);display:grid;place-items:center;padding:18px}.hockeyGameModal[hidden]{display:none}.hockeyGameBox{width:min(430px,100%);background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:0 20px 60px rgba(4,22,40,.28);overflow:hidden}.hockeyGameHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 16px;background:linear-gradient(135deg,#0b2c4a,#174d73);color:#fff}.hockeyGameTitle{font-size:20px;font-weight:950}.hockeyGameClose{border:0;background:rgba(255,255,255,.14);color:#fff;width:34px;height:34px;border-radius:50%;font-size:24px;cursor:pointer}.hockeyGameBody{padding:16px}.hockeyGameIntro{text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px}.hockeyScore{display:flex;justify-content:center;gap:18px;margin-bottom:12px;font-size:12px;font-weight:900}.hockeyScore b{font-size:18px}.hockeyRink{position:relative;border:2px solid #c8d8e7;border-radius:18px;padding:12px;background:linear-gradient(180deg,#fafdff,#eef7fc);box-shadow:inset 0 0 0 5px rgba(255,255,255,.55)}.hockeyRink:before{content:"";position:absolute;inset:12px;pointer-events:none;border:1px solid #d7e5f0;border-radius:14px}.hockeyBoard{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;z-index:1}.hockeyCell{aspect-ratio:1;border:2px solid #b7cada;background:#fff;border-radius:12px;color:var(--navy);font-size:38px;font-weight:950;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 7px rgba(8,31,55,.07)}.hockeyCell:hover:not(:disabled){background:#f2f8fd}.hockeyCell:disabled{cursor:default}.hockeyCell.player{color:#126fbc}.hockeyCell.cpu{color:#c96a00}.hockeyStatus{text-align:center;font-weight:950;margin:12px 0 10px;min-height:22px}.hockeyActions{display:flex;gap:8px}.hockeyActions .action{flex:1}.hockeyHint{text-align:center;color:var(--muted);font-size:10px;margin-top:8px}
+.hockeyGameCard{margin-top:12px}.hockeyGameBtn{position:relative;overflow:hidden;width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;border:1px solid rgba(22,140,255,.28);border-radius:16px;background:linear-gradient(135deg,#061c34 0%,#0d4d7c 52%,#ff8a00 160%);color:#fff;text-align:left;cursor:pointer;box-shadow:0 10px 24px rgba(7,27,51,.18);transition:transform .18s ease,box-shadow .18s ease}.hockeyGameBtn:before{content:"";position:absolute;right:-35px;top:-55px;width:150px;height:150px;border:2px solid rgba(255,255,255,.16);border-radius:50%;box-shadow:0 0 0 18px rgba(255,255,255,.05),0 0 0 36px rgba(255,255,255,.04);pointer-events:none}.hockeyGameBtn:after{content:"";position:absolute;left:-30px;bottom:-36px;width:110px;height:55px;border-top:2px solid rgba(255,255,255,.12);border-radius:50%;transform:rotate(-12deg);pointer-events:none}.hockeyGameBtn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(7,27,51,.24)}.hockeyGameBtn:active{transform:translateY(1px)}.hockeyGameIcon{position:relative;z-index:1;display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:15px;background:rgba(255,255,255,.14);font-size:27px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}.hockeyGameCopy{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0;flex:1}.hockeyGameCopy strong{font-size:16px;line-height:1.1}.hockeyGameCopy small{margin-top:4px;font-size:11px;color:rgba(255,255,255,.78)}.hockeyGameArrow{position:relative;z-index:1;font-size:32px;font-weight:300;line-height:1;opacity:.9}.hockeyGameModal{position:fixed;inset:0;z-index:1000;background:rgba(6,24,42,.58);display:grid;place-items:center;padding:18px}.hockeyGameModal[hidden]{display:none}.hockeyGameBox{width:min(430px,100%);background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:0 20px 60px rgba(4,22,40,.28);overflow:hidden}.hockeyGameHead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 16px;background:linear-gradient(135deg,#0b2c4a,#174d73);color:#fff}.hockeyGameTitle{font-size:20px;font-weight:950}.hockeyGameClose{border:0;background:rgba(255,255,255,.14);color:#fff;width:34px;height:34px;border-radius:50%;font-size:24px;cursor:pointer}.hockeyGameBody{padding:16px}.hockeyGameIntro{text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px}.hockeyScore{display:flex;justify-content:center;gap:18px;margin-bottom:12px;font-size:12px;font-weight:900}.hockeyScore b{font-size:18px}.hockeyRink{position:relative;border:2px solid #c8d8e7;border-radius:18px;padding:12px;background:linear-gradient(180deg,#fafdff,#eef7fc);box-shadow:inset 0 0 0 5px rgba(255,255,255,.55)}.hockeyRink:before{content:"";position:absolute;inset:12px;pointer-events:none;border:1px solid #d7e5f0;border-radius:14px}.hockeyBoard{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;z-index:1}.hockeyCell{aspect-ratio:1;border:2px solid #b7cada;background:#fff;border-radius:12px;color:var(--navy);font-size:38px;font-weight:950;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 7px rgba(8,31,55,.07)}.hockeyCell:hover:not(:disabled){background:#f2f8fd}.hockeyCell:disabled{cursor:default}.hockeyCell.player{color:#126fbc}.hockeyCell.cpu{color:#c96a00}.hockeyStatus{text-align:center;font-weight:950;margin:12px 0 10px;min-height:22px}.hockeyActions{display:flex;gap:8px}.hockeyActions .action{flex:1}.hockeyHint{text-align:center;color:var(--muted);font-size:12px;margin-top:8px}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:18px}
 .resultOutcome{font-weight:950}.resultOutcome.sieg{color:#16833b}.resultOutcome.niederlage{color:#c62828}.resultOutcome.unentschieden{color:#a66a00}
-.resultBadge{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:5px 8px;border-radius:8px;background:#e9f7ee;color:#19733d;font-size:10px;font-weight:900}.resultBadge strong{font-size:14px}
-.adminAccessCard{overflow:hidden;background:linear-gradient(135deg,#f7fbff,#fff)}.adminOpenButton{position:relative;overflow:hidden;width:100%;display:flex;align-items:center;gap:12px;border:1px solid #cbdced;border-radius:16px;padding:14px 15px;background:linear-gradient(135deg,#071b33,#174d73);color:#fff;text-align:left;cursor:pointer;box-shadow:0 8px 20px rgba(7,27,51,.14);transition:transform .18s ease,box-shadow .18s ease}.adminOpenButton:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(7,27,51,.2)}.adminOpenIcon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.13);font-size:22px}.adminOpenCopy{display:flex;flex-direction:column;flex:1}.adminOpenCopy strong{font-size:15px}.adminOpenCopy small{margin-top:3px;color:rgba(255,255,255,.72);font-size:10px;line-height:1.35}.adminOpenArrow{font-size:30px;font-weight:300}.adminModal{position:fixed;inset:0;z-index:1100;background:rgba(7,27,51,.66);display:flex;align-items:flex-end;justify-content:center;padding:10px}.adminModal[hidden]{display:none}.adminBox{width:min(720px,100%);background:#f8fbff;border:1px solid #bcd0e3;border-radius:24px 24px 14px 14px;box-shadow:0 22px 65px rgba(0,0,0,.3);padding:16px;max-height:92vh;overflow:auto}.adminModalHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 2px 10px}.adminModalTitle{font-size:20px;font-weight:950;color:var(--navy)}.adminModalClose{width:42px;height:42px;border:1px solid var(--border);background:#fff;border-radius:12px;font-size:25px;cursor:pointer}.adminModal .adminAccordion:first-of-type{margin-top:12px}.adminModal .adminResults{max-height:45vh}.adminModal .adminSchedule{max-height:48vh}
+.resultBadge{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:5px 8px;border-radius:8px;background:#e9f7ee;color:#19733d;font-size:12px;font-weight:900}.resultBadge strong{font-size:14px}
+.adminAccessCard{overflow:hidden;background:linear-gradient(135deg,#f7fbff,#fff)}.adminOpenButton{position:relative;overflow:hidden;width:100%;display:flex;align-items:center;gap:12px;border:1px solid #cbdced;border-radius:16px;padding:14px 15px;background:linear-gradient(135deg,#071b33,#174d73);color:#fff;text-align:left;cursor:pointer;box-shadow:0 8px 20px rgba(7,27,51,.14);transition:transform .18s ease,box-shadow .18s ease}.adminOpenButton:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(7,27,51,.2)}.adminOpenIcon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.13);font-size:22px}.adminOpenCopy{display:flex;flex-direction:column;flex:1}.adminOpenCopy strong{font-size:15px}.adminOpenCopy small{margin-top:3px;color:rgba(255,255,255,.72);font-size:12px;line-height:1.35}.adminOpenArrow{font-size:30px;font-weight:300}.adminModal{position:fixed;inset:0;z-index:1100;background:rgba(7,27,51,.66);display:flex;align-items:flex-end;justify-content:center;padding:10px}.adminModal[hidden]{display:none}.adminBox{width:min(720px,100%);background:#f8fbff;border:1px solid #bcd0e3;border-radius:24px 24px 14px 14px;box-shadow:0 22px 65px rgba(0,0,0,.3);padding:16px;max-height:92vh;overflow:auto}.adminModalHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 2px 10px}.adminModalTitle{font-size:20px;font-weight:950;color:var(--navy)}.adminModalClose{width:42px;height:42px;border:1px solid var(--border);background:#fff;border-radius:12px;font-size:25px;cursor:pointer}.adminModal .adminAccordion:first-of-type{margin-top:12px}.adminModal .adminResults{max-height:45vh}.adminModal .adminSchedule{max-height:48vh}
 html.dark .adminAccordion.open .adminAccordionHeader{background:rgba(255,255,255,.07)}
 .apRow{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--border);font-size:13px;line-height:1.35}.apRow:first-of-type{border-top:0}.apRow i{flex:0 0 20px;font-style:normal;font-weight:900;text-align:center}.apRow.ok i{color:#1a9c4b}.apRow.bad i{color:#d6342c}.apRow.warn i{color:#d98a00}.apRow b{display:block}.apRow span{display:block;font-size:12px;color:var(--muted)}.apVerdict{border-radius:12px;padding:10px 12px;font-weight:800;font-size:13px;margin-bottom:6px}.apVerdict.ok{background:#dff3e6;color:#12733a}.apVerdict.bad{background:#fbe3e1;color:#b3261e}.apVerdict.warn{background:#fcefd4;color:#8a5a00}.apBtns{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.apResult{margin-top:9px;font-size:12.5px;line-height:1.45}
-.adminAccordion{border:1px solid var(--border);border-radius:16px;background:#fff;overflow:hidden;margin-top:10px}.adminAccordionHeader{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;background:#fff;color:var(--text);padding:14px 15px;font-weight:950;text-align:left;cursor:pointer}.adminAccordionHeader .chevron{font-size:18px;transition:transform .18s ease}.adminAccordion.open .adminAccordionHeader{background:#f6fbff}.adminAccordion.open .chevron{transform:rotate(180deg)}.adminAccordionBody{display:none;padding:0 12px 12px}.adminAccordion.open .adminAccordionBody{display:block}.adminResults{display:grid;gap:8px;max-height:55vh;overflow:auto}.adminGame{border:1px solid var(--border);border-radius:13px;padding:10px;background:#fbfdff}.adminGameHead{display:grid;gap:3px}.adminScore{display:flex;align-items:center;gap:6px;margin-top:8px}.adminScore input{width:58px;padding:8px;border:1px solid var(--border);border-radius:9px;font-weight:900;text-align:center}.adminSchedule{display:grid;gap:8px;max-height:65vh;overflow:auto}.adminScheduleGame{border:1px solid var(--border);border-radius:13px;padding:10px;background:#fbfdff}.adminScheduleGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.adminScheduleGrid label{font-size:10px;font-weight:900;color:var(--muted)}.adminScheduleGrid input,.adminScheduleGrid select{width:100%;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff;font:inherit}.adminScheduleActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.adminScheduleActions .action{font-size:11px;padding:8px 9px}.adminPushStats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.adminAppStats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.adminPushStat{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fbfdff}.adminPushStat b{display:block;font-size:20px;line-height:1.1;margin-top:3px}.adminPushStat .small{font-size:10px}.scheduleChanged{display:inline-block;margin-left:5px;padding:3px 6px;border-radius:7px;background:#fff1df;color:#b65d00;font-size:10px;font-weight:900}.adminScore .action{padding:8px 9px;font-size:11px}.bugReportCard{margin-top:12px;border:1px solid #d8e4ef;background:linear-gradient(135deg,#f8fbff,#fff);border-radius:16px;padding:12px}.bugReportButton{width:100%;display:flex;align-items:center;gap:11px;justify-content:flex-start;text-align:left}.bugReportButton span:first-child{font-size:22px}.bugReportButton strong{display:block;font-size:14px}.bugReportButton small{display:block;color:var(--muted);margin-top:2px}.bugReportModal{position:fixed;inset:0;background:rgba(7,27,51,.58);display:flex;align-items:flex-end;justify-content:center;padding:12px;z-index:60}.bugReportModal[hidden]{display:none}.bugReportBox{width:min(560px,100%);background:#fff;border-radius:22px 22px 16px 16px;box-shadow:0 18px 55px rgba(0,0,0,.25);padding:18px;max-height:90vh;overflow:auto}.bugReportGrid{display:grid;gap:9px;margin-top:12px}.bugReportGrid label{font-size:13px;font-weight:900;color:var(--muted)}.bugReportGrid select,.bugReportGrid textarea,.bugReportGrid input{width:100%;box-sizing:border-box;padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit}.bugReportGrid textarea{min-height:140px;resize:vertical;font-size:16px;line-height:1.5}.bugReportActions{display:flex;gap:8px;margin-top:12px}.bugReportActions .action{flex:1}.bugReportMeta{font-size:10px;color:var(--muted);margin-top:8px}.adminBugBadge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--b);color:#fff;font-size:11px}.adminBugItem{border:1px solid var(--border);border-radius:13px;padding:10px;background:#fbfdff}.adminBugHead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.adminBugStatus{font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px;background:#eef3f7;white-space:nowrap}.adminBugStatus.neu{background:#fff1df;color:#b65d00}.adminBugStatus.inarbeit{background:#e9f2ff;color:#126fbc}.adminBugStatus.erledigt{background:#e9f7ee;color:#19733d}.adminBugDesc{white-space:pre-wrap;margin-top:8px;line-height:1.45}.adminBugMeta{font-size:10px;color:var(--muted);margin-top:7px}.adminBugActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.adminBugActions .action{font-size:11px;padding:8px 9px}.adminBugItem.archived{opacity:.72;background:#f5f6f7}.adminBugArchivedBadge{display:inline-block;margin-left:5px;padding:3px 6px;border-radius:999px;background:#eceff1;color:#59636d;font-size:9px;font-weight:900}.adminBugDelete{background:#fff0f0!important;color:#b3261e!important;border-color:#efc2c0!important}
+.adminAccordion{border:1px solid var(--border);border-radius:16px;background:#fff;overflow:hidden;margin-top:10px}.adminAccordionHeader{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;background:#fff;color:var(--text);padding:14px 15px;font-weight:950;text-align:left;cursor:pointer}.adminAccordionHeader .chevron{font-size:18px;transition:transform .18s ease}.adminAccordion.open .adminAccordionHeader{background:#f6fbff}.adminAccordion.open .chevron{transform:rotate(180deg)}.adminAccordionBody{display:none;padding:0 12px 12px}.adminAccordion.open .adminAccordionBody{display:block}.adminResults{display:grid;gap:8px;max-height:55vh;overflow:auto}.adminGame{border:1px solid var(--border);border-radius:13px;padding:10px;background:#fbfdff}.adminGameHead{display:grid;gap:3px}.adminScore{display:flex;align-items:center;gap:6px;margin-top:8px}.adminScore input{width:58px;padding:8px;border:1px solid var(--border);border-radius:9px;font-weight:900;text-align:center}.adminSchedule{display:grid;gap:8px;max-height:65vh;overflow:auto}.adminScheduleGame{border:1px solid var(--border);border-radius:13px;padding:10px;background:#fbfdff}.adminScheduleGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.adminScheduleGrid label{font-size:12px;font-weight:900;color:var(--muted)}.adminScheduleGrid input,.adminScheduleGrid select{width:100%;padding:8px;border:1px solid var(--border);border-radius:9px;background:#fff;font:inherit}.adminScheduleActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.adminScheduleActions .action{font-size:11px;padding:8px 9px}.adminPushStats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.adminAppStats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.adminPushStat{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fbfdff}.adminPushStat b{display:block;font-size:20px;line-height:1.1;margin-top:3px}.adminPushStat .small{font-size:12px}.scheduleChanged{display:inline-block;margin-left:5px;padding:3px 6px;border-radius:7px;background:#fff1df;color:#b65d00;font-size:12px;font-weight:900}.adminScore .action{padding:8px 9px;font-size:11px}.bugReportCard{margin-top:12px;border:1px solid #d8e4ef;background:linear-gradient(135deg,#f8fbff,#fff);border-radius:16px;padding:12px}.bugReportButton{width:100%;display:flex;align-items:center;gap:11px;justify-content:flex-start;text-align:left}.bugReportButton span:first-child{font-size:22px}.bugReportButton strong{display:block;font-size:14px}.bugReportButton small{display:block;color:var(--muted);margin-top:2px}.bugReportModal{position:fixed;inset:0;background:rgba(7,27,51,.58);display:flex;align-items:flex-end;justify-content:center;padding:12px;z-index:60}.bugReportModal[hidden]{display:none}.bugReportBox{width:min(560px,100%);background:#fff;border-radius:22px 22px 16px 16px;box-shadow:0 18px 55px rgba(0,0,0,.25);padding:18px;max-height:90vh;overflow:auto}.bugReportGrid{display:grid;gap:9px;margin-top:12px}.bugReportGrid label{font-size:13px;font-weight:900;color:var(--muted)}.bugReportGrid select,.bugReportGrid textarea,.bugReportGrid input{width:100%;box-sizing:border-box;padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit}.bugReportGrid textarea{min-height:140px;resize:vertical;font-size:16px;line-height:1.5}.bugReportActions{display:flex;gap:8px;margin-top:12px}.bugReportActions .action{flex:1}.bugReportMeta{font-size:12px;color:var(--muted);margin-top:8px}.adminBugBadge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--b);color:#fff;font-size:11px}.adminBugItem{border:1px solid var(--border);border-radius:13px;padding:10px;background:#fbfdff}.adminBugHead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.adminBugStatus{font-size:12px;font-weight:900;padding:4px 7px;border-radius:999px;background:#eef3f7;white-space:nowrap}.adminBugStatus.neu{background:#fff1df;color:#b65d00}.adminBugStatus.inarbeit{background:#e9f2ff;color:#126fbc}.adminBugStatus.erledigt{background:#e9f7ee;color:#19733d}.adminBugDesc{white-space:pre-wrap;margin-top:8px;line-height:1.45}.adminBugMeta{font-size:12px;color:var(--muted);margin-top:7px}.adminBugActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.adminBugActions .action{font-size:11px;padding:8px 9px}.adminBugItem.archived{opacity:.72;background:#f5f6f7}.adminBugArchivedBadge{display:inline-block;margin-left:5px;padding:3px 6px;border-radius:999px;background:#eceff1;color:#59636d;font-size:11px;font-weight:900}.adminBugDelete{background:#fff0f0!important;color:#b3261e!important;border-color:#efc2c0!important}
 
 @media(max-width:520px){.teamCards{grid-template-columns:1fr}.match{grid-template-columns:1fr auto 1fr}.teamSideName{font-size:13px}}
 
@@ -143,7 +147,7 @@ html.dark .adminAccordion.open .adminAccordionHeader{background:rgba(255,255,255
 }
 
 
-.analyticsStat{padding:10px;border:1px solid var(--border);border-radius:12px;background:#fff}.analyticsStat b{display:block;font-size:22px}.analyticsStat span{font-size:12px;color:#667085}.analyticsList{display:grid;gap:6px;margin-top:8px}.analyticsRow{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #edf2f7}.analyticsRow:last-child{border-bottom:0}.analyticsBar{height:8px;border-radius:99px;background:#dbe8f5;overflow:hidden;margin-top:3px}.analyticsBar i{display:block;height:100%;background:#0864b7;border-radius:99px}.analyticsChart{display:flex;align-items:flex-end;gap:3px;height:130px;padding:8px 2px 0}.analyticsCol{flex:1;min-width:2px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.analyticsCol i{display:block;width:100%;max-width:16px;background:#0864b7;border-radius:4px 4px 0 0;min-height:2px}.analyticsCol small{font-size:8px;color:#667085;margin-top:3px;white-space:nowrap}.analyticsError{color:#b42318;font-weight:800}
+.analyticsStat{padding:10px;border:1px solid var(--border);border-radius:12px;background:#fff}.analyticsStat b{display:block;font-size:22px}.analyticsStat span{font-size:12px;color:#667085}.analyticsList{display:grid;gap:6px;margin-top:8px}.analyticsRow{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #edf2f7}.analyticsRow:last-child{border-bottom:0}.analyticsBar{height:8px;border-radius:99px;background:#dbe8f5;overflow:hidden;margin-top:3px}.analyticsBar i{display:block;height:100%;background:#0864b7;border-radius:99px}.analyticsChart{display:flex;align-items:flex-end;gap:3px;height:130px;padding:8px 2px 0}.analyticsCol{flex:1;min-width:2px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.analyticsCol i{display:block;width:100%;max-width:16px;background:#0864b7;border-radius:4px 4px 0 0;min-height:2px}.analyticsCol small{font-size:11px;color:#667085;margin-top:3px;white-space:nowrap}.analyticsError{color:#b42318;font-weight:800}
 .scheduleSticky{position:sticky;top:0;z-index:20;margin:0 -14px 12px;padding:calc(env(safe-area-inset-top,0px) + 8px) 14px 8px;background:rgba(247,251,255,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid rgba(216,228,239,.9)}
 .scheduleSticky .scheduleModes{margin:0 0 8px}.scheduleSticky .scheduleFilters{margin:0}
 .filterRow{display:flex;gap:8px}.filterRow .filterToggle{flex:1;min-width:0}
@@ -153,7 +157,7 @@ html.dark .adminAccordion.open .adminAccordionHeader{background:rgba(255,255,255
 @keyframes todayFlash{0%,100%{box-shadow:0 4px 16px rgba(8,31,55,.06)}30%,70%{box-shadow:0 0 0 3px var(--a),0 4px 16px rgba(8,31,55,.12)}}
 .card.todayFlash{animation:todayFlash 1.6s ease}
 .card.nextGame{box-shadow:0 0 0 2px var(--team),0 6px 20px rgba(8,31,55,.14)}
-.nextBadge{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:8px;background:var(--navy);color:#fff;font-size:10px;font-weight:950;line-height:1.2}
+.nextBadge{display:inline-block;margin-top:7px;padding:4px 7px;border-radius:8px;background:var(--navy);color:#fff;font-size:12px;font-weight:950;line-height:1.2}
 .updateBanner{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:736px;margin:0 auto;z-index:60;display:flex;align-items:center;gap:10px;background:var(--ice);border:1px solid color-mix(in srgb,var(--a) 35%,white);border-left:5px solid var(--a);border-radius:16px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);animation:updateBannerIn .35s ease-out}
 .updateBanner[hidden]{display:none}
 .updateBannerIcon{font-size:20px;line-height:1;color:var(--a);font-weight:900}
@@ -229,7 +233,7 @@ main>section{animation:viewIn .28s ease-out}
 .lastBody img{width:30px;height:30px;object-fit:contain}
 .lastScore{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:84px}
 .lastScore b{font-size:30px;font-weight:950;letter-spacing:.02em;line-height:1;color:var(--navy)}
-.lastPill{font-size:10.5px;font-weight:900;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.lastPill{font-size:12px;font-weight:900;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
 .lastPill.w{background:#e3f6ea;color:#16793f}.lastPill.l{background:#fde8e6;color:#b3322a}.lastPill.d{background:#fff3d6;color:#8a6200}.lastPill.none{background:#eef2f6;color:#667789;text-transform:none;letter-spacing:0}
 .lastFoot{margin-top:8px;text-align:center;font-size:11px;color:var(--muted)}
 .teamCard{position:relative;overflow:hidden;padding:14px 14px 12px;border:0;border-radius:20px;background:linear-gradient(135deg,color-mix(in srgb,var(--team) 13%,white),#fff 60%);box-shadow:0 8px 22px rgba(16,32,51,.09),inset 5px 0 0 var(--team)}
@@ -241,7 +245,7 @@ main>section{animation:viewIn .28s ease-out}
 .tcStats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
 .tcStats div{background:rgba(255,255,255,.8);border:1px solid color-mix(in srgb,var(--team) 16%,white);border-radius:12px;padding:6px 2px;text-align:center}
 .tcStats b{display:block;font-size:17px;font-weight:950;color:var(--navy);line-height:1.1}
-.tcStats span{font-size:10px;color:var(--muted);font-weight:700}
+.tcStats span{font-size:12px;color:var(--muted);font-weight:700}
 .tcProg{height:6px;border-radius:99px;background:color-mix(in srgb,var(--team) 16%,white);margin-top:12px;overflow:hidden}
 .tcProg i{display:block;height:100%;border-radius:99px;background:var(--team)}
 .tcProgTxt{font-size:11px;color:var(--muted);margin-top:4px;font-weight:700}
@@ -678,11 +682,11 @@ html.dark img.logo,html.dark .teamLogo,html.dark .oppLogo{background:#fff}
 .pushHead{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.pushHead b{font-size:16px}.pushHead span{font-size:12px;color:var(--muted);line-height:1.3}
 .pushState{font-size:11px;font-weight:900;letter-spacing:.04em;padding:5px 10px;border-radius:999px;background:#e8eef5;color:#5d7087;white-space:nowrap}
 .pushPreview{margin:14px 0 4px;padding:12px;border-radius:16px;background:linear-gradient(160deg,#0b2c4a,#12507a);position:relative}
-.pushLabel{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#9cc4e6;margin-bottom:8px}
+.pushLabel{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#9cc4e6;margin-bottom:8px}
 .pushMsg{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:13px;background:rgba(255,255,255,.94);box-shadow:0 6px 14px rgba(0,0,0,.25);animation:pushIn .6s cubic-bezier(.2,1.2,.4,1) both}
 .pushMsg+.pushMsg{margin-top:7px;margin-left:12px;animation-delay:.5s}
 .pmIcon{flex:0 0 30px;width:30px;height:30px;border-radius:8px;overflow:hidden;background:#071b33;display:grid;place-items:center}.pmIcon img{width:100%;height:100%;object-fit:cover}
-.pmText{display:flex;flex-direction:column;min-width:0;color:#102033;font-size:12px;line-height:1.3}.pmText b{font-size:12.5px;color:#102033}.pmApp{font-size:10px;color:#667789}
+.pmText{display:flex;flex-direction:column;min-width:0;color:#102033;font-size:12px;line-height:1.3}.pmText b{font-size:12.5px;color:#102033}.pmApp{font-size:12px;color:#667789}
 .pushList{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:7px}
 .pushList li{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.35}.pushList i{flex:0 0 20px;width:20px;height:20px;border-radius:50%;background:#e1f5e8;color:#1b8a45;font-style:normal;font-weight:900;font-size:12px;display:grid;place-items:center;margin-top:1px}
 .pushBtn{width:100%;justify-content:center;margin-top:14px;padding:13px 14px;font-size:15px;font-weight:900;background:linear-gradient(135deg,#168cff,#0b5fb8);color:#fff;border:0;box-shadow:0 8px 18px rgba(22,140,255,.35)}
@@ -781,7 +785,7 @@ html.dark .pfTeams{border-color:#2b4a74}html.dark .pfChip span{background:#18304
 .fbHead{display:flex;flex-direction:column;gap:2px}.fbHead b{font-size:16px}.fbHead span{font-size:12px;color:var(--muted);line-height:1.3}
 .fbTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 12px}
 .fbTile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;border-radius:16px;border:1.5px solid var(--border);background:#fff;color:var(--text);cursor:pointer;font:inherit;transition:transform .15s,box-shadow .15s}
-.fbTile i{font-style:normal;font-size:26px;line-height:1.1}.fbTile b{font-size:13px}.fbTile small{font-size:10.5px;color:var(--muted);text-align:center;line-height:1.2}
+.fbTile i{font-style:normal;font-size:26px;line-height:1.1}.fbTile b{font-size:13px}.fbTile small{font-size:12px;color:var(--muted);text-align:center;line-height:1.2}
 .fbTile:active{transform:scale(.96)}.fbTile.t1{border-color:#f3c4c0}.fbTile.t2{border-color:#f6dc9a}.fbTile.t3{border-color:#b9e3c7}
 .fbTile.t1:hover{box-shadow:0 6px 14px rgba(226,59,46,.18)}.fbTile.t2:hover{box-shadow:0 6px 14px rgba(255,170,0,.22)}.fbTile.t3:hover{box-shadow:0 6px 14px rgba(37,168,90,.2)}
 .fbMain{width:100%}.fbMain small{font-weight:600;color:var(--muted);display:block;margin-top:2px}.fbMain strong{display:block}
@@ -793,9 +797,12 @@ html.dark .pfTeams{border-color:#2b4a74}html.dark .pfChip span{background:#18304
 .fbSeg button[data-fb="Fehler"].on{box-shadow:0 0 0 2px #e23b2e inset}.fbSeg button[data-fb^="Wunsch"].on{box-shadow:0 0 0 2px #f0a800 inset}.fbSeg button[data-fb="Lob"].on{box-shadow:0 0 0 2px #25a85a inset}
 .fbHiddenSel{display:none}
 .bugReportGrid label{position:relative}
+.fbError{margin-top:12px;padding:10px 12px;border-radius:12px;background:#fdecea;border:1px solid #f3c1bd;color:#9b1c14;font-size:13px;font-weight:700;line-height:1.4}.fbError[hidden]{display:none}
+.adminBugSent{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.adminBugSent span{font-size:12px;font-weight:900;padding:4px 8px;border-radius:999px}.adminBugSent .ok{background:#e9f7ee;color:#19733d}.adminBugSent .wait{background:#eef3f7;color:#59636d}.adminBugSent .fail{background:#fdecea;color:#b3261e}
+html.dark .fbError{background:#3a1512;border-color:#6b2620;color:#ffb4ab}html.dark .adminBugSent .ok{background:#123522;color:#8fe0ab}html.dark .adminBugSent .wait{background:#1d2b3f;color:#a9b8c9}html.dark .adminBugSent .fail{background:#3a1512;color:#ffb4ab}
 .bugReportGrid input,.bugReportGrid select,.bugReportGrid textarea{border-radius:12px!important;border:1.5px solid var(--border)!important;transition:border-color .15s,box-shadow .15s}
 .bugReportGrid input:focus,.bugReportGrid select:focus,.bugReportGrid textarea:focus{outline:0;border-color:#168cff!important;box-shadow:0 0 0 3px rgba(22,140,255,.18)}
-.fbCount{display:block;text-align:right;font-size:10.5px;color:var(--muted);margin-top:3px;font-weight:700}
+.fbCount{display:block;text-align:right;font-size:12px;color:var(--muted);margin-top:3px;font-weight:700}
 .fbLock{margin-right:2px}
 .bugReportActions .fbSend{background:linear-gradient(135deg,#168cff,#0b5fb8);color:#fff;border:0;box-shadow:0 8px 18px rgba(22,140,255,.32);font-weight:900}
 .bugReportBox .matchModalHead{padding-bottom:10px;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,#168cff 50%,#ff8a00 50%) 1;margin-bottom:12px}
@@ -811,8 +818,8 @@ html.dark .bugReportGrid input,html.dark .bugReportGrid select,html.dark .bugRep
 .hw .fbBubble{background:linear-gradient(135deg,#ff7a00,#b34700)}
 .hw .fbSeg{background:#1c0d05;border-color:#5a2d0a}.hw .fbSeg button{color:#ffd2a1}.hw .fbSeg button.on{background:#ff7a00;color:#1c0d05}
 /* Tabellenstand (EHV NRW) – kleiner Chip bei Paarungen und Gegnern */
-.gzStand{display:flex;align-items:center;gap:5px;width:fit-content;max-width:100%;margin:5px auto 0;padding:2px 8px 2px 2px;border-radius:999px;border:1px solid rgba(16,32,51,.10);background:rgba(16,32,51,.045);font-size:10px;font-weight:700;line-height:1.3;letter-spacing:.01em;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-.gzStand b{display:inline-block;min-width:17px;padding:1px 6px;border-radius:999px;background:var(--navy2);color:#fff;font-weight:900;font-size:9.5px;text-align:center}
+.gzStand{display:flex;align-items:center;gap:5px;width:fit-content;max-width:100%;margin:5px auto 0;padding:2px 8px 2px 2px;border-radius:999px;border:1px solid rgba(16,32,51,.10);background:rgba(16,32,51,.045);font-size:12px;font-weight:700;line-height:1.3;letter-spacing:.01em;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.gzStand b{display:inline-block;min-width:17px;padding:1px 6px;border-radius:999px;background:var(--navy2);color:#fff;font-weight:900;font-size:11px;text-align:center}
 .gzStand.none{padding:2px 8px;border-style:dashed;background:transparent;font-weight:600}
 .gcSide .gzStand{margin-top:-1px}
 [data-team="A"] .gzStand b{background:var(--a)}
@@ -821,7 +828,7 @@ html.dark .gzStand{border-color:rgba(255,255,255,.14);background:rgba(255,255,25
 html.dark .gzStand b,html.dark .card .gzStand b{color:#fff;opacity:1}
 html.dark [data-team="B"] .gzStand b{color:#3a1d00}
 .hw .hwGameCard .gzStand{border-color:rgba(255,122,0,.35);background:rgba(255,122,0,.10);color:#ffe9d2}
-.gzStandNote{margin:12px 2px 0;font-size:10.5px;color:var(--muted);text-align:center}
+.gzStandNote{margin:12px 2px 0;font-size:12px;color:var(--muted);text-align:center}
 .hw .gzStandNote{color:#c9a98a}
 /* Neue Spielkachel im Spielplan */
 .card.gz2 .gcHead{margin-bottom:6px}
@@ -833,7 +840,7 @@ html.dark [data-team="B"] .gzStand b{color:#3a1d00}
 .card.gz2 .gcMatch{border-bottom:0;padding-bottom:4px}
 .gzMid{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px;align-self:center;text-align:center}
 .gzScore{font-size:26px;font-weight:950;line-height:1;letter-spacing:.01em;color:var(--text);font-variant-numeric:tabular-nums}
-.gzPer{font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.gzPer{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 .gzFoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
 .gzVenue{display:flex;align-items:center;gap:5px;min-width:0;font-size:12.5px;color:var(--text)}
 .gzVenue .ic{flex:none;width:15px;height:15px;color:#d6352b}
@@ -890,7 +897,7 @@ html.dark .card.gz2 .homeaway{background:rgba(255,255,255,.08);color:#c6d4e4}
 .card.gz3:focus-visible{outline:2px solid var(--team);outline-offset:2px}
 .mdCard.gz3{box-shadow:0 8px 24px rgba(16,32,51,.09)!important;cursor:default}
 .g3Top{display:grid;grid-template-columns:68px minmax(0,1fr)}
-.g3Date{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:10px 0;background:color-mix(in srgb,var(--team) 16%,transparent);color:var(--team);font-size:10.5px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
+.g3Date{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:10px 0;background:color-mix(in srgb,var(--team) 16%,transparent);color:var(--team);font-size:12px;font-weight:850;letter-spacing:.07em;text-transform:uppercase}
 .g3Date b{font-size:22px;font-weight:950;line-height:1.1;letter-spacing:0;color:var(--text)}
 .g3Date i{font-style:normal;margin-top:5px;font-size:13.5px;font-weight:950;letter-spacing:0;color:var(--text)}
 html.dark .g3Date b,html.dark .g3Date i{color:#fff}
@@ -914,7 +921,7 @@ html.dark .g3Tog{color:#5fb0ff}
 .g3Pair .g3Tile{flex:1 1 0;min-width:0}
 .g3Tile{background:rgba(16,32,51,.05);border-radius:13px;padding:9px 11px}
 html.dark .g3Tile{background:rgba(255,255,255,.06)}
-.g3Tile small{display:block;font-size:9.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g3Tile small{display:block;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .g3Pl{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 7px;margin-top:3px;font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .g3Pl span{white-space:nowrap}
 .g3Pl b{font-size:21px;font-weight:950;line-height:1.15;color:var(--text)}
@@ -956,10 +963,10 @@ html.dark .newsBanner{background:#14233a}
 .newsBannerMain{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:11px 8px 11px 16px;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .newsBannerIc{font-size:20px;flex:none}
 .newsBannerTx{min-width:0;font-size:13px;font-weight:800;line-height:1.3;overflow-wrap:anywhere}
-.newsBannerTx small{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#e5322b;font-weight:900}
+.newsBannerTx small{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#e5322b;font-weight:900}
 .newsBannerMulti{flex:1;min-width:0;display:flex;flex-direction:column}
 .newsBannerMulti .newsBannerMain+.newsBannerMain{border-top:1px solid var(--border)}
-.g3VenuePast>div span{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.g3VenuePast>div span{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
 .newsBannerX{flex:none;width:42px;border:0;background:none;color:var(--muted);font-size:22px;cursor:pointer}
 .newsSec{margin-top:14px}
 .newsSecTitle{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 2px 8px}
@@ -969,9 +976,9 @@ html.dark .newsBanner{background:#14233a}
 html.dark .newsItem{background:rgba(255,255,255,.06)}
 .newsItem.newsChange{cursor:pointer}
 .newsItem.unread{background:color-mix(in srgb,#e5322b 9%,transparent)}
-.newsItem.unread .newsItemHead::after{content:"Neu";margin-left:6px;padding:1px 7px;border-radius:999px;background:#e5322b;color:#fff;font-size:10px;font-weight:900}
+.newsItem.unread .newsItemHead::after{content:"Neu";margin-left:6px;padding:1px 7px;border-radius:999px;background:#e5322b;color:#fff;font-size:12px;font-weight:900}
 .newsItemHead{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.newsItemHead .teamBadge{margin:0;padding:2px 8px;border-radius:99px;font-size:10.5px}
+.newsItemHead .teamBadge{margin:0;padding:2px 8px;border-radius:99px;font-size:12px}
 .newsItemHead .teamBadge.both{background:rgba(125,139,156,.18);color:var(--muted)}
 .newsDate{margin-left:auto;font-size:11px;color:var(--muted);font-weight:700}
 .newsItem b{display:block;font-size:14px;line-height:1.3}
@@ -1111,11 +1118,11 @@ html.gameday .heroChips .season.gdMulti{flex-direction:column;align-items:flex-s
 .admSec{font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:10px 2px 6px}
 .admRow{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:0;border-left:5px solid #1f7fd6;border-radius:14px;padding:8px 10px;margin-bottom:6px;box-shadow:0 2px 6px rgba(11,42,82,.07);font:inherit;color:var(--text);text-align:left;cursor:pointer}
 .admRow.teamB{border-left-color:#ff8a1f}
-.admD{flex:none;width:42px;text-align:center;line-height:1.05}.admD b{display:block;font-size:17px}.admD small{font-size:10px;color:var(--muted);font-weight:900}
+.admD{flex:none;width:42px;text-align:center;line-height:1.05}.admD b{display:block;font-size:17px}.admD small{font-size:12px;color:var(--muted);font-weight:900}
 .admM{flex:1;min-width:0}.admM b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.admM small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admSt{flex:none;font-size:11px;font-weight:900;padding:4px 8px;border-radius:99px;white-space:nowrap}
 .admSt.miss{background:#ffe3e1;color:#c0392b}.admSt.ok{background:#dff5e8;color:#1f7a45}.admSt.chg{background:#fff1d6;color:#a35c00}.admSt.up{background:#e6f1fc;color:#1f6fb8}.admSt.live{background:#1f7fd6;color:#fff}
-.admMod{display:inline-block;margin-left:5px;font-size:9.5px;font-weight:900;color:#a35c00;background:#fff1d6;border-radius:6px;padding:1px 5px;vertical-align:1px}
+.admMod{display:inline-block;margin-left:5px;font-size:11px;font-weight:900;color:#a35c00;background:#fff1d6;border-radius:6px;padding:1px 5px;vertical-align:1px}
 .admEmpty{font-size:13px;color:var(--muted);padding:10px 4px}
 .admEhv{background:#fff;border:1px solid var(--border);border-radius:16px;padding:10px 11px;margin-bottom:10px;font-size:13px}
 .admEhv.warn{border-color:#f2c14e;background:#fffaf0}
@@ -1124,7 +1131,7 @@ html.gameday .heroChips .season.gdMulti{flex-direction:column;align-items:flex-s
 .admLink{border:0;background:none;color:#1f6fb8;font:inherit;font-size:12.5px;font-weight:900;cursor:pointer;padding:4px 0;white-space:nowrap}
 .admDiff{border-top:1px solid var(--border);margin-top:9px;padding-top:9px}
 .admDiff .t{font-weight:900;font-size:13px}
-.admTags{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.admTags span{font-size:10.5px;font-weight:900;background:#fff1d6;color:#a35c00;border-radius:99px;padding:2px 8px}
+.admTags{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}.admTags span{font-size:12px;font-weight:900;background:#fff1d6;color:#a35c00;border-radius:99px;padding:2px 8px}
 .admCmp{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:12.5px;margin:4px 0 8px}.admCmp i{font-style:normal;font-weight:900;color:var(--muted)}
 .admCmp .ehv{color:#a35c00;font-weight:800}
 .admBtns{display:flex;gap:6px;flex-wrap:wrap}
@@ -1145,11 +1152,11 @@ html.gameday .heroChips .season.gdMulti{flex-direction:column;align-items:flex-s
 .admBox h5 .admSt{margin-left:auto}
 .admScore{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .admScore input{width:58px;height:44px;border-radius:12px;border:1.5px solid #c5d2df;text-align:center;font-size:22px;font-weight:900;color:var(--text);background:#fff}
-.admScore .lbl{font-size:10.5px;color:var(--muted);font-weight:800;text-align:center}
+.admScore .lbl{font-size:12px;color:var(--muted);font-weight:800;text-align:center}
 .admScore .admBtns{margin-left:auto}
 .admHint{font-size:12px;border-radius:10px;padding:7px 9px;margin-top:8px;background:#f1f4f8;color:#3c5674}
 .admHint.good{background:#dff5e8;color:#1f7a45}
-.admKv{display:grid;grid-template-columns:1fr 1fr;gap:6px}.admKv div{background:#f4f7fb;border-radius:10px;padding:7px 9px;font-size:12.5px;min-width:0;overflow-wrap:anywhere}.admKv small{display:block;color:var(--muted);font-size:10.5px;font-weight:900}
+.admKv{display:grid;grid-template-columns:1fr 1fr;gap:6px}.admKv div{background:#f4f7fb;border-radius:10px;padding:7px 9px;font-size:12.5px;min-width:0;overflow-wrap:anywhere}.admKv small{display:block;color:var(--muted);font-size:12px;font-weight:900}
 .admForm{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
 .admForm label{display:grid;gap:3px;font-size:11px;font-weight:900;color:var(--muted);min-width:0}
 .admForm input{width:100%;min-width:0;padding:9px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:13px;background:#fff;color:var(--text)}
@@ -1160,7 +1167,7 @@ html.gameday .heroChips .season.gdMulti{flex-direction:column;align-items:flex-s
 .admRepForm .full small{font-weight:700}
 .admRepUseWrap{display:grid;gap:5px}
 .admRepUseHead{font-size:11px;font-weight:900;color:var(--muted)}
-#admRepUse small{font-size:10.5px;font-weight:700;color:var(--muted)}
+#admRepUse small{font-size:12px;font-weight:700;color:var(--muted)}
 .admChips{display:flex;flex-wrap:wrap;gap:6px}
 .admChip{border:1.5px solid var(--border);background:transparent;color:var(--muted);border-radius:999px;padding:6px 10px;font:inherit;font-size:12px;font-weight:800;cursor:pointer;text-decoration:line-through;text-decoration-color:rgba(125,139,156,.6)}
 .admChip.on{background:color-mix(in srgb,#2e9e5b 14%,transparent);border-color:#2e9e5b;color:var(--text);text-decoration:none}
@@ -1178,7 +1185,7 @@ html.dark .mdReport{background:#14233a}
 .g3RepLink{display:flex;align-items:center;gap:9px;width:100%;margin-top:9px;padding:8px 10px;border:0;border-radius:12px;background:color-mix(in srgb,var(--team) 12%,transparent);color:inherit;font:inherit;text-align:left;cursor:pointer;box-shadow:inset 3px 0 0 var(--team)}
 .g3RepIc{flex:none;font-size:17px}
 .g3RepTx{flex:1;min-width:0;font-size:12.5px;font-weight:800;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.g3RepTx small{display:block;font-size:9.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.g3RepTx small{display:block;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
 .g3RepLink svg{flex:none;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
 .newsRepTx{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .admChg{--team:var(--a);box-shadow:inset 4px 0 0 var(--team)}.admChg[data-team=B]{--team:var(--b)}
@@ -1223,7 +1230,7 @@ html.dark .admSum{background:#1a2638;color:#93a7bd}html.dark .admSum.ok{backgrou
 .teamCard .tcSub{font-size:11.5px;white-space:nowrap}
 .teamCard .tcForm{margin-left:0;width:100%;order:3}
 .teamCard .tcProg{margin-top:8px;height:5px}
-.teamCard .tcProgTxt{font-size:10.5px}
+.teamCard .tcProgTxt{font-size:12px}
 .teamCard::after{font-size:70px!important}
 .pastToggle{display:flex;align-items:center;gap:8px;width:100%;margin:10px 0 2px;padding:11px 14px;border:1px dashed color-mix(in srgb,var(--muted) 45%,transparent);border-radius:14px;background:transparent;color:var(--muted);font:inherit;font-size:13.5px;font-weight:800;cursor:pointer}
 html.dark .pastToggle,.hw .pastToggle,.xm .pastToggle{background:rgba(10,20,38,.82);color:#dbe6f3;border-color:rgba(255,255,255,.3)}html.dark .pastToggle b,.hw .pastToggle b,.xm .pastToggle b{background:rgba(255,255,255,.14)}html.xm:not(.dark) .pastToggle{background:rgba(255,255,255,.88);color:#33506f;border-color:rgba(11,42,82,.3)}html.xm:not(.dark) .pastToggle b{background:rgba(11,42,82,.1)}
@@ -1530,7 +1537,7 @@ html.xm:not(.dark) footer{color:#3c5674!important;text-shadow:0 0 6px #fff,0 0 1
 html:not(.xm) .xmSleigh{display:none}
 .xm footer{color:#dbe7f5!important;text-shadow:0 1px 3px #000,0 0 10px rgba(0,0,0,.9)}
 @media(prefers-reduced-motion:reduce){.xmSleigh{display:none}.xm .card.gz3 .g3Top::after{animation:none}}
-.xmBadge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;background:rgba(215,38,61,.22);color:#ffd6db;font-size:10.5px;font-weight:900;white-space:nowrap}
+.xmBadge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:99px;background:rgba(215,38,61,.22);color:#ffd6db;font-size:12px;font-weight:900;white-space:nowrap}
 .xmAdv{position:relative;display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:22px 14px 14px;border-radius:18px;background:linear-gradient(135deg,#0f2a4d,#143a66);border:1px solid rgba(242,193,78,.45);color:#fff;font:inherit;text-align:left;cursor:pointer;overflow:hidden}
 .xmAdv[hidden]{display:none}
 .xmAdv::before{content:"";position:absolute;left:0;right:0;top:0;height:22px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22360%22%20height%3D%2224%22%20viewBox%3D%220%200%20360%2024%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23ffffff%22%2F%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%23f4f9ff%22%2F%3E%3Cstop%20offset%3D%22.85%22%20stop-color%3D%22%23dbe9f6%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23c3d7ea%22%2F%3E%3C%2FlinearGradient%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-5%25%22%20y%3D%22-20%25%22%20width%3D%22110%25%22%20height%3D%22160%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%221.3%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20fill%3D%22%233d5f85%22%20opacity%3D%22.45%22%20filter%3D%22url%28%23b%29%22%20transform%3D%22translate%280%202.2%29%22%3E%3Cpath%20d%3D%22M0%200H360%20V12.3%20Q354.0%2014.0%20348.0%2011.3%20Q342.0%2015.0%20336.0%2012.9%20Q330.0%2017.5%20324.0%2016.8%20Q318.0%2017.5%20312.0%2013.2%20Q306.0%2014.4%20300.0%2010.3%20Q294.0%2012.9%20288.0%209.7%20Q282.0%2013.2%20276.0%2011.5%20Q270.0%2017.4%20264.0%2016.0%20Q258.0%2018.3%20252.0%2013.1%20Q246.0%2017.4%20240.0%2015.6%20Q234.0%2017.0%20228.0%209.3%20Q222.0%2012.2%20216.0%206.5%20Q210.0%209.2%20204.0%206.6%20Q198.0%207.8%20192.0%206.2%20Q186.0%208.9%20180.0%206.6%20Q174.0%209.7%20168.0%207.6%20Q162.0%2013.3%20156.0%2010.2%20Q150.0%2012.9%20144.0%206.6%20Q138.0%208.0%20132.0%206.0%20Q126.0%209.4%20120.0%206.0%20Q114.0%2011.1%20108.0%2010.3%20Q102.0%2014.0%2096.0%2012.3%20Q90.0%2019.1%2084.0%2016.3%20Q78.0%2017.3%2072.0%2013.6%20Q66.0%2015.5%2060.0%2012.6%20Q54.0%2013.2%2048.0%2011.4%20Q42.0%2013.9%2036.0%209.2%20Q30.0%2016.1%2024.0%2013.3%20Q18.0%2015.6%2012.0%2012.3%20Q6.0%2015.5%200.0%2012.3Z%22%2F%3E%3Cellipse%20cx%3D%2241.0%22%20cy%3D%2210.5%22%20rx%3D%223.2%22%20ry%3D%222.6%22%2F%3E%3Cellipse%20cx%3D%22118.0%22%20cy%3D%227.0%22%20rx%3D%222.6%22%20ry%3D%222.1%22%2F%3E%3Cellipse%20cx%3D%22203.0%22%20cy%3D%228.0%22%20rx%3D%223.6%22%20ry%3D%222.9%22%2F%3E%3Cellipse%20cx%3D%22287.0%22%20cy%3D%2210.8%22%20rx%3D%222.8%22%20ry%3D%222.2%22%2F%3E%3Cellipse%20cx%3D%22331.0%22%20cy%3D%2213.8%22%20rx%3D%222.2%22%20ry%3D%221.8%22%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%22url%28%23g%29%22%3E%3Cpath%20d%3D%22M0%200H360%20V12.3%20Q354.0%2014.0%20348.0%2011.3%20Q342.0%2015.0%20336.0%2012.9%20Q330.0%2017.5%20324.0%2016.8%20Q318.0%2017.5%20312.0%2013.2%20Q306.0%2014.4%20300.0%2010.3%20Q294.0%2012.9%20288.0%209.7%20Q282.0%2013.2%20276.0%2011.5%20Q270.0%2017.4%20264.0%2016.0%20Q258.0%2018.3%20252.0%2013.1%20Q246.0%2017.4%20240.0%2015.6%20Q234.0%2017.0%20228.0%209.3%20Q222.0%2012.2%20216.0%206.5%20Q210.0%209.2%20204.0%206.6%20Q198.0%207.8%20192.0%206.2%20Q186.0%208.9%20180.0%206.6%20Q174.0%209.7%20168.0%207.6%20Q162.0%2013.3%20156.0%2010.2%20Q150.0%2012.9%20144.0%206.6%20Q138.0%208.0%20132.0%206.0%20Q126.0%209.4%20120.0%206.0%20Q114.0%2011.1%20108.0%2010.3%20Q102.0%2014.0%2096.0%2012.3%20Q90.0%2019.1%2084.0%2016.3%20Q78.0%2017.3%2072.0%2013.6%20Q66.0%2015.5%2060.0%2012.6%20Q54.0%2013.2%2048.0%2011.4%20Q42.0%2013.9%2036.0%209.2%20Q30.0%2016.1%2024.0%2013.3%20Q18.0%2015.6%2012.0%2012.3%20Q6.0%2015.5%200.0%2012.3Z%22%2F%3E%3Cellipse%20cx%3D%2241.0%22%20cy%3D%2210.5%22%20rx%3D%223.2%22%20ry%3D%222.6%22%2F%3E%3Cellipse%20cx%3D%22118.0%22%20cy%3D%227.0%22%20rx%3D%222.6%22%20ry%3D%222.1%22%2F%3E%3Cellipse%20cx%3D%22203.0%22%20cy%3D%228.0%22%20rx%3D%223.6%22%20ry%3D%222.9%22%2F%3E%3Cellipse%20cx%3D%22287.0%22%20cy%3D%2210.8%22%20rx%3D%222.8%22%20ry%3D%222.2%22%2F%3E%3Cellipse%20cx%3D%22331.0%22%20cy%3D%2213.8%22%20rx%3D%222.2%22%20ry%3D%221.8%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M0%202.6C60%201.6%20120%203.4%20180%202.4S300%201.8%20360%202.6%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.4%22%20opacity%3D%22.95%22%2F%3E%3Cg%20fill%3D%22%23fff%22%20opacity%3D%22.95%22%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%224.0%22%20r%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22258%22%20cy%3D%225.5%22%20r%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%2251%22%20cy%3D%227.7%22%20r%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%22344%22%20cy%3D%222.4%22%20r%3D%220.9%22%2F%3E%3Ccircle%20cx%3D%22162%22%20cy%3D%225.9%22%20r%3D%221.1%22%2F%3E%3Ccircle%20cx%3D%22232%22%20cy%3D%223.7%22%20r%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22346%22%20cy%3D%224.1%22%20r%3D%221.1%22%2F%3E%3Ccircle%20cx%3D%22185%22%20cy%3D%223.0%22%20r%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%2234%22%20cy%3D%223.3%22%20r%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%224.4%22%20r%3D%221.1%22%2F%3E%3Ccircle%20cx%3D%22258%22%20cy%3D%222.5%22%20r%3D%220.8%22%2F%3E%3Ccircle%20cx%3D%22285%22%20cy%3D%223.7%22%20r%3D%220.6%22%2F%3E%3Ccircle%20cx%3D%22224%22%20cy%3D%227.2%22%20r%3D%220.7%22%2F%3E%3Ccircle%20cx%3D%22216%22%20cy%3D%227.9%22%20r%3D%220.9%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 0 0/360px 24px repeat-x;filter:drop-shadow(0 1px 1px rgba(0,10,30,.25));background-position:-90px 0}
@@ -1548,7 +1555,7 @@ html:not(.xm) .xmSleigh{display:none}
 .xmD.w2{grid-column:span 2}.xmD.big{grid-column:span 2;grid-row:span 2;font-size:30px}
 .xmD{position:relative;min-height:64px;border-radius:10px;-webkit-text-stroke:.6px rgba(0,20,50,.6);display:grid;place-items:center;align-content:center;font:inherit;font-weight:950;font-size:21px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);border:1.5px solid rgba(255,255,255,.6);background:rgba(10,32,66,.22);box-shadow:inset 0 0 0 3px rgba(255,255,255,.08);cursor:pointer}
 .xmD::after{content:"";position:absolute;right:7px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:rgba(255,255,255,.7)}
-.xmD small{display:block;font-size:10px;font-weight:800;opacity:.75;margin-top:2px}
+.xmD small{display:block;font-size:12px;font-weight:800;opacity:.75;margin-top:2px}
 .xmD.locked{background:rgba(8,22,46,.38)}
 .xmD.today{background:linear-gradient(160deg,rgba(242,193,78,.95),rgba(201,149,43,.95));color:#3b2604;text-shadow:none;border-color:#fff3c4;box-shadow:0 0 22px rgba(242,193,78,.85)}
 .xmD.done{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border:1.5px dashed rgba(255,255,255,.5);box-shadow:none;align-content:end;justify-items:end;padding:4px 6px}
@@ -1592,7 +1599,7 @@ html.dark .instaCap textarea{background:#0f1c2f;border-color:rgba(255,255,255,.1
 /* Schulferien NRW in der Kalenderansicht */
 .dayCell.ferien{background:#eaf7ef;border-color:#b9e2c8;box-shadow:inset 0 3px 0 #3fae6b}
 .dayCell.ferien .dayNum{color:#1c7a45}
-.ferienLegend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin:0 0 8px;font-size:10.5px;font-weight:700;color:var(--muted)}
+.ferienLegend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin:0 0 8px;font-size:12px;font-weight:700;color:var(--muted)}
 .ferienLegend span{display:inline-flex;align-items:center;gap:5px}
 .ferienLegend i{width:12px;height:12px;border-radius:4px;background:#eaf7ef;border:1px solid #b9e2c8;box-shadow:inset 0 3px 0 #3fae6b;display:block}
 html.dark .dayCell.ferien{background:rgba(63,174,107,.16);border-color:rgba(63,174,107,.45)}
@@ -1608,8 +1615,8 @@ html.dark .ferienLegend i{background:rgba(63,174,107,.16);border-color:rgba(63,1
 .ehvDiff{padding:10px 12px;border:1px solid var(--border);border-left:4px solid var(--a);border-radius:12px;background:#fff;margin-bottom:8px;line-height:1.35}
 .ehvDiff[data-team="B"]{border-left-color:var(--b)}
 .ehvTags{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0}
-.ehvTags span{padding:1px 7px;border-radius:999px;background:#ffe9d2;color:#8a3d00;font-size:10px;font-weight:800}
-.ehvRow{color:var(--muted)}.ehvRow i{display:inline-block;width:34px;font-style:normal;font-weight:900;font-size:10px;letter-spacing:.04em;color:var(--text)}
+.ehvTags span{padding:1px 7px;border-radius:999px;background:#ffe9d2;color:#8a3d00;font-size:12px;font-weight:800}
+.ehvRow{color:var(--muted)}.ehvRow i{display:inline-block;width:34px;font-style:normal;font-weight:900;font-size:12px;letter-spacing:.04em;color:var(--text)}
 .ehvFill{margin-top:8px}
 .adminScheduleGame.ehvFilled{outline:2px solid var(--b);outline-offset:2px}
 html.dark .ehvDiff{background:#14233a}html.dark .ehvOk{background:#12331f;color:#8fe0ac}html.dark .ehvWarn{background:#3a2a10;color:#ffd08a}
@@ -1618,7 +1625,7 @@ html.dark .ehvDiff{background:#14233a}html.dark .ehvOk{background:#12331f;color:
 .gzStandRow .gzStand{margin:0}
 .gzMetaRow{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:start;margin-top:4px}
 .gzMeta{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
-@media(max-width:380px){.gzMeta .gzStand{font-size:9.5px;gap:4px;padding-right:6px}}
+@media(max-width:380px){.gzMeta .gzStand{font-size:11px;gap:4px;padding-right:6px}}
 .gzMeta .gzStand{margin:0}
 .gzForm{display:inline-flex;align-items:center;justify-content:center;gap:4px}
 .gzForm i.e{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(16,32,51,.16)}
@@ -1629,11 +1636,114 @@ html.dark .gzForm i.e{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(2
 .gzForm i.w{background:#1f9d55}.gzForm i.l{background:#d6453b}
 .gzForm i.x{box-shadow:0 0 0 1.5px rgba(16,32,51,.28)}
 html.dark .gzForm i.x{box-shadow:0 0 0 1.5px rgba(255,255,255,.5)}
-.gzPeriods{margin-top:6px;font-size:10.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.gzPeriods{margin-top:6px;font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .gzPeriods b{color:var(--text);font-weight:800}
 .hw .hwGameCard .gzPeriods{color:#e9c9a6}.hw .hwGameCard .gzPeriods b{color:#ffe9d2}
 @media print{.gzStand,.gzStandNote,.gzForm,.gzPeriods{display:none}}
 
+
+
+/* 1.21.1: „Letzte Ergebnisse“ kompakt (Startseite) */
+.lrCard{padding:0!important;overflow:hidden}
+.lrCard[hidden]{display:none!important}
+.lrHead{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#5b6b7d;color:#fff;font-weight:900;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.lrHead span{letter-spacing:0;text-transform:none;font-size:12px;font-weight:800;opacity:.9}
+.lrRow{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:4px 10px;align-items:center;padding:11px 14px 11px 16px;border-top:1px solid var(--border);cursor:pointer}
+.lrRow:first-of-type{border-top:0}
+.lrRow::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:var(--a)}
+.lrRow.teamB::before{background:var(--b)}
+.lrDate{font-size:12px;font-weight:800;color:var(--muted);line-height:1.2;text-align:center}.lrDate b{display:block;font-size:18px;color:var(--text)}
+.lrTeams{min-width:0}
+.lrBadge{display:inline-block;font-size:11px;font-weight:900;padding:2px 7px;border-radius:7px;margin-bottom:4px;background:#e6f1ff;color:#126fbc}
+.teamB .lrBadge{background:#fff1df;color:#b65d00}
+.lrTeam{display:flex;align-items:center;gap:6px;min-width:0;font-size:13.5px;font-weight:800;line-height:1.35}
+.lrTeam span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrTeam .lrLogo,.lrTeam img{width:20px!important;height:20px!important;object-fit:contain;flex:0 0 20px;margin:0!important}
+.lrTeam .logos{display:flex;gap:2px;flex:0 0 auto}
+.lrScore{text-align:right}.lrScore b{display:block;font-size:22px;font-weight:950;letter-spacing:.02em;color:var(--text)}
+.lrPill{display:inline-block;font-size:11px;font-weight:900;padding:3px 8px;border-radius:999px;margin-top:2px;white-space:nowrap}
+.lrPill.w{background:#e9f7ee;color:#19733d}.lrPill.l{background:#fdecea;color:#b3261e}.lrPill.d{background:#fff6d6;color:#8a6200}.lrPill.none{background:#eef3f7;color:#59636d}
+.lrRep{grid-column:2/4;display:flex;align-items:center;gap:8px;width:100%;border:0;border-radius:12px;background:#eef6ff;color:inherit;font:inherit;text-align:left;padding:8px 10px;margin-top:4px;cursor:pointer}
+.lrRep span:nth-child(2){flex:1;min-width:0;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrRep small{display:block;font-size:11px;font-weight:900;color:#126fbc;text-transform:uppercase;letter-spacing:.06em}
+.lrRep svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.4;fill:none;flex:0 0 18px}
+html.dark .lrRow{border-top-color:#263a55}html.dark .lrBadge{background:#173257;color:#8cc4ff}html.dark .teamB .lrBadge{background:#3d2a12;color:#ffbf73}
+html.dark .lrPill.w{background:#123522;color:#8fe0ab}html.dark .lrPill.l{background:#3a1512;color:#ffb4ab}html.dark .lrPill.d{background:#3a2f0c;color:#ffd98a}html.dark .lrPill.none{background:#1d2b3f;color:#a9b8c9}
+html.dark .lrRep{background:#173257}html.dark .lrRep small{color:#8cc4ff}
+.hw .lrCard{--text:#eef4ff;--muted:#a9bdd6;--border:rgba(255,255,255,.12);color:#eef4ff;background:linear-gradient(90deg,rgba(6,12,28,.95) 0%,rgba(6,12,28,.86) 55%,rgba(6,12,28,.55) 100%),url("halloween/karte2.webp") right center/cover no-repeat,#070d1e!important;box-shadow:0 0 0 1px rgba(235,248,255,.6),0 10px 26px rgba(255,100,0,.22)!important}
+.hw .lrHead{background:rgba(255,122,0,.85)}.hw .lrRow{border-top-color:rgba(255,255,255,.12)}
+.hw .lrBadge{background:rgba(42,157,255,.2);color:#9fd0ff}.hw .teamB .lrBadge{background:rgba(255,138,31,.22);color:#ffc48a}
+.hw .lrPill.w{background:#123522;color:#8fe0ab}.hw .lrPill.l{background:#3a1512;color:#ffb4ab}.hw .lrPill.d{background:#3a2f0c;color:#ffd98a}.hw .lrPill.none{background:#1d2b3f;color:#a9b8c9}
+.hw .lrRep{background:rgba(255,255,255,.08)}.hw .lrRep small{color:#ffb066}
+
+/* 1.22.0: Gegner-Karte */
+.oppModes{margin:4px 0 12px}
+#oppMapWrap[hidden]{display:none}
+.oppMapFilter{margin-top:0}
+.oppMapBox{position:relative;height:min(62vh,520px);border-radius:18px;overflow:hidden;background:#e8eef5;box-shadow:0 8px 24px rgba(16,32,51,.12);border:1.5px solid #c3d4e8}
+#oppMap{position:absolute;inset:0}
+.oppMapAsk{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;text-align:center}
+.oppMapAsk[hidden]{display:none}
+.oppMapAskIc{font-size:40px}.oppMapAsk b{font-size:16px}.oppMapAsk span{font-size:13px;color:var(--muted);max-width:300px;line-height:1.45}
+.oppMapAsk .action{background:#168cff;color:#fff;border:0;font-weight:900;padding:11px 22px;margin-top:4px}
+.oppMapRemember{font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.oppMapLegend{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:9px 4px 4px;font-size:12px;font-weight:800}
+.oppMapLegend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.oppMapLegend .dA{background:#168cff}.oppMapLegend .dB{background:#ff8a00}.oppMapLegend .dH{background:#071b33;box-shadow:0 0 0 2px #ffcc00}
+.oppMapLegend .small{font-weight:600;color:var(--muted)}
+.omIcon{background:none;border:0}
+.omPin{position:absolute;left:0;top:0;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:0;padding:3px;border-radius:999px;background:#fff;border:3px solid #168cff;box-shadow:0 4px 12px rgba(8,31,55,.35)}
+.omPin.tB{border-color:#ff8a00}.omPin.tAB{border-color:#168cff;border-right-color:#ff8a00;border-bottom-color:#ff8a00}
+.omPin.home{border-color:#071b33;box-shadow:0 0 0 3px #ffcc00,0 4px 12px rgba(8,31,55,.4)}
+.omPin img,.omPin .opponentLogo,.omPin .omLogo{width:26px!important;height:26px!important;object-fit:contain;border-radius:50%;margin:0!important;flex:0 0 26px;font-size:9px;background:#fff}
+.omPin img+img,.omPin .omLogo+.omLogo,.omPin img+.omLogo,.omPin .omLogo+img{margin-left:-6px!important}
+.omPin{padding:2px!important;border-width:2.5px!important}.omPin.home img{width:32px!important;height:32px!important;flex-basis:32px}
+.omPin .omCount{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:9px;background:#071b33;color:#fff;font-size:11px;font-weight:900;display:grid;place-items:center;padding:0 4px}
+.omPop{min-width:210px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#102033}
+.omPop h4{margin:0;font-size:15px}.omPop .omAddr{font-size:12px;color:#667789;margin:2px 0 8px}
+.omTeam{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid #e3ebf3}
+.omTeam .opponentLogo,.omTeam img{width:28px!important;height:28px!important;object-fit:contain;flex:0 0 28px;margin:0!important;font-size:10px}
+.omTeam div{flex:1;min-width:0}.omTeam b{display:block;font-size:13px;line-height:1.25}
+.omTeam .opponentTeamBadge{font-size:11px;margin-right:4px}
+.omTeam button,.omRoute{border:0;border-radius:10px;background:#eef6ff;color:#0b5fb8;font:inherit;font-size:12px;font-weight:900;padding:7px 10px;cursor:pointer}
+.omRoute{display:block;width:100%;margin-top:8px;background:#168cff;color:#fff}
+.omHomeNote{font-size:12px;color:#667789;margin-top:6px}
+.leaflet-popup-content{margin:12px 14px!important}
+.leaflet-container{font:inherit}
+html.dark .oppMapBox{background:#0d1828;border-color:#2b4262}
+html.dark .oppMapLegend .small{color:#a9b8c9}
+/* 1.21.1: Mindestschriftgröße – kleine Texte (9–10,5 px) auf 11–12 px angehoben, gilt für alle Bereiche */
+/* 1.21.0: Datenschutz-Abfrage, Datenschutz-Fenster, Datenschutz-Karte, Regeln-Chips, Push bei Spieländerung */
+.consentBar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:58;max-width:560px;margin:0 auto;background:#fff;border:1.5px solid #c3d4e8;border-radius:18px;box-shadow:0 14px 40px rgba(8,31,55,.28);padding:14px 14px 12px;color:var(--text)}
+.consentBar[hidden]{display:none}
+.consentBar b{display:block;font-size:15px}
+.consentBar p{margin:6px 0 10px;font-size:13px;line-height:1.45;color:var(--muted)}
+.consentBtns{display:flex;gap:8px}.consentBtns .action{flex:1;justify-content:center;font-weight:900}
+.consentBtns .cYes{background:#168cff;color:#fff;border:0}
+.consentLink{border:0;background:none;color:#126fbc;font:inherit;font-size:12.5px;font-weight:800;text-decoration:underline;padding:8px 0 0;cursor:pointer}
+.legalBox h3{font-size:15px;margin:16px 0 4px}.legalBox p,.legalBox li{font-size:13.5px;line-height:1.5;color:var(--text)}.legalBox ul{padding-left:18px;margin:4px 0}
+.legalBox .legalFill{background:#fff3cd;color:#7a4b00;border-radius:6px;padding:1px 5px;font-weight:800}
+.legalBox .small{margin-top:14px}
+.legalBox a{color:#126fbc;font-weight:800}html.dark .legalBox a{color:#7cc0ff}
+.privacyCard .infoTitle{margin-bottom:6px}
+.privRow{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer}
+.privRow .pfTx{flex:1}.privRow .pfTx b{display:block;font-size:14px}.privRow .pfTx small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.privLinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.privLinks .action{flex:1;justify-content:center;font-size:13px}
+.inLegal{text-align:center;margin:14px 0 0}.inLegal button{border:0;background:none;color:#126fbc;font:inherit;font-size:13px;font-weight:800;text-decoration:underline;cursor:pointer;padding:6px}
+#rulesMenuBtn,#rulesMenu,#rulesActive{display:none!important}
+#rulesSearch{padding-right:14px!important}
+.rlChips{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 10px;margin:-2px -2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.rlChips::-webkit-scrollbar{display:none}
+.rlChips button{flex:0 0 auto;border:1.5px solid var(--border);background:#fff;color:var(--text);font:inherit;font-size:13px;font-weight:800;padding:8px 12px;border-radius:999px;white-space:nowrap;cursor:pointer}
+.rlChips button span{font-size:11.5px;opacity:.6;margin-left:5px}
+.rlChips button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.rlChips button.on span{opacity:.85}
+.admPushChk small{display:block}
+html.dark .consentBar{background:#121f33;border-color:#2b4262;color:#e7eef8}html.dark .consentBar p{color:#a9b8c9}
+html.dark .consentLink,html.dark .inLegal button{color:#7cc0ff}
+html.dark .legalBox p,html.dark .legalBox li{color:#e7eef8}html.dark .legalBox .legalFill{background:#4a3500;color:#ffd98a}
+html.dark .rlChips button{background:#121f33;border-color:#2b4262;color:#e7eef8}html.dark .rlChips button.on{background:#168cff;border-color:#168cff}
+html.dark .privRow .pfTx small{color:#a9b8c9}
 </style>
 <script>
 /* Halloween-Zeitraum: 26.10. bis 02.11. (automatisch), Schalter in der Info-Seite */
@@ -1684,17 +1794,21 @@ html.dark .gzForm i.x{box-shadow:0 0 0 1.5px rgba(255,255,255,.5)}
 <div class="small" style="margin-bottom:10px">
 Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 </div>
+<div class="scheduleModes oppModes" role="tablist" aria-label="Ansicht"><button type="button" class="active" data-om="list" role="tab" aria-selected="true">☰ Liste</button><button type="button" data-om="map" role="tab" aria-selected="false">🗺️ Karte</button></div>
+<div id="oppMapWrap" hidden><div class="rlChips oppMapFilter" role="tablist" aria-label="Mannschaft"><button type="button" class="on" data-mf="all">Alle</button><button type="button" data-mf="A">U15 A</button><button type="button" data-mf="B">U15 B</button></div>
+<div id="oppMapBox" class="oppMapBox" data-noswipe><div id="oppMapAsk" class="oppMapAsk"><div class="oppMapAskIc">🗺️</div><b>Karte mit allen Gegnern</b><span>Die Karte wird von OpenStreetMap geladen. Dabei wird deine IP-Adresse an deren Server übertragen.</span><button type="button" id="oppMapLoad" class="action">Karte laden</button><label class="oppMapRemember"><input type="checkbox" id="oppMapRemember" checked> Nicht mehr fragen</label></div><div id="oppMap" hidden></div></div>
+<div class="oppMapLegend"><span><i class="dA"></i>U15 A</span><span><i class="dB"></i>U15 B</span><span><i class="dH"></i>Unsere Halle</span><span class="small">Punkte = Hallen der Spielorte (ungefähr)</span></div></div>
 <div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="opponentSearch" type="search" placeholder="Gegner suchen …" aria-label="Gegner suchen" style="width:100%;padding:12px 12px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"></div>
 <div id="opponentsList" class="list"></div><div id="standNote" class="gzStandNote" hidden></div>
   </section>
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
-<section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
+<section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesChips" class="rlChips" role="tablist" aria-label="Themen"></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></svg>Für das Kampfgericht</div><div class="small" style="margin-bottom:14px">Kurzanleitungen für die Technik in der Eishalle.</div><div class="downloadCards"><a id="downloadScoreboard" class="downloadCard" href="anleitung-anzeigetafel.html" style="text-decoration:none;color:inherit"><span class="dlIcon" style="background:#fff3d6;color:#b26b00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M12 10v3l2 2"/><path d="M7 4l-2.75 2"/><path d="M17 4l2.75 2"/></svg></span><b>Anzeigetafel bedienen</b><small>Stramatel 452 · Hauptpult und Strafzeitpulte · Schritt für Schritt</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.9.1.140</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.22.3.148</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <details class="infoCard inCard mapCard" id="appMap"><summary class="inHead"><b>So findest du dich zurecht</b><span class="mapSum">Alle Bereiche der App auf einen Blick</span></summary><div class="mapList"><button type="button" class="mapRow" data-go="start"><span class="mapIc">🏠</span><span class="mapTx"><b>Start</b><small>Nächstes und letztes Spiel, Spielbericht, Hinweise</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="schedule"><span class="mapIc">📅</span><span class="mapTx"><b>Spielplan</b><small>Alle Spiele, Kalender, Filter, „Heute“</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="opponents"><span class="mapIc">🛡️</span><span class="mapTx"><b>Gegner</b><small>Tabelle, Form, Spiele gegen jeden Gegner</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="rules"><span class="mapIc">📖</span><span class="mapTx"><b>Regeln</b><small>Regeln einfach erklärt, Handzeichen, Suche</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="downloads"><span class="mapIc">⬇️</span><span class="mapTx"><b>Downloads</b><small>Kalender, Spielplan-PDF, Bilder mit Bericht zum Teilen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="news"><span class="mapIc">📰</span><span class="mapTx"><b>News</b><small>Hinweise, Spielberichte, Spieländerungen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="settings"><span class="mapIc">⚙️</span><span class="mapTx"><b>Einstellungen</b><small>Design, Push an/aus oder neu einrichten, Feedback</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div><ul class="mapTips"><li><b>Wischen</b> nach links oder rechts wechselt zwischen den Reitern.</li><li><b>Spielkarte antippen</b> zeigt Tabelle, Form, Halle und Aktionen.</li><li><b>Teilen</b> schickt Bild und Text an WhatsApp, Instagram &amp; Co.</li></ul></details>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
-<p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p><p class="inMade">App entwickelt von <b>JAZM</b><span id="inMadeVer"></span></p></section>
+<p class="inNote">Die Logos stammen aus den jeweiligen Vereins- bzw. öffentlich verfügbaren Webauftritten. Ist ein Logo nicht erreichbar, zeigt die App ein neutrales Kürzel.</p><p class="inLegal"><button type="button" data-legal>Datenschutz &amp; Kontakt</button></p><p class="inMade">App entwickelt von <b>JAZM</b><span id="inMadeVer"></span></p></section>
 <section id="settingsView" hidden><div class="settingsHead"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg><div><b>Einstellungen</b><div class="small">Darstellung, Benachrichtigungen, Feedback und Admin</div></div></div><div class="infoCard"><div class="infoTitle">Darstellung</div><div class="small" style="margin:6px 0 10px">Wähle, wie die App aussehen soll.</div><div class="themeSeg" id="themeSeg" role="radiogroup" aria-label="Darstellung"><button type="button" role="radio" data-theme="light"><span>☀️</span>Hell</button><button type="button" role="radio" data-theme="dark"><span>🌙</span>Dunkel</button><button type="button" role="radio" data-theme="auto"><span>📱</span>Automatisch</button></div><div id="themeHint" class="small" style="margin-top:9px" hidden>Das Halloween-Design ist gerade aktiv und überlagert die Darstellung. Schalte es unten aus, um Hell oder Dunkel zu sehen. Das Weihnachts-Design gibt es hell und dunkel.</div></div><div class="infoCard seasonCard"><div class="seasonTitle">Saison-Designs</div><div id="hwSwitchCard" class="infoCard hwSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span><span class="hwSwitchText"><b>Halloween-Design</b><small>Gilt automatisch vom 26.10. bis 2.11.</small></span><input id="hwToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label><label class="hwSwitchRow hwScareRow"><span class="hwSwitchIcon" aria-hidden="true" style="font-size:24px;display:grid;place-items:center">👻</span><span class="hwSwitchText"><b>Gruselmoment</b><small>Im Halloween-Design taucht ab und zu kurz eine Gestalt auf</small></span><input id="hwScareToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div><div id="xmSwitchCard" class="infoCard hwSwitchCard xmSwitchCard" style="margin-top:12px" hidden><label class="hwSwitchRow"><span class="hwSwitchIcon xmSwitchIcon" aria-hidden="true">🎄</span><span class="hwSwitchText"><b>Weihnachts-Design</b><small>Gilt automatisch vom 1.12. bis 6.1. – mit Adventskalender</small></span><input id="xmToggle" type="checkbox" role="switch"><span class="hwSlider" aria-hidden="true"></span></label></div></div><section id="pushCard" class="infoCard pushCard" style="margin-top:12px" data-state="off">
 <div class="pushTop"><div class="pushBell"><svg class="pushBellSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg><i class="pushDot" aria-hidden="true"></i></div><div class="pushHead"><b>Nichts mehr verpassen</b><span>Spielergebnisse und Erinnerungen direkt aufs Handy</span></div><span id="pushState" class="pushState">Aus</span></div>
 <div class="pushPreview" aria-hidden="true"><div class="pushLabel">So sehen die Meldungen aus</div>
@@ -1706,7 +1820,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <div class="pfTeams"><div class="pfTitle">Für welche Mannschaft?</div><div class="pfChips"><label class="pfChip a"><input type="checkbox" id="pfTeamA" checked><span><i></i>U15 A</span></label><label class="pfChip b"><input type="checkbox" id="pfTeamB" checked><span><i></i>U15 B</span></label></div></div>
 <div class="pfHint">Nur das Wichtige – keine Werbung. Die Auswahl gilt für dieses Gerät.</div></div>
 <button id="enablePush" class="action pushBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg><span id="pushBtnText">Push aktivieren</span></button>
-<div id="pushNote" class="small pushNote">Du entscheidest pro Gerät. Beim ersten Mal fragt dein Browser nach der Erlaubnis.</div><button id="pushRenew" class="pushRenew" type="button" hidden>Push kommt nicht an? Neu einrichten</button><div id="pushRenewNote" class="small pushNote" hidden></div></section><section class="bugReportCard fbCard"><div class="fbTop"><div class="fbBubble"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6A8.4 8.4 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8z"/></svg></div><div class="fbHead"><b>Deine Meinung zählt</b><span>Hilf mit, die App für alle besser zu machen.</span></div></div>
+<div id="pushNote" class="small pushNote">Du entscheidest pro Gerät. Beim ersten Mal fragt dein Browser nach der Erlaubnis.</div><button id="pushRenew" class="pushRenew" type="button" hidden>Push kommt nicht an? Neu einrichten</button><div id="pushRenewNote" class="small pushNote" hidden></div></section><div class="infoCard privacyCard"><div class="infoTitle">Datenschutz</div><label class="privRow"><span class="pfIc">📊</span><span class="pfTx"><b>Nutzungsstatistik erlauben</b><small>Zählt über Google Analytics, welche Bereiche genutzt werden – hilft, die App zu verbessern</small></span><input type="checkbox" id="consentToggle"><i class="pfSw" aria-hidden="true"></i></label><div class="privLinks"><button type="button" class="action" data-legal>🔒 Datenschutz &amp; Kontakt</button></div></div><section class="bugReportCard fbCard"><div class="fbTop"><div class="fbBubble"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6A8.4 8.4 0 0 1 12.5 3H13a8.5 8.5 0 0 1 8 8z"/></svg></div><div class="fbHead"><b>Deine Meinung zählt</b><span>Hilf mit, die App für alle besser zu machen.</span></div></div>
 <div class="fbTiles" role="group" aria-label="Art der Rückmeldung"><button type="button" class="fbTile t1" data-fb="Fehler"><i>🐞</i><b>Fehler</b><small>etwas klappt nicht</small></button><button type="button" class="fbTile t2" data-fb="Wunsch / Anregung"><i>💡</i><b>Idee</b><small>das fehlt mir</small></button><button type="button" class="fbTile t3" data-fb="Lob"><i>👍</i><b>Lob</b><small>das gefällt mir</small></button></div>
 <button id="openBugReport" class="action bugReportButton fbMain" type="button"><span class="rbIcon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1"/></svg></span><span><strong>Feedback &amp; Fehler</strong><small>Du kannst auch einfach eine Nachricht schicken.</small></span></button></section><div class="adminLinkRow"><button id="openAdmin" class="adminLink" type="button">🔐 Admin-Bereich</button></div></section>
 
@@ -1768,7 +1882,36 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 </div></section>
 
 <div id="thanksModal" class="thanksModal" hidden aria-hidden="true"><div class="thanksBox" role="dialog" aria-modal="true" aria-labelledby="thanksTitle"><div class="hwDeco hwThanksBats" aria-hidden="true"><span class="hwBat hwBat1"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span><span class="hwBat hwBat2"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span><span class="hwBat hwBat3"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></span></div><img id="thanksImg" class="thanksImg" src="grizzlys-bug-icon.png" alt=""><div id="thanksTitle" class="thanksTitle"></div><div id="thanksText" class="thanksText"></div><button id="thanksClose" class="thanksBtn" type="button">Schließen</button></div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.9.1.86 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="consentBar" class="consentBar" role="dialog" aria-labelledby="consentTitle" hidden><b id="consentTitle">📊 Darf die App mitzählen?</b><p>Mit deiner Zustimmung zählt die App über Google Analytics, welche Bereiche genutzt werden – das hilft, sie zu verbessern. Ohne Zustimmung funktioniert alles genauso. Du kannst das jederzeit in den Einstellungen ändern.</p><div class="consentBtns"><button id="consentNo" class="action" type="button">Nein danke</button><button id="consentYes" class="action cYes" type="button">Erlauben</button></div><button id="consentMore" class="consentLink" type="button" data-legal>Datenschutz &amp; Kontakt</button></div>
+<div id="legalModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox legalBox" role="dialog" aria-modal="true" aria-labelledby="legalTitle"><div class="matchModalHead"><div id="legalTitle" class="matchModalTitle">🔒 Datenschutz &amp; Kontakt</div><button id="legalClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div>
+<h3>Kontakt</h3>
+<p>Die App ist ein privates, nicht kommerzielles Angebot ohne Werbung für Spieler, Eltern und Fans der U15 des ESV Grizzlys Bergkamen. App entwickelt von JAZM.</p>
+<p>E-Mail: <a href="mailto:grizzlys-app@gmx.de">grizzlys-app@gmx.de</a></p>
+<h3>Datenschutz – das Wichtigste in Kürze</h3>
+<p>Die App kommt ohne Anmeldung aus. Sie speichert nur, was für die jeweilige Funktion nötig ist. Nutzungsstatistik gibt es nur mit deiner Zustimmung.</p>
+<h3>1. Verantwortlich</h3>
+<p>Verantwortlich für die Datenverarbeitung ist der Entwickler der App (JAZM). Für alle Fragen zum Datenschutz und für Anfragen zu deinen Rechten erreichst du ihn unter <a href="mailto:grizzlys-app@gmx.de">grizzlys-app@gmx.de</a>.</p>
+<h3>2. Bereitstellung der App (GitHub Pages)</h3>
+<p>Die App liegt bei GitHub Pages (GitHub, Inc., USA). Beim Aufruf verarbeitet GitHub technisch notwendige Daten wie IP-Adresse, Zeitpunkt und Browser, um die Seite auszuliefern und vor Missbrauch zu schützen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).</p>
+<h3>3. Spielplan, Ergebnisse und News (Google Firebase)</h3>
+<p>Ergebnisse, Spieländerungen, News und Spielberichte lädt die App aus Google Firebase (Google Ireland Ltd. / Google LLC). Dabei wird deine IP-Adresse an Google übertragen. Tabellen und Spieldaten des EHV NRW holt ein eigener Dienst bei Google Cloud ab. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
+<h3>4. Push-Benachrichtigungen</h3>
+<p>Nur wenn du Push einschaltest: Gespeichert werden ein Geräte-Schlüssel für Benachrichtigungen (Firebase Cloud Messaging), eine zufällige Geräte-Kennung, die Plattform (z. B. Android), die Browser-Kennung und deine Auswahl (Mannschaft, Push-Arten). Schaltest du Push aus oder deinstallierst die App, wird der Schlüssel ungültig und beim nächsten Versand gelöscht. Rechtsgrundlage: deine Einwilligung, Art. 6 Abs. 1 lit. a DSGVO.</p>
+<h3>5. Feedback, Fehler, Ideen und Lob</h3>
+<p>Wenn du eine Rückmeldung schickst, werden Name, Art, Bereich, dein Text, freiwillig eine E-Mail-Adresse für Rückfragen sowie App-Version, Plattform, Browser-Kennung und Push-Status in Firebase gespeichert. Die App-Verwaltung wird per E-Mail und Push benachrichtigt. Rückmeldungen werden gelöscht, wenn sie erledigt sind oder du es verlangst. Rechtsgrundlage: Art. 6 Abs. 1 lit. a und f DSGVO.</p>
+<h3>6. Nutzungsstatistik (Google Analytics) – nur mit Zustimmung</h3>
+<p>Nur wenn du zustimmst, nutzt die App Google Analytics 4 (Google Ireland Ltd.). Dann werden aufgerufene Bereiche und Aktionen (z. B. „Kalender heruntergeladen“), Gerätetyp, Browser und ungefährer Ort (Land/Stadt) erfasst; Google speichert dafür Cookies (_ga) auf deinem Gerät. Laut Google werden in Google Analytics 4 keine IP-Adressen gespeichert. Eine Übermittlung in die USA ist möglich; Google ist nach dem EU-US Data Privacy Framework zertifiziert. Ohne Zustimmung lädt die App die Statistik nicht. Widerruf jederzeit: Einstellungen › Datenschutz. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG.</p>
+<p>Ebenfalls nur mit Zustimmung (oder bei eingeschaltetem Push) meldet die App sich mit einer zufälligen Geräte-Kennung, Plattform und Browser-Kennung, damit die Zahl der Geräte gezählt werden kann.</p>
+<h3>7. Logos und Links</h3>
+<p>Vereinslogos werden teils direkt von ehv-nrw.de, von Vereinsseiten oder über den Google-Dienst für Website-Symbole geladen; dabei erhalten diese Server deine IP-Adresse. Links wie „Route“, Teamseiten oder Tabellen öffnen fremde Seiten erst, wenn du sie antippst – dort gelten deren Datenschutzhinweise.</p>
+<p>Die Gegner-Karte lädt erst, wenn du „Karte laden“ antippst: Die Kartenbilder kommen von OpenStreetMap (OpenStreetMap Foundation, Großbritannien), das Kartenprogramm Leaflet von cdnjs (Cloudflare, Inc., USA). Dabei erhalten diese Server deine IP-Adresse. Setzt du „Nicht mehr fragen“, merkt sich die App das auf deinem Gerät. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO.</p>
+<h3>8. Speicher auf deinem Gerät</h3>
+<p>Einstellungen (Darstellung, Mannschaft, Push-Auswahl), gelesene News, ein Feedback-Entwurf sowie Spielstände und Quiz-Antworten bleiben auf deinem Gerät (Browser-Speicher). Für die Auswertung von Quiz-Aktionen wird pro Frage nur die Fragenart und richtig/falsch übertragen – ohne Namen.</p>
+<h3>9. Deine Rechte</h3>
+<p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie auf Widerruf einer Einwilligung mit Wirkung für die Zukunft. Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren, in NRW bei der Landesbeauftragten für Datenschutz und Informationsfreiheit (LDI NRW).</p>
+<div class="small">Stand: Oktober 2026</div>
+</div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.22.3.148 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hwDeco hwFogA" aria-hidden="true"></div><div class="hwDeco hwFogB" aria-hidden="true"></div><div class="hwDeco hwGameEyes" aria-hidden="true"><i></i><i></i></div><div class="hwDeco hwGameSpider" aria-hidden="true"><b></b><span>🕷️</span></div><div class="hwDeco hwGameBat" aria-hidden="true"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwFlash" aria-hidden="true"></div><div id="hqFx" class="hqFx" aria-hidden="true"></div><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div id="hockeyIntro" class="hockeyGameIntro">Best of 5 – wer zuerst 3 Runden gewinnt. Du bist der Puck.</div><div class="hqBoard" aria-live="polite"><div class="hqTeam"><i id="hqYou">GRIZZLYS</i><b id="hqScoreP">0</b></div><div class="hqMid"><div id="hqLamp" class="hqLamp" aria-hidden="true"></div><small id="hqSeriesInfo">Runde 1 · Best of 5</small></div><div class="hqTeam"><i id="hqFoe">GEGNER</i><b id="hqScoreC">0</b></div></div><div class="hqLevels" id="hqLevels" role="group" aria-label="Schwierigkeit"><button type="button" data-lv="easy">Anfänger</button><button type="button" data-lv="pro" class="on">Profi</button><button type="button" data-lv="keeper">Torwart</button></div><div class="hockeyRink"><div class="hqBanner" aria-hidden="true"><span>ESV GRIZZLYS</span><span>BERGKAMEN</span><span>U15</span></div><div id="hockeyBoard" class="hockeyBoard"></div><div class="hqBanner hqBannerB" aria-hidden="true"><span>BERGKAMEN</span><span>ESV GRIZZLYS</span><span>U15</span></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hqTools"><button id="hqPenBtn" class="hqPen" type="button">⏱ Strafzeit ×3</button><div id="hqTrophies" class="hqTrophies" aria-label="Pokale"></div></div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neue Serie</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät. Nur deine Pokale werden hier gespeichert.</div></div></div></div></div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -2122,6 +2265,7 @@ async function syncExistingPushRegistration(){
 }
 
 async function registerAppInstallation(){
+  try{ if(!(window.GA_OK || localStorage.getItem("grizzlysPushRegistered")==="1")) return; }catch(e){ return; }
   try{
     const installationId=getInstallationId();
     let pushEnabled=false;
@@ -2199,6 +2343,29 @@ function closeBugReport(){
   modal.hidden=true; modal.setAttribute("aria-hidden","true");
 }
 
+const FB_DRAFT_KEY="grizzlysFeedbackDraft";
+const FB_FIELDS=["bugReportType","bugReportName","bugReportArea","bugReportDescription","bugReportContact"];
+function fbReadDraft(){try{return JSON.parse(localStorage.getItem(FB_DRAFT_KEY)||"null")||{};}catch(e){return {};}}
+function fbWriteDraft(d){try{localStorage.setItem(FB_DRAFT_KEY,JSON.stringify(d));}catch(e){}}
+function fbClearDraft(){try{localStorage.removeItem(FB_DRAFT_KEY);}catch(e){}}
+function fbSaveDraft(){
+  const d=fbReadDraft();
+  FB_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});
+  fbWriteDraft(d);
+}
+function fbRestoreDraft(){
+  const d=fbReadDraft();
+  FB_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&typeof d[id]==="string"&&d[id]!=="")el.value=d[id];});
+  if(d.bugReportType)updateBugReportType();
+  document.getElementById("bugReportDescription")?.dispatchEvent(new Event("input"));
+  const btn=document.getElementById("bugReportSend");
+  if(btn)btn.textContent=d.pendingId?"Nochmal senden":"Meldung senden";
+}
+function fbShowError(msg){
+  const box=document.getElementById("bugReportError");
+  if(!box){alert(msg);return;}
+  box.textContent=msg; box.hidden=!msg;
+}
 async function submitBugReport(){
   const name=document.getElementById("bugReportName")?.value.trim()||"";
   const area=document.getElementById("bugReportArea")?.value||"Sonstiges";
@@ -2207,7 +2374,21 @@ async function submitBugReport(){
   const type=currentBugType(), typeInfo=BUG_TYPES[type];
   if(name.length<2){alert("Bitte gib deinen Namen an.");document.getElementById("bugReportName")?.focus();return;}
   if(description.length<5){alert(typeInfo.emptyMsg);return;}
-  const btn=document.getElementById("bugReportSend"); if(btn)btn.disabled=true;
+  fbShowError("");
+  fbSaveDraft();
+  if(navigator.onLine===false){
+    fbShowError("Du bist gerade offline. Deine Meldung ist auf diesem Gerät gespeichert – sende sie, sobald du wieder Internet hast.");
+    const b=document.getElementById("bugReportSend"); if(b)b.textContent="Nochmal senden";
+    return;
+  }
+  // Jede Meldung bekommt einmalig eine feste ID. Ein zweiter Versuch mit derselben ID
+  // kann so keine doppelte Meldung erzeugen (die Regeln erlauben nur das Anlegen).
+  const draft=fbReadDraft();
+  const isRetry=Boolean(draft.pendingId);
+  const ref=draft.pendingId?doc(db,"bugReports",draft.pendingId):doc(collection(db,"bugReports"));
+  draft.pendingId=ref.id; fbWriteDraft(draft);
+  const btn=document.getElementById("bugReportSend"); if(btn){btn.disabled=true;btn.textContent="Wird gesendet …";}
+  let ok=false;
   try{
     const report={
       type,
@@ -2215,27 +2396,52 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.9.1.140",
+      appVersion:"1.22.3.148",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
       createdAt:serverTimestamp(),
       status:"Neu"
     };
-    await addDoc(collection(db,"bugReports"),report);
-    trackAnalyticsEvent("bug_report_submitted",{area,type});
-    document.getElementById("bugReportName").value="";
-    document.getElementById("bugReportDescription").value="";
-    document.getElementById("bugReportContact").value="";
-    closeBugReport();
-    const typeSel=document.getElementById("bugReportType"); if(typeSel){typeSel.value="Fehler";updateBugReportType();}
-    showFeedbackThanks(typeInfo);
+    // Ohne Verbindung wartet Firestore sonst endlos – nach 15 Sekunden geben wir Bescheid.
+    let timer;
+    const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Object.assign(new Error("timeout"),{code:"timeout"})),15000);});
+    try{await Promise.race([Promise.resolve().then(()=>setDoc(ref,report)),timeout]);}
+    finally{clearTimeout(timer);}
+    ok=true;
   }catch(err){
-    console.error("Fehlermeldung konnte nicht gesendet werden",err);
-    alert("Die Meldung konnte nicht gesendet werden. Bitte später erneut versuchen.");
-  }finally{if(btn)btn.disabled=false;}
+    // Bei einem zweiten Versuch heißt "keine Berechtigung": Die Meldung existiert schon,
+    // der erste Versuch ist also doch angekommen.
+    if(isRetry && err?.code==="permission-denied") ok=true;
+    else{
+      console.error("Rückmeldung konnte nicht gesendet werden",err);
+      fbShowError(err?.code==="timeout"
+        ? "Senden dauert zu lange – vermutlich keine Verbindung. Dein Text bleibt gespeichert. Bitte versuche es gleich nochmal."
+        : "Senden hat nicht geklappt. Dein Text bleibt gespeichert. Bitte versuche es gleich nochmal.");
+    }
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent=ok?"Meldung senden":"Nochmal senden";}
+  }
+  if(!ok)return;
+  trackAnalyticsEvent("bug_report_submitted",{area,type});
+  document.getElementById("bugReportName").value="";
+  document.getElementById("bugReportDescription").value="";
+  document.getElementById("bugReportContact").value="";
+  document.getElementById("bugReportDescription")?.dispatchEvent(new Event("input"));
+  closeBugReport();
+  const typeSel=document.getElementById("bugReportType"); if(typeSel){typeSel.value="Fehler";updateBugReportType();}
+  fbClearDraft();
+  showFeedbackThanks(typeInfo);
 }
 
+function bugSentBadges(r){
+  const created=r.createdAt?.toMillis?r.createdAt.toMillis():0;
+  const fresh=created && Date.now()-created<15*60*1000;
+  const badge=(sent,label)=>sent
+    ?`<span class="ok">✓ ${label} gesendet</span>`
+    :fresh?`<span class="wait">… ${label} wird gesendet</span>`:`<span class="fail">✗ ${label} fehlt</span>`;
+  return `<div class="adminBugSent">${badge(Boolean(r.pushSentAt),"Push")}${badge(Boolean(r.emailSentAt),"E-Mail")}</div>`;
+}
 async function loadBugReports(){
   const box=document.getElementById("adminBugReports"), countEl=document.getElementById("adminBugCount"), filterEl=document.getElementById("adminBugFilter");
   if(!box||!countEl)return;
@@ -2280,6 +2486,7 @@ async function loadBugReports(){
         <div class="adminBugMeta"><b>Name:</b> ${esc(r.name||"Nicht angegeben")}</div>
         <div class="adminBugDesc">${esc(r.description||"")}</div>
         ${r.contact?`<div class="adminBugMeta">Rückfrage: ${esc(r.contact)}</div>`:""}
+        ${bugSentBadges(r)}
         <div class="adminBugActions">
           <button class="action bugStatusBtn" data-status="Neu" type="button">Neu</button>
           <button class="action bugStatusBtn" data-status="In Bearbeitung" type="button">In Bearbeitung</button>
@@ -2721,6 +2928,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   document.getElementById("bugReportClose")?.addEventListener("click",closeBugReport);
   document.getElementById("bugReportCancel")?.addEventListener("click",closeBugReport);
   document.getElementById("bugReportSend")?.addEventListener("click",submitBugReport);
+  FB_FIELDS.forEach(id=>{const el=document.getElementById(id);el?.addEventListener("input",fbSaveDraft);el?.addEventListener("change",fbSaveDraft);});
+  document.getElementById("openBugReport")?.addEventListener("click",fbRestoreDraft);
   document.getElementById("adminBugFilter")?.addEventListener("change",loadBugReports);
   document.getElementById("adminBugType")?.addEventListener("change",loadBugReports);
   document.getElementById("thanksClose")?.addEventListener("click",closeFeedbackThanks);
@@ -2818,6 +3027,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 /* ===== v66: News – Freitext-Hinweise (Firestore-Sammlung "news") ===== */
 window.getScheduleOverrides=()=>scheduleOverrides;
+window.registerAppInstallation=registerAppInstallation;
 window.adminNewsEditor=()=>adminNewsEditor();
 window.admNewsPrefill=g=>{const f=document.getElementById("newsFormBox");if(!f)return;f.hidden=false;const opp=shortTeam(isHome(g)?g.away:g.home);const t=document.getElementById("newsTitle");t.value="U15 "+g.team+" gegen "+opp+" ("+new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+"): ";document.getElementById("newsTeam").value=g.team;const u=document.getElementById("newsUntil");if(u&&g.date>=new Date().toLocaleDateString("sv-SE"))u.value=g.date;t.focus();t.setSelectionRange(t.value.length,t.value.length)};
 /* 1.9.1.128: Spielberichte (Firestore-Sammlung "reports", Dokument-ID = Ergebnis-Schlüssel) */
@@ -3186,7 +3396,7 @@ function admRenderSheet(){
    <div class="admBox"><h5>📅 Termin &amp; Ort ${d?'<span class="admSt chg">EHV weicht ab</span>':adm.ehv&&!adm.ehvErr?'<span class="admSt ok">stimmt mit EHV</span>':""}</h5>${cmp}
      <div class="admKv"><div><small>Datum</small>${esc(fmtDate(g))}</div><div><small>Uhrzeit</small>${esc(g.time)} Uhr</div><div style="grid-column:span 2"><small>Spielort</small>${esc(g.stadium)}</div></div>
      ${mod?`<div class="admHint">Geändert – ursprünglich ${esc(admFd(base.date))} · ${esc(base.time)} Uhr · ${esc(base.stadium)}<br>${admNewsState(g)}</div>`:""}
-     ${adm.edit?`<div class="admForm"><label>Datum<input id="admFDate" type="date" value="${esc(g.date)}"></label><label>Uhrzeit<input id="admFTime" type="time" value="${esc(g.time)}"></label><label class="full">Heimteam<input id="admFHome" value="${esc(g.home)}"></label><label class="full">Gastteam<input id="admFAway" value="${esc(g.away)}"></label><label class="full">Spielort<input id="admFStad" value="${esc(g.stadium)}"></label><label class="full admNewsChk"><span><input id="admFNews" type="checkbox"${scheduleOverrides[id]&&typeof scheduleOverrides[id].news==="boolean"?(scheduleOverrides[id].news?" checked":"")+' data-man="1"':""}> In den News als Spieländerung melden</span><small id="admFNewsHint"></small></label></div>
+     ${adm.edit?`<div class="admForm"><label>Datum<input id="admFDate" type="date" value="${esc(g.date)}"></label><label>Uhrzeit<input id="admFTime" type="time" value="${esc(g.time)}"></label><label class="full">Heimteam<input id="admFHome" value="${esc(g.home)}"></label><label class="full">Gastteam<input id="admFAway" value="${esc(g.away)}"></label><label class="full">Spielort<input id="admFStad" value="${esc(g.stadium)}"></label><label class="full admNewsChk"><span><input id="admFNews" type="checkbox"${scheduleOverrides[id]&&typeof scheduleOverrides[id].news==="boolean"?(scheduleOverrides[id].news?" checked":"")+' data-man="1"':""}> In den News als Spieländerung melden</span><small id="admFNewsHint"></small></label><label class="full admNewsChk admPushChk"><span><input id="admFPush" type="checkbox"> 📲 Push an alle senden</span><small id="admFPushHint"></small></label></div>
        <div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn pri" data-sch="save">💾 Für alle speichern</button><button type="button" class="admBtn no" data-sch="cancel">Abbrechen</button></div>`
       :`<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-sch="edit">✏️ Termin ändern</button>${mod?'<button type="button" class="admBtn no" data-sch="reset">↩️ Original</button>':""}</div>`}
    </div>
@@ -3218,9 +3428,13 @@ function admRenderSheet(){
       return admRenderAll()}
     const v={date:box.querySelector("#admFDate").value,time:box.querySelector("#admFTime").value,home:box.querySelector("#admFHome").value.trim(),away:box.querySelector("#admFAway").value.trim(),stadium:box.querySelector("#admFStad").value.trim()};
     const nc=box.querySelector("#admFNews"); if(nc)v.news=nc.checked;
+    const pc=box.querySelector("#admFPush"), sendPush=!!(pc&&pc.checked&&!pc.disabled), pushText=sendPush?admChangeText(g,v):"";
     if(!v.date||!v.time||!v.home||!v.away||!v.stadium){alert("Bitte alle Felder ausfüllen.");return}
     b.disabled=true;
-    try{await admSaveOverride(g,v);adm.edit=false;alert("Gespeichert – gilt sofort für alle Nutzer.")}catch(err){console.error(err);alert("Speichern nicht möglich: "+(err.message||err))}
+    try{await admSaveOverride(g,v);adm.edit=false;
+      let pushMsg="";
+      if(sendPush){try{await admSendChangePush(g,pushText);pushMsg="\n\nPush an alle Geräte (U15 "+g.team+") wird verschickt."}catch(err){console.error(err);pushMsg="\n\nAchtung: Push konnte nicht verschickt werden ("+(err.message||err)+")."}}
+      alert("Gespeichert – gilt sofort für alle Nutzer."+pushMsg)}catch(err){console.error(err);alert("Speichern nicht möglich: "+(err.message||err))}
     admRenderAll();
   });
   box.querySelectorAll("[data-img]").forEach(b=>b.onclick=()=>{if(typeof instaOpen==="function")instaOpen(g,b.dataset.img)});
@@ -3243,9 +3457,36 @@ function admBindNewsChk(box,g){
     if(!c.dataset.man)c.checked=f.length>0;
     h.textContent=f.length?"Erkannt: "+f.map(k=>CHG_LBL[k]).join(", ")+" geändert":typo?"Erkannt: nur Schreibweise korrigiert – keine News":"Keine Änderung zum Originaltermin";
   };
-  Object.values(ids).forEach(q=>{const el=box.querySelector(q);if(el)el.addEventListener("input",upd)});
+  const pc=box.querySelector("#admFPush"), ph=box.querySelector("#admFPushHint");
+  const updPush=()=>{ if(!pc)return;
+    const v={};Object.keys(ids).forEach(k=>v[k]=(box.querySelector(ids[k])||{}).value?.trim?.()??"");
+    const f=chgFields(g,v).filter(k=>k==="date"||k==="time"||k==="stadium");
+    pc.disabled=!f.length; if(!f.length)pc.checked=false;
+    ph.textContent=f.length?(pc.checked?"Geht an alle Geräte mit Push für U15 "+g.team+": „"+admChangeText(g,v)+"“":"Ohne Haken wird kein Push verschickt"):"Push nur bei geändertem Datum, Uhrzeit oder Spielort möglich";
+  };
+  Object.values(ids).forEach(q=>{const el=box.querySelector(q);if(el){el.addEventListener("input",upd);el.addEventListener("input",updPush)}});
   c.addEventListener("change",()=>{c.dataset.man="1"});
-  upd();
+  pc?.addEventListener("change",updPush);
+  upd(); updPush();
+}
+/* 1.21.0: Push bei manueller Spieländerung – nur mit Haken „Push an alle senden“.
+   Nutzt den bestehenden News-Push (Function onNewsCreated, beachtet die Mannschaftsauswahl der Geräte).
+   „Sichtbar bis“ = gestern: der Hinweis erscheint nicht doppelt in den News (die Spieländerung steht dort schon),
+   bleibt aber im Admin-Bereich unter den abgelaufenen Hinweisen als Nachweis sichtbar. */
+function admChangeText(g,v){
+  const own=s=>/grizzlys/i.test(s||""), opp=own(v.home)?v.away:v.home, f=chgFields(g,v);
+  const wd=d=>new Date(d+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
+  const parts=[];
+  if(f.includes("date"))parts.push("neu am "+wd(v.date)+" (statt "+wd(g.date)+")");
+  if(f.includes("time"))parts.push("neu um "+v.time+" Uhr (statt "+g.time+" Uhr)");
+  if(f.includes("stadium"))parts.push("neuer Spielort: "+v.stadium);
+  const head=(typeof shortTeam==="function"?shortTeam(opp):opp);
+  return "Spiel gegen "+head+(f.includes("date")?"":" am "+wd(g.date))+": "+parts.join(", ");
+}
+async function admSendChangePush(g,text){
+  const y=new Date(Date.now()-86400000).toLocaleDateString("sv-SE");
+  await addDoc(collection(db,"news"),{title:"Spieländerung",text:text.slice(0,600),team:g.team==="B"?"B":"A",until:y,push:true,createdAt:serverTimestamp()});
+  try{await loadNews()}catch(e){}
 }
 async function admSaveOverride(g,v){
   const id=scheduleGameId(g), base=g._base||g, day=new Date(v.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long"});
@@ -3308,7 +3549,7 @@ function logoImgHtml(k,cls){
   const local=LOGO_FILES[k]?"logos/"+LOGO_FILES[k]:"", ext=logoUrls[k]||"";
   return `<img class="${cls}" src="${esc(local||ext)}" alt="${esc(k)}" loading="lazy"${local&&ext?` data-ext="${esc(ext)}"`:""} onerror="if(this.dataset.ext){this.src=this.dataset.ext;delete this.dataset.ext}else{this.style.display='none'}">`;
 }
-const rinkAddresses={"Bergkamen": "Häupenweg 29, 59192 Bergkamen", "Gelsenkirchen": "Adenauerallee 118, 45891 Gelsenkirchen", "Neuss": "Jakob-Koch-Straße 1, 41466 Neuss", "Duisburg": "Margaretenstraße 17-19, 47055 Duisburg", "Hamm": "Karl-Koßmann-Straße 1, 59071 Hamm", "Herford": "Westring 108, 32051 Herford", "Grefeath": "Stadionstraße 161, 47929 Grefrath", "Grefrath": "Stadionstraße 161, 47929 Grefrath", "Dinslaken": "Am Stadtbad 1, 46537 Dinslaken", "Essen": "Curtiusstraße 2, 45144 Essen", "Dortmund": "Strobelallee 32, 44139 Dortmund", "Bielefeld": "Duisburger Straße 14, 33647 Bielefeld", "Solingen": "Brühler Straße 20, 42657 Solingen", "Aachen": "Hubert-Wienen-Straße 8, 52070 Aachen", "Ratingen": "Am Sandbach 12, 40878 Ratingen", "Wiehl": "Mühlenstraße 23, 51674 Wiehl", "Möhnesee": "Teigelhof 4, 59519 Möhnesee", "Neuwied": "Andernacher Straße 111, 56564 Neuwied"};
+const rinkAddresses={"Bergkamen": "Häupenweg 29, 59192 Bergkamen", "Gelsenkirchen": "Adenauerallee 118, 45891 Gelsenkirchen", "Neuss": "Jakob-Koch-Straße 1, 41466 Neuss", "Duisburg": "Margaretenstraße 17-19, 47055 Duisburg", "Hamm": "Karl-Koßmann-Straße 1, 59071 Hamm", "Herford": "Westring 108, 32051 Herford", "Grefeath": "Stadionstraße 161, 47929 Grefrath", "Grefrath": "Stadionstraße 161, 47929 Grefrath", "Dinslaken": "Am Stadtbad 1, 46537 Dinslaken", "Essen": "Curtiusstraße 2, 45144 Essen", "Dortmund": "Strobelallee 32, 44139 Dortmund", "Bielefeld": "Duisburger Straße 14, 33647 Bielefeld", "Solingen": "Brühler Straße 20, 42657 Solingen", "Aachen": "Hubert-Wienen-Straße 8, 52070 Aachen", "Ratingen": "Am Sandbach 12, 40878 Ratingen", "Wiehl": "Mühlenstraße 23, 51674 Wiehl", "Möhnesee": "Teigelhof 4, 59519 Möhnesee", "Neuwied": "Andernacher Straße 111, 56564 Neuwied", "Darmstadt": "Alsfelder Straße 45, 64289 Darmstadt"};
 function dt(g){return new Date(g.date+"T"+g.time+":00")}
 function fmtDate(g){return dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"})}
 function monthLabel(g){return dt(g).toLocaleDateString("de-DE",{month:"long",year:"numeric"})}
@@ -3432,24 +3673,26 @@ window.renderEhvCheck=function(data,box){
 // Ungefähre Fahrentfernung ab Eissporthalle Bergkamen (Häupenweg 29).
 // Die Werte beziehen sich auf die jeweilige Eishalle und werden bewusst als ca.-Angabe angezeigt.
 const rinkDistanceKm={
+  /* Fahrstrecke Eishalle Bergkamen → Eishalle in km (OSRM/OpenStreetMap, schnellste Route, Stand 20.10.2026) */
   "Bergkamen":0,
-  "Gelsenkirchen":43,
-  "Neuss":91,
-  "Duisburg":68,
-  "Hamm":24,
-  "Herford":91,
-  "Grefeath":80,
-  "Grefrath":80,
-  "Dinslaken":60,
-  "Essen":53,
-  "Dortmund":24,
-  "Bielefeld":91,
-  "Solingen":67,
-  "Aachen":155,
-  "Ratingen":62,
-  "Wiehl":95,
-  "Möhnesee":43,
-  "Neuwied":185
+  "Gelsenkirchen":47,
+  "Neuss":103,
+  "Duisburg":82,
+  "Hamm":17,
+  "Herford":112,
+  "Grefeath":123,
+  "Grefrath":123,
+  "Dinslaken":73,
+  "Essen":65,
+  "Dortmund":30,
+  "Bielefeld":95,
+  "Solingen":79,
+  "Aachen":170,
+  "Ratingen":94,
+  "Wiehl":122,
+  "Möhnesee":52,
+  "Neuwied":188,
+  "Darmstadt":262
 };
 function distanceForStadium(stadium){
   const km=rinkDistanceKm[stadium];
@@ -3865,6 +4108,7 @@ function renderLast(){
   let g=both[0]||past.find(x=>resInfo(x))||past[0];
   g3HomeCard("g3HomeLast",g||null,"Letztes Spiel",false);
   g3HomeCard("g3HomeLast2",both[1]||null,"Letztes Spiel",false);
+  lrRender([g,both[1]].filter(Boolean));
   if(!g){box.hidden=true;return}
   const r=resInfo(g), cls=g.team==="A"?"teamA":"teamB";
   const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};
@@ -3965,6 +4209,102 @@ window.applyResults=function(){
     };
   });
   }
+
+  /* 1.22.0: Gegner-Karte – alle Gegner an ihren Spielorten (Hallen), Filter Alle / U15 A / U15 B.
+     Leaflet + OpenStreetMap werden erst nach „Karte laden“ geholt (Datenschutz); die Entscheidung kann gemerkt werden.
+     Koordinaten: ungefähre Lage der Eishallen (Schlüssel wie in rinkAddresses). */
+  const RINK_GEO={"Bergkamen":[51.6275,7.6460],"Gelsenkirchen":[51.5560,7.0880],"Neuss":[51.1830,6.6950],"Duisburg":[51.4170,6.7780],"Hamm":[51.6730,7.8350],"Herford":[52.1170,8.6560],"Grefeath":[51.3420,6.3420],"Grefrath":[51.3420,6.3420],"Dinslaken":[51.5620,6.7370],"Essen":[51.4500,6.9900],"Dortmund":[51.4930,7.4560],"Bielefeld":[51.9960,8.5240],"Solingen":[51.1640,7.0690],"Aachen":[50.7930,6.0970],"Ratingen":[51.2970,6.8460],"Wiehl":[50.9500,7.5400],"Möhnesee":[51.4980,8.1300],"Neuwied":[50.4300,7.4400],"Darmstadt":[49.8865,8.6625]};
+  /* Gegner, die auf der Karte an ihrer eigenen Halle stehen sollen, auch wenn sie ihr Heimspiel woanders austragen */
+  const OPP_HOME={"ESC Darmstadt":"Darmstadt"};
+  const OM={map:null,layer:null,filter:"all",mode:"list",loading:null,pts:[],size:""};
+  /* Ausschnitt so wählen, dass alle sichtbaren Hallen draufpassen – so nah wie möglich.
+     Nur bei sichtbarer Karte (Größe > 0), sonst rechnet Leaflet die Weltkarte aus. */
+  function omFit(){
+    if(!OM.map||!OM.pts.length)return;
+    const box=document.getElementById("oppMap"); if(!box||!box.clientWidth||!box.clientHeight)return;
+    OM.map.invalidateSize({animate:false});
+    OM.map.fitBounds(L.latLngBounds(OM.pts),{padding:[26,26],maxZoom:11,animate:false});
+  }
+  function omLoadLeaflet(){
+    if(window.L)return Promise.resolve();
+    if(OM.loading)return OM.loading;
+    OM.loading=new Promise((res,rej)=>{
+      const css=document.createElement("link");css.rel="stylesheet";css.href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";document.head.appendChild(css);
+      const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";sc.onload=()=>res();sc.onerror=()=>{OM.loading=null;rej(new Error("Leaflet"))};document.head.appendChild(sc);
+    });
+    return OM.loading;
+  }
+  function omGroups(){
+    /* Spielort je Gegner = Halle seines Auswärtsspiels (wie Route und Entfernung in der Liste) */
+    const by=new Map();
+    games.forEach(g=>{const n=opponent(g);if(!by.has(n))by.set(n,[]);by.get(n).push(g);});
+    const rinks=new Map();
+    by.forEach((gs,name)=>{
+      const sorted=gs.slice().sort((a,b)=>dt(a)-dt(b)), away=sorted.find(g=>!isHome(g))||sorted[0];
+      const st=OPP_HOME[name]||away.stadium, teams=[...new Set(gs.map(g=>g.team))].sort();
+      const travel=gs.some(g=>!isHome(g)&&g.stadium===st);
+      if(!RINK_GEO[st])return;
+      if(!rinks.has(st))rinks.set(st,{st,g:{...away,stadium:st},list:[],travel:false});
+      const r=rinks.get(st); r.travel=r.travel||travel;
+      r.list.push({name,gs,teams,elsewhere:!travel&&st!=="Bergkamen"});
+    });
+    if(!rinks.has("Bergkamen"))rinks.set("Bergkamen",{st:"Bergkamen",g:{stadium:"Bergkamen"},list:[],travel:false});
+    return [...rinks.values()];
+  }
+  function omRender(){
+    if(!OM.map||!window.L)return;
+    if(OM.layer)OM.layer.remove();
+    OM.layer=L.layerGroup().addTo(OM.map);
+    const f=OM.filter, pts=[];
+    omGroups().forEach(r=>{
+      const list=r.list.filter(x=>f==="all"||x.teams.includes(f));
+      const isHomeRink=r.st==="Bergkamen";
+      if(!list.length&&!isHomeRink)return;
+      const ts=[...new Set(list.flatMap(x=>x.teams))].sort().join("");
+      const one=h=>{const m=String(h).match(/<img[^>]*>/);return m?m[0]:h};
+      const logos=isHomeRink?one(teamLogoHtml("ESV Grizzlys Bergkamen","omLogo")):list.slice(0,2).map(x=>one(logoHtml(x.name,"omLogo"))).join("");
+      const cnt=!isHomeRink&&list.length>2?`<span class="omCount">${list.length}</span>`:"";
+      const icon=L.divIcon({className:"omIcon",html:`<div class="omPin ${isHomeRink?"home":"t"+(ts||"A")}">${logos}${cnt}</div>`,iconSize:[0,0],iconAnchor:[0,0],popupAnchor:[0,-24]});
+      const ll=RINK_GEO[r.st]; pts.push(ll);
+      const km=distanceForStadium(r.st);
+      const teamsHtml=list.map((x,i)=>`<div class="omTeam">${logoHtml(x.name,"opponentLogo")}<div><b>${esc(x.name)}</b>${x.teams.map(t=>`<span class="opponentTeamBadge ${t}">U15 ${t}</span>`).join("")}</div><button type="button" data-omi="${i}">Spiele</button></div>`).join("");
+      const html=`<div class="omPop"><h4>${isHomeRink?"🏠 Unsere Halle · ":""}${esc(r.st==="Grefeath"?"Grefrath":r.st)}</h4><div class="omAddr">${esc(address(r.g))}${km?" · "+km+" km":""}</div>${teamsHtml}${list.some(x=>x.elsewhere)?`<div class="omHomeNote">Heimspiel wird nicht hier ausgetragen – beide Spiele finden in Bergkamen statt.</div>`:""}${isHomeRink||!r.travel?"":`<button type="button" class="omRoute">📍 Route</button>`}</div>`;
+      const mk=L.marker(ll,{icon,zIndexOffset:isHomeRink?1000:0,title:isHomeRink?"Bergkamen":list.map(x=>x.name).join(", ")}).addTo(OM.layer);
+      mk.bindPopup(html,{maxWidth:280,autoPanPadding:[20,20]});
+      mk.on("popupopen",e=>{const el=e.popup.getElement();if(!el)return;
+        el.querySelectorAll("[data-omi]").forEach(b=>b.onclick=()=>{const x=list[Number(b.dataset.omi)];OM.map.closePopup();openOpponentDetails(x.name,x.gs)});
+        const rb=el.querySelector(".omRoute");if(rb)rb.onclick=()=>route(r.g);});
+    });
+    OM.pts=pts; omFit();
+  }
+  async function omShowMap(){
+    const ask=document.getElementById("oppMapAsk"), box=document.getElementById("oppMap"), btn=document.getElementById("oppMapLoad");
+    if(btn){btn.disabled=true;btn.textContent="Lädt …";}
+    try{await omLoadLeaflet();}catch(e){if(btn){btn.disabled=false;btn.textContent="Erneut versuchen";}return;}
+    ask.hidden=true; box.hidden=false;
+    if(!OM.map){
+      OM.map=L.map(box,{zoomControl:true,attributionControl:true,scrollWheelZoom:false,zoomSnap:0.25,zoomDelta:0.5}).setView([51.35,7.2],8);
+      /* Wird die Karte sichtbar oder ändert sich ihre Größe (Reiterwechsel, Drehen), neu einpassen */
+      if(window.ResizeObserver)new ResizeObserver(()=>{const k=box.clientWidth+"x"+box.clientHeight;if(k===OM.size)return;OM.size=k;if(box.clientWidth&&box.clientHeight)omFit();}).observe(box);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(OM.map);
+    }
+    setTimeout(()=>{OM.map.invalidateSize();omRender();},60);
+  }
+  function omSetMode(m){
+    OM.mode=m;
+    document.querySelectorAll(".oppModes [data-om]").forEach(b=>{const on=b.dataset.om===m;b.classList.toggle("active",on);b.setAttribute("aria-selected",on?"true":"false");});
+    const wrap=document.getElementById("oppMapWrap"); if(wrap)wrap.hidden=m!=="map";
+    ["opponentsList"].forEach(id=>{const el=document.getElementById(id);if(el)el.hidden=m==="map";});
+    const sw=document.querySelector("#opponentsView .searchWrap"); if(sw)sw.hidden=m==="map";
+    const sn=document.getElementById("standNote"); if(sn&&m==="map")sn.hidden=true;
+    if(m==="map"){let ok=false;try{ok=localStorage.getItem("grizzlysMapOk")==="1"}catch(e){}
+      if(ok||OM.map)omShowMap();}
+    try{localStorage.setItem("grizzlysOppMode",m)}catch(e){}
+  }
+  document.querySelectorAll(".oppModes [data-om]").forEach(b=>b.addEventListener("click",()=>omSetMode(b.dataset.om)));
+  document.querySelectorAll(".oppMapFilter [data-mf]").forEach(b=>b.addEventListener("click",()=>{OM.filter=b.dataset.mf;document.querySelectorAll(".oppMapFilter [data-mf]").forEach(x=>x.classList.toggle("on",x===b));omRender();}));
+  document.getElementById("oppMapLoad")?.addEventListener("click",()=>{if(document.getElementById("oppMapRemember")?.checked){try{localStorage.setItem("grizzlysMapOk","1")}catch(e){}}omShowMap();});
+  try{if(localStorage.getItem("grizzlysOppMode")==="map")setTimeout(()=>omSetMode("map"),0);}catch(e){}
   function openOpponentDetails(name,gs){
   const modal=document.getElementById("opponentModal");
   const content=document.getElementById("opponentModalContent");
@@ -4075,6 +4415,33 @@ function g3HomeCard(id,g,label,defOpen){
     const dup=el.querySelector(".g3Btn.rep");if(dup)dup.remove();}
   g3Bind(el,g); g3SetOpen(el,id in g3HomeOpen?g3HomeOpen[id]:defOpen);
   hwDecorate(el,g);
+}
+/* 1.21.1: „Letzte Ergebnisse“ – beide letzten Spiele kompakt in einer Karte (Variante A).
+   Die beiden großen Karten g3HomeLast/g3HomeLast2 bleiben im Dokument (versteckt), damit der übrige Code unverändert läuft. */
+function lrRender(list){
+  const a=document.getElementById("g3HomeLast"); if(!a)return;
+  let el=document.getElementById("lrCard");
+  if(!el){el=document.createElement("section");el.id="lrCard";a.parentNode.insertBefore(el,a);}
+  ["g3HomeLast","g3HomeLast2"].forEach(id=>{const c=document.getElementById(id);if(c)c.hidden=true;});
+  if(!list.length){el.hidden=true;return}
+  const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};
+  const logo=n=>/grizzlys/i.test(n)?teamLogoHtml(n,"lrLogo"):logoHtml(n,"lrLogo");
+  el.hidden=false; el.className="card lrCard";
+  el.innerHTML=`<div class="lrHead">${list.length>1?"Letzte Ergebnisse":"Letztes Ergebnis"}<span>Antippen für Details</span></div>`+list.map((g,i)=>{
+    const r=resInfo(g), d=dt(g), wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
+    const rp=r&&window.repFor&&window.repFor(g);
+    return `<div class="lrRow team${esc(g.team)}" role="button" tabindex="0" data-i="${i}">
+      <div class="lrDate">${esc(wd)}<b>${String(d.getDate()).padStart(2,"0")}.</b>${esc(mon)}</div>
+      <div class="lrTeams"><span class="lrBadge">U15 ${esc(g.team)}</span>
+        <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
+        <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div></div>
+      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${r.o}">${word[r.o]}</span>`:`<span class="lrPill none">Ergebnis folgt</span>`}</div>
+      ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
+    </div>`;}).join("");
+  el.querySelectorAll(".lrRow").forEach(row=>{const g=list[Number(row.dataset.i)];
+    row.onclick=e=>{if(e.target.closest(".lrRep"))return;openMatchDetails(g)};
+    row.onkeydown=e=>{if(e.target===row&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openMatchDetails(g)}};});
+  el.querySelectorAll(".lrRep").forEach(b=>b.onclick=e=>{e.stopPropagation();openMatchDetails(list[Number(b.dataset.rep)],true)});
 }
 /* fixed=true: Karte ist dauerhaft offen (Fenster „Spieldetails“) */
 function g3Bind(card,g,fixed=false){
@@ -4518,6 +4885,8 @@ function rlMark(text,words){
 function renderRules(){
   const list=document.getElementById("rulesList"), menu=document.getElementById("rulesMenu"), act=document.getElementById("rulesActive"), cnt=document.getElementById("rulesCount");
   if(!list||!menu) return;
+  const chips=document.getElementById("rulesChips");
+  if(chips){ const sl=chips.scrollLeft; chips.innerHTML=RULE_CATS.map(c=>'<button type="button" role="tab" aria-selected="'+(c===ruleCat)+'" class="'+(c===ruleCat?"on":"")+'" data-cat="'+rlEsc(c)+'">'+rlEsc(c==="Alle"?"Alle":c)+'<span>'+(c==="Alle"?RULES.length:RULES.filter(r=>r.c===c).length)+'</span></button>').join(""); chips.scrollLeft=sl; }
   menu.innerHTML=RULE_CATS.map(c=>'<button type="button" class="'+(c===ruleCat?"on":"")+'" data-cat="'+rlEsc(c)+'">'+rlEsc(c==="Alle"?"Alle Themen":c)+'<span>'+(c==="Alle"?RULES.length:RULES.filter(r=>r.c===c).length)+'</span></button>').join("");
   if(act){ act.hidden=ruleCat==="Alle"; act.innerHTML=ruleCat==="Alle"?"":'Thema: <button type="button" data-cat="Alle" aria-label="Thema '+rlEsc(ruleCat)+' entfernen">'+rlEsc(ruleCat)+' ✕</button>'; }
   const q=rlNorm(document.getElementById("rulesSearch")?.value||"").trim();
@@ -4532,7 +4901,7 @@ function renderRules(){
 document.getElementById("rulesSearch")?.addEventListener("input",()=>{renderRules();if(window.scrollY>140)window.scrollTo({top:0})});
 function rlMenuOpen(o){const m=document.getElementById("rulesMenu"),b=document.getElementById("rulesMenuBtn");if(!m||!b)return;m.hidden=!o;b.setAttribute("aria-expanded",o?"true":"false");}
 document.getElementById("rulesMenuBtn")?.addEventListener("click",()=>rlMenuOpen(document.getElementById("rulesMenu").hidden));
-document.getElementById("rulesView")?.addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;ruleCat=b.dataset.cat;rlMenuOpen(false);renderRules();if(window.scrollY>140)window.scrollTo({top:0});});
+document.getElementById("rulesView")?.addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;ruleCat=b.dataset.cat;const se=document.getElementById("rulesSearch");if(se&&se.value&&b.closest("#rulesChips")){se.value="";}rlMenuOpen(false);renderRules();document.querySelector('#rulesChips [data-cat="'+CSS.escape(ruleCat)+'"]')?.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"});if(window.scrollY>140)window.scrollTo({top:0});});
 document.getElementById("infoTopBtn").onclick=()=>showView("info");
 document.getElementById("settingsTopBtn").onclick=()=>showView("settings");
 
@@ -4922,23 +5291,24 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
-  {v:"1.9.1.138",d:"Oktober 2026",items:["Neu in der Info: „So findest du dich zurecht“ – alle Bereiche der App auf einen Blick, ein Tipp bringt dich direkt hin."]},
-  {v:"1.9.1.137",d:"Oktober 2026",items:["Ergebnisbilder in Downloads: Beim Teilen kommt jetzt der Kurzbericht zum Spiel als Text mit."]},
-  {v:"1.9.1.133",d:"Oktober 2026",items:["Neu: Spielberichte! Nach dem Spiel gibt es einen kurzen Bericht – in den News, auf der Startseite beim letzten Spiel und in den Spieldetails.","Gespielte Spiele zeigen statt Route und Adresse nur noch, wo gespielt wurde."]},
-  {v:"1.9.1.120",d:"Oktober 2026",items:["Regeln: neue Nachwuchs-Regeln aus NRW (Anhang 4) – z. B. wer in der U15 spielt, Bodycheck ab U15, Zahnschutz-Pflicht, A- und B-Mannschaft, Torhüter-Einsatzzeiten. Die Themen stehen jetzt aufgeräumt im Menü ☰ neben der Suche."]},
-  {v:"1.9.1.117",d:"Oktober 2026",items:["Regeln: neues Thema „Handzeichen“ – 30 Zeichen der Schiedsrichter und Linienrichter mit Bild und kurzer Erklärung, auch über die Suche zu finden (z. B. „Hüfte“ oder „Arme gekreuzt“)."]},
-  {v:"1.9.1.115",d:"Oktober 2026",items:["Downloads: neue Kurzanleitung „Anzeigetafel bedienen“ für das Kampfgericht – Stramatel-Hauptpult und Strafzeitpulte mit Tastenbild, Schritt für Schritt."]},
-  {v:"1.9.1.113",d:"Oktober 2026",items:["Neuer Reiter „Regeln“: die wichtigsten Eishockey-Regeln einfach erklärt – von Abseits und Icing über Strafen und Fouls bis zur Schutzausrüstung im Nachwuchs. Mit Suchfeld und Themen-Knöpfen; auch per Wischen erreichbar."]},
-  {v:"1.9.1.108",d:"Oktober 2026",items:["Schneller: Logos und Bilder sind deutlich kleiner – die App lädt beim ersten Öffnen schneller und braucht weniger Datenvolumen."]},
-  {v:"1.9.1.103",d:"Oktober 2026",items:["In Einstellungen und Info bringt dich ein Wisch nach rechts zurück; das News-Fenster schließt sich mit einem Wisch nach rechts oder unten.","Beim Scrollen zeigt eine schmale Leiste rechts, wo du auf der Seite bist – im Spielplan mit dem Monat. Den Balken kannst du anfassen und ziehen, um schnell zu springen.","Wischen: Mit einem Wisch nach links oder rechts wechselst du zwischen Start, Spielplan, Gegner und Downloads – die Seite folgt dabei deinem Finger."]},
-  {v:"1.9.1.95",d:"Oktober 2026",items:[
+  {v:"1.22.3.148",d:"Oktober 2026",items:["Gegner: Neue Karte mit allen Gegnern an ihren Spielorten – umschaltbar zwischen Liste und Karte, mit Filter Alle / U15 A / U15 B. Ein Tipp auf ein Logo zeigt Halle, Entfernung, Spiele und Route.","Entfernungen neu berechnet: Alle km-Angaben gelten jetzt als Fahrstrecke von unserer Eishalle bis zur Eishalle des Gegners.","Startseite: Die letzten Ergebnisse beider Mannschaften stehen jetzt kompakt in einer Karte – antippen öffnet die Spieldetails.","Besser lesbar: Kleine Schriften (z. B. Entfernung, Heim/Auswärts, Hinweise) sind etwas größer.","Regeln: Die Themen stehen jetzt als Knöpfe direkt unter der Suche – ein Tipp zeigt nur dieses Thema.","Datenschutz: Neue Seite „Datenschutz & Kontakt“ (Info und Einstellungen). Die Nutzungsstatistik läuft nur noch, wenn du zustimmst – änderbar unter Einstellungen › Datenschutz.","Feedback: Bricht beim Senden die Verbindung ab, bleibt dein Text gespeichert – mit „Nochmal senden“ schickst du ihn später einfach erneut ab."]},
+  {id:"1.9.1.138",v:"1.19.1.138",d:"Oktober 2026",items:["Neu in der Info: „So findest du dich zurecht“ – alle Bereiche der App auf einen Blick, ein Tipp bringt dich direkt hin."]},
+  {id:"1.9.1.137",v:"1.19.0.137",d:"Oktober 2026",items:["Ergebnisbilder in Downloads: Beim Teilen kommt jetzt der Kurzbericht zum Spiel als Text mit."]},
+  {id:"1.9.1.133",v:"1.17.0.131",d:"Oktober 2026",items:["Neu: Spielberichte! Nach dem Spiel gibt es einen kurzen Bericht – in den News, auf der Startseite beim letzten Spiel und in den Spieldetails.","Gespielte Spiele zeigen statt Route und Adresse nur noch, wo gespielt wurde."]},
+  {id:"1.9.1.120",v:"1.15.1.120",d:"Oktober 2026",items:["Regeln: neue Nachwuchs-Regeln aus NRW (Anhang 4) – z. B. wer in der U15 spielt, Bodycheck ab U15, Zahnschutz-Pflicht, A- und B-Mannschaft, Torhüter-Einsatzzeiten. Die Themen stehen jetzt aufgeräumt im Menü ☰ neben der Suche."]},
+  {id:"1.9.1.117",v:"1.15.0.117",d:"Oktober 2026",items:["Regeln: neues Thema „Handzeichen“ – 30 Zeichen der Schiedsrichter und Linienrichter mit Bild und kurzer Erklärung, auch über die Suche zu finden (z. B. „Hüfte“ oder „Arme gekreuzt“)."]},
+  {id:"1.9.1.115",v:"1.15.0.117",d:"Oktober 2026",items:["Downloads: neue Kurzanleitung „Anzeigetafel bedienen“ für das Kampfgericht – Stramatel-Hauptpult und Strafzeitpulte mit Tastenbild, Schritt für Schritt."]},
+  {id:"1.9.1.113",v:"1.15.0.117",d:"Oktober 2026",items:["Neuer Reiter „Regeln“: die wichtigsten Eishockey-Regeln einfach erklärt – von Abseits und Icing über Strafen und Fouls bis zur Schutzausrüstung im Nachwuchs. Mit Suchfeld und Themen-Knöpfen; auch per Wischen erreichbar."]},
+  {id:"1.9.1.108",v:"1.13.0.108",d:"Oktober 2026",items:["Schneller: Logos und Bilder sind deutlich kleiner – die App lädt beim ersten Öffnen schneller und braucht weniger Datenvolumen."]},
+  {id:"1.9.1.103",v:"1.13.0.108",d:"Oktober 2026",items:["In Einstellungen und Info bringt dich ein Wisch nach rechts zurück; das News-Fenster schließt sich mit einem Wisch nach rechts oder unten.","Beim Scrollen zeigt eine schmale Leiste rechts, wo du auf der Seite bist – im Spielplan mit dem Monat. Den Balken kannst du anfassen und ziehen, um schnell zu springen.","Wischen: Mit einem Wisch nach links oder rechts wechselst du zwischen Start, Spielplan, Gegner und Downloads – die Seite folgt dabei deinem Finger."]},
+  {id:"1.9.1.95",v:"1.12.2.96",d:"Oktober 2026",items:[
     "Startseite: nächstes und letztes Spiel von U15 A und U15 B auf einen Blick, die Mannschafts-Kacheln sind kompakter.",
     "Spielplan: Gespielte Spiele sind eingeklappt – „Gespielte Spiele anzeigen“ blendet sie wieder ein.",
     "Einstellungen und Info sind aufgeräumt."]},
-  {v:"1.9.1.90",d:"Oktober 2026",items:[
+  {id:"1.9.1.90",v:"1.11.0.90",d:"Oktober 2026",items:[
     "Push zuverlässiger: Die App erneuert ihre Push-Anmeldung jetzt regelmäßig von selbst.",
     "Kommt bei dir kein Push an? In den Einstellungen gibt es dafür unter dem Push-Knopf „Neu einrichten“."]},
-  {v:"1.9.1.83",d:"Oktober 2026",items:[
+  {id:"1.9.1.83",v:"1.10.0.83",d:"Oktober 2026",items:[
     "Gameday: An Spieltagen leuchtet oben „GAME DAY“ – mit Countdown bis zum Bully, während des Spiels „Läuft gerade“ und danach das Ergebnis.",
     "Beim ersten Öffnen am Spieltag zeigt die App kurz die Paarung, Uhrzeit und Halle. Einfach antippen zum Schließen."]},
   {v:"1.9.1.66",d:"Oktober 2026",items:[
@@ -4957,7 +5327,7 @@ const NEWS_SEEN_KEY="grizzlysNewsSeen";
 function newsSeen(){try{const x=JSON.parse(localStorage.getItem(NEWS_SEEN_KEY)||"null");return Array.isArray(x)?x:null}catch(e){return null}}
 function newsSave(arr){try{localStorage.setItem(NEWS_SEEN_KEY,JSON.stringify(arr.slice(-300)))}catch(e){}}
 let newsSeenMem=newsSeen();
-if(!newsSeenMem){newsSeenMem=APP_NEWS.slice(1).map(x=>"v:"+x.v);newsSave(newsSeenMem)}
+if(!newsSeenMem){newsSeenMem=APP_NEWS.slice(1).map(x=>"v:"+(x.id||x.v));newsSave(newsSeenMem)}
 function newsToday(){const d=new Date();d.setHours(0,0,0,0);return d}
 function newsActiveNotes(){
   const t=newsToday();
@@ -5263,7 +5633,7 @@ function newsReportHtml(x,unread){
 }
 const repNid=x=>"r:"+rkey(x.g)+":"+(x.r.publishedAt||0);
 function newsItemsAll(){
-  return [...newsActiveNotes().map(n=>({id:"n:"+n.id,kind:"note",n})),...repPublished().map(x=>({...x,id:repNid(x),kind:"report"})),...newsChanges().map(c=>({...c,kind:"change"})),...APP_NEWS.map(x=>({id:"v:"+x.v,kind:"app",x}))];
+  return [...newsActiveNotes().map(n=>({id:"n:"+n.id,kind:"note",n})),...repPublished().map(x=>({...x,id:repNid(x),kind:"report"})),...newsChanges().map(c=>({...c,kind:"change"})),...APP_NEWS.map(x=>({id:"v:"+(x.id||x.v),kind:"app",x}))];
 }
 function newsUnread(){const s=new Set(newsSeenMem);return newsItemsAll().filter(i=>!s.has(i.id))}
 function newsMarkSeen(ids){ids.forEach(id=>{if(!newsSeenMem.includes(id))newsSeenMem.push(id)});newsSave(newsSeenMem)}
@@ -5310,7 +5680,7 @@ function newsFill(){
     `<div class="newsSec"><div class="newsSecTitle">📰 Hinweise</div>${notes.length?notes.map(n=>newsNoteHtml(n,!s.has("n:"+n.id))).join(""):'<div class="small newsEmpty">Aktuell keine Hinweise.</div>'}</div>`+
     (rp.length?`<div class="newsSec"><div class="newsSecTitle">📝 Spielberichte</div>${rp.map(x=>newsReportHtml(x,!s.has(repNid(x)))).join("")}</div>`:"")+
     `<div class="newsSec"><div class="newsSecTitle">📅 Spieländerungen</div>${ch.length?ch.map(c=>newsChangeHtml(c,!s.has(c.id))).join(""):'<div class="small newsEmpty">Keine geänderten Termine.</div>'}</div>`+
-    `<div class="newsSec"><div class="newsSecTitle">✨ Neu in der App</div>${APP_NEWS.slice(0,3).map(x=>`<div class="newsItem newsApp${s.has("v:"+x.v)?"":" unread"}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+    `<div class="newsSec"><div class="newsSecTitle">✨ Neu in der App</div>${APP_NEWS.slice(0,3).map(x=>`<div class="newsItem newsApp${s.has("v:"+(x.id||x.v))?"":" unread"}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}</div>`;
   body.querySelectorAll(".newsItem.newsChange[data-cid]").forEach(b=>{const c=ch.find(x=>x.id===b.dataset.cid);b.onclick=()=>{closeNews();openMatchDetails(c.g)}});
   body.querySelectorAll(".newsReport").forEach(b=>{const x=rp.find(y=>rkey(y.g)===b.dataset.rid);b.onclick=()=>{closeNews();openMatchDetails(x.g)}});
 }
@@ -5576,5 +5946,51 @@ window.xmOpenCalendar=xmOpenCalendar;
 xmRefresh();
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderNews()}catch(e){console.warn(e)}};}
 renderNews();
+</script>
+<script>
+/* 1.21.0: Datenschutz – Zustimmung zur Nutzungsstatistik, Datenschutz-Fenster */
+(function(){
+  const KEY="grizzlysConsent";
+  const get=()=>{try{return localStorage.getItem(KEY)||""}catch(e){return ""}};
+  const syncSW=v=>{try{if(window.caches)caches.open("grizzlys-consent").then(c=>c.put("consent",new Response(v||"denied")))}catch(e){}};
+  const loadGA=()=>{
+    if(window.GRIZZLYS_TEST||window.google_tag_manager)return;
+    const sc=document.createElement("script");sc.async=true;sc.src="https://www.googletagmanager.com/gtag/js?id=G-WJ539PL04L&c="+Date.now();document.head.appendChild(sc);
+  };
+  const dropCookies=()=>{document.cookie.split(";").map(c=>c.split("=")[0].trim()).filter(n=>/^_ga/.test(n)).forEach(n=>{
+    const host=location.hostname, parts=host.split(".");
+    for(let i=0;i<parts.length-1;i++){const d=parts.slice(i).join(".");document.cookie=n+"=; Max-Age=0; path=/; domain=."+d;}
+    document.cookie=n+"=; Max-Age=0; path=/";});};
+  function setConsent(v){
+    try{localStorage.setItem(KEY,v);localStorage.setItem(KEY+"At",new Date().toISOString())}catch(e){}
+    syncSW(v);
+    if(v==="granted"){
+      if(!window.GA_OK){window.GA_OK=true;(window.gaQueue||[]).forEach(a=>window.dataLayer.push(a));window.gaQueue=[];}
+      syncSW(v); setTimeout(loadGA,300);
+      try{window.registerAppInstallation?.()}catch(e){}
+    }else{
+      window.GA_OK=false; dropCookies();
+    }
+    const t=document.getElementById("consentToggle"); if(t)t.checked=v==="granted";
+    const bar=document.getElementById("consentBar"); if(bar)bar.hidden=true;
+  }
+  window.setAnalyticsConsent=setConsent;
+  const legal=document.getElementById("legalModal");
+  const openLegal=()=>{if(!legal)return;legal.hidden=false;legal.setAttribute("aria-hidden","false");legal.querySelector(".bugReportBox").scrollTop=0;document.getElementById("legalClose")?.focus();};
+  const closeLegal=()=>{if(!legal)return;legal.hidden=true;legal.setAttribute("aria-hidden","true");};
+  window.openLegal=openLegal;
+  document.addEventListener("click",e=>{if(e.target.closest("[data-legal]")){e.preventDefault();openLegal();}});
+  document.getElementById("legalClose")?.addEventListener("click",closeLegal);
+  legal?.addEventListener("click",e=>{if(e.target===legal)closeLegal();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&legal&&!legal.hidden)closeLegal();});
+  document.getElementById("consentYes")?.addEventListener("click",()=>setConsent("granted"));
+  document.getElementById("consentNo")?.addEventListener("click",()=>setConsent("denied"));
+  const tog=document.getElementById("consentToggle");
+  if(tog){tog.checked=get()==="granted";tog.addEventListener("change",()=>setConsent(tog.checked?"granted":"denied"));}
+  const cur=get();
+  syncSW(cur==="granted"?"granted":"denied");
+  if(cur==="granted"){ setTimeout(()=>{ if(!window.google_tag_manager) loadGA(); },4000); }
+  if(!cur){ setTimeout(()=>{ const bar=document.getElementById("consentBar"); if(bar&&!get()) bar.hidden=false; },3500); }
+})();
 </script>
 </body></html>
