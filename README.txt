@@ -11,7 +11,8 @@ Schreibweise 1.ZWEITE.DRITTE.CACHE:
 - dritte Stelle: optische Änderungen, Fehlerbehebungen und kleine Verbesserungen
 - letzte Stelle: Cache-Nummer aus sw.js (steigt bei fast jedem Stand)
 Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurden am 19.10.2026 nachträglich nummeriert. Die GitHub-Markierungen (live-1.9.1.…, wichtig für Live zurücksetzen) behalten ihren alten Namen:
-- 1.23.2.153 (20.10.2026, Optisch)
+- 1.24.0.154 (20.10.2026, Neue Funktion)
+- 1.23.2.153 (20.10.2026, Optisch, nur Test)
 - 1.23.1.152 (20.10.2026, Optisch, nur Test)
 - 1.23.0.151 (20.10.2026, Neue Funktion, nur Test)
 - 1.22.5.150 (20.10.2026, Fehlerbehebung und Optisch, nur Test)
@@ -48,6 +49,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurd
 - 1.10.1.86 = bisher 1.9.1.86 (10.10.2026, Fehlerbehebung und Verbesserung)
 - 1.10.0.83 = bisher 1.9.1.83 (10.10.2026, Neue Funktion)
 - 1.9.1.66 = bisher 1.9.1.66 (08.10.2026, Neue Funktion)
+
+Version 1.24.0
+
+Neu in Version 1.24.0 (Stand 1.24.0.154, 20.10.2026) – Neue Funktion
+- Suche auf der Gegner-Karte: das Suchfeld „Gegner oder Ort suchen …“ steht jetzt direkt unter dem Umschalter Liste/Karte und gilt für beide Ansichten. Auf der Karte bleiben nur passende Hallen stehen (Vereinsname, Ort oder Adresse; Umlaute egal; „Bergkamen“/„Grizzlys“ findet unsere Halle), mit Anzahl der Treffer. Bei genau einem Treffer zoomt die Karte auf die Halle und öffnet das Fenster dazu. Der Filter Alle / U15 A / U15 B wirkt zusätzlich (window.omSearch, Suchlogik in omRender)
+- Liste: die Suche findet jetzt auch den Ort der Auswärtshalle (z. B. „Neuss“ zeigt beide Neusser Spielgemeinschaften)
 
 Version 1.23.2
 
@@ -111,7 +118,7 @@ Version 1.21.1
 Neu in Version 1.21.1 (Stand 1.21.1.143, 19.10.2026) – Optisch
 - Letzte Ergebnisse kompakt (Startseite): statt zweier großer „Letztes Spiel“-Karten eine Karte mit je einer Zeile pro Mannschaft (Datum, Teams mit Logos, Ergebnis, Sieg/Niederlage, Teamfarbe am Rand). Ein Tipp öffnet die Spieldetails; gibt es einen Spielbericht, steht darunter „📝 Spielbericht“. Funktion lrRender in index.html; die großen Karten g3HomeLast/g3HomeLast2 bleiben unsichtbar im Dokument. Eigene Stile für Dunkel und Halloween
 - Mindestschriftgröße: 56 Stellen im Stil mit 9–10,5 px auf 11 px (≤ 9,5 px) bzw. 12 px angehoben (u. a. Gegnerliste, Heim/Auswärts, Tabellen-Chips, Drittel, Admin-Bereich). Ausgenommen: News-Zähler am Symbol, Mini-Spiel und PDF-Druck
-- Neu in der App: ein gemeinsamer Eintrag für 1.20.0 bis 1.23.0 (keine davon war einzeln live)
+- Neu in der App: ein gemeinsamer Eintrag für 1.20.0 bis 1.24.0 (keine davon war einzeln live)
 
 Version 1.21.0
 
@@ -515,7 +522,7 @@ Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).
 
 Version
-Schreibweise 1.23.2.153: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
+Schreibweise 1.24.0.154: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
 
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.

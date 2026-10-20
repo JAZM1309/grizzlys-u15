@@ -16,7 +16,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
-| 1.23.2.153 | – | 20.10.2026 | Optisch |
+| 1.24.0.154 | – | 20.10.2026 | Neue Funktion |
+| 1.23.2.153 | – (nur Test) | 20.10.2026 | Optisch |
 | 1.23.1.152 | – (nur Test) | 20.10.2026 | Optisch |
 | 1.23.0.151 | – (nur Test) | 20.10.2026 | Neue Funktion |
 | 1.22.5.150 | – (nur Test) | 20.10.2026 | Fehlerbehebung und Optisch |
@@ -54,9 +55,16 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
 
+## Version 1.24.0
+
+### Neu in Version 1.24.0 (Stand 1.24.0.154, 20.10.2026) – Neue Funktion
+
+- **Suche auf der Gegner-Karte:** das Suchfeld „Gegner oder Ort suchen …“ steht jetzt direkt unter dem Umschalter Liste/Karte und gilt für beide Ansichten. Auf der Karte bleiben nur passende Hallen stehen (Vereinsname, Ort oder Adresse; Umlaute egal; „Bergkamen“/„Grizzlys“ findet unsere Halle), mit Anzahl der Treffer. Bei genau einem Treffer zoomt die Karte auf die Halle und öffnet das Fenster dazu. Der Filter Alle / U15 A / U15 B wirkt zusätzlich (`window.omSearch`, Suchlogik in `omRender`)
+- **Liste:** die Suche findet jetzt auch den Ort der Auswärtshalle (z. B. „Neuss“ zeigt beide Neusser Spielgemeinschaften)
+
 ## Version 1.23.2
 
-### Neu in Version 1.23.2 (Stand 1.23.2.153, 20.10.2026) – Optisch
+### Neu in Version 1.23.2 (Stand 1.23.2.153, 20.10.2026, nur in der Test-App) – Optisch
 
 - **Anleitung Anzeigetafel – Kapitel-Knopf statt Wischleiste:** unter der Suche ein Knopf „☰ Kapitel“, der das aktuelle Kapitel anzeigt (z. B. „5. Strafzeitpulte“, oben „Übersicht – alle 7 Kapitel“). Ein Tipp klappt alle 7 Kapitel untereinander auf, das aktuelle ist markiert; ein Tipp auf ein Kapitel springt dorthin und klappt zu (ebenso Tipp daneben oder Esc). Suche und Knopf bleiben beim Scrollen oben stehen; beim Suchen ist der Knopf ausgeblendet
 
@@ -126,7 +134,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 - **Letzte Ergebnisse kompakt (Startseite):** statt zweier großer „Letztes Spiel“-Karten eine Karte mit je einer Zeile pro Mannschaft (Datum, Teams mit Logos, Ergebnis, Sieg/Niederlage, Teamfarbe am Rand). Ein Tipp öffnet die Spieldetails; gibt es einen Spielbericht, steht darunter „📝 Spielbericht“. Funktion `lrRender` in `index.html`; die großen Karten `g3HomeLast`/`g3HomeLast2` bleiben unsichtbar im Dokument. Eigene Stile für Dunkel und Halloween
 - **Mindestschriftgröße:** 56 Stellen im Stil mit 9–10,5 px auf 11 px (≤ 9,5 px) bzw. 12 px angehoben (u. a. Gegnerliste, Heim/Auswärts, Tabellen-Chips, Drittel, Admin-Bereich). Ausgenommen: News-Zähler am Symbol, Mini-Spiel und PDF-Druck
-- **Neu in der App:** ein gemeinsamer Eintrag für 1.20.0 bis 1.23.0 (keine davon war einzeln live)
+- **Neu in der App:** ein gemeinsamer Eintrag für 1.20.0 bis 1.24.0 (keine davon war einzeln live)
 
 ## Version 1.21.0
 
@@ -581,9 +589,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v153`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v154`).
 
-Die angezeigte Version hat die Form `1.23.2.153`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
+Die angezeigte Version hat die Form `1.24.0.154`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 
