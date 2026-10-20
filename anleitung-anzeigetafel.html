@@ -60,6 +60,52 @@ footer a{color:inherit}
 .hbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .back{display:inline-block;color:#fff;font:700 13px/1.2 inherit;font-family:inherit;text-decoration:none;background:rgba(255,255,255,.14);padding:8px 13px;border-radius:99px;border:0;cursor:pointer}
 .back.print{background:#f2a900;color:#2a1c00}
+header p.stand{margin-top:8px;font-size:12.5px;opacity:.75}
+
+
+
+section{scroll-margin-top:150px}
+/* Gliederung ohne Kreise – Kreise/Pillen sind nur für Tasten */
+h2 .n,h2 .n{width:auto;height:auto;border-radius:0;background:none!important;color:var(--muted);font-size:18px;font-weight:800;display:inline}
+h2 .n::after{content:"."}
+.steps li{padding-left:40px}
+.steps li::before{content:counter(s) ".";width:auto;height:auto;border-radius:0;background:none!important;color:var(--muted);font-size:15px;font-weight:800;top:10px;left:14px;display:block}
+
+/* Kapitel-Knopf mit aufklappbarer Liste (statt wischbarer Leiste) */
+.srch .box{position:relative}
+.kapBtn{display:flex;align-items:center;gap:10px;width:100%;margin-top:8px;padding:9px 12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);font:inherit;text-align:left;cursor:pointer;box-shadow:0 4px 14px rgba(8,31,55,.06)}
+.kapIc{font-size:18px;line-height:1}
+.kapTx{flex:1;min-width:0}.kapTx small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.kapTx b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kapArr{font-size:14px;color:var(--muted);transition:transform .2s}
+.srch.kapOpen .kapArr{transform:rotate(180deg)}
+.srch{position:sticky}
+.srch nav.toc{display:none!important;position:absolute;left:0;right:0;top:calc(100% - 4px);z-index:6;flex-direction:column;gap:0;margin:0;padding:6px;overflow:visible;border:1.5px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 14px 34px rgba(8,31,55,.22)}
+.srch.kapOpen nav.toc{display:flex!important}
+.srch nav.toc a{display:block;padding:12px 12px;border:0;border-radius:10px;font-size:15px;font-weight:700;color:var(--text);white-space:normal}
+.srch nav.toc a+a{border-top:1px solid var(--line);border-radius:0}
+.srch nav.toc a span{display:inline-block;min-width:24px;color:var(--muted)}
+.srch nav.toc a.on{background:rgba(242,169,0,.14);color:var(--text);border-radius:10px}
+.searching .kapBtn{display:none}
+/* Suche */
+.srch{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;margin:-4px 0 6px}
+.srch .box{position:relative}
+.srch input{width:100%;font:inherit;font-size:16px;padding:12px 40px 12px 40px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);box-shadow:0 4px 14px rgba(8,31,55,.08)}
+.srch input:focus{outline:0;border-color:#1673d1;box-shadow:0 0 0 3px rgba(22,115,209,.18)}
+.srch .lupe{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.6;pointer-events:none}
+.srch .x{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:var(--chip);color:var(--text);width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer}
+.srch .x[hidden]{display:none}
+.srch .tips[hidden]{display:none}
+.srch input::-webkit-search-cancel-button,.srch input::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
+.srch .info{font-size:13px;color:var(--muted);margin:6px 4px 0}.srch .info:empty{display:none}
+.srch .tips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.srch .tips button{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:99px;padding:5px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.searching nav.toc{display:none}
+[data-sx]{display:none!important}
+.hit{outline:3px solid #f2a900;outline-offset:2px;border-radius:12px;background:rgba(242,169,0,.12)!important}
+tr.hit td{background:rgba(242,169,0,.14)}
+.noHit{background:var(--card);border-radius:18px;padding:16px;font-size:14px}
+@media print{.srch,.noHit{display:none!important}}
 @media print{header{background:#071b33!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}section{box-shadow:none;border:1px solid #ccc;break-inside:avoid}nav.toc,.hbtns,.back{display:none}body{background:#fff}}
 </style>
 </head>
@@ -68,10 +114,12 @@ footer a{color:inherit}
 <small>ESV Grizzlys Bergkamen · Kampfgericht</small>
 <h1>Anzeigetafel bedienen<br>Stramatel 452 – Eishockey</h1>
 <p>Hauptpult für Uhr, Tore und Auszeiten · zwei Strafzeitpulte (Heim und Gast) für die Strafen</p>
+<p class="stand">Stand: 20.10.2026 · mit Grafik der Strafzeitpulte und Suche</p>
 <div class="hbtns"><a class="back" href="./">‹ Zurück zur App</a><button class="back print" type="button" onclick="window.print()">🖨 Drucken / als PDF speichern</button></div>
 </div></header>
 <main>
-<nav class="toc"><a href="#start">Vor dem Spiel</a><a href="#pult">Hauptpult</a><a href="#spiel">Während des Spiels</a><a href="#korr">Korrigieren</a><a href="#strafe">Strafzeitpulte</a><a href="#ende">Spielende</a><a href="#hilfe">Hilfe</a></nav>
+<div class="srch" role="search"><div class="box"><span class="lupe" aria-hidden="true">🔍</span><input id="q" type="search" placeholder="Suchen, z. B. 2+2, Auszeit, löschen" aria-label="Anleitung durchsuchen" autocomplete="off" enterkeyhint="search"><button class="x" id="qx" type="button" aria-label="Suche löschen" hidden>×</button></div><div class="info" id="qi"></div><button type="button" class="kapBtn" id="kapBtn" aria-expanded="false" aria-controls="kapList"><span class="kapIc" aria-hidden="true">☰</span><span class="kapTx"><small>Kapitel</small><b id="kapCur">Übersicht – alle 7 Kapitel</b></span><span class="kapArr" aria-hidden="true">▾</span></button><nav class="toc" id="kapList" aria-label="Kapitel"><a href="#start"><span>1.</span>Vor dem Spiel</a><a href="#pult"><span>2.</span>Hauptpult</a><a href="#spiel"><span>3.</span>Während des Spiels</a><a href="#korr"><span>4.</span>Korrigieren</a><a href="#strafe"><span>5.</span>Strafzeitpulte</a><a href="#ende"><span>6.</span>Spielende</a><a href="#hilfe"><span>7.</span>Hilfe</a></nav></div>
+<div class="noHit" id="nohit" hidden>Nichts gefunden. Versuch ein anderes Wort, z. B. „Strafe“, „Tor“, „Uhr“ oder eine Tastennummer.</div>
 
 <section>
 <p><b>So liest du diese Anleitung:</b> Jede Taste hat <b>klein daneben eine Nummer</b> (z. B. <span class="k y">18</span>). Die Anleitung nennt immer diese Nummer. <span class="k d">16</span><span class="plus">+</span><span class="k b">10</span> heißt: Taste 16 gedrückt halten und dabei 10 drücken.</p>
@@ -245,5 +293,74 @@ footer a{color:inherit}
 </section>
 </main>
 <footer>Kurzanleitung nach den Stramatel-Bedienungsanleitungen für das Hauptbedienpult 452G und die Strafzeitpulte 452G. Tastennummern stehen klein neben den Tasten. Bei Abweichungen gilt die Originalanleitung: <a href="https://pimage.sport-thieme.de/pdf/Bedienungsanleitung_Hauptbedienpult_Stramatel_Anzeigetafel_3971909_INT.pdf" target="_blank" rel="noopener">Hauptbedienpult (PDF)</a> · <a href="https://www.stramatel.com/wp-content/uploads/2023/03/UF452GPT_G-Pupitres-penalites-452G.pdf" target="_blank" rel="noopener">Strafzeitpulte (PDF, französisch)</a> · Erstellt von JAZM für den ESV Grizzlys Bergkamen.</footer>
+<script>
+/* Suche in der Anleitung: blendet nicht passende Abschnitte aus und markiert Treffer.
+   „2+2“, „2 + 2“, „2×2“ und „2x2“ gelten als gleich, Umlaute und Groß/klein sind egal. */
+(function(){
+  const q=document.getElementById("q"), qi=document.getElementById("qi"), qx=document.getElementById("qx"), nohit=document.getElementById("nohit");
+  const norm=t=>String(t).toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[×✕]/g,"x").replace(/(\d)\s*x\s*(\d)/g,"$1+$2").replace(/\s*([+\/–-])\s*/g,"$1").replace(/\s+/g," ").trim();
+  const CONT=".grid,.steps,table,.slots";
+  const UNIT=".tile,li,tr,.slots>div";
+  const secs=[...document.querySelectorAll("main section")];
+  function clear(){document.querySelectorAll("[data-sx]").forEach(e=>e.removeAttribute("data-sx"));document.querySelectorAll(".hit").forEach(e=>e.classList.remove("hit"));}
+  function run(){
+    const raw=q.value, words=norm(raw).split(" ").filter(Boolean);
+    clear(); qx.hidden=!raw; document.body.classList.toggle("searching",!!words.length);
+    if(!words.length){qi.textContent="";nohit.hidden=true;return;}
+    const has=el=>{const t=norm(el.textContent);return words.every(w=>t.includes(w));};
+    let hits=0;
+    secs.forEach(sec=>{
+      const h2=sec.querySelector("h2");
+      if(h2&&has(h2)){hits++;h2.classList.add("hit");return;}
+      let any=false, groups=[], g={h3:null,items:[]};
+      [...sec.children].forEach(c=>{if(c.tagName==="H2")return;if(c.tagName==="H3"){groups.push(g);g={h3:c,items:[]};}else g.items.push(c);});
+      groups.push(g);
+      groups.forEach(gr=>{
+        const h3hit=gr.h3&&has(gr.h3);
+        if(h3hit){any=true;hits++;gr.h3.classList.add("hit");return;}
+        let gAny=false;
+        gr.items.forEach(c=>{
+          if(c.matches(CONT)){
+            const units=[...c.querySelectorAll(UNIT)].filter(u=>u.parentElement.closest(CONT)===c||u.closest(CONT)===c);
+            let n=0; units.forEach(u=>{if(has(u)){n++;u.classList.add("hit");}else u.setAttribute("data-sx","");});
+            if(n){hits+=n;gAny=true;}else c.setAttribute("data-sx","");
+          }else if(c.matches(".svgwrap,.legend")){c.setAttribute("data-sx","");}
+          else if(has(c)){hits++;gAny=true;c.classList.add("hit");}
+          else c.setAttribute("data-sx","");
+        });
+        if(gAny)any=true; else if(gr.h3)gr.h3.setAttribute("data-sx","");
+      });
+      if(!any)sec.setAttribute("data-sx","");
+    });
+    qi.textContent=hits?(hits===1?"1 Treffer":hits+" Treffer"):"";
+    nohit.hidden=hits>0;
+  }
+  let t; q.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(run,120);});
+  q.addEventListener("keydown",e=>{if(e.key==="Escape"){q.value="";run();}if(e.key==="Enter")q.blur();});
+  qx.addEventListener("click",()=>{q.value="";run();q.focus();});
+  /* aktuelles Kapitel in der Leiste markieren */
+  const links=[...document.querySelectorAll(".srch nav.toc a")];
+  if(window.IntersectionObserver&&links.length){
+    const seen=new Map();
+    const io=new IntersectionObserver(es=>{es.forEach(e=>seen.set(e.target.id,e.isIntersecting?e.boundingClientRect.top:null));
+      const vis=[...seen.entries()].filter(([,t])=>t!==null).sort((a,b)=>a[1]-b[1]);const id=vis.length?vis[0][0]:null;
+      links.forEach(a=>{const on=a.getAttribute("href")==="#"+id;a.classList.toggle("on",on);});
+      const cur=links.find(a=>a.getAttribute("href")==="#"+id); document.getElementById("kapCur").textContent=cur?cur.textContent.replace(/^(\d+\.)/,"$1 "):"Übersicht – alle 7 Kapitel";
+    },{rootMargin:"-150px 0px -50% 0px"});
+    secs.filter(x=>x.id).forEach(x=>io.observe(x));
+  }
+  /* Kapitel-Liste auf- und zuklappen */
+  const srch=document.querySelector(".srch"), kb=document.getElementById("kapBtn");
+  const kap=o=>{srch.classList.toggle("kapOpen",o);kb.setAttribute("aria-expanded",o?"true":"false");};
+  kb.addEventListener("click",e=>{e.stopPropagation();kap(!srch.classList.contains("kapOpen"));});
+  links.forEach(a=>a.addEventListener("click",()=>kap(false)));
+  document.addEventListener("click",e=>{if(!e.target.closest(".srch"))kap(false);});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")kap(false);});
+  /* Drucken immer vollständig */
+  let saved="";
+  window.addEventListener("beforeprint",()=>{saved=q.value;if(saved){q.value="";run();}});
+  window.addEventListener("afterprint",()=>{if(saved){q.value=saved;run();}});
+})();
+</script>
 </body>
 </html>
