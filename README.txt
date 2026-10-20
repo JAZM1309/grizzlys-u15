@@ -11,7 +11,8 @@ Schreibweise 1.ZWEITE.DRITTE.CACHE:
 - dritte Stelle: optische Änderungen, Fehlerbehebungen und kleine Verbesserungen
 - letzte Stelle: Cache-Nummer aus sw.js (steigt bei fast jedem Stand)
 Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurden am 19.10.2026 nachträglich nummeriert. Die GitHub-Markierungen (live-1.9.1.…, wichtig für Live zurücksetzen) behalten ihren alten Namen:
-- 1.22.3.148 (20.10.2026, Fehlerbehebung)
+- 1.22.4.149 (20.10.2026, Optisch)
+- 1.22.3.148 (20.10.2026, Fehlerbehebung, nur Test)
 - 1.22.2.147 (20.10.2026, Kleine Änderung, nur Test)
 - 1.22.1.146 (20.10.2026, Fehlerbehebung, nur Test)
 - 1.22.0.144 (20.10.2026, Neue Funktion, nur Test)
@@ -43,6 +44,11 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurd
 - 1.10.1.86 = bisher 1.9.1.86 (10.10.2026, Fehlerbehebung und Verbesserung)
 - 1.10.0.83 = bisher 1.9.1.83 (10.10.2026, Neue Funktion)
 - 1.9.1.66 = bisher 1.9.1.66 (08.10.2026, Neue Funktion)
+
+Version 1.22.4
+
+Neu in Version 1.22.4 (Stand 1.22.4.149, 20.10.2026) – Optisch
+- Schalter „Nutzungsstatistik erlauben“ (Einstellungen › Datenschutz): das eigentliche Kontrollkästchen war zusätzlich zum Schieber sichtbar, und der Schieber zeigte den Zustand nicht an. Jetzt wie die Push-Schalter nur der Schieber (grün = erlaubt)
 
 Version 1.22.3
 
@@ -480,7 +486,7 @@ Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).
 
 Version
-Schreibweise 1.22.3.148: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
+Schreibweise 1.22.4.149: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
 
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.

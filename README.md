@@ -16,7 +16,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
-| 1.22.3.148 | – | 20.10.2026 | Fehlerbehebung |
+| 1.22.4.149 | – | 20.10.2026 | Optisch |
+| 1.22.3.148 | – (nur Test) | 20.10.2026 | Fehlerbehebung |
 | 1.22.2.147 | – (nur Test) | 20.10.2026 | Kleine Änderung |
 | 1.22.1.146 | – (nur Test) | 20.10.2026 | Fehlerbehebung |
 | 1.22.0.144 | – (nur Test) | 20.10.2026 | Neue Funktion |
@@ -49,9 +50,15 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
 
+## Version 1.22.4
+
+### Neu in Version 1.22.4 (Stand 1.22.4.149, 20.10.2026) – Optisch
+
+- **Schalter „Nutzungsstatistik erlauben“ (Einstellungen › Datenschutz):** das eigentliche Kontrollkästchen war zusätzlich zum Schieber sichtbar, und der Schieber zeigte den Zustand nicht an. Jetzt wie die Push-Schalter nur der Schieber (grün = erlaubt)
+
 ## Version 1.22.3
 
-### Neu in Version 1.22.3 (Stand 1.22.3.148, 20.10.2026) – Fehlerbehebung
+### Neu in Version 1.22.3 (Stand 1.22.3.148, 20.10.2026, nur in der Test-App) – Fehlerbehebung
 
 - **Gegner-Karte öffnete als Weltkarte:** Leaflet hatte beim Anlegen noch keinen Ausschnitt, die Logos konnten dann nicht gesetzt werden; und wurde die Karte bei verstecktem Reiter erzeugt (App merkt sich „Karte“), berechnete sie den Ausschnitt mit Größe 0. Jetzt startet die Karte mit einem NRW-Ausschnitt und wird erst eingepasst, wenn sie sichtbar ist (`omFit` + ResizeObserver) – auch bei jedem erneuten Öffnen des Reiters und nach dem Filtern
 - **Möglichst nah:** Einpassen mit 26 px Rand und Zoom in Viertelstufen (`zoomSnap 0.25`), sodass alle angezeigten Hallen gerade so draufpassen
@@ -541,9 +548,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v148`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v149`).
 
-Die angezeigte Version hat die Form `1.22.3.148`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
+Die angezeigte Version hat die Form `1.22.4.149`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 
