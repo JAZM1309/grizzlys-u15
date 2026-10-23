@@ -1738,6 +1738,18 @@ html.dark .oppMapLegend .small{color:#a9b8c9}
 html.dark .rlTile{background:#121f33;border-color:#2b4262;color:#e7eef8}
 html.dark .rlTile small,html.dark .rlModalSub{color:#a9b8c9}
 .hw .rlTile,.xm.dark .rlTile{background:#121f33;border-color:#2b4262;color:#e7eef8}
+
+/* 1.25.0: Spiel abgesagt */
+.cxBadge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:#d6453b;color:#fff;font-size:11px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;margin-right:4px}
+.lastPill.cx,.lrPill.cx{background:#d6453b!important;color:#fff!important}
+.g3Band.cx,.hw .g3Band.cx,.xm .g3Band.cx{background:#d6453b!important;color:#fff!important}
+.card.isCx .gcSide,.card.isCx .g3Date{opacity:.55}
+.card.isCx .g3Date b,.card.isCx .g3Date i{text-decoration:line-through;text-decoration-thickness:2px}
+.dayGame.isCx{opacity:.6;text-decoration:line-through}
+.dayGame.isCx .gameTime{text-decoration:none;color:#d6453b;font-weight:900}
+.admCx{background:#fdecea!important;color:#b3261e!important}
+.admCxBox.on{border-color:#efc2c0}
+html.dark .admCx{background:#3a1512!important;color:#ffb4ab!important}
 /* 1.21.1: Mindestschriftgröße – kleine Texte (9–10,5 px) auf 11–12 px angehoben, gilt für alle Bereiche */
 /* 1.21.0: Datenschutz-Abfrage, Datenschutz-Fenster, Datenschutz-Karte, Regeln-Chips, Push bei Spieländerung */
 .consentBar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:58;max-width:560px;margin:0 auto;background:#fff;border:1.5px solid #c3d4e8;border-radius:18px;box-shadow:0 14px 40px rgba(8,31,55,.28);padding:14px 14px 12px;color:var(--text)}
@@ -1830,7 +1842,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesChips" class="rlChips" role="tablist" aria-label="Themen"></div><div id="rulesTiles" class="rlTiles"></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></svg>Für das Kampfgericht</div><div class="small" style="margin-bottom:14px">Kurzanleitungen für die Technik in der Eishalle.</div><div class="downloadCards"><a id="downloadScoreboard" class="downloadCard" href="anleitung-anzeigetafel.html" style="text-decoration:none;color:inherit"><span class="dlIcon" style="background:#fff3d6;color:#b26b00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M12 10v3l2 2"/><path d="M7 4l-2.75 2"/><path d="M17 4l2.75 2"/></svg></span><b>Anzeigetafel bedienen</b><small>Stramatel 452 · Hauptpult und Strafzeitpulte · Schritt für Schritt</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.24.1.155</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.25.0.156</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <details class="infoCard inCard mapCard" id="appMap"><summary class="inHead"><b>So findest du dich zurecht</b><span class="mapSum">Alle Bereiche der App auf einen Blick</span></summary><div class="mapList"><button type="button" class="mapRow" data-go="start"><span class="mapIc">🏠</span><span class="mapTx"><b>Start</b><small>Nächstes und letztes Spiel, Spielbericht, Hinweise</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="schedule"><span class="mapIc">📅</span><span class="mapTx"><b>Spielplan</b><small>Alle Spiele, Kalender, Filter, „Heute“</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="opponents"><span class="mapIc">🛡️</span><span class="mapTx"><b>Gegner</b><small>Tabelle, Form, Spiele gegen jeden Gegner</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="rules"><span class="mapIc">📖</span><span class="mapTx"><b>Regeln</b><small>Regeln einfach erklärt, Handzeichen, Suche</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="downloads"><span class="mapIc">⬇️</span><span class="mapTx"><b>Downloads</b><small>Kalender, Spielplan-PDF, Bilder mit Bericht zum Teilen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="news"><span class="mapIc">📰</span><span class="mapTx"><b>News</b><small>Hinweise, Spielberichte, Spieländerungen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="settings"><span class="mapIc">⚙️</span><span class="mapTx"><b>Einstellungen</b><small>Design, Push an/aus oder neu einrichten, Feedback</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div><ul class="mapTips"><li><b>Wischen</b> nach links oder rechts wechselt zwischen den Reitern.</li><li><b>Spielkarte antippen</b> zeigt Tabelle, Form, Halle und Aktionen.</li><li><b>Teilen</b> schickt Bild und Text an WhatsApp, Instagram &amp; Co.</li></ul></details>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
@@ -1938,7 +1950,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie auf Widerruf einer Einwilligung mit Wirkung für die Zukunft. Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren, in NRW bei der Landesbeauftragten für Datenschutz und Informationsfreiheit (LDI NRW).</p>
 <div class="small">Stand: Oktober 2026</div>
 </div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.24.1.155 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.25.0.156 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hwDeco hwFogA" aria-hidden="true"></div><div class="hwDeco hwFogB" aria-hidden="true"></div><div class="hwDeco hwGameEyes" aria-hidden="true"><i></i><i></i></div><div class="hwDeco hwGameSpider" aria-hidden="true"><b></b><span>🕷️</span></div><div class="hwDeco hwGameBat" aria-hidden="true"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwFlash" aria-hidden="true"></div><div id="hqFx" class="hqFx" aria-hidden="true"></div><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div id="hockeyIntro" class="hockeyGameIntro">Best of 5 – wer zuerst 3 Runden gewinnt. Du bist der Puck.</div><div class="hqBoard" aria-live="polite"><div class="hqTeam"><i id="hqYou">GRIZZLYS</i><b id="hqScoreP">0</b></div><div class="hqMid"><div id="hqLamp" class="hqLamp" aria-hidden="true"></div><small id="hqSeriesInfo">Runde 1 · Best of 5</small></div><div class="hqTeam"><i id="hqFoe">GEGNER</i><b id="hqScoreC">0</b></div></div><div class="hqLevels" id="hqLevels" role="group" aria-label="Schwierigkeit"><button type="button" data-lv="easy">Anfänger</button><button type="button" data-lv="pro" class="on">Profi</button><button type="button" data-lv="keeper">Torwart</button></div><div class="hockeyRink"><div class="hqBanner" aria-hidden="true"><span>ESV GRIZZLYS</span><span>BERGKAMEN</span><span>U15</span></div><div id="hockeyBoard" class="hockeyBoard"></div><div class="hqBanner hqBannerB" aria-hidden="true"><span>BERGKAMEN</span><span>ESV GRIZZLYS</span><span>U15</span></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hqTools"><button id="hqPenBtn" class="hqPen" type="button">⏱ Strafzeit ×3</button><div id="hqTrophies" class="hqTrophies" aria-label="Pokale"></div></div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neue Serie</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät. Nur deine Pokale werden hier gespeichert.</div></div></div></div></div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -2073,6 +2085,7 @@ function applyScheduleOverrides(){
     const o=scheduleOverrides[g._baseId];
     if(o){ Object.assign(g,{day:o.day||g._base.day,date:o.date||g._base.date,time:o.time||g._base.time,home:o.home||g._base.home,away:o.away||g._base.away,stadium:o.stadium||g._base.stadium}); }
     else Object.assign(g,g._base);
+    g.cancelled=!!(o&&o.cancelled===true); /* 1.25.0: Spiel abgesagt – nur Anzeige */
   });
 }
 async function loadScheduleOverrides(){
@@ -2423,7 +2436,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.24.1.155",
+      appVersion:"1.25.0.156",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -3321,10 +3334,12 @@ function admStatus(g){
 function admDate(g){const d=dt(g);return `<span class="admD"><small>${esc(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","").toUpperCase())}</small><b>${d.getDate()}.</b><small>${esc(d.toLocaleDateString("de-DE",{month:"short"}).replace(".","").toUpperCase())}</small></span>`}
 const admPair=g=>esc(shortTeam(g.home))+" – "+esc(shortTeam(g.away));
 function admRow(g){
-  const [c,t]=admStatus(g), mod=!!scheduleOverrides[scheduleGameId(g)];
-  return `<button type="button" class="admRow team${esc(g.team)}" data-gid="${esc(scheduleGameId(g))}">${admDate(g)}<span class="admM"><b>${admPair(g)}</b><small>U15 ${esc(g.team)} · ${esc(g.time)} · ${esc(g.stadium)}${mod?'<span class="admMod">geändert</span>':""}</small></span><span class="admSt ${c}">${esc(t)}</span></button>`;
+  const [c,t]=admStatus(g), mod=admOvChanged(g);
+  return `<button type="button" class="admRow team${esc(g.team)}" data-gid="${esc(scheduleGameId(g))}">${admDate(g)}<span class="admM"><b>${admPair(g)}</b><small>U15 ${esc(g.team)} · ${esc(g.time)} · ${esc(g.stadium)}${mod?'<span class="admMod">geändert</span>':""}${g.cancelled?'<span class="admMod admCx">abgesagt</span>':""}</small></span><span class="admSt ${c}">${esc(t)}</span></button>`;
 }
 const admGame=id=>games.find(x=>scheduleGameId(x)===id);
+/* 1.25.0: echte Terminänderung (nicht nur Absage) */
+function admOvChanged(g){const o=scheduleOverrides[scheduleGameId(g)],b=g._base||g;return !!o&&["date","time","home","away","stadium"].some(k=>o[k]&&o[k]!==b[k]);}
 const admTeamOk=g=>adm.teams[g.team]!==false;
 
 function admRenderTodo(){
@@ -3416,7 +3431,7 @@ function admCloseSheet(){adm.sheet=null;const w=document.getElementById("admShee
 function admRenderSheet(){
   const w=document.getElementById("admSheet"); if(!w)return;
   const g=adm.sheet&&admGame(adm.sheet); if(!g){admCloseSheet();return}
-  const box=w.querySelector(".admSheet"), r=resultFor(g)||{}, has=admHasRes(g), id=scheduleGameId(g), mod=!!scheduleOverrides[id], d=admDiffFor(g), base=g._base||g;
+  const box=w.querySelector(".admSheet"), r=resultFor(g)||{}, has=admHasRes(g), id=scheduleGameId(g), mod=admOvChanged(g), d=admDiffFor(g), base=g._base||g;
   const ts=x=>x&&x.toMillis?new Date(x.toMillis()).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"";
   let hint="";
   if(has){
@@ -3438,6 +3453,7 @@ function admRenderSheet(){
       :`<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-sch="edit">✏️ Termin ändern</button>${mod?'<button type="button" class="admBtn no" data-sch="reset">↩️ Original</button>':""}</div>`}
    </div>
    ${admRepBox(g,has)}
+   <div class="admBox admCxBox${g.cancelled?" on":""}"><h5>🚫 Absage</h5>${g.cancelled?`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button></div>`:`<div class="small" style="margin-bottom:8px">Nur Anzeige: Das Spiel wird überall als „Abgesagt“ gekennzeichnet (Spielkarten, Kalender, Social-Media-Bilder). Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button></div>`}</div>
    <div class="admBox"><h5>📸 Social-Media-Bilder</h5><div class="admBtns"><button type="button" class="admBtn" data-img="announce">Ankündigung</button><button type="button" class="admBtn ${has?"pri":""}" data-img="result" ${has?"":"disabled"}>Ergebnis-Bild</button></div></div>
    <div class="admBox"><h5>📰 Hinweis zu diesem Spiel</h5><button type="button" class="admBtn" style="width:100%" data-news>＋ News schreiben (z. B. Hallenwechsel)</button></div>`;
   w.hidden=false;
@@ -3475,6 +3491,16 @@ function admRenderSheet(){
     admRenderAll();
   });
   box.querySelectorAll("[data-img]").forEach(b=>b.onclick=()=>{if(typeof instaOpen==="function")instaOpen(g,b.dataset.img)});
+  box.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
+    const on=b.dataset.cx==="on", pushIt=on&&!!box.querySelector("#admCxPush")?.checked;
+    if(!confirm(on?"Spiel als abgesagt markieren?\n\nDas Spiel bleibt im Spielplan, wird aber überall als „Abgesagt“ angezeigt."+(pushIt?"\n\nAlle Geräte mit Push für U15 "+g.team+" bekommen eine Nachricht.":""):"Absage zurücknehmen?"))return;
+    b.disabled=true;
+    try{await admSetCancelled(g,on);let msg=on?"Als abgesagt markiert – gilt sofort für alle Nutzer.":"Absage zurückgenommen.";
+      if(pushIt){try{const opp=shortTeam(/grizzlys/i.test(g.home)?g.away:g.home),wd=new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
+        await admSendChangePush(g,"Spiel gegen "+opp+" am "+wd+" ("+g.time+" Uhr) ist abgesagt.");msg+="\n\nPush an alle Geräte (U15 "+g.team+") wird verschickt."}catch(err){msg+="\n\nAchtung: Push konnte nicht verschickt werden ("+(err.message||err)+")."}}
+      alert(msg)}catch(err){console.error(err);alert("Speichern nicht möglich: "+(err.message||err))}
+    admRenderAll();
+  });
   box.querySelector("[data-news]").onclick=()=>{admCloseSheet();admSetTab("news");window.admNewsPrefill?.(g)};
 }
 /* 1.9.1.126: News-Häkchen beim Termin ändern – folgt automatisch der Erkennung, bis man es selbst anfasst */
@@ -3525,10 +3551,25 @@ async function admSendChangePush(g,text){
   await addDoc(collection(db,"news"),{title:"Spieländerung",text:text.slice(0,600),team:g.team==="B"?"B":"A",until:y,push:true,createdAt:serverTimestamp()});
   try{await loadNews()}catch(e){}
 }
+/* 1.25.0: Absage speichern – im selben Dokument wie Terminänderungen (scheduleOverrides), Feld „cancelled“.
+   Gab es nur die Absage (keine Terminänderung), wird das Dokument beim Zurücknehmen wieder gelöscht. */
+async function admSetCancelled(g,on){
+  const id=scheduleGameId(g), base=g._base||g, o=scheduleOverrides[id];
+  if(on){
+    const data=o?{...o,cancelled:true}:{gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day:base.day,date:base.date,time:base.time,home:base.home,away:base.away,stadium:base.stadium,cancelled:true,news:true};
+    await setDoc(doc(db,"scheduleOverrides",id),{...data,cancelledAt:serverTimestamp(),updatedAt:serverTimestamp()});
+    scheduleOverrides[id]=data;
+  }else if(o){
+    if(admOvChanged(g)){const data={...o,cancelled:false};delete data.cancelledAt;await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});scheduleOverrides[id]=data;}
+    else{await deleteDoc(doc(db,"scheduleOverrides",id));delete scheduleOverrides[id];}
+  }
+  applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.(); adminNewsEditor();
+}
 async function admSaveOverride(g,v){
   const id=scheduleGameId(g), base=g._base||g, day=new Date(v.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long"});
   const data={gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day,date:v.date,time:v.time,home:v.home,away:v.away,stadium:v.stadium};
   if(typeof v.news==="boolean")data.news=v.news; /* fehlt = automatisch erkennen */
+  if(scheduleOverrides[id]&&scheduleOverrides[id].cancelled===true)data.cancelled=true;
   await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});
   scheduleOverrides[id]=data; applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.(); adminNewsEditor();
 }
@@ -3833,7 +3874,7 @@ function renderCalendar(){
     const dayGames=arr.filter(g=>g.date===key);
     const today=new Date(); const todayKey=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
     const fer=ferienFor(key);
-    html+='<div class="dayCell '+(todayKey===key?'today':'')+(fer?' ferien':'')+'"'+(fer?' title="'+esc(fer.name)+' NRW"':'')+'><div class="dayNum">'+d+'</div><div class="dayGames">'+dayGames.map(g=>'<button type="button" class="dayGame '+g.team+'" data-game-index="'+games.indexOf(g)+'" title="'+esc(g.time+' · '+opponent(g))+'"><span class="gameTime">U15 '+g.team+' · '+esc(g.time)+'</span><span class="gameOpp">'+esc(opponent(g))+'</span><span class="gameVenue">'+(isHome(g)?'🏠':'✈️')+' '+esc(g.stadium)+'</span></button>').join("")+'</div></div>';
+    html+='<div class="dayCell '+(todayKey===key?'today':'')+(fer?' ferien':'')+'"'+(fer?' title="'+esc(fer.name)+' NRW"':'')+'><div class="dayNum">'+d+'</div><div class="dayGames">'+dayGames.map(g=>'<button type="button" class="dayGame '+g.team+(g.cancelled?' isCx':'')+'" data-game-index="'+games.indexOf(g)+'" title="'+esc(g.time+' · '+opponent(g)+(g.cancelled?' · abgesagt':''))+'"><span class="gameTime">U15 '+g.team+' · '+(g.cancelled?'abgesagt':esc(g.time))+'</span><span class="gameOpp">'+esc(opponent(g))+'</span><span class="gameVenue">'+(isHome(g)?'🏠':'✈️')+' '+esc(g.stadium)+'</span></button>').join("")+'</div></div>';
   }
   const cells=7+start+last.getDate();
   for(let i=cells;i%7!==0;i++) html+='<div class="dayCell" style="visibility:hidden"></div>';
@@ -3960,7 +4001,7 @@ function printAllGamesPdf(filters=["all"]){
       "<td class=\"printTeam"+g.team+"\">U15 "+esc(g.team)+"</td>"+
       "<td>"+esc(g.home)+"</td>"+
       "<td>"+esc(g.away)+"</td>"+
-      "<td class=\"printResult\">"+score+"</td>"+
+      "<td class=\"printResult\">"+(g.cancelled?(score!=="–"?score+" ":"")+"<b>abgesagt</b>":score)+"</td>"+
       "<td>"+esc(g.stadium)+"</td>"+
     "</tr>";
   }).join("");
@@ -3988,7 +4029,7 @@ function printAllGamesPdf(filters=["all"]){
   printWindow.onload=()=>setTimeout(()=>printWindow.print(),150);
 }
 function downloadIcsBundle(arr,filename){const body=arr.flatMap(g=>icsForEvent(g));const content=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN",...body,"END:VCALENDAR"].join("\r\n");const blob=new Blob([content],{type:"text/calendar;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:U15 "+g.team+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
+function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),...(g.cancelled?["STATUS:CANCELLED"]:[]),"SUMMARY:"+(g.cancelled?"ABGESAGT: ":"")+"U15 "+g.team+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
 function renderNext(){
   const g=games.filter(x=>dt(x)>=new Date()).sort((a,b)=>dt(a)-dt(b))[0]||games[games.length-1];
   const cls=g.team==="A"?"teamA":"teamB";
@@ -4419,9 +4460,9 @@ function gameCardHtml(g,past,res,detail=false,label=""){
   const logo=(name,cls)=>/grizzlys/i.test(name)?teamLogoHtml(name,cls):logoHtml(name,cls);
   const wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
   const date=`<div class="g3Date"><span>${esc(wd)}</span><b>${String(d.getDate()).padStart(2,"0")}.</b><span>${esc(mon)}</span><i>${esc(g.time)}</i></div>`;
-  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">U15 ${esc(g.team)}</span><span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
+  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">U15 ${esc(g.team)}</span>${g.cancelled?'<span class="cxBadge">Abgesagt</span>':""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
   const mid=res?`<div class="gzMid"><b class="gzScore">${res.hs}:${res.as}</b><span class="lastPill ${res.o}">${word[res.o]}</span></div>`
-               :`<div class="gzMid">${past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
+               :`<div class="gzMid">${g.cancelled?'<span class="lastPill cx">Abgesagt</span>':past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
   const match=`<div class="gcMatch"><div class="gcSide">${logo(g.home,"opponentLogo")}<span>${esc(shortTeam(g.home))}</span></div>${mid}<div class="gcSide">${logo(g.away,"opponentLogo")}<span>${esc(shortTeam(g.away))}</span></div></div>`;
   const per=res?standPeriodsData(g):null;
   const thirds=per?`<div class="g3Tile g3Thirds">`+per.p.map((v,i)=>`<div><small>${i+1}. Drittel</small><b>${esc(v)}</b></div>`).join("")+(per.so||per.ot?`<div><small>Ende</small><b>${per.so?"n.P.":"n.V."}</b></div>`:"")+`</div>`:"";
@@ -4430,7 +4471,7 @@ function gameCardHtml(g,past,res,detail=false,label=""){
     :`<div class="g3Tile g3Venue"><div><b>${esc(g.stadium)}</b><span>${esc(address(g))}${(km=>km?" · "+km+" km":"")(distanceForStadium(g.stadium))}</span></div><button class="g3Route route" type="button">${ic("pin")}Route</button></div>`;
   const btn=(c,icon,label)=>`<button class="g3Btn ${c}" type="button">${ic(icon)}${label}</button>`;
   const hasRep=!!(res&&!detail&&window.repFor&&window.repFor(g));
-  const acts=`<div class="g3Acts">`+(past?"":btn("cal","calplus","Termin")+btn("rem","bell","Erinnerung"))+(hasRep?btn("rep","file","Bericht"):"")+btn("share","share",res?"Ergebnis teilen":"Teilen")+`</div>`;
+  const acts=`<div class="g3Acts">`+(past||g.cancelled?"":btn("cal","calplus","Termin")+btn("rem","bell","Erinnerung"))+(hasRep?btn("rep","file","Bericht"):"")+btn("share","share",res?"Ergebnis teilen":"Teilen")+`</div>`;
   return `<div class="g3Top">${date}<div class="g3Main">${head}${match}</div></div><div class="g3Det"><div class="g3In"><div class="g3Pad">${thirds}${tiles?`<div class="g3Pair">${tiles}</div>`:""}${venue}${acts}</div></div></div>`;
 }
 function g3SetOpen(card,on){
@@ -4448,10 +4489,11 @@ function g3HomeCard(id,g,label,defOpen){
   if(!el){el=document.createElement("article");el.id=id;if(id==="g3HomeNext2"||id==="g3HomeLast2")old.after(el);else old.parentNode.insertBefore(el,old)}
   if(!g){el.hidden=true;return}
   const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now(), wasOpen=el.classList.contains("open");
-  el.hidden=false;el.className="card gz2 gz3 g3Home "+(g.team==="B"?"teamB":"teamA")+(id.startsWith("g3HomeLast")&&res?" res_"+res.o:"");el.dataset.team=g.team;
+  el.hidden=false;el.className="card gz2 gz3 g3Home "+(g.team==="B"?"teamB":"teamA")+(id.startsWith("g3HomeLast")&&res?" res_"+res.o:"")+(g.cancelled?" isCx":"");el.dataset.team=g.team;
   el.innerHTML=gameCardHtml(g,past,res,false,"");
   {const word={w:"Sieg",l:"Niederlage",d:"Unentschieden"};let sub="",k="";
    if(id.startsWith("g3HomeLast")){k=res?res.o:"none";sub=res?word[res.o]:"Ergebnis folgt"}
+   else if(g.cancelled){k="cx";sub="Abgesagt"}
    else{const d0=new Date();d0.setHours(0,0,0,0);const d1=dt(g);d1.setHours(0,0,0,0);const n=Math.round((d1-d0)/86400000);sub=n===0?"Heute":n===1?"Morgen":n>1?"in "+n+" Tagen":""}
    el.insertAdjacentHTML("afterbegin",`<div class="g3Band ${k}">${esc(label)}${sub?`<span>${esc(sub)}</span>`:""}</div>`);}
   /* 1.9.1.131: Spielbericht vorhanden → Verweis direkt auf der Startkarte */
@@ -4481,7 +4523,7 @@ function lrRender(list){
       <div class="lrTeams"><span class="lrBadge">U15 ${esc(g.team)}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
         <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div></div>
-      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${r.o}">${word[r.o]}</span>`:`<span class="lrPill none">Ergebnis folgt</span>`}</div>
+      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":word[r.o]}</span>`:`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");
   el.querySelectorAll(".lrRow").forEach(row=>{const g=list[Number(row.dataset.i)];
@@ -4531,7 +4573,7 @@ function renderList(filter="all"){
     const home=isHome(g);
     const sideL=home?teamLogoHtml(g.home,"opponentLogo"):logoHtml(g.home), sideR=home?logoHtml(g.away):teamLogoHtml(g.away,"opponentLogo");
     const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now();
-    card.classList.add("gz2","gz3");
+    card.classList.add("gz2","gz3"); if(g.cancelled)card.classList.add("isCx");
     card.innerHTML=gameCardHtml(g,past,res);
     g3Bind(card,g);g3SetOpen(card,g3Key(g)===openKey);
     if(g===ng){card.classList.add("nextGame");card.querySelector(".gcLeft").insertAdjacentHTML("beforeend",'<span class="nextBadge">Nächstes Spiel</span>')}
@@ -4544,15 +4586,15 @@ function route(g){window.open("https://www.google.com/maps/search/?api=1&query="
 function icsFor(g,alarm=false){
  const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0");
  const stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";
- let a=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:"+(alarm?"Erinnerung: ":"")+"U15 "+g.team+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\nSpielort: "+address(g)];
+ let a=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:"+(g.cancelled?"ABGESAGT: ":"")+(alarm?"Erinnerung: ":"")+"U15 "+g.team+" – "+opponent(g),...(g.cancelled?["STATUS:CANCELLED"]:[]),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\nSpielort: "+address(g)];
  if(alarm)a.push("BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY","DESCRIPTION:U15-Spiel der ESV Grizzlys morgen","END:VALARM");
  a.push("END:VEVENT","END:VCALENDAR"); return a.join("\r\n");
 }
 function downloadIcs(g,alarm){const blob=new Blob([icsFor(g,alarm)],{type:"text/calendar"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(alarm?"Erinnerung-":"U15-")+g.date+"-"+g.team+".ics";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function calendar(g){downloadIcs(g,false)} function reminder(g){downloadIcs(g,true);setTimeout(()=>alert("Kalenderdatei vorbereitet – die Erinnerung ist 24 Stunden vorher hinterlegt."),250)}
 async function shareGame(g){const r=resInfo(g), per=r?standPeriodsData(g):null;
-  const text=r?"🏒 U15 "+g.team+" – Endstand\n"+g.home+" "+r.hs+":"+r.as+" "+g.away+(per?"\nDrittel: "+per.p.join(" · ")+(per.so?" · n.P.":per.ot?" · n.V.":""):"")+"\n"+fmtDate(g)+" · "+g.stadium
-    :"🏒 U15 "+g.team+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g);if(navigator.share){try{await navigator.share({title:"ESV Grizzlys U15",text})}catch(e){}}else alert(text)}
+  const text=(g.cancelled?"❌ ABGESAGT\n":"")+(r?"🏒 U15 "+g.team+" – Endstand\n"+g.home+" "+r.hs+":"+r.as+" "+g.away+(per?"\nDrittel: "+per.p.join(" · ")+(per.so?" · n.P.":per.ot?" · n.V.":""):"")+"\n"+fmtDate(g)+" · "+g.stadium
+    :"🏒 U15 "+g.team+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g));if(navigator.share){try{await navigator.share({title:"ESV Grizzlys U15",text})}catch(e){}}else alert(text)}
 
 function openMatchDetails(g,toReport=false){
   const modal=document.getElementById("matchModal");
@@ -5259,7 +5301,7 @@ async function instaDraw(g,type){
   // Kopf
   c.textBaseline="alphabetic";c.textAlign="left";c.fillStyle="#fff";instaFont(c,900,27);instaSpace(c,5);c.fillText("ESV GRIZZLYS BERGKAMEN",62,93);
   instaSpace(c,3);const tag="U15 "+g.team,tw=c.measureText(tag).width+44;instaRR(c,W-62-tw,56,tw,48,10);c.fillStyle="#ff8a00";c.fill();c.fillStyle="#2b1500";c.textAlign="center";c.fillText(tag,W-62-tw/2+1.5,90);instaSpace(c,0);
-  const head=res?(res.o==="w"?(home?["Heim","sieg!"]:["Auswärts","sieg!"]):["End","stand"]):["Spiel","tag"];
+  const head=g.cancelled?["Spiel ","abgesagt"]:res?(res.o==="w"?(home?["Heim","sieg!"]:["Auswärts","sieg!"]):["End","stand"]):["Spiel","tag"];
   let hs=112;c.textAlign="left";do{instaFont(c,0,hs,true);hs-=6}while(c.measureText(head[0]+head[1]).width>W-124&&hs>60);hs+=6;instaFont(c,0,hs,true);
   c.save();c.shadowColor="rgba(0,0,0,.65)";c.shadowBlur=26;c.shadowOffsetY=6;c.fillStyle="#fff";c.fillText(head[0],62,222);c.fillStyle="#ff8a00";c.fillText(head[1],62+c.measureText(head[0]).width,222);c.restore();
   // Paarung: Heim oben links, Gast unten rechts
@@ -5270,10 +5312,15 @@ async function instaDraw(g,type){
   const mw=c.measureText(mid).width+(res?76:84),mh=res?132:136,mx=W/2-mw/2,my=640-mh/2;
   c.save();c.shadowColor="rgba(0,0,0,.55)";c.shadowBlur=46;c.shadowOffsetY=16;instaRR(c,mx,my,mw,mh,30);c.fillStyle="#fff";c.fill();c.restore();
   c.fillStyle="#071b33";c.textAlign="center";c.textBaseline="middle";c.fillText(mid,W/2,640+(res?6:8));
+  /* 1.25.0: abgesagt – roter Stempel über der Mitte */
+  if(g.cancelled){c.save();c.translate(W/2,res?770:760);c.rotate(-0.09);instaFont(c,900,74);instaSpace(c,6);const st="ABGESAGT",sw=c.measureText(st).width+90;
+    c.shadowColor="rgba(0,0,0,.5)";c.shadowBlur=30;instaRR(c,-sw/2,-62,sw,124,18);c.fillStyle="#d6453b";c.fill();c.shadowBlur=0;
+    c.lineWidth=6;c.strokeStyle="#fff";instaRR(c,-sw/2+12,-50,sw-24,100,12);c.stroke();c.fillStyle="#fff";c.textAlign="center";c.textBaseline="middle";c.fillText(st,3,6);instaSpace(c,0);c.restore();}
   // Fuß
   c.textAlign="left";c.textBaseline="alphabetic";const d=dt(g),day=d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}),full=d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"});
   let parts;
   if(res){const p=standPeriodsShort(g).replace(/<[^>]+>/g,"");parts=p?[["Drittel ","#fff"],[p,"#ff8a00"]]:[[full,"#fff"]];}
+  else if(g.cancelled)parts=[[day+" ","#fff"],["· ","#ff8a00"],["abgesagt","#ff8a00"]];
   else parts=[[day+" ","#fff"],["· ","#ff8a00"],[g.time+" Uhr","#fff"]];
   let bs=68;do{instaFont(c,900,bs);bs-=4}while(parts.reduce((n,x)=>n+c.measureText(x[0]).width,0)>W-124&&bs>40);bs+=4;instaFont(c,900,bs);
   let bx=62;parts.forEach(([s,col])=>{c.fillStyle=col;c.fillText(s,bx,1182);bx+=c.measureText(s).width});
@@ -5302,7 +5349,7 @@ async function instaOpen(g,type,pub=false){
   try{
     const cv=await instaDraw(g,type), blob=await new Promise(r=>cv.toBlob(r,"image/png"));
     if(!blob)throw new Error("Bild konnte nicht erzeugt werden");
-    const name="grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(type==="result"?"ergebnis":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
+    const name="grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(g.cancelled?"abgesagt":type==="result"?"ergebnis":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
     body.innerHTML="";const img=new Image();img.src=url;img.alt="Vorschau des Bildes";img.className="instaPreview";body.appendChild(img);
     const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     bS.hidden=!canShare;bS.disabled=false;bD.disabled=false;
@@ -5363,7 +5410,7 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
-  {v:"1.24.1.155",d:"Oktober 2026",items:["Gegner: Die Suche funktioniert jetzt auch auf der Karte – Verein oder Ort eingeben, die Karte zoomt zum Treffer.","Anleitung Anzeigetafel: Neues Suchfeld – z. B. „2+2“ eingeben und nur die passende Stelle wird angezeigt.","Gegner: Neue Karte mit allen Gegnern an ihren Spielorten – umschaltbar zwischen Liste und Karte, mit Filter Alle / U15 A / U15 B. Ein Tipp auf ein Logo zeigt Halle, Entfernung, Spiele und Route.","Entfernungen neu berechnet: Alle km-Angaben gelten jetzt als Fahrstrecke von unserer Eishalle bis zur Eishalle des Gegners.","Startseite: Die letzten Ergebnisse beider Mannschaften stehen jetzt kompakt in einer Karte – antippen öffnet die Spieldetails.","Besser lesbar: Kleine Schriften (z. B. Entfernung, Heim/Auswärts, Hinweise) sind etwas größer.","Regeln: Die Themen stehen jetzt als große Kacheln – ein Tipp öffnet das Thema in einem eigenen Fenster. Die Suche findet weiterhin Regeln aus allen Themen.","Datenschutz: Neue Seite „Datenschutz & Kontakt“ (Info und Einstellungen). Die Nutzungsstatistik läuft nur noch, wenn du zustimmst – änderbar unter Einstellungen › Datenschutz.","Feedback: Bricht beim Senden die Verbindung ab, bleibt dein Text gespeichert – mit „Nochmal senden“ schickst du ihn später einfach erneut ab."]},
+  {v:"1.25.0.156",d:"Oktober 2026",items:["Abgesagte Spiele sind jetzt überall als „Abgesagt“ gekennzeichnet – auf den Spielkarten, im Kalender, in den News und auf den Social-Media-Bildern.","Gegner: Die Suche funktioniert jetzt auch auf der Karte – Verein oder Ort eingeben, die Karte zoomt zum Treffer.","Anleitung Anzeigetafel: Neues Suchfeld – z. B. „2+2“ eingeben und nur die passende Stelle wird angezeigt.","Gegner: Neue Karte mit allen Gegnern an ihren Spielorten – umschaltbar zwischen Liste und Karte, mit Filter Alle / U15 A / U15 B. Ein Tipp auf ein Logo zeigt Halle, Entfernung, Spiele und Route.","Entfernungen neu berechnet: Alle km-Angaben gelten jetzt als Fahrstrecke von unserer Eishalle bis zur Eishalle des Gegners.","Startseite: Die letzten Ergebnisse beider Mannschaften stehen jetzt kompakt in einer Karte – antippen öffnet die Spieldetails.","Besser lesbar: Kleine Schriften (z. B. Entfernung, Heim/Auswärts, Hinweise) sind etwas größer.","Regeln: Die Themen stehen jetzt als große Kacheln – ein Tipp öffnet das Thema in einem eigenen Fenster. Die Suche findet weiterhin Regeln aus allen Themen.","Datenschutz: Neue Seite „Datenschutz & Kontakt“ (Info und Einstellungen). Die Nutzungsstatistik läuft nur noch, wenn du zustimmst – änderbar unter Einstellungen › Datenschutz.","Feedback: Bricht beim Senden die Verbindung ab, bleibt dein Text gespeichert – mit „Nochmal senden“ schickst du ihn später einfach erneut ab."]},
   {id:"1.9.1.138",v:"1.19.1.138",d:"Oktober 2026",items:["Neu in der Info: „So findest du dich zurecht“ – alle Bereiche der App auf einen Blick, ein Tipp bringt dich direkt hin."]},
   {id:"1.9.1.137",v:"1.19.0.137",d:"Oktober 2026",items:["Ergebnisbilder in Downloads: Beim Teilen kommt jetzt der Kurzbericht zum Spiel als Text mit."]},
   {id:"1.9.1.133",v:"1.17.0.131",d:"Oktober 2026",items:["Neu: Spielberichte! Nach dem Spiel gibt es einen kurzen Bericht – in den News, auf der Startseite beim letzten Spiel und in den Spieldetails.","Gespielte Spiele zeigen statt Route und Adresse nur noch, wo gespielt wurde."]},
@@ -5429,11 +5476,12 @@ function newsChanges(){
     if(o.news===false)return; /* im Admin bewusst „nicht in den News“ */
     if(dt(g).getTime()<t)return;
     const b=g._base, diff=[], same=o.news===true?(x,y)=>x===y:chgSame;
+    if(o.cancelled===true)diff.push("❌ Spiel abgesagt");
     if(b.date!==g.date||b.time!==g.time)diff.push("vorher "+new Date(b.date+"T"+b.time).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+b.time+" Uhr");
     if(!same(b.stadium,g.stadium))diff.push("Ort vorher "+b.stadium);
     if(!same(b.home,g.home)||!same(b.away,g.away))diff.push("Paarung geändert");
     if(!diff.length)return;
-    out.push({id:"c:"+g._baseId+":"+g.date+g.time+g.stadium,g,diff});
+    out.push({id:"c:"+g._baseId+":"+g.date+g.time+g.stadium+(o.cancelled===true?":x":""),g,diff});
   });
   return out.sort((a,b)=>dt(a.g)-dt(b.g));
 }
@@ -5715,7 +5763,7 @@ function newsNoteHtml(n,unread){
 }
 function newsChangeHtml(c,unread){
   const g=c.g, day=dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
-  return `<button class="newsItem newsChange${unread?" unread":""}" data-team="${esc(g.team)}" data-cid="${esc(c.id)}" type="button"><div class="newsItemHead"><span class="teamBadge">U15 ${esc(g.team)}</span><span class="newsDate">Spieländerung</span></div><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><p><span class="newsNew">Neu: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span><br>${c.diff.map(esc).join(" · ")}</p></button>`;
+  return `<button class="newsItem newsChange${unread?" unread":""}" data-team="${esc(g.team)}" data-cid="${esc(c.id)}" type="button"><div class="newsItemHead"><span class="teamBadge">U15 ${esc(g.team)}</span><span class="newsDate">${g.cancelled?"Absage":"Spieländerung"}</span></div><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><p>${g.cancelled?`<span class="newsNew">❌ Abgesagt: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span>${c.diff.filter(x=>x!=="❌ Spiel abgesagt").length?"<br>"+c.diff.filter(x=>x!=="❌ Spiel abgesagt").map(esc).join(" · "):""}`:`<span class="newsNew">Neu: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span><br>${c.diff.map(esc).join(" · ")}`}</p></button>`;
 }
 function renderNews(){
   const items=newsUnread(), n=items.length, badge=document.getElementById("newsBadge");
@@ -5737,8 +5785,9 @@ function renderNews(){
         const m0=document.getElementById("newsModal"); if(m0&&!m0.hidden)newsFill();
         return;
       }
-      const txt=top.kind==="note"?top.n.title:top.kind==="report"?(top.r.title||"Spielbericht"):"Spieländerung U15 "+top.g.team+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+", jetzt "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr";
-      ban.innerHTML=`<button class="newsBannerMain" type="button"><span class="newsBannerIc">${top.kind==="note"?"📰":top.kind==="report"?"📝":"📅"}</span><span class="newsBannerTx"><small>${top.kind==="note"?"Hinweis":top.kind==="report"?"Spielbericht":"Spieländerung"}</small>${esc(txt)}</span></button><button class="newsBannerX" type="button" aria-label="Hinweis ausblenden">×</button>`;
+      const txt=top.kind==="note"?top.n.title:top.kind==="report"?(top.r.title||"Spielbericht"):top.g.cancelled?"Abgesagt U15 "+top.g.team+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+" am "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr"
+      :"Spieländerung U15 "+top.g.team+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+", jetzt "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr";
+      ban.innerHTML=`<button class="newsBannerMain" type="button"><span class="newsBannerIc">${top.kind==="note"?"📰":top.kind==="report"?"📝":"📅"}</span><span class="newsBannerTx"><small>${top.kind==="note"?"Hinweis":top.kind==="report"?"Spielbericht":top.g&&top.g.cancelled?"Absage":"Spieländerung"}</small>${esc(txt)}</span></button><button class="newsBannerX" type="button" aria-label="Hinweis ausblenden">×</button>`;
       ban.querySelector(".newsBannerMain").onclick=()=>{if(top.kind==="report"){newsMarkSeen([top.id]);renderNews();openMatchDetails(top.g,true)}else openNews()};
       ban.querySelector(".newsBannerX").onclick=()=>{newsMarkSeen([top.id]);renderNews()};
     }
@@ -5782,7 +5831,7 @@ document.getElementById("newsTopBtn").onclick=openNews;
   const seasonHTML=season?season.innerHTML:"";
   const sameDay=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
   const hm=g=>g.time.replace(/^0/,"");
-  function todays(){const n=new Date();return games.filter(g=>sameDay(dt(g),n)).sort((a,b)=>dt(a)-dt(b))}
+  function todays(){const n=new Date();return games.filter(g=>sameDay(dt(g),n)&&!g.cancelled).sort((a,b)=>dt(a)-dt(b))}
   /* 1.9.1.125: Status eines einzelnen Spiels (vor dem Spiel, läuft, Ergebnis) */
   function gameText(g,now){
     const s=dt(g).getTime(), r=resInfo(g);

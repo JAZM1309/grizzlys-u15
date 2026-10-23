@@ -11,7 +11,8 @@ Schreibweise 1.ZWEITE.DRITTE.CACHE:
 - dritte Stelle: optische Änderungen, Fehlerbehebungen und kleine Verbesserungen
 - letzte Stelle: Cache-Nummer aus sw.js (steigt bei fast jedem Stand)
 Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurden am 19.10.2026 nachträglich nummeriert. Die GitHub-Markierungen (live-1.9.1.…, wichtig für Live zurücksetzen) behalten ihren alten Namen:
-- 1.24.1.155 (23.10.2026, Kleine Verbesserung)
+- 1.25.0.156 (23.10.2026, Neue Funktion)
+- 1.24.1.155 (23.10.2026, Kleine Verbesserung, nur Test)
 - 1.24.0.154 (20.10.2026, Neue Funktion)
 - 1.23.2.153 (20.10.2026, Optisch, nur Test)
 - 1.23.1.152 (20.10.2026, Optisch, nur Test)
@@ -50,6 +51,15 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurd
 - 1.10.1.86 = bisher 1.9.1.86 (10.10.2026, Fehlerbehebung und Verbesserung)
 - 1.10.0.83 = bisher 1.9.1.83 (10.10.2026, Neue Funktion)
 - 1.9.1.66 = bisher 1.9.1.66 (08.10.2026, Neue Funktion)
+
+Version 1.25.0
+
+Neu in Version 1.25.0 (Stand 1.25.0.156, 23.10.2026) – Neue Funktion
+- Spiel absagen (Admin): im Spiel-Fenster neuer Kasten „🚫 Absage“ mit Knopf „Spiel absagen“ und optionalem Häkchen „📲 Push an alle senden“ (Text: „Spiel gegen … am … ist abgesagt.“, über den News-Push wie bei Spieländerungen). „Absage zurücknehmen“ macht es rückgängig. Gespeichert als Feld cancelled in scheduleOverrides (keine Regeländerung); gab es nur die Absage, wird das Dokument beim Zurücknehmen gelöscht, eine echte Terminänderung bleibt erhalten. Funktionen admSetCancelled, admOvChanged
+- Nur Anzeige – Ergebnisse laufen weiter: abgesagte Spiele bleiben im Spielplan; Ergebnisse vom EHV werden unverändert übernommen und angezeigt (dann Ergebnis + „Abgesagt“)
+- Wo „Abgesagt“ erscheint: Spielkarten (roter Hinweis, Datum/Uhrzeit durchgestrichen, statt „VS“ „Abgesagt“, ohne Termin/Erinnerung), Band der Startkarte „Nächstes Spiel · Abgesagt“, Letzte Ergebnisse, Kalenderansicht (durchgestrichen, „abgesagt“), Spieldetails, Admin-Spielliste, News (Abschnitt Spieländerungen als „Absage“, Hinweis oben auf der Startseite), Teilen-Text („❌ ABGESAGT“), PDF-Spielplan („abgesagt“), Kalenderdateien (Titel „ABGESAGT: …“, STATUS:CANCELLED). Gameday und Startbild entfallen für abgesagte Spiele
+- Social-Media-Bilder: Überschrift „Spiel abgesagt“, roter Stempel „ABGESAGT“, Fußzeile „… · abgesagt“, Dateiname „…-abgesagt.png“
+- 24h-Erinnerung: functions/push.js überspringt abgesagte Spiele (muss neu bereitgestellt werden, zusammen mit dem Datenpush)
 
 Version 1.24.1
 
@@ -528,7 +538,7 @@ Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).
 
 Version
-Schreibweise 1.24.1.155: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
+Schreibweise 1.25.0.156: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
 
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.

@@ -1,3 +1,43 @@
+AKTUELL ZU TUN (Stand 23.10.2026)
+=================================
+Nur die beiden Dateien functions/push.js und functions/news.js ersetzen und neu bereitstellen –
+siehe direkt darunter. Alle übrigen Abschnitte weiter unten sind frühere Änderungen und bereits erledigt.
+
+PUSH ALS DATENPUSH (ab 23.10.2026)
+=================================
+
+Problem: Die 24h-Erinnerung kam auf Android nicht an, obwohl die Function sie als gesendet
+eingetragen hatte (gameReminders). Der Admin-Test-Push kam dagegen an. Unterschied: Der Test-Push
+ist ein reiner "data"-Push, den die App selbst anzeigt; Erinnerung, Ergebnis und News hatten einen
+"notification"-Teil, den der Browser selbst anzeigen sollte – das ging auf Android teils verloren.
+
+Neu: push.js (24h-Erinnerung und Ergebnis-Push) und news.js (News-Push) senden nur noch "data".
+Die App (sw.js bzw. die geöffnete Seite) zeigt die Meldung selbst an – mit Ergebnis-, 24h- bzw.
+App-Symbol. Die App selbst muss dafür nicht geändert werden.
+Zusätzlich speichert die Erinnerung in gameReminders jetzt sentCount / failedCount / targetCount.
+Außerdem überspringt die 24h-Erinnerung Spiele, die im Admin-Bereich als abgesagt markiert sind
+(scheduleOverrides.cancelled, ab App-Version 1.25.0).
+
+Geänderte Dateien
+  functions/push.js
+  functions/news.js
+
+Veröffentlichen in der Cloud Shell
+  1. Beide Dateien über das Drei-Punkte-Menü in den Ordner ~/grizzlys-u15/functions hochladen
+     (vorhandene Dateien ersetzen).
+  2. cd ~/grizzlys-u15 && firebase deploy --only functions:sendGameReminders,functions:onResultWritten,functions:onNewsCreated --project grizzlys-u15
+  3. Die beiden Dateien auch ins GitHub-Repo grizzlys-u15 (Ordner functions) hochladen, damit sie
+     beim nächsten kompletten Deploy nicht wieder durch die alten ersetzt werden.
+
+Prüfen
+  Die nächste Erinnerung kommt rund 24 Stunden vor dem nächsten Spiel. In Firestore > gameReminders
+  hat der neue Eintrag zusätzlich "mode: data" und "sentCount".
+
+
+========================================================================
+FRÜHERE ÄNDERUNGEN (bereits erledigt)
+========================================================================
+
 ERGEBNIS-PUSH UND 24h-ERINNERUNG ALS CLOUD FUNCTIONS
 =====================================================
 
