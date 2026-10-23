@@ -84,6 +84,7 @@ function applyScheduleOverrides(games, overrides) {
       day: o.day || game.day, date: o.date || game.date, time: o.time || game.time,
       home: o.home || game.home, away: o.away || game.away, stadium: o.stadium || game.stadium
     });
+    game.cancelled = o.cancelled === true; // 1.25.0: abgesagte Spiele bekommen keine Erinnerung
   }
 }
 
@@ -191,6 +192,7 @@ exports.sendGameReminders = onSchedule(
       const occurrence = (occurrences.get(baseKey) || 0) + 1;
       occurrences.set(baseKey, occurrence);
       if (!isReminderTime(game)) continue;
+      if (game.cancelled) { logger.info("Erinnerung übersprungen: Spiel abgesagt", { baseId: game._baseId }); continue; }
 
       const reminderId = gameIdentity(game, occurrence);
       const scheduleKey = game.date + "_" + game.time;
