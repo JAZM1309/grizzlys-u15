@@ -35,16 +35,24 @@ async function loadTokens() {
 // Hohe Priorität: sonst hält Android Meldungen im Ruhezustand („Doze“) zurück oder verwirft sie (1.9.1.112).
 const DRINGEND = { Urgency: "high", TTL: String(6 * 3600) };
 
+// 1.24.2: Nur noch „data“-Pushs (wie der funktionierende Admin-Test-Push). Die App (Service Worker bzw.
+// geöffnete Seite) zeigt die Meldung selbst an – mit passendem Symbol. Pushs mit „notification“-Teil
+// wurden auf Android teils von FCM als zugestellt gemeldet, erschienen aber nicht (24h-Erinnerung).
 async function sendPush(tokens, notification, webpush) {
   let success = 0, failed = 0, adminOk = 0, adminFehler = 0;
-  if (webpush) webpush = { ...webpush, headers: { ...DRINGEND, ...(webpush.headers || {}) } };
+  const data = { ...((webpush && webpush.data) || {}) };
+  if (notification && notification.title && !data.title) data.title = String(notification.title);
+  if (notification && notification.body && !data.body) data.body = String(notification.body);
+  Object.keys(data).forEach(k => { data[k] = String(data[k]); });
+  const wp = { headers: { ...DRINGEND, ...((webpush && webpush.headers) || {}) } };
+  if (webpush && webpush.fcmOptions) wp.fcmOptions = webpush.fcmOptions;
   const invalid = [];
   for (let i = 0; i < tokens.length; i += 500) {
     const batch = tokens.slice(i, i + 500);
     const response = await admin.messaging().sendEachForMulticast({
       tokens: batch.map(x => x.token),
-      notification,
-      ...(webpush ? { webpush } : {})
+      data,
+      webpush: wp
     });
     success += response.successCount;
     response.responses.forEach((r, idx) => {
@@ -203,7 +211,8 @@ exports.sendGameReminders = onSchedule(
           fcmOptions: { link: SITE }
         });
         if (stats.success > 0) {
-          await ref.set({ sentAt: admin.firestore.FieldValue.serverTimestamp(), sentScheduleKey: scheduleKey, game });
+          await ref.set({ sentAt: admin.firestore.FieldValue.serverTimestamp(), sentScheduleKey: scheduleKey, game,
+            sentCount: stats.success, failedCount: stats.failed, targetCount: stats.total, mode: "data" });
           logger.info("24h-Erinnerung gesendet", { reminderId, ...stats });
         } else {
           logger.warn("24h-Erinnerung nicht zugestellt", { reminderId, ...stats });

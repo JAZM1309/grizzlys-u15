@@ -63,12 +63,9 @@ exports.onNewsCreated = onDocumentCreated(
       const batch = targets.slice(i, i + 500);
       const res = await admin.messaging().sendEachForMulticast({
         tokens: batch.map(x => x.token),
-        notification: { title, body },
-        webpush: {
-          notification: { icon: ICON, badge: BADGE },
-          data: { type: "news", title, body },
-          fcmOptions: { link: SITE }
-        }
+        // 1.24.2: nur „data“ – die App zeigt die Meldung selbst an (siehe push.js)
+        data: { type: "news", title: String(title), body: String(body) },
+        webpush: { headers: { Urgency: "high", TTL: String(6 * 3600) }, fcmOptions: { link: SITE } }
       });
       success += res.successCount;
       res.responses?.forEach((r, idx) => {
