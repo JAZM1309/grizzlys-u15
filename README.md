@@ -16,15 +16,16 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.25.1.157 | – | 23.10.2026 | Kleine Änderung |
 | 1.25.0.156 | – | 23.10.2026 | Neue Funktion |
-| 1.24.1.155 | – (nur Test) | 23.10.2026 | Kleine Verbesserung |
+| 1.24.1.155 | – | 23.10.2026 | Kleine Verbesserung |
 | 1.24.0.154 | – | 20.10.2026 | Neue Funktion |
-| 1.23.2.153 | – (nur Test) | 20.10.2026 | Optisch |
+| 1.23.2.153 | – | 20.10.2026 | Optisch |
 | 1.23.1.152 | – (nur Test) | 20.10.2026 | Optisch |
 | 1.23.0.151 | – (nur Test) | 20.10.2026 | Neue Funktion |
 | 1.22.5.150 | – (nur Test) | 20.10.2026 | Fehlerbehebung und Optisch |
-| 1.22.4.149 | – (nur Test) | 20.10.2026 | Optisch |
-| 1.22.3.148 | – (nur Test) | 20.10.2026 | Fehlerbehebung |
+| 1.22.4.149 | – | 20.10.2026 | Optisch |
+| 1.22.3.148 | – | 20.10.2026 | Fehlerbehebung |
 | 1.22.2.147 | – (nur Test) | 20.10.2026 | Kleine Änderung |
 | 1.22.1.146 | – (nur Test) | 20.10.2026 | Fehlerbehebung |
 | 1.22.0.144 | – (nur Test) | 20.10.2026 | Neue Funktion |
@@ -59,6 +60,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 ## Version 1.25.0
 
+### Neu in Version 1.25.1 (Stand 1.25.1.157, 23.10.2026) – Kleine Änderung
+
+- „Neu in der App“: Der Sammel-Eintrag ist wieder nach den Versionen aufgeteilt, die wirklich live gingen (1.22.3.148, 1.23.2.153, 1.24.0.154, 1.25.0.156). Die älteren Einträge gelten automatisch als gelesen, nur 1.25.0.156 kann noch als neu erscheinen.
+
 ### Neu in Version 1.25.0 (Stand 1.25.0.156, 23.10.2026) – Neue Funktion
 
 - **Spiel absagen (Admin):** im Spiel-Fenster neuer Kasten „🚫 Absage“ mit Knopf „Spiel absagen“ und optionalem Häkchen „📲 Push an alle senden“ (Text: „Spiel gegen … am … ist abgesagt.“, über den News-Push wie bei Spieländerungen). „Absage zurücknehmen“ macht es rückgängig. Gespeichert als Feld `cancelled` in `scheduleOverrides` (keine Regeländerung); gab es nur die Absage, wird das Dokument beim Zurücknehmen gelöscht, eine echte Terminänderung bleibt erhalten. Funktionen `admSetCancelled`, `admOvChanged`
@@ -69,7 +74,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 ## Version 1.24.1
 
-### Neu in Version 1.24.1 (Stand 1.24.1.155, 23.10.2026, nur in der Test-App) – Kleine Verbesserung
+### Neu in Version 1.24.1 (Stand 1.24.1.155, 23.10.2026) – Kleine Verbesserung
 
 - **Push-Status zeigt die Push-Auswahl aus Firebase:** im Admin-Bereich › Status › Push-Status steht jetzt zusätzlich, wofür dieses Gerät in Firebase angemeldet ist (✓/✗ Ergebnisse · Erinnerung am Vortag · U15 A · U15 B) – genau danach entscheiden die Cloud Functions, wer welchen Push bekommt. Hinweis bei abgeschalteten Erinnerungen oder nur einer Mannschaft; Warnung, wenn die Auswahl in Firebase nicht zu den Einstellungen auf dem Handy passt (dann einmal umschalten und zurück, das speichert neu)
 
@@ -607,9 +612,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v156`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v157`).
 
-Die angezeigte Version hat die Form `1.25.0.156`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
+Die angezeigte Version hat die Form `1.25.1.157`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 

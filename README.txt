@@ -11,15 +11,16 @@ Schreibweise 1.ZWEITE.DRITTE.CACHE:
 - dritte Stelle: optische Änderungen, Fehlerbehebungen und kleine Verbesserungen
 - letzte Stelle: Cache-Nummer aus sw.js (steigt bei fast jedem Stand)
 Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurden am 19.10.2026 nachträglich nummeriert. Die GitHub-Markierungen (live-1.9.1.…, wichtig für Live zurücksetzen) behalten ihren alten Namen:
+- 1.25.1.157 (23.10.2026, Kleine Änderung)
 - 1.25.0.156 (23.10.2026, Neue Funktion)
-- 1.24.1.155 (23.10.2026, Kleine Verbesserung, nur Test)
+- 1.24.1.155 (23.10.2026, Kleine Verbesserung)
 - 1.24.0.154 (20.10.2026, Neue Funktion)
-- 1.23.2.153 (20.10.2026, Optisch, nur Test)
+- 1.23.2.153 (20.10.2026, Optisch)
 - 1.23.1.152 (20.10.2026, Optisch, nur Test)
 - 1.23.0.151 (20.10.2026, Neue Funktion, nur Test)
 - 1.22.5.150 (20.10.2026, Fehlerbehebung und Optisch, nur Test)
-- 1.22.4.149 (20.10.2026, Optisch, nur Test)
-- 1.22.3.148 (20.10.2026, Fehlerbehebung, nur Test)
+- 1.22.4.149 (20.10.2026, Optisch)
+- 1.22.3.148 (20.10.2026, Fehlerbehebung)
 - 1.22.2.147 (20.10.2026, Kleine Änderung, nur Test)
 - 1.22.1.146 (20.10.2026, Fehlerbehebung, nur Test)
 - 1.22.0.144 (20.10.2026, Neue Funktion, nur Test)
@@ -53,6 +54,9 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurd
 - 1.9.1.66 = bisher 1.9.1.66 (08.10.2026, Neue Funktion)
 
 Version 1.25.0
+
+Neu in Version 1.25.1 (Stand 1.25.1.157, 23.10.2026) – Kleine Änderung
+- „Neu in der App“: Der Sammel-Eintrag ist wieder nach den Versionen aufgeteilt, die wirklich live gingen (1.22.3.148, 1.23.2.153, 1.24.0.154, 1.25.0.156). Die älteren Einträge gelten automatisch als gelesen.
 
 Neu in Version 1.25.0 (Stand 1.25.0.156, 23.10.2026) – Neue Funktion
 - Spiel absagen (Admin): im Spiel-Fenster neuer Kasten „🚫 Absage“ mit Knopf „Spiel absagen“ und optionalem Häkchen „📲 Push an alle senden“ (Text: „Spiel gegen … am … ist abgesagt.“, über den News-Push wie bei Spieländerungen). „Absage zurücknehmen“ macht es rückgängig. Gespeichert als Feld cancelled in scheduleOverrides (keine Regeländerung); gab es nur die Absage, wird das Dokument beim Zurücknehmen gelöscht, eine echte Terminänderung bleibt erhalten. Funktionen admSetCancelled, admOvChanged
@@ -538,7 +542,7 @@ Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).
 
 Version
-Schreibweise 1.25.0.156: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
+Schreibweise 1.25.1.157: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
 
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.
