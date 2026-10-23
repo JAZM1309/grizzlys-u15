@@ -11,6 +11,7 @@ Schreibweise 1.ZWEITE.DRITTE.CACHE:
 - dritte Stelle: optische Änderungen, Fehlerbehebungen und kleine Verbesserungen
 - letzte Stelle: Cache-Nummer aus sw.js (steigt bei fast jedem Stand)
 Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurden am 19.10.2026 nachträglich nummeriert. Die GitHub-Markierungen (live-1.9.1.…, wichtig für Live zurücksetzen) behalten ihren alten Namen:
+- 1.24.1.155 (23.10.2026, Kleine Verbesserung)
 - 1.24.0.154 (20.10.2026, Neue Funktion)
 - 1.23.2.153 (20.10.2026, Optisch, nur Test)
 - 1.23.1.152 (20.10.2026, Optisch, nur Test)
@@ -49,6 +50,11 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle 1.9.1 und wurd
 - 1.10.1.86 = bisher 1.9.1.86 (10.10.2026, Fehlerbehebung und Verbesserung)
 - 1.10.0.83 = bisher 1.9.1.83 (10.10.2026, Neue Funktion)
 - 1.9.1.66 = bisher 1.9.1.66 (08.10.2026, Neue Funktion)
+
+Version 1.24.1
+
+Neu in Version 1.24.1 (Stand 1.24.1.155, 23.10.2026) – Kleine Verbesserung
+- Push-Status zeigt die Push-Auswahl aus Firebase: im Admin-Bereich › Status › Push-Status steht jetzt zusätzlich, wofür dieses Gerät in Firebase angemeldet ist (✓/✗ Ergebnisse · Erinnerung am Vortag · U15 A · U15 B) – genau danach entscheiden die Cloud Functions, wer welchen Push bekommt. Hinweis bei abgeschalteten Erinnerungen oder nur einer Mannschaft; Warnung, wenn die Auswahl in Firebase nicht zu den Einstellungen auf dem Handy passt (dann einmal umschalten und zurück, das speichert neu)
 
 Version 1.24.0
 
@@ -522,7 +528,7 @@ Schulferien
 NRW-Ferien im Kalender grün hinterlegt; Termine als Liste nrwFerien in index.html (2026/27).
 
 Version
-Schreibweise 1.24.0.154: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
+Schreibweise 1.24.1.155: vorn die App-Version (Regeln siehe Versionsnummern oben), die letzte Zahl ist die Cache-Nummer zum Vergleich von Test und Live.
 
 Veröffentlichung
 Kostenlose PWA über GitHub Pages.

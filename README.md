@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.24.1.155 | – | 23.10.2026 | Kleine Verbesserung |
 | 1.24.0.154 | – | 20.10.2026 | Neue Funktion |
 | 1.23.2.153 | – (nur Test) | 20.10.2026 | Optisch |
 | 1.23.1.152 | – (nur Test) | 20.10.2026 | Optisch |
@@ -54,6 +55,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.24.1
+
+### Neu in Version 1.24.1 (Stand 1.24.1.155, 23.10.2026) – Kleine Verbesserung
+
+- **Push-Status zeigt die Push-Auswahl aus Firebase:** im Admin-Bereich › Status › Push-Status steht jetzt zusätzlich, wofür dieses Gerät in Firebase angemeldet ist (✓/✗ Ergebnisse · Erinnerung am Vortag · U15 A · U15 B) – genau danach entscheiden die Cloud Functions, wer welchen Push bekommt. Hinweis bei abgeschalteten Erinnerungen oder nur einer Mannschaft; Warnung, wenn die Auswahl in Firebase nicht zu den Einstellungen auf dem Handy passt (dann einmal umschalten und zurück, das speichert neu)
 
 ## Version 1.24.0
 
@@ -589,9 +596,9 @@ Wenn eine neue App-Version veröffentlicht wurde, lädt der Service Worker sie i
 - **Aktualisieren** aktiviert die neue Version und lädt die App neu
 - **×** blendet den Banner bis zum nächsten App-Start aus
 
-Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v154`).
+Technisch: `index.html` erkennt eine wartende Version über den Service-Worker-Status, `sw.js` aktiviert sie erst nach der Nachricht `SKIP_WAITING`. Bei jeder App-Änderung muss der Cache-Name in `sw.js` erhöht werden (aktuell `grizzlys-u15-v155`).
 
-Die angezeigte Version hat die Form `1.24.0.154`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
+Die angezeigte Version hat die Form `1.24.1.155`: vorn die App-Version (Regeln siehe „Versionsnummern“ oben), die letzte Zahl ist die Cache-Nummer. Test- und Live-Stand mit derselben letzten Zahl sind inhaltlich gleich. Die Testversion (`grizzlys-u15-test`) zeigt die Nummer zusätzlich im orangen Balken und sperrt Speichern, Senden und Push-Anmeldung.
 
 ## Firebase
 
