@@ -16,6 +16,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.26.1.159 | – (nur Test) | 25.10.2026 | Kleine Verbesserung |
+| 1.26.0.158 | – (nur Test) | 25.10.2026 | Neue Funktion |
 | 1.25.1.157 | – | 23.10.2026 | Kleine Änderung |
 | 1.25.0.156 | – | 23.10.2026 | Neue Funktion |
 | 1.24.1.155 | – | 23.10.2026 | Kleine Verbesserung |
@@ -57,6 +59,23 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.26.1
+
+### Neu in Version 1.26.1 (Stand 1.26.1.159, 25.10.2026) – Kleine Verbesserung
+
+- **Spielbericht lebendiger:** mehr Formulierungen und Eishockey-Sprache im Einstieg, im Spielverlauf und bei den Strafminuten; neuer Abschluss-Satz („💬 Fazit“) passend zu Ergebnis und Spielverlauf
+- **Neue Spielmomente** (aus den EHV-Spieldetails, je ein Chip zum An- und Abwählen): 💪 Aufholjagd nach mindestens zwei Toren Rückstand, 🔄 Führungswechsel (ab zwei), 😮 Ausgleich in den letzten drei Minuten, 🎩 Hattrick (per Rückennummer), 🌪 drei eigene Tore innerhalb von drei Minuten, 🥅 Schlusspunkt ins leere Tor
+- **Korrekturen im Spielverlauf:** Drittel, nach denen es unentschieden steht, werden richtig beschrieben (vorher „baute die Führung aus“); „Dazu blieb sie …“ steht nicht mehr ohne Bezug am Absatzanfang; Doppelschlag und Torflut werden nicht doppelt erwähnt
+
+## Version 1.26.0
+
+### Neu in Version 1.26.0 (Stand 1.26.0.158, 25.10.2026) – Neue Funktion
+
+- **Live-Ticker:** Während eines Spiels zeigt die Startseite eine rote Live-Karte (Spielstand, Drittel, Spielzeit bzw. „Pause nach dem x. Drittel“); nach dem Spiel „Spielende · Endstand vorläufig“, bis das Ergebnis eingetragen ist. Spielkarten, „Letzte Ergebnisse“ und Spieldetails zeigen den Live-Stand, die laufenden Drittelergebnisse und die Torfolge (Minute, Spielstand, Rückennummer, Vorlagen, Über-/Unterzahl). Alles aktualisiert sich ohne Neuladen (Firestore `live`, Echtzeit-Abo nur für Spiele von heute)
+- **Push-Auswahl „Live während des Spiels“:** „Live-Tore“ und „Drittelergebnisse“ einzeln wählbar, standardmäßig aus (`prefs.liveGoals` / `prefs.livePeriods`); Live-Meldungen eines Spiels ersetzen sich gegenseitig (immer nur der neueste Stand)
+- **Keine Namen:** Spielberichte und Live-Ticker nennen Spieler nur mit Rückennummer („die Nr. 17“); der Schalter „Namen nennen“ im Admin-Bereich ist entfallen
+- **Cloud Function `liveTicker`** (neu, `functions/live.js`) und geänderte `gameReport` – siehe FUNCTIONS-ANLEITUNG.txt
 
 ## Version 1.25.0
 

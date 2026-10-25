@@ -29,7 +29,7 @@ messaging.onBackgroundMessage(payload => {
 
   if (type === "bugReport") {
     icon = BUG_ICON_URL;
-  } else if (type === "result") {
+  } else if (type === "result" || type === "liveGoals" || type === "livePeriods") {
     icon = RESULT_ICON_URL;
   } else if (type === "gameReminder") {
     icon = REMINDER_ICON_URL;
@@ -42,6 +42,8 @@ messaging.onBackgroundMessage(payload => {
     data
   };
   if (image) options.image = image;
+  // 1.26.0: Live-Meldungen eines Spiels ersetzen sich gegenseitig (immer nur der neueste Stand)
+  if (data.tag) { options.tag = data.tag; options.renotify = true; }
   self.registration.showNotification(data.title || n.title || "ESV Grizzlys U15", options);
 });
 
@@ -57,10 +59,10 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v157";
+const CACHE = "grizzlys-u15-v159";
 // Update-Hinweis („Neue Version verfügbar“) für diese Version zeigen? false = Nutzer bekommen sie still beim nächsten Öffnen.
 // In Live wird der Wert beim „Live gehen“ aus dem Häkchen im Admin-Bereich gesetzt.
-const UPDATE_HINWEIS = false;
+const UPDATE_HINWEIS = true;
 
 const CORE = [
   "./",

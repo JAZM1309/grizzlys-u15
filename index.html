@@ -1782,6 +1782,40 @@ html.dark .consentLink,html.dark .inLegal button{color:#7cc0ff}
 html.dark .legalBox p,html.dark .legalBox li{color:#e7eef8}html.dark .legalBox .legalFill{background:#4a3500;color:#ffd98a}
 html.dark .rlChips button{background:#121f33;border-color:#2b4262;color:#e7eef8}html.dark .rlChips button.on{background:#168cff;border-color:#168cff}
 html.dark .privRow .pfTx small{color:#a9b8c9}
+/* 1.26.0: Live-Ticker */
+.lastPill.live{background:#d6453b;color:#fff;display:inline-flex;align-items:center;gap:5px;text-shadow:none}
+.lastPill.live.fin{background:#eef2f6;color:#667789;text-transform:none;letter-spacing:0}
+html.dark .lastPill.live.fin{background:rgba(255,255,255,.1);color:#c9d6e6}
+.liveDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;animation:livePulse 1.4s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.liveDot{animation:none}}
+.liveClock{display:block;font-size:11.5px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lrPill.live{background:#d6453b;color:#fff}
+.g3Goals .lgHead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.g3Goals .lgHead span{text-transform:none;letter-spacing:0;font-weight:700;font-size:11px}
+.g3Goals ol{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px}
+.g3Goals li{display:grid;grid-template-columns:30px 42px minmax(0,1fr);align-items:baseline;font-size:13.5px;color:var(--text)}
+.g3Goals .lgMin{color:var(--muted);font-variant-numeric:tabular-nums}
+.g3Goals .lgSc{font-weight:950;font-variant-numeric:tabular-nums}
+.g3Goals li.our .lgSc{color:#16a34a}.g3Goals li.opp .lgSc{color:#d6453b}
+.g3Goals .lgWho{min-width:0;overflow-wrap:anywhere}
+.g3Goals .lgAst{color:var(--muted);font-size:11.5px}
+.g3Goals i{font-style:normal;font-size:11px;font-weight:800;color:var(--muted)}
+.pfLiveTitle{display:flex;align-items:center;gap:6px;margin-top:12px}
+.pfLiveDot{width:8px;height:8px;border-radius:50%;background:#d6453b}
+#liveBars{display:grid;gap:10px;margin:0 0 14px}
+#liveBars[hidden]{display:none}
+.liveBar{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;border-radius:18px;padding:12px 14px;color:#fff;background:linear-gradient(135deg,#b3261e 0%,#d6453b 55%,#ef6b4f 100%);box-shadow:0 10px 26px rgba(179,38,30,.28)}
+.liveBar:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.liveBar.fin{background:linear-gradient(135deg,#0d2c52,#163e6e);box-shadow:0 10px 26px rgba(8,31,55,.25)}
+.lbTop{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.lbTop .lbState{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:800;font-variant-numeric:tabular-nums;opacity:.95}
+.lbMatch{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;margin-top:8px}
+.lbSide{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;font-weight:800;font-size:13.5px;line-height:1.2;text-align:center}
+.lbSide>span:last-child{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.lbSide img,.lbSide .opponentLogo{width:34px;height:34px}
+.lbScore{font-size:28px;font-weight:950;font-variant-numeric:tabular-nums;line-height:1}
+.lbHint{display:block;margin-top:6px;font-size:11.5px;opacity:.85}
 </style>
 <script>
 /* Halloween-Zeitraum: 26.10. bis 02.11. (automatisch), Schalter in der Info-Seite */
@@ -1842,7 +1876,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesChips" class="rlChips" role="tablist" aria-label="Themen"></div><div id="rulesTiles" class="rlTiles"></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></svg>Für das Kampfgericht</div><div class="small" style="margin-bottom:14px">Kurzanleitungen für die Technik in der Eishalle.</div><div class="downloadCards"><a id="downloadScoreboard" class="downloadCard" href="anleitung-anzeigetafel.html" style="text-decoration:none;color:inherit"><span class="dlIcon" style="background:#fff3d6;color:#b26b00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M12 10v3l2 2"/><path d="M7 4l-2.75 2"/><path d="M17 4l2.75 2"/></svg></span><b>Anzeigetafel bedienen</b><small>Stramatel 452 · Hauptpult und Strafzeitpulte · Schritt für Schritt</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.25.1.157</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.26.1.159</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <details class="infoCard inCard mapCard" id="appMap"><summary class="inHead"><b>So findest du dich zurecht</b><span class="mapSum">Alle Bereiche der App auf einen Blick</span></summary><div class="mapList"><button type="button" class="mapRow" data-go="start"><span class="mapIc">🏠</span><span class="mapTx"><b>Start</b><small>Nächstes und letztes Spiel, Spielbericht, Hinweise</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="schedule"><span class="mapIc">📅</span><span class="mapTx"><b>Spielplan</b><small>Alle Spiele, Kalender, Filter, „Heute“</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="opponents"><span class="mapIc">🛡️</span><span class="mapTx"><b>Gegner</b><small>Tabelle, Form, Spiele gegen jeden Gegner</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="rules"><span class="mapIc">📖</span><span class="mapTx"><b>Regeln</b><small>Regeln einfach erklärt, Handzeichen, Suche</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="downloads"><span class="mapIc">⬇️</span><span class="mapTx"><b>Downloads</b><small>Kalender, Spielplan-PDF, Bilder mit Bericht zum Teilen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="news"><span class="mapIc">📰</span><span class="mapTx"><b>News</b><small>Hinweise, Spielberichte, Spieländerungen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="settings"><span class="mapIc">⚙️</span><span class="mapTx"><b>Einstellungen</b><small>Design, Push an/aus oder neu einrichten, Feedback</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div><ul class="mapTips"><li><b>Wischen</b> nach links oder rechts wechselt zwischen den Reitern.</li><li><b>Spielkarte antippen</b> zeigt Tabelle, Form, Halle und Aktionen.</li><li><b>Teilen</b> schickt Bild und Text an WhatsApp, Instagram &amp; Co.</li></ul></details>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
@@ -1855,6 +1889,9 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <div class="pfBox"><div class="pfTitle">Wofür möchtest du Push?</div>
 <label class="pfRow"><span class="pfIc">🏒</span><span class="pfTx"><b>Ergebnisse</b><small>sobald ein Spiel eingetragen ist</small></span><input type="checkbox" id="pfResults" checked><i class="pfSw" aria-hidden="true"></i></label>
 <label class="pfRow"><span class="pfIc">⏰</span><span class="pfTx"><b>Erinnerung am Vortag</b><small>24 Stunden vor jedem Spiel</small></span><input type="checkbox" id="pfReminders" checked><i class="pfSw" aria-hidden="true"></i></label>
+<div class="pfTitle pfLiveTitle"><span class="pfLiveDot" aria-hidden="true"></span>Live während des Spiels</div>
+<label class="pfRow"><span class="pfIc">🚨</span><span class="pfTx"><b>Live-Tore</b><small>bei jedem Tor mit Spielstand und Minute</small></span><input type="checkbox" id="pfLiveGoals"><i class="pfSw" aria-hidden="true"></i></label>
+<label class="pfRow"><span class="pfIc">⏸️</span><span class="pfTx"><b>Drittelergebnisse</b><small>Zwischenstand nach dem 1. und 2. Drittel</small></span><input type="checkbox" id="pfLivePeriods"><i class="pfSw" aria-hidden="true"></i></label>
 <div class="pfTeams"><div class="pfTitle">Für welche Mannschaft?</div><div class="pfChips"><label class="pfChip a"><input type="checkbox" id="pfTeamA" checked><span><i></i>U15 A</span></label><label class="pfChip b"><input type="checkbox" id="pfTeamB" checked><span><i></i>U15 B</span></label></div></div>
 <div class="pfHint">Nur das Wichtige – keine Werbung. Die Auswahl gilt für dieses Gerät.</div></div>
 <button id="enablePush" class="action pushBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg><span id="pushBtnText">Push aktivieren</span></button>
@@ -1950,7 +1987,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie auf Widerruf einer Einwilligung mit Wirkung für die Zukunft. Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren, in NRW bei der Landesbeauftragten für Datenschutz und Informationsfreiheit (LDI NRW).</p>
 <div class="small">Stand: Oktober 2026</div>
 </div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.25.1.157 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.26.1.159 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hwDeco hwFogA" aria-hidden="true"></div><div class="hwDeco hwFogB" aria-hidden="true"></div><div class="hwDeco hwGameEyes" aria-hidden="true"><i></i><i></i></div><div class="hwDeco hwGameSpider" aria-hidden="true"><b></b><span>🕷️</span></div><div class="hwDeco hwGameBat" aria-hidden="true"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwFlash" aria-hidden="true"></div><div id="hqFx" class="hqFx" aria-hidden="true"></div><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div id="hockeyIntro" class="hockeyGameIntro">Best of 5 – wer zuerst 3 Runden gewinnt. Du bist der Puck.</div><div class="hqBoard" aria-live="polite"><div class="hqTeam"><i id="hqYou">GRIZZLYS</i><b id="hqScoreP">0</b></div><div class="hqMid"><div id="hqLamp" class="hqLamp" aria-hidden="true"></div><small id="hqSeriesInfo">Runde 1 · Best of 5</small></div><div class="hqTeam"><i id="hqFoe">GEGNER</i><b id="hqScoreC">0</b></div></div><div class="hqLevels" id="hqLevels" role="group" aria-label="Schwierigkeit"><button type="button" data-lv="easy">Anfänger</button><button type="button" data-lv="pro" class="on">Profi</button><button type="button" data-lv="keeper">Torwart</button></div><div class="hockeyRink"><div class="hqBanner" aria-hidden="true"><span>ESV GRIZZLYS</span><span>BERGKAMEN</span><span>U15</span></div><div id="hockeyBoard" class="hockeyBoard"></div><div class="hqBanner hqBannerB" aria-hidden="true"><span>BERGKAMEN</span><span>ESV GRIZZLYS</span><span>U15</span></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hqTools"><button id="hqPenBtn" class="hqPen" type="button">⏱ Strafzeit ×3</button><div id="hqTrophies" class="hqTrophies" aria-label="Pokale"></div></div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neue Serie</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät. Nur deine Pokale werden hier gespeichert.</div></div></div></div></div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -2020,7 +2057,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where, doc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, onSnapshot, query, where, doc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getMessaging, getToken, deleteToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-functions.js";
 
@@ -2076,6 +2113,25 @@ async function loadResults(){
     window.applyResults?.();
   }catch(err){ console.warn("Firestore Ergebnisse konnten nicht geladen werden",err); }
 }
+
+/* 1.26.0: Live-Ticker – Spielstände von heute in Echtzeit (Firestore „live“, geschrieben von der Function liveTicker) */
+window.liveGames={};
+let liveUnsub=null, liveDay="";
+function liveBerlinToday(){return new Intl.DateTimeFormat("sv-SE",{timeZone:"Europe/Berlin"}).format(new Date())}
+function startLive(){
+  const day=liveBerlinToday(); if(liveUnsub&&day===liveDay)return;
+  try{liveUnsub&&liveUnsub()}catch(e){}
+  liveDay=day;
+  try{
+    liveUnsub=onSnapshot(query(collection(db,"live"),where("date","==",day)),snap=>{
+      const m={}; snap.forEach(d=>{m[d.id]=d.data()}); window.liveGames=m;
+      try{window.liveRefresh&&window.liveRefresh()}catch(e){console.warn(e)}
+    },err=>console.warn("Live-Ticker nicht abrufbar",err));
+  }catch(err){console.warn("Live-Ticker nicht gestartet",err)}
+}
+/* Tageswechsel und Zurückkehren in die App: Abo erneuern */
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)startLive()});
+setInterval(startLive,10*60*1000);
 
 let scheduleOverrides = {};
 function scheduleGameId(g){ return g._baseId || (g._baseId = g.date + "_" + g.time.replace(/:/g,"") + "_" + g.team); }
@@ -2183,7 +2239,7 @@ function detectPlatformFromStoredUserAgent(ua){
   return "Sonstiges";
 }
 
-function pushPrefs(){let r=true,m=true,ta=true,tb=true;try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");if(p.results===false)r=false;if(p.reminders===false)m=false;if(p.teamA===false)ta=false;if(p.teamB===false)tb=false;}catch(e){}return {results:r,reminders:m,teamA:ta,teamB:tb};}
+function pushPrefs(){let r=true,m=true,ta=true,tb=true,lg=false,lp=false;try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");if(p.results===false)r=false;if(p.reminders===false)m=false;if(p.teamA===false)ta=false;if(p.teamB===false)tb=false;if(p.liveGoals===true)lg=true;if(p.livePeriods===true)lp=true;}catch(e){}return {results:r,reminders:m,teamA:ta,teamB:tb,liveGoals:lg,livePeriods:lp};}
 window.savePushPrefs=async function(){try{const token=localStorage.getItem("grizzlysPushToken");if(!token)return;await setDoc(doc(db,"pushTokens",token),{token,updatedAt:serverTimestamp(),prefs:pushPrefs()},{merge:true});}catch(e){console.warn("Push-Auswahl konnte nicht gespeichert werden",e);}};
 async function registerAdminPushToken(requestPermission=false){
   try{
@@ -2436,7 +2492,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.25.1.157",
+      appVersion:"1.26.1.159",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -2666,10 +2722,10 @@ async function refreshAdminPushStatus(){
     if(mine) rows.push(adminPushRow("ok","In Firebase registriert","Zuletzt aktualisiert: "+(mine.updatedAt?fmt(mine.updatedAt):"unbekannt")));
     /* 1.24.1: gespeicherte Push-Auswahl dieses Geräts (so entscheiden die Cloud Functions, wer welchen Push bekommt) */
     if(mine){
-      const fp=mine.prefs||{}, on=v=>v!==false, lp=pushPrefs();
-      const lbl=(k,t)=>(on(fp[k])?"✓ ":"✗ ")+t;
-      const txt=[lbl("results","Ergebnisse"),lbl("reminders","Erinnerung am Vortag"),lbl("teamA","U15 A"),lbl("teamB","U15 B")].join(" · ");
-      const diff=["results","reminders","teamA","teamB"].filter(k=>on(fp[k])!==lp[k]);
+      const fp=mine.prefs||{}, OPTIN={liveGoals:1,livePeriods:1}, on=(v,k)=>OPTIN[k]?v===true:v!==false, lp=pushPrefs();
+      const lbl=(k,t)=>(on(fp[k],k)?"✓ ":"✗ ")+t;
+      const txt=[lbl("results","Ergebnisse"),lbl("reminders","Erinnerung am Vortag"),lbl("liveGoals","Live-Tore"),lbl("livePeriods","Drittelergebnisse"),lbl("teamA","U15 A"),lbl("teamB","U15 B")].join(" · ");
+      const diff=["results","reminders","liveGoals","livePeriods","teamA","teamB"].filter(k=>on(fp[k],k)!==lp[k]);
       const off=[!on(fp.reminders)?"Erinnerungen sind aus":"",(!on(fp.teamA)||!on(fp.teamB))?"nur U15 "+(on(fp.teamA)?"A":"B")+" gewählt":""].filter(Boolean);
       if(diff.length){ if(verdict==="ok")verdict="warn"; rows.push(adminPushRow("warn","Push-Auswahl in Firebase weicht ab",txt+" – auf dem Handy eingestellt ist etwas anderes. Unter Einstellungen › Push die Auswahl einmal umschalten und zurück, dann wird sie neu gespeichert.")); }
       else rows.push(adminPushRow(off.length?"warn":"ok","Push-Auswahl in Firebase",txt+(off.length?" – Hinweis: "+off.join(", ")+".":"")));
@@ -3037,6 +3093,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   registerAppInstallation();
   syncExistingPushRegistration().then(()=>registerAppInstallation());
   loadResults();
+  startLive();
   loadScheduleOverrides();
   loadNews();
   loadReports();
@@ -3060,12 +3117,12 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(typ==="result"){try{loadResults()}catch(e){}}
       if(!title&&!body) return;
       const SITE="https://jazm1309.github.io/grizzlys-u15/";
-      const icon=typ==="result"?SITE+"grizzlys-result-icon.png":typ==="gameReminder"?SITE+"grizzlys-24h-icon-192.png":SITE+"icon-192.png";
+      const icon=typ==="result"||/^live/.test(typ)?SITE+"grizzlys-result-icon.png":typ==="gameReminder"?SITE+"grizzlys-24h-icon-192.png":SITE+"icon-192.png";
       (async()=>{
         try{
           if(Notification.permission!=="granted") throw new Error("keine Erlaubnis");
           const reg=await navigator.serviceWorker.ready;
-          await reg.showNotification(title,{body,icon,badge:SITE+"badge-96.png",tag:"fg-"+(typ||"push")+"-"+Date.now(),data:d});
+          await reg.showNotification(title,{body,icon,badge:SITE+"badge-96.png",tag:d.tag||("fg-"+(typ||"push")+"-"+Date.now()),renotify:!!d.tag,data:d});
         }catch(e){ alert(title+"\n"+body); }
       })();
     });
@@ -3107,7 +3164,7 @@ async function admRepSave(g,title,text,published){
 }
 /* 1.9.1.129: Spieldetails vom EHV (Function gameReport) für den Bericht holen */
 const REP_NAMES_KEY="grizzlysRepNames";
-const admRepNames=()=>{try{return localStorage.getItem(REP_NAMES_KEY)==="1"}catch(e){return false}};
+const admRepNames=()=>false; /* 1.26.0: Spielberichte nie mit Namen – nur Rückennummern */
 const admRepState={};
 async function admRepLoad(g,force=false){
   const k=resultKey(g), names=admRepNames(), st=admRepState[k];
@@ -3129,7 +3186,7 @@ async function admRepLoad(g,force=false){
 function admRepEhvHint(k){
   const st=admRepState[k]||{};
   if(st.busy)return "⏳ Spieldetails vom EHV werden geladen …";
-  if(st.ok)return "✓ Spieldetails vom EHV eingerechnet (Tore, Über-/Unterzahl, Führung, Zuschauer)"+(st.names?" · mit Namen":"");
+  if(st.ok)return "✓ Spieldetails vom EHV eingerechnet (Tore, Über-/Unterzahl, Führung, Zuschauer)"+" · Spieler nur mit Rückennummer";
   if(st.err)return "ℹ️ "+esc(st.err)+" Der Entwurf nutzt nur Ergebnis, Drittel und Tabelle.";
   return "";
 }
@@ -3174,7 +3231,7 @@ function admRepBox(g,has){
   const st=r&&r.published?'<span class="admSt ok">veröffentlicht</span>':r&&r.text?'<span class="admSt chg">Entwurf gespeichert</span>':'<span class="admSt">automatischer Entwurf</span>';
   const auto=F?F.auto:!(r&&r.text);
   return `<div class="admBox"><h5>📝 Spielbericht ${st}</h5><div class="admForm admRepForm"><label class="full">Überschrift<input id="admRepTitle" maxlength="120" value="${esc(d.title)}"></label><label class="full">Schlagworte<span class="admRepKwRow"><input id="admRepKw" maxlength="200" placeholder="z. B. Teamgeist, Kampfgeist, starker Torhüter" value="${esc(admRepKwGet(g))}"><button type="button" class="admBtn" data-rep="kw">Übernehmen</button></span><small class="admRepKwHint">Mit Komma trennen – die App macht daraus passende Sätze.</small></label><div class="full admRepUseWrap"><span class="admRepUseHead">Im Bericht verwenden</span><div id="admRepUse">${admRepChipsHtml(g)}</div></div><label class="full">Text<textarea id="admRepText" rows="9" maxlength="2000"${auto?' data-auto="1"':""} data-v="${F?F.v||0:0}">${esc(d.text)}</textarea></label>
-    <label class="full admNewsChk"><span><input id="admRepNames" type="checkbox"${admRepNames()?" checked":""}> Namen von Torschützen und Torhütern nennen</span><small>Nur mit Einverständnis der Eltern bzw. des Vereins. Strafen werden nie mit Namen genannt.</small></label></div>
+    <div class="full admNewsChk"><small>Spieler werden nie mit Namen genannt – Torschützen und Torhüter nur mit Rückennummer.</small></div></div>
     <div class="admHint" id="admRepEhv">${admRepEhvHint(resultKey(g))}</div>
     <div class="admBtns" style="margin-top:8px">${r&&r.published?'<button type="button" class="admBtn pri" data-rep="pub">💾 Änderung veröffentlichen</button><button type="button" class="admBtn no" data-rep="off">Zurückziehen</button>':'<button type="button" class="admBtn pri" data-rep="pub">📰 Veröffentlichen</button><button type="button" class="admBtn" data-rep="save">Entwurf speichern</button>'}<button type="button" class="admBtn" data-rep="new">↻ Neu erzeugen</button><button type="button" class="admBtn" data-rep="copy">📋 Kopieren</button></div></div>`;
 }
@@ -4069,8 +4126,9 @@ function hwUpdateGreeting(){
   el.hidden=!(document.documentElement.classList.contains("hw")&&!closed);
 }
 /* Push-Bereich: Status anzeigen */
-(function(){const ids={results:"pfResults",reminders:"pfReminders",teamA:"pfTeamA",teamB:"pfTeamB"},E={};for(const k in ids){E[k]=document.getElementById(ids[k]);if(!E[k])return}
-  let p={};try{p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}")}catch(e){}for(const k in E)E[k].checked=p[k]!==false;
+(function(){const ids={results:"pfResults",reminders:"pfReminders",teamA:"pfTeamA",teamB:"pfTeamB",liveGoals:"pfLiveGoals",livePeriods:"pfLivePeriods"},E={};for(const k in ids){E[k]=document.getElementById(ids[k]);if(!E[k])return}
+  const OPTIN={liveGoals:1,livePeriods:1}; /* 1.26.0: Live-Pushs nur, wenn ausdrücklich eingeschaltet */
+  let p={};try{p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}")}catch(e){}for(const k in E)E[k].checked=OPTIN[k]?p[k]===true:p[k]!==false;
   const save=()=>{const o={};for(const k in E)o[k]=E[k].checked;try{localStorage.setItem("grizzlysPushPrefs",JSON.stringify(o))}catch(e){}window.savePushPrefs&&window.savePushPrefs()};
   for(const k in E)E[k].addEventListener("change",save);})();
 function pushRefreshUi(){
@@ -4455,16 +4513,32 @@ function g3TeamTile(team,name){
   const title="Tabelle: Platz "+r.r+" · "+r.gp+" "+(r.gp===1?"Spiel":"Spiele")+" · "+r.p+" Punkte · Tordifferenz "+gdTxt;
   return `<div class="g3Tile"><small>${esc(shortTeam(name))}</small>`+(r.gp?`<div class="g3Pl" title="${esc(title)}"><b>${esc(r.r)}.</b><span>${esc(r.gp)} Sp · ${esc(r.p)} Pkt · ${gdTxt}</span></div>`:`<div class="g3Pl"><span>noch kein Spiel</span></div>`)+standFormHtml(team,name)+`</div>`;
 }
+/* 1.26.0: Live-Ticker – Hilfen für die Anzeige */
+function liveFor(g){const x=(window.liveGames||{})[g.date+"_"+String(g.time).replace(/:/g,"")+"_"+g.team];return x&&x.status&&x.status!=="pre"?x:null}
+function liveLabel(x){if(!x)return "";if(x.status==="final")return "Spielende";
+  if(x.status==="pause")return x.period?"Pause nach dem "+x.period+". Drittel":"Pause";
+  const p=Number(x.period)||0;return (p>3?"Verlängerung":p?p+". Drittel":"läuft")+(x.clock?" · "+x.clock:"")}
+function liveGoalsHtml(g,x){
+  const goals=(x&&x.goals)||[]; if(!goals.length)return "";
+  const home=isHome(g), me=home?"h":"a";
+  const row=q=>{const our=q.side===me, sc=String(q.score||"");
+    const tags=[q.pp?"Überzahl":"",q.sh?"Unterzahl":"",q.en?"leeres Tor":"",q.ps?"Penalty":""].filter(Boolean);
+    const who=q.nr?"Nr. "+esc(q.nr)+(q.ast&&q.ast.length?" <span class=\"lgAst\">(Nr. "+q.ast.map(esc).join(", Nr. ")+")</span>":""):"";
+    return `<li class="${our?"our":"opp"}"><span class="lgMin">${Math.floor((Number(q.t)||0)/60)+1}.</span><b class="lgSc">${esc(sc)}</b><span class="lgWho">${our?"Grizzlys":esc(shortTeam(opponent(g)))}${who?" · "+who:""}${tags.length?` <i>${esc(tags.join(", "))}</i>`:""}</span></li>`};
+  return `<div class="g3Tile g3Goals"><div class="lgHead">Torfolge<span>Minute · Spielstand</span></div><ol>${goals.map(row).join("")}</ol></div>`;
+}
+window.liveFor=liveFor;
 function gameCardHtml(g,past,res,detail=false,label=""){
-  const home=isHome(g), word={w:"Sieg",l:"Niederlage",d:"Unentschieden"}, d=dt(g);
+  const home=isHome(g), word={w:"Sieg",l:"Niederlage",d:"Unentschieden"}, d=dt(g), lv=liveFor(g);
   const logo=(name,cls)=>/grizzlys/i.test(name)?teamLogoHtml(name,cls):logoHtml(name,cls);
   const wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
   const date=`<div class="g3Date"><span>${esc(wd)}</span><b>${String(d.getDate()).padStart(2,"0")}.</b><span>${esc(mon)}</span><i>${esc(g.time)}</i></div>`;
   const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">U15 ${esc(g.team)}</span>${g.cancelled?'<span class="cxBadge">Abgesagt</span>':""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
   const mid=res?`<div class="gzMid"><b class="gzScore">${res.hs}:${res.as}</b><span class="lastPill ${res.o}">${word[res.o]}</span></div>`
+               :lv?`<div class="gzMid gzLive"><b class="gzScore">${esc(String(lv.hs))}:${esc(String(lv.as))}</b><span class="lastPill live${lv.status==="final"?" fin":""}">${lv.status==="final"?"Endstand · vorläufig":`<i class="liveDot"></i>Live`}</span>${lv.status==="final"?"":`<span class="liveClock">${esc(liveLabel(lv))}</span>`}</div>`
                :`<div class="gzMid">${g.cancelled?'<span class="lastPill cx">Abgesagt</span>':past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
   const match=`<div class="gcMatch"><div class="gcSide">${logo(g.home,"opponentLogo")}<span>${esc(shortTeam(g.home))}</span></div>${mid}<div class="gcSide">${logo(g.away,"opponentLogo")}<span>${esc(shortTeam(g.away))}</span></div></div>`;
-  const per=res?standPeriodsData(g):null;
+  const per=res?standPeriodsData(g):(lv&&lv.periods&&lv.periods.length?{p:lv.periods.map(v=>v[0]+":"+v[1]),ot:lv.ot,so:lv.so}:null);
   const thirds=per?`<div class="g3Tile g3Thirds">`+per.p.map((v,i)=>`<div><small>${i+1}. Drittel</small><b>${esc(v)}</b></div>`).join("")+(per.so||per.ot?`<div><small>Ende</small><b>${per.so?"n.P.":"n.V."}</b></div>`:"")+`</div>`:"";
   const tiles=g3TeamTile(g.team,g.home)+g3TeamTile(g.team,g.away);
   const venue=past?`<div class="g3Tile g3Venue g3VenuePast"><div><span>Gespielt in</span><b>${esc(g.stadium)}</b></div></div>`
@@ -4472,7 +4546,7 @@ function gameCardHtml(g,past,res,detail=false,label=""){
   const btn=(c,icon,label)=>`<button class="g3Btn ${c}" type="button">${ic(icon)}${label}</button>`;
   const hasRep=!!(res&&!detail&&window.repFor&&window.repFor(g));
   const acts=`<div class="g3Acts">`+(past||g.cancelled?"":btn("cal","calplus","Termin")+btn("rem","bell","Erinnerung"))+(hasRep?btn("rep","file","Bericht"):"")+btn("share","share",res?"Ergebnis teilen":"Teilen")+`</div>`;
-  return `<div class="g3Top">${date}<div class="g3Main">${head}${match}</div></div><div class="g3Det"><div class="g3In"><div class="g3Pad">${thirds}${tiles?`<div class="g3Pair">${tiles}</div>`:""}${venue}${acts}</div></div></div>`;
+  return `<div class="g3Top">${date}<div class="g3Main">${head}${match}</div></div><div class="g3Det"><div class="g3In"><div class="g3Pad">${thirds}${lv?liveGoalsHtml(g,lv):""}${tiles?`<div class="g3Pair">${tiles}</div>`:""}${venue}${acts}</div></div></div>`;
 }
 function g3SetOpen(card,on){
   card.classList.toggle("open",on);
@@ -4523,7 +4597,7 @@ function lrRender(list){
       <div class="lrTeams"><span class="lrBadge">U15 ${esc(g.team)}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
         <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div></div>
-      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":word[r.o]}</span>`:`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}</div>
+      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":word[r.o]}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");
   el.querySelectorAll(".lrRow").forEach(row=>{const g=list[Number(row.dataset.i)];
@@ -4531,6 +4605,29 @@ function lrRender(list){
     row.onkeydown=e=>{if(e.target===row&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openMatchDetails(g)}};});
   el.querySelectorAll(".lrRep").forEach(b=>b.onclick=e=>{e.stopPropagation();openMatchDetails(list[Number(b.dataset.rep)],true)});
 }
+/* 1.26.0: Live-Ticker – Startseite (rote Live-Karte), Listen und offenes Spiel aktualisieren */
+function liveBarRender(){
+  const anchor=document.getElementById("lrCard")||document.getElementById("g3HomeNext")||document.querySelector(".next"); if(!anchor)return;
+  let box=document.getElementById("liveBars");
+  if(!box){box=document.createElement("div");box.id="liveBars";const first=document.getElementById("g3HomeNext")||anchor;first.parentNode.insertBefore(box,first)}
+  const list=games.filter(g=>liveFor(g)&&!resInfo(g)).sort((a,b)=>dt(a)-dt(b));
+  if(!list.length){box.hidden=true;box.innerHTML="";return}
+  box.hidden=false;
+  const logo=n=>/grizzlys/i.test(n)?teamLogoHtml(n,"opponentLogo"):logoHtml(n,"opponentLogo");
+  box.innerHTML=list.map((g,i)=>{const x=liveFor(g), fin=x.status==="final";
+    return `<button type="button" class="liveBar${fin?" fin":""}" data-i="${i}" aria-label="${fin?"Spielende":"Live"}: ${esc(g.home)} ${esc(String(x.hs))} zu ${esc(String(x.as))} ${esc(g.away)}">
+      <span class="lbTop">${fin?"🏁 Spielende":'<i class="liveDot"></i>Live'} · U15 ${esc(g.team)}<span class="lbState">${esc(fin?"Endstand vorläufig":liveLabel(x))}</span></span>
+      <span class="lbMatch"><span class="lbSide">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></span><b class="lbScore">${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lbSide r">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></span></span>
+      <span class="lbHint">${fin?"Das Ergebnis wird gleich übernommen.":"Antippen für Drittel und Torfolge · aktualisiert sich automatisch"}</span></button>`}).join("");
+  box.querySelectorAll(".liveBar").forEach(b=>b.onclick=()=>openMatchDetails(list[Number(b.dataset.i)]));
+}
+window.liveRefresh=function(){
+  try{window.applyResults&&window.applyResults()}catch(e){console.warn(e)}
+  try{liveBarRender()}catch(e){console.warn(e)}
+  const m=document.getElementById("matchModal"), g=window._mdGame;
+  if(m&&!m.hidden&&g&&liveFor(g)){const c=m.querySelector(".mdCard");
+    if(c){const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now();c.innerHTML=gameCardHtml(g,past,res,true);g3Bind(c,g,true);hwDecorate(c,g)}}
+};
 /* fixed=true: Karte ist dauerhaft offen (Fenster „Spieldetails“) */
 function g3Bind(card,g,fixed=false){
   [["route",route],["cal",calendar],["rem",reminder],["share",shareGame],["rep",x=>openMatchDetails(x,true)]].forEach(([c,fn])=>{const b=card.querySelector("."+c);if(b)b.onclick=e=>{e.stopPropagation();fn(g)}});
@@ -4597,6 +4694,7 @@ async function shareGame(g){const r=resInfo(g), per=r?standPeriodsData(g):null;
     :"🏒 U15 "+g.team+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g));if(navigator.share){try{await navigator.share({title:"ESV Grizzlys U15",text})}catch(e){}}else alert(text)}
 
 function openMatchDetails(g,toReport=false){
+  window._mdGame=g; /* 1.26.0: offenes Spiel merken, damit der Live-Stand mitläuft */
   const modal=document.getElementById("matchModal");
   const content=document.getElementById("matchModalContent");
   const home=isHome(g);
@@ -5410,6 +5508,7 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.26.0.158",d:"Oktober 2026",items:["Live-Ticker: Während eines Spiels zeigt die Startseite eine rote Live-Karte mit Spielstand, Drittel und Spielzeit – sie aktualisiert sich von selbst. In den Spieldetails stehen Drittelergebnisse und die Torfolge.","Neue Push-Auswahl unter Einstellungen: „Live-Tore“ und „Drittelergebnisse“ – beides kannst du einzeln einschalten.","Spieler werden in der App nie mit Namen genannt, nur mit Rückennummer."]},
   {v:"1.25.0.156",d:"Oktober 2026",items:["Abgesagte Spiele sind jetzt überall als „Abgesagt“ gekennzeichnet – auf den Spielkarten, im Kalender, in den News und auf den Social-Media-Bildern."]},
   {v:"1.24.0.154",d:"Oktober 2026",items:["Gegner: Die Suche funktioniert jetzt auch auf der Karte – Verein oder Ort eingeben, die Karte zoomt zum Treffer."]},
   {v:"1.23.2.153",d:"Oktober 2026",items:["Anleitung Anzeigetafel: Neues Suchfeld – z. B. „2+2“ eingeben und nur die passende Stelle wird angezeigt.","Regeln: Die Themen stehen jetzt als große Kacheln – ein Tipp öffnet das Thema in einem eigenen Fenster. Die Suche findet weiterhin Regeln aus allen Themen."]},
@@ -5585,7 +5684,7 @@ function repDraft(g,variant=0,kw="",use={},len=""){
   const me=home?"h":"a", G=det?(det.goals||[]).map(q=>{const [h,a]=String(q.score).split(":").map(Number);return {...q,our:q.side===me,s:home?h+":"+a:a+":"+h}}):[];
   const ours=G.filter(q=>q.our), theirs=G.filter(q=>!q.our);
   const mine=det?det[home?"home":"away"]:null, other=det?det[home?"away":"home"]:null;
-  const nm=p=>det&&det.names&&p&&p.name?p.name:"";
+  const nm=p=>p&&p.nr?"die Nr. "+p.nr:""; /* 1.26.0: nur Rückennummern, keine Namen */
 
   /* ---------- Fakten: verfügbar? automatisch an? ---------- */
   const att=det&&det.attendance>0?det.attendance:0;
@@ -5595,6 +5694,14 @@ function repDraft(g,variant=0,kw="",use={},len=""){
   const lateWin=diff>0&&!xtra&&leadAt!==null&&leadAt>=3600-180, honor=!lateWin&&diff>=3&&them===1&&!!theirs[0];
   const pp=ours.filter(q=>q.pp).length, sh=ours.filter(q=>q.sh).length, ppA=theirs.filter(q=>q.pp).length, pk=mine?(mine.pkSit||mine.penalties):0;
   const by={}; ours.forEach(q=>{const k=q.scorer&&q.scorer.nr;if(k)by[k]=(by[k]||0)+1}); const nS=Object.keys(by).length;
+  /* 1.26.1: weitere Spielmomente – Führungswechsel, Aufholjagd, später Ausgleich, Hattrick, Torflut, leeres Tor */
+  let lc=0,lastLd=0,maxDef=0,defAt=""; G.forEach(q=>{const [a,b]=q.s.split(":").map(Number),ld=Math.sign(a-b);if(ld&&lastLd&&ld!==lastLd)lc++;if(ld)lastLd=ld;if(b-a>maxDef){maxDef=b-a;defAt=q.s}});
+  const lastG=G[G.length-1], lastS=lastG?lastG.s.split(":").map(Number):null;
+  const lateEq=lastG&&lastG.our&&lastS[0]===lastS[1]&&lastG.t>=3600-180&&lastG.t<=3600&&(diff===0||!!xtra)?lastG:null;
+  const hatNr=Object.keys(by).find(k=>by[k]>=3)||"";
+  let blitz=null; for(let i=2;i<ours.length;i++){const span=ours[i].t-ours[i-2].t;if(span<=180&&G.indexOf(ours[i])-G.indexOf(ours[i-2])===2&&(!blitz||span<blitz.span))blitz={span,from:ours[i-2],to:ours[i]}}
+  if(blitz){const i0=G.indexOf(blitz.from);blitz.before=i0>0?G[i0-1].s:"0:0"}
+  const enLast=lastG&&lastG.our&&lastG.en&&diff>0?lastG:null;
   let tab=null; if(e){const meR=home?e.h:e.a, L=e.L.filter(y=>y.h===meR.n||y.a===meR.n).sort((p,q)=>p.t-q.t);
     if(L.length&&L[L.length-1]===x){const won=y=>(y.h===meR.n?y.hs>y.as:y.as>y.hs);let n=0;const w=won(x);for(let i=L.length-1;i>=0&&won(L[i])===w;i--)n++;
       tab={meR,w,n,drought:w&&n===1&&L.length>=3&&!won(L[L.length-2])&&!won(L[L.length-3])}}}
@@ -5619,6 +5726,13 @@ function repDraft(g,variant=0,kw="",use={},len=""){
     streak:{avail:!!tab&&((tab.w&&tab.n>=2)||tab.drought),def:!!tab&&(tab.drought||tab.n>=3),label:tab&&tab.w&&tab.n>=2?`🔥 ${tab.n}. Sieg in Folge`:"🔥 Durststrecke beendet"},
     duel:{avail:!!pr,def:true,label:pr?(diff>0&&prU<prT?"🔁 Revanche":`🔁 Erstes Duell (${prU}:${prT})`):""},
     next:{avail:!!nx,def:true,label:"📅 Ausblick"},
+    comeback:{avail:maxDef>=2&&diff>=0,def:true,label:`💪 Aufholjagd nach ${defAt}`},
+    lc:{avail:lc>=2,def:true,label:`🔄 ${lc} Führungswechsel`},
+    lateEq:{avail:!!lateEq,def:true,label:lateEq?`😮 Ausgleich ${repMin(lateEq.t)}. Min.`:""},
+    hat:{avail:!!hatNr,def:true,label:`🎩 Hattrick Nr. ${hatNr}`},
+    blitz:{avail:!!blitz,def:true,label:blitz?`🌪 3 Tore in ${Math.max(1,Math.ceil(blitz.span/60))} Min.`:""},
+    en:{avail:!!enLast,def:true,label:"🥅 Schlusspunkt ins leere Tor"},
+    fazit:{avail:true,def:true,label:"💬 Fazit"},
   };
   const on=k=>F[k]&&F[k].avail&&(k in use?!!use[k]:F[k].def);
   const kurz=len==="kurz";
@@ -5627,17 +5741,20 @@ function repDraft(g,variant=0,kw="",use={},len=""){
 
   /* ---------- 1. Einstieg ---------- */
   let lead;
-  if(diff>0&&xtra)lead=pick([`Nervenkrimi ${inCity}: Erst ${xtra} sichert sich die ${T} ${vorAtt}den ${sc}-Sieg gegen ${opp}.`,`Was für ein Spiel: Die ${T} gewinnt ${vorAtt}${inCity} gegen ${opp} erst ${xtra} mit ${sc}.`]);
-  else if(diff>0&&behind)lead=pick([`Moral bewiesen: Nach Rückstand dreht die ${T} ${vorAtt}${inCity} das Spiel gegen ${opp} und gewinnt mit ${sc}.`,`Aufholjagd mit Happy End: Die ${T} liegt gegen ${opp} zurück, kämpft sich aber ${vorAtt}${inCity} zu einem ${sc}-Sieg.`]);
-  else if(diff>=5)lead=pick([`Klare Sache ${inCity}: Die ${T} gewinnt ${vorAtt}mit ${sc} gegen ${opp} und lässt ${oppD} keine Chance.`,`Torfestival ${inCity}: ${vorAtt?`Vor ${att} Zuschauern feiert die ${T}`:`Die ${T} feiert`} einen ${sc}-Kantersieg gegen ${opp}.`,`Deutlicher geht es kaum: Die ${T} schlägt ${opp} ${vorAtt}${inCity} mit ${sc}.`]);
-  else if(diff===1)lead=pick([`Zittersieg ${inCity}: Die ${T} setzt sich ${vorAtt}knapp mit ${sc} gegen ${opp} durch.`,`Bis zum Schluss spannend: Mit ${sc} behält die ${T} ${vorAtt}${inCity} gegen ${opp} knapp die Oberhand.`]);
-  else if(diff>0)lead=pick([`Starker Auftritt ${inCity}: Die ${T} gewinnt ${vorAtt}mit ${sc} gegen ${opp}.`,`Mit einem verdienten ${sc}-Erfolg gegen ${opp} hat die ${T} ${vorAtt}${inCity} überzeugt.`]);
-  else if(diff===0)lead=pick([`Punkteteilung ${inCity}: Die ${T} und ${opp} trennen sich ${vorAtt}${sc}.`,`Keinen Sieger gab es ${inCity}: Das Spiel der ${T} gegen ${opp} endet ${vorAtt}${sc}.`]);
-  else if(xtra)lead=pick([`Bitter ${inCity}: Die ${T} unterliegt ${opp} ${vorAtt}erst ${xtra} mit ${sc}.`,`Ganz knapp vorbei: Erst ${xtra} muss sich die ${T} ${vorAtt}${opp} mit ${sc} geschlagen geben.`]);
-  else if(ahead)lead=pick([`Führung aus der Hand gegeben: Die ${T} verliert ${vorAtt}${inCity} mit ${sc} gegen ${opp}.`,`Lange sah es gut aus, am Ende verliert die ${T} ${vorAtt}${inCity} aber mit ${sc} gegen ${opp}.`]);
-  else if(diff===-1)lead=pick([`Knapp vorbei: Die ${T} verliert ${vorAtt}${inCity} mit ${sc} gegen ${opp}.`,`Unglücklich ${inCity}: Mit ${sc} muss sich die ${T} ${vorAtt}${opp} knapp geschlagen geben.`]);
-  else if(diff<=-5)lead=pick([`Gebrauchter Tag ${inCity}: Die ${T} unterliegt ${opp} ${vorAtt}deutlich mit ${sc}.`,`Gegen ${opp} war ${inCity} nichts zu holen: Die ${T} verliert ${vorAtt}mit ${sc}.`]);
-  else lead=pick([`Die ${T} hat ${vorAtt}${inCity} gegen ${opp} mit ${sc} verloren.`,`Keine Punkte ${inCity}: Die ${T} unterliegt ${opp} ${vorAtt}mit ${sc}.`]);
+  if(on("comeback")&&!xtra&&diff>0)lead=pick([`Was für eine Aufholjagd: Schon mit ${defAt} hinten, kämpft sich die ${T} ${vorAtt}${inCity} zurück und gewinnt am Ende mit ${sc} gegen ${opp}.`,`Nie aufgegeben: Beim Stand von ${defAt} glaubte kaum noch jemand an die ${T} – am Ende jubelt sie ${vorAtt}${inCity} über einen ${sc}-Sieg gegen ${opp}.`,`Comeback ${inCity}: Die ${T} macht ${vorAtt}aus einem ${defAt}-Rückstand einen ${sc}-Sieg gegen ${opp}.`]);
+  else if(on("lateEq")&&diff===0)lead=pick([`Last-Minute-Punkt ${inCity}: Kurz vor der Schlusssirene rettet sich die ${T} ${vorAtt}gegen ${opp} noch zum ${sc}.`,`Spannung bis zur letzten Minute: Die ${T} gleicht ${vorAtt}${inCity} gegen ${opp} spät aus – ${sc} heißt es am Ende.`]);
+  else if(on("comeback")&&!xtra&&diff===0)lead=pick([`Moral bewiesen: Nach ${defAt}-Rückstand holt sich die ${T} ${vorAtt}${inCity} gegen ${opp} noch ein ${sc}.`,`Zurückgekämpft: Die ${T} liegt gegen ${opp} schon ${defAt} hinten und erkämpft sich ${vorAtt}${inCity} doch noch ein ${sc}.`]);
+  else if(diff>0&&xtra)lead=pick([`Nervenkrimi ${inCity}: Erst ${xtra} sichert sich die ${T} ${vorAtt}den ${sc}-Sieg gegen ${opp}.`,`Was für ein Spiel: Die ${T} gewinnt ${vorAtt}${inCity} gegen ${opp} erst ${xtra} mit ${sc}.`,`Herzschlagfinale ${inCity}: 60 Minuten reichen nicht, erst ${xtra} bejubelt die ${T} ${vorAtt}den ${sc}-Erfolg gegen ${opp}.`]);
+  else if(diff>0&&behind)lead=pick([`Moral bewiesen: Nach Rückstand dreht die ${T} ${vorAtt}${inCity} das Spiel gegen ${opp} und gewinnt mit ${sc}.`,`Aufholjagd mit Happy End: Die ${T} liegt gegen ${opp} zurück, kämpft sich aber ${vorAtt}${inCity} zu einem ${sc}-Sieg.`,`Erst gezittert, dann gejubelt: Die ${T} dreht ${vorAtt}${inCity} einen Rückstand gegen ${opp} und gewinnt ${sc}.`]);
+  else if(diff>=5)lead=pick([`Klare Sache ${inCity}: Die ${T} gewinnt ${vorAtt}mit ${sc} gegen ${opp} und lässt ${oppD} keine Chance.`,`Torfestival ${inCity}: ${vorAtt?`Vor ${att} Zuschauern feiert die ${T}`:`Die ${T} feiert`} einen ${sc}-Kantersieg gegen ${opp}.`,`Deutlicher geht es kaum: Die ${T} schlägt ${opp} ${vorAtt}${inCity} mit ${sc}.`,`Die Torlampe hatte Dauerbetrieb: Mit ${sc} fegt die ${T} ${vorAtt}${inCity} über ${opp} hinweg.`]);
+  else if(diff===1)lead=pick([`Zittersieg ${inCity}: Die ${T} setzt sich ${vorAtt}knapp mit ${sc} gegen ${opp} durch.`,`Bis zum Schluss spannend: Mit ${sc} behält die ${T} ${vorAtt}${inCity} gegen ${opp} knapp die Oberhand.`,`Ein Tor macht den Unterschied: Die ${T} gewinnt ${vorAtt}${inCity} mit ${sc} gegen ${opp} – und alle atmen bei der Schlusssirene durch.`]);
+  else if(diff>0)lead=pick([`Starker Auftritt ${inCity}: Die ${T} gewinnt ${vorAtt}mit ${sc} gegen ${opp}.`,`Mit einem verdienten ${sc}-Erfolg gegen ${opp} hat die ${T} ${vorAtt}${inCity} überzeugt.`,`Daumen hoch: Die ${T} holt sich ${vorAtt}${inCity} mit ${sc} gegen ${opp} die Punkte.`]);
+  else if(diff===0)lead=pick([`Punkteteilung ${inCity}: Die ${T} und ${opp} trennen sich ${vorAtt}${sc}.`,`Keinen Sieger gab es ${inCity}: Das Spiel der ${T} gegen ${opp} endet ${vorAtt}${sc}.`,`Auf Augenhöhe: Die ${T} und ${opp} schenken sich ${vorAtt}${inCity} nichts – ${sc} heißt es nach 60 Minuten.`]);
+  else if(xtra)lead=pick([`Bitter ${inCity}: Die ${T} unterliegt ${opp} ${vorAtt}erst ${xtra} mit ${sc}.`,`Ganz knapp vorbei: Erst ${xtra} muss sich die ${T} ${vorAtt}${opp} mit ${sc} geschlagen geben.`,`So nah dran: Die ${T} rettet sich ${vorAtt}${inCity} in die Entscheidung, verliert ${xtra} aber mit ${sc} gegen ${opp}.`]);
+  else if(ahead)lead=pick([`Führung aus der Hand gegeben: Die ${T} verliert ${vorAtt}${inCity} mit ${sc} gegen ${opp}.`,`Lange sah es gut aus, am Ende verliert die ${T} ${vorAtt}${inCity} aber mit ${sc} gegen ${opp}.`,`Der Sieg schien greifbar – doch am Ende steht die ${T} ${vorAtt}${inCity} mit einer ${sc}-Niederlage gegen ${opp} da.`]);
+  else if(diff===-1)lead=pick([`Knapp vorbei: Die ${T} verliert ${vorAtt}${inCity} mit ${sc} gegen ${opp}.`,`Unglücklich ${inCity}: Mit ${sc} muss sich die ${T} ${vorAtt}${opp} knapp geschlagen geben.`,`Ein Tor fehlte: Die ${T} unterliegt ${opp} ${vorAtt}${inCity} mit ${sc}.`]);
+  else if(diff<=-5)lead=pick([`Gebrauchter Tag ${inCity}: Die ${T} unterliegt ${opp} ${vorAtt}deutlich mit ${sc}.`,`Gegen ${opp} war ${inCity} nichts zu holen: Die ${T} verliert ${vorAtt}mit ${sc}.`,`Lehrstunde ${inCity}: Die ${T} muss sich ${opp} ${vorAtt}mit ${sc} geschlagen geben.`]);
+  else lead=pick([`Die ${T} hat ${vorAtt}${inCity} gegen ${opp} mit ${sc} verloren.`,`Keine Punkte ${inCity}: Die ${T} unterliegt ${opp} ${vorAtt}mit ${sc}.`,`Nichts zu holen ${inCity}: Gegen ${opp} verliert die ${T} ${vorAtt}mit ${sc}.`]);
   lead=lead.replace(/\s+/g," ");
   const KS=repKeywordSentences(kw,diff>0?"w":diff<0?"l":"d",pick);
   const nextTxt=()=>{const d=dt(nx).toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"}), nh=isHome(nx), no=shortTeam(nh?nx.away:nx.home), tm=nx.time.replace(/^0/,"").replace(/:00$/,"");
@@ -5659,7 +5776,7 @@ function repDraft(g,variant=0,kw="",use={},len=""){
   if(on("verlauf")){
     const V=[];
     const inP=(q,i)=>q.t>=i*1200&&q.t<(i+1)*1200;
-    const dblTxt=i=>on("dbl")&&dbl&&inP(dbl,i)?pick([` – darunter ein Doppelschlag innerhalb von ${dbl.gap} Sekunden`,`, zweimal davon innerhalb von nur ${dbl.gap} Sekunden`]):"";
+    const dblTxt=i=>on("dbl")&&dbl&&inP(dbl,i)&&!(on("blitz")&&dbl.t>=blitz.from.t&&dbl.t<=blitz.to.t)?pick([` – darunter ein Doppelschlag innerhalb von ${dbl.gap} Sekunden`,`, zweimal davon innerhalb von nur ${dbl.gap} Sekunden`]):"";
     const f=on("start")?f0:null;
     if(f){
       const m=repMin(f.t), who=nm(f.scorer);
@@ -5668,8 +5785,8 @@ function repDraft(g,variant=0,kw="",use={},len=""){
     }
     const [p1a]=per[0],[c1a,c1b]=st[0];
     if(f&&f.our&&p1a>1&&c1a>c1b)V.push(pick([`Bis zur ersten Pause legten die Grizzlys bis zum ${c1a}:${c1b} nach${dblTxt(0)}.`,`Danach ging es Schlag auf Schlag – nach 20 Minuten hieß es ${c1a}:${c1b}${dblTxt(0)}.`]));
-    else if(c1a>c1b)V.push(`Mit ${c1a}:${c1b} ging es in die erste Pause${dblTxt(0)}.`);
-    else if(c1a<c1b)V.push(`Zur ersten Pause lagen die Grizzlys mit ${c1a}:${c1b} hinten.`);
+    else if(c1a>c1b)V.push(pick([`Mit ${c1a}:${c1b} ging es in die erste Pause${dblTxt(0)}.`,`Nach 20 Minuten führten die Grizzlys mit ${c1a}:${c1b}${dblTxt(0)}.`]));
+    else if(c1a<c1b)V.push(pick([`Zur ersten Pause lagen die Grizzlys mit ${c1a}:${c1b} hinten.`,`Nach dem ersten Drittel hieß es ${c1a}:${c1b} – die Grizzlys mussten einem Rückstand hinterherlaufen.`]));
     else V.push(c1a===0?pick(["Das erste Drittel blieb torlos.","Im ersten Drittel neutralisierten sich beide Teams, Tore fielen keine."]):`Mit ${c1a}:${c1b} ging es in die erste Pause.`);
     for(const i of [1,2]){
       const [pa,pb]=per[i],[ca,cb]=st[i],[qa,qb]=st[i-1], name=i===1?"Im Mitteldrittel":"Im Schlussdrittel", after=i===1?"nach 40 Minuten":"am Ende";
@@ -5681,11 +5798,16 @@ function repDraft(g,variant=0,kw="",use={},len=""){
       else if(pa>pb&&ca>cb)V.push(i===1?pick([`${name} legten die Grizzlys nach und schraubten das Ergebnis auf ${ca}:${cb}${dblTxt(i)}.`,`Auch im zweiten Abschnitt blieb die Mannschaft am Drücker: ${pa}:${pb} in diesem Drittel, ${ca}:${cb} nach 40 Minuten${dblTxt(i)}.`]):pick([`${name} ließ das Team nicht nach und traf noch ${repMal(pa)}${dblTxt(i)}.`,`Und auch im letzten Drittel ging es so weiter: ${pa}:${pb} hieß es hier${dblTxt(i)}.`]));
       else if(pa<pb&&ca>cb)V.push(`${name} kamen ${oppN} ${pb-pa>=2?"noch einmal":"etwas"} heran (${pa}:${pb}), ${after} ${i===2?"reichte es aber":"lagen die Grizzlys aber weiter"} ${i===2?`zum ${ca}:${cb}`:`mit ${ca}:${cb} vorn`}.`);
       else if(pa>pb&&ca<cb)V.push(`${name} kämpften sich die Grizzlys heran (${pa}:${pb}), ${i===2?"zum Ausgleich reichte es aber nicht":`nach 40 Minuten stand es ${ca}:${cb}`}.`);
-      else if(pa<pb)V.push(`${name} bauten ${oppN} ihre Führung auf ${ca}:${cb} aus.`);
+      else if(ca===cb)V.push(pick([`${name} ging es hin und her (${pa}:${pb}), ${after} stand es ${ca}:${cb}.`,`${name} wurde es turbulent: ${pa}:${pb} hieß es in diesem Abschnitt, ${after} ${ca}:${cb}.`]));
+      else if(pa<pb)V.push(pick([`${name} bauten ${oppN} ihre Führung auf ${ca}:${cb} aus.`,`${name} legten ${oppN} nach, ${after} stand es ${ca}:${cb}.`]));
       else V.push(`${name} ging es hin und her (${pa}:${pb}), ${after} stand es ${ca}:${cb}.`);
     }
+    if(on("blitz")){const m=Math.max(1,Math.ceil(blitz.span/60));V.push(pick([`Dann ging alles ganz schnell: Innerhalb von nur ${m} Minute${m===1?"":"n"} schraubten die Grizzlys das Ergebnis von ${blitz.before} auf ${blitz.to.s}.`,`Ein Wirbelsturm auf dem Eis: Zwischen der ${repMin(blitz.from.t)}. und der ${repMin(blitz.to.t)}. Minute klingelte es dreimal im gegnerischen Kasten – aus ${blitz.before} wurde ${blitz.to.s}.`]))}
+    if(on("lc"))V.push(pick([`Ein echtes Hin und Her: ${repCap(repMal(lc))} wechselte die Führung.`,`Für Spannung war gesorgt – die Führung wechselte ${repMal(lc)} die Seiten.`]));
+    if(on("lateEq")){const w=nm(lateEq.scorer);V.push(pick([`Dann der Moment des Spiels: In der ${repMin(lateEq.t)}. Minute ${w?`traf ${w} zum umjubelten ${lateEq.s}-Ausgleich`:`fiel der umjubelte Ausgleich zum ${lateEq.s}`}.`,`Und dann die ${repMin(lateEq.t)}. Minute: ${w?`${repCap(w)} erzielte`:"Die Grizzlys erzielten"} den Ausgleich zum ${lateEq.s} – die Bank stand Kopf.`]))}
     if(on("late")&&lateWin){const w2=nm(G.find(q=>q.t===leadAt).scorer);V.push(`Den entscheidenden Treffer erzielten die Grizzlys erst in der ${repMin(leadAt)}. Minute${w2?` durch ${w2}`:""}.`)}
     else if(on("late")&&honor)V.push(`Den Ehrentreffer für ${oppN} gab es in der ${repMin(theirs[0].t)}. Minute.`);
+    if(on("en")){const w=nm(enLast.scorer);V.push(pick([`Den Schlusspunkt setzte ${w||"die Mannschaft"} in der ${repMin(enLast.t)}. Minute mit einem Treffer ins verwaiste Tor.`,`Als ${oppN} ihren Torhüter für einen sechsten Feldspieler vom Eis nahmen, machte ${w||"die Mannschaft"} mit einem Schuss ins leere Tor alles klar.`]))}
     P.push(V.join(" "));
   }
 
@@ -5702,23 +5824,24 @@ function repDraft(g,variant=0,kw="",use={},len=""){
       else if(ppTxt)M.push(`${repCap(ppTxt)}.`);
       else if(pkTxt)M.push(`In Unterzahl stand die Defensive sicher – ${pkTxt}.`);
       if(on("sh"))M.push(sh===1?"Sogar in Unterzahl gelang ein Treffer.":`Sogar in Unterzahl gelangen ${repW(sh)} Treffer.`);
-      if(on("pim"))M.push(mine.pim===0?"Dazu blieb die Mannschaft ganz ohne Strafminuten.":`Dazu blieb sie mit nur ${mine.pim} Strafminuten diszipliniert.`);
+      if(on("pim"))M.push(mine.pim===0?(M.length?"Dazu blieb die Mannschaft ganz ohne Strafminuten.":"Die Mannschaft blieb ganz ohne Strafminuten."):(M.length?`Dazu blieb sie mit nur ${mine.pim} Strafminuten diszipliniert.`:pick([`Die Mannschaft blieb mit nur ${mine.pim} Strafminuten diszipliniert.`,`Auf der Strafbank saßen die Grizzlys nur ${mine.pim} Minuten – eine disziplinierte Leistung.`])));
       if(on("scorers")){
-        if(det.names){
-          const N={}; ours.forEach(q=>[q.scorer,q.a1,q.a2].forEach(p=>{if(p&&p.name)N[p.nr]=p.name}));
+        if(ours.some(q=>q.scorer&&q.scorer.nr)){
+          const N={}; ours.forEach(q=>[q.scorer,q.a1,q.a2].forEach(p=>{if(p&&p.nr)N[p.nr]="die Nr. "+p.nr}));
           const pts={}; ours.forEach(q=>{if(q.scorer)(pts[q.scorer.nr]=pts[q.scorer.nr]||{g:0,a:0}).g++;[q.a1,q.a2].forEach(p=>{if(p)(pts[p.nr]=pts[p.nr]||{g:0,a:0}).a++})});
           const top=Object.entries(pts).filter(([k])=>N[k]).map(([k,v])=>({k,...v,p:v.g+v.a})).sort((p,q)=>q.p-p.p||q.g-p.g)[0];
-          if(top&&top.p>=3){const parts=[];if(top.g)parts.push(`${top.g===1?"einem":repW(top.g)} ${top.g===1?"Tor":"Toren"}`);if(top.a)parts.push(`${top.a===1?"einer":repW(top.a)} ${top.a===1?"Vorlage":"Vorlagen"}`);
+          if(top&&top.p>=3&&!(on("hat")&&top.k===hatNr)){const parts=[];if(top.g)parts.push(`${top.g===1?"einem":repW(top.g)} ${top.g===1?"Tor":"Toren"}`);if(top.a)parts.push(`${top.a===1?"einer":repW(top.a)} ${top.a===1?"Vorlage":"Vorlagen"}`);
             M.push(pick([`Erfolgreichster Scorer war ${N[top.k]} mit ${parts.join(" und ")}.`,`Herausragend: ${N[top.k]} war an ${repW(top.p)==="ein"?"einem":repW(top.p)} Toren beteiligt (${parts.join(", ")}).`]))}
           const list=Object.entries(by).sort((p,q)=>q[1]-p[1]).filter(([k])=>N[k]).map(([k,n])=>N[k]+(n>1?` (${n})`:""));
-          if(list.length)M.push(`Die Tore erzielten ${repList(list)}.`);
+          if(list.length)M.push(list.length===1?`Das Tor${us>1?"e":""} erzielte ${list[0]}.`:`Die Tore erzielten ${repList(list)}.`);
         }else M.push(pick([`Bemerkenswert: Die ${repW(us)} Tore verteilten sich auf ${repW(nS)} verschiedene Schützen – ein echter Mannschaftserfolg.`,`Gefährlich war dabei die ganze Mannschaft: ${repCap(repW(nS))} verschiedene Spieler trugen sich in die Torschützenliste ein.`]));
       }
     }
+    if(on("hat"))M.push(pick([`Ein ganz besonderes Spiel erlebte die Nr. ${hatNr}: Sie traf ${by[hatNr]===3?"dreimal":repMal(by[hatNr])} und schnürte damit einen Hattrick.`,`Hut ab vor der Nr. ${hatNr}: ${by[hatNr]===3?"Drei":repCap(repW(by[hatNr]))} Tore – ein Hattrick${by[hatNr]>3?" und mehr":""}!`]));
     if(on("shutout")){
       const k=mine?(mine.keepers||[]).filter(q=>q.min>0):[];
-      if(det&&det.names&&k.length===1&&k[0].name)M.push(`Hinten hielt ${k[0].name} den Kasten sauber.`);
-      else if(det&&det.names&&k.length===2&&k.every(q=>q.name))M.push(`Im Tor teilten sich ${k[0].name} und ${k[1].name} die Spielzeit und blieben ohne Gegentor.`);
+      if(k.length===1&&k[0].nr)M.push(`Hinten hielt die Nr. ${k[0].nr} den Kasten sauber.`);
+      else if(k.length===2&&k.every(q=>q.nr))M.push(`Im Tor teilten sich die Nr. ${k[0].nr} und die Nr. ${k[1].nr} die Spielzeit und blieben ohne Gegentor.`);
       else M.push("Hinten blieb das Tor der Grizzlys sauber – kein einziges Gegentor.");
     }
     if(M.length)P.push(M.join(" "));
@@ -5735,6 +5858,17 @@ function repDraft(g,variant=0,kw="",use={},len=""){
     else if(diff>0&&prU>prT)A.push(`Schon das erste Duell hatten die Grizzlys mit ${prU}:${prT} gewonnen.`);
     else if(diff<0&&prU>prT)A.push(`Im ersten Duell hatte es noch einen ${prU}:${prT}-Sieg gegeben.`);
     else A.push(`Das erste Duell war ${prU}:${prT} ausgegangen.`);
+  }
+  if(on("fazit")){
+    const FZ=diff>0?(on("comeback")?["Wer so zurückkommt, hat Charakter bewiesen.","Dieser Sieg zeigt, was in dieser Mannschaft steckt."]
+      :xtra||diff===1?["Ein Sieg für die Nerven – und einer, der zusammenschweißt.","Solche Spiele gewinnt man als Team."]
+      :diff>=5?["Ein Auftritt, an den man sich gern erinnert.","So macht Eishockey Spaß."]
+      :["Ein Sieg, der Lust auf mehr macht.","Die Mannschaft darf stolz auf diesen Auftritt sein.","So darf es gerne weitergehen."])
+      :diff===0?(on("lateEq")?["Ein Punkt, der sich wie ein Sieg anfühlt.","Wer bis zur letzten Minute an sich glaubt, wird belohnt."]:["Ein Punkt, mit dem man leben kann.","Am Ende ein gerechtes Unentschieden."])
+      :ahead?["Bitter, eine Führung so aus der Hand zu geben – daraus wird die Mannschaft lernen.","Ärgerlich, aber die starken Phasen machen Mut."]
+      :diff>=-2?["Ärgerlich, aber auf dieser Leistung lässt sich aufbauen.","Knapp daneben ist auch vorbei – beim nächsten Mal springt die Scheibe hoffentlich auf die andere Seite."]
+      :["Abhaken, Mund abputzen, weitermachen.","Ein Spiel zum Lernen – der Blick geht nach vorn."];
+    A.push(pick(FZ));
   }
   if(on("next"))A.push(nextTxt());
   if(A.length)P.push(A.join(" "));

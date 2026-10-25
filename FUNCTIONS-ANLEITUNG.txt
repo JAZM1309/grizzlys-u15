@@ -1,7 +1,64 @@
-AKTUELL ZU TUN (Stand 23.10.2026)
+AKTUELL ZU TUN (Stand 25.10.2026)
 =================================
-Nur die beiden Dateien functions/push.js und functions/news.js ersetzen und neu bereitstellen –
-siehe direkt darunter. Alle übrigen Abschnitte weiter unten sind frühere Änderungen und bereits erledigt.
+Live-Ticker (1.26.0): neue Function liveTicker bereitstellen, gameReport neu bereitstellen und die
+Firestore-Regeln veröffentlichen – siehe direkt darunter. Alle übrigen Abschnitte weiter unten sind
+frühere Änderungen und bereits erledigt.
+
+LIVE-TICKER (ab Test 1.26.0.158)
+================================
+
+Neu: functions/live.js mit der Function liveTicker
+  - Läuft jede Minute (Cloud Scheduler), arbeitet aber nur, wenn laut Spielplan gerade ein
+    Grizzlys-Spiel ist (15 Minuten vor Beginn bis 3,5 Stunden danach). Sonst liest sie nur das
+    Firestore-Dokument ehvSync/liveToday und ist fertig.
+  - Quelle: hockeydata GetGameReport (wie die EHV-Spielseite). Getestet am 25.10.2026 während
+    Grizzlys – Neuwied: gameStatus 1 = läuft, 4 = beendet; liveTime (Sekunden), liveTimePeriod,
+    liveTimeFormatted, liveTimeGamePhase („PERIOD 3“, „END OF GAME“), periodStats.
+  - Schreibt Firestore live/{Datum_Uhrzeit_Team}: Stand, Drittel, Spielzeit, Drittelergebnisse,
+    Torfolge – Spieler NUR mit Rückennummer, nie mit Namen.
+  - Push „Live-Tore“ (jedes Tor) und „Drittelergebnisse“ (nach dem 1. und 2. Drittel). Das
+    Endergebnis kommt wie bisher über den Ergebnis-Push.
+  - Bei Spielende stößt sie sofort autoResults an (Ergebnis nicht erst nach bis zu 30 Minuten).
+
+TESTPHASE: In live.js steht LIVE_PUSH_NUR_ADMIN = true. Solange gehen Live-Pushs NUR an die
+Admin-Geräte (die Test-App kann sich nicht für Push anmelden). Wenn die Live-App mit 1.26.0 live
+ist: auf false stellen und liveTicker noch einmal deployen – dann bekommen alle, die „Live-Tore“
+bzw. „Drittelergebnisse“ in den Einstellungen eingeschaltet haben, die Meldungen.
+
+Geändert
+  functions/live.js        neu (liveTicker)
+  functions/index.js       eine Zeile: exports.liveTicker = require("./live").liveTicker;
+  functions/push.js        nur zusätzlicher Export _send (für live.js) – kein Neu-Deploy nötig
+  functions/ehv-sync.js    nur zusätzlicher Export loadAppGames (für live.js) – kein Neu-Deploy nötig
+  functions/game-report.js Spielbericht-Daten nie mehr mit Namen, nur Rückennummern
+  firestore.rules          neue Regel: live/{gameId} für alle lesbar, schreiben nur die Function
+
+Veröffentlichen in der Cloud Shell
+  1. Die Dateien aus grizzlys-live-ticker-functions.zip in ~/grizzlys-u15 entpacken
+     (functions/… und firestore.rules ersetzen):
+       cd ~/grizzlys-u15 && unzip -o ~/grizzlys-live-ticker-functions.zip
+  2. Functions bereitstellen:
+       firebase deploy --only functions:liveTicker,functions:gameReport --project grizzlys-u15
+     (Beim ersten Mal fragt Firebase ggf., ob die Cloud-Scheduler-API genutzt werden darf: mit y bestätigen.)
+  3. Firestore-Regeln veröffentlichen:
+       firebase deploy --only firestore:rules --project grizzlys-u15
+  4. Dieselben Dateien auch ins GitHub-Repo grizzlys-u15 übernehmen (Ordner functions und
+     firestore.rules), damit sie beim nächsten kompletten Deploy nicht durch die alten ersetzt werden.
+
+Prüfen
+  - Firestore › live: beim nächsten Spiel erscheint ab 15 Minuten vor Beginn ein Dokument
+    (status pre → live/pause → final).
+  - Protokoll (Zeiten in UTC):
+      gcloud logging read 'resource.labels.service_name="liveticker"' --project grizzlys-u15 --limit 20 --format='value(timestamp,jsonPayload.message)'
+
+Kosten: 1.440 kurze Aufrufe am Tag liegen im Gratiskontingent; der zusätzliche Scheduler-Job
+kostet höchstens etwa 0,10 € im Monat.
+
+
+
+========================================================================
+FRÜHERE ÄNDERUNGEN (bereits erledigt)
+========================================================================
 
 PUSH ALS DATENPUSH (ab 23.10.2026)
 =================================
@@ -34,9 +91,6 @@ Prüfen
   hat der neue Eintrag zusätzlich "mode: data" und "sentCount".
 
 
-========================================================================
-FRÜHERE ÄNDERUNGEN (bereits erledigt)
-========================================================================
 
 ERGEBNIS-PUSH UND 24h-ERINNERUNG ALS CLOUD FUNCTIONS
 =====================================================
