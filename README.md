@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.26.2.160 | – (nur Test) | 25.10.2026 | Optisch und kleine Verbesserung |
 | 1.26.1.159 | – (nur Test) | 25.10.2026 | Kleine Verbesserung |
 | 1.26.0.158 | – (nur Test) | 25.10.2026 | Neue Funktion |
 | 1.25.1.157 | – | 23.10.2026 | Kleine Änderung |
@@ -59,6 +60,14 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.26.2
+
+### Neu in Version 1.26.2 (Stand 1.26.2.160, 25.10.2026) – Optisch und kleine Verbesserung
+
+- **Admin-Spielliste übersichtlicher:** In jeder Zeile steht der Gegner vorn mit „HEIM“ bzw. „AUSW.“ davor (statt der abgeschnittenen Paarung „Grizzlys / Young Cats – …“); „Kommende“ zeigt die nächsten 5 Spiele mit Knopf „Alle … kommenden Spiele anzeigen“, laufende Spiele stehen unter „Läuft gerade“, „Zuletzt gespielt“ statt „Letztes Spiel“; „Gespielt“, „Alle“ und die aufgeklappte Kommende-Liste sind nach Monaten gegliedert
+- **Spiel-Fenster aufklappbar:** Ergebnis, Termin & Ort, Spielbericht, Absage, Social-Media-Bilder und Hinweis sind einzeln auf- und zuklappbar, rechts steht jeweils eine Kurzinfo (z. B. „3:4 ✓“, „Sa., 31.10. · 10:30 · Bergkamen“, „veröffentlicht“). Offen ist, was gerade wichtig ist: Ergebnis vor bzw. ohne Ergebnis, Termin bei EHV-Abweichung oder beim Bearbeiten, Spielbericht sobald ein Ergebnis da ist. Der Spielkopf bleibt beim Scrollen oben stehen
+- **Spielbericht-Kasten aufgeräumt:** oben nur Überschrift, Text (mit „↻ Neu“ und „📋 Kopieren“ direkt am Textfeld) und die Knöpfe Veröffentlichen / Als Entwurf speichern; Schlagworte, Länge und die Angaben liegen zugeklappt unter „⚙️ Inhalt anpassen“ (Kurzinfo z. B. „Normal · 4 Angaben“). Die Angaben sind eine kompakte Häkchen-Liste statt Chips; Spielmomente, die es im Spiel nicht gab, stehen als eine Zeile „Nicht in diesem Spiel: …“ darunter
 
 ## Version 1.26.1
 

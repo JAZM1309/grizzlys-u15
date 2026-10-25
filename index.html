@@ -1816,6 +1816,51 @@ html.dark .lastPill.live.fin{background:rgba(255,255,255,.1);color:#c9d6e6}
 .lbSide img,.lbSide .opponentLogo{width:34px;height:34px}
 .lbScore{font-size:28px;font-weight:950;font-variant-numeric:tabular-nums;line-height:1}
 .lbHint{display:block;margin-top:6px;font-size:11.5px;opacity:.85}
+/* 1.26.2: Admin-Spielübersicht übersichtlicher */
+.admRow .admM b{display:flex;align-items:center;gap:6px}
+.admRow .admM b span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admHA{flex:none;font-size:10.5px;font-weight:900;letter-spacing:.03em;border-radius:6px;padding:2px 5px;background:#e6f1fc;color:#1f6fb8}
+.admHA.aw{background:#eef2f6;color:#566a80}
+html.dark .admHA{background:rgba(31,127,214,.25);color:#a9d6ff}html.dark .admHA.aw{background:rgba(255,255,255,.08);color:#c6d4e4}
+.admMonth{font-size:11px;font-weight:900;color:var(--muted);margin:10px 4px 5px}
+.admMore{width:100%;border:1.5px dashed var(--border);background:transparent;color:#1f6fb8;border-radius:12px;padding:9px;font:inherit;font-size:12.5px;font-weight:900;cursor:pointer;margin:2px 0 6px}
+html.dark .admMore{color:#a9d6ff}
+details.admFoldBox{padding:0}
+details.admFoldBox>summary{list-style:none;display:flex;align-items:center;gap:8px;padding:11px 12px;cursor:pointer;border-radius:16px}
+details.admFoldBox>summary::-webkit-details-marker{display:none}
+details.admFoldBox>summary h5{margin:0;flex:none}
+details.admFoldBox>summary .admSum{margin-left:auto;font-size:11.5px;font-weight:800;color:var(--muted);text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.admFoldBox>summary .admSum .admSt{margin:0}
+details.admFoldBox>summary .admChev{flex:none;font-style:normal;color:var(--muted);transition:transform .15s}
+details.admFoldBox[open]>summary .admChev{transform:rotate(180deg)}
+details.admFoldBox[open]>summary{padding-bottom:6px}
+details.admFoldBox>.admFoldIn{padding:0 12px 12px}
+.admRepNote{font-size:12px;color:var(--muted);margin-top:6px}
+.admSh{position:sticky;top:-8px;z-index:3;background:inherit;padding:8px 0 6px;margin-top:-8px}
+.admRepBtns{margin-top:8px}
+.admRepMore{margin-top:10px;border:1px solid var(--border);border-radius:12px}
+.admRepMore>summary{list-style:none;display:flex;align-items:center;gap:8px;padding:9px 11px;cursor:pointer;font-size:13px}
+.admRepMore>summary::-webkit-details-marker{display:none}
+.admRepMore>summary span{margin-left:auto;font-size:11.5px;font-weight:800;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admRepMore>summary .admChev{font-style:normal;color:var(--muted);transition:transform .15s}
+.admRepMore[open]>summary .admChev{transform:rotate(180deg)}
+.admRepMore>.admRepForm{padding:0 11px 11px}
+.admUseTop{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:11.5px;font-weight:900;color:var(--muted)}
+.admUseList{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:2px 10px}
+.admUse{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--text);padding:4px 0;cursor:pointer;min-width:0}
+.admUse input{flex:none;width:16px;height:16px;margin:0;accent-color:#1f6fb8}
+.admUse span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admUse input:not(:checked)+span{color:var(--muted)}
+.admUseNa{font-size:11.5px;color:var(--muted);margin-top:6px}
+.admRepFoot{font-size:11.5px;color:var(--muted);margin-top:8px}
+.admRepForm label.admUse{display:flex!important;flex-direction:row;align-items:center;gap:7px;font-size:12.5px;font-weight:700;margin:0}
+.admRepForm .admUse input{width:16px!important;height:16px;min-width:16px;padding:0!important;border:0;margin:0;box-shadow:none}
+.admRepTxtHead{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:900;color:var(--muted);margin-bottom:-4px}
+.admRepTxtHead span{margin-right:auto}
+.admTxtBtn{border:0;background:transparent;color:#1f6fb8;font:inherit;font-size:12px;font-weight:900;padding:4px 6px;cursor:pointer;border-radius:8px}
+html.dark .admTxtBtn{color:#a9d6ff}
+.admRepForm textarea{font-weight:500}
+details.admFoldBox>summary .admSum{background:none!important;padding:0!important;border:0!important;box-shadow:none!important}
 </style>
 <script>
 /* Halloween-Zeitraum: 26.10. bis 02.11. (automatisch), Schalter in der Info-Seite */
@@ -1876,7 +1921,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesChips" class="rlChips" role="tablist" aria-label="Themen"></div><div id="rulesTiles" class="rlTiles"></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></svg>Für das Kampfgericht</div><div class="small" style="margin-bottom:14px">Kurzanleitungen für die Technik in der Eishalle.</div><div class="downloadCards"><a id="downloadScoreboard" class="downloadCard" href="anleitung-anzeigetafel.html" style="text-decoration:none;color:inherit"><span class="dlIcon" style="background:#fff3d6;color:#b26b00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M12 10v3l2 2"/><path d="M7 4l-2.75 2"/><path d="M17 4l2.75 2"/></svg></span><b>Anzeigetafel bedienen</b><small>Stramatel 452 · Hauptpult und Strafzeitpulte · Schritt für Schritt</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.26.1.159</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.26.2.160</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <details class="infoCard inCard mapCard" id="appMap"><summary class="inHead"><b>So findest du dich zurecht</b><span class="mapSum">Alle Bereiche der App auf einen Blick</span></summary><div class="mapList"><button type="button" class="mapRow" data-go="start"><span class="mapIc">🏠</span><span class="mapTx"><b>Start</b><small>Nächstes und letztes Spiel, Spielbericht, Hinweise</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="schedule"><span class="mapIc">📅</span><span class="mapTx"><b>Spielplan</b><small>Alle Spiele, Kalender, Filter, „Heute“</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="opponents"><span class="mapIc">🛡️</span><span class="mapTx"><b>Gegner</b><small>Tabelle, Form, Spiele gegen jeden Gegner</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="rules"><span class="mapIc">📖</span><span class="mapTx"><b>Regeln</b><small>Regeln einfach erklärt, Handzeichen, Suche</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="downloads"><span class="mapIc">⬇️</span><span class="mapTx"><b>Downloads</b><small>Kalender, Spielplan-PDF, Bilder mit Bericht zum Teilen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="news"><span class="mapIc">📰</span><span class="mapTx"><b>News</b><small>Hinweise, Spielberichte, Spieländerungen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="settings"><span class="mapIc">⚙️</span><span class="mapTx"><b>Einstellungen</b><small>Design, Push an/aus oder neu einrichten, Feedback</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div><ul class="mapTips"><li><b>Wischen</b> nach links oder rechts wechselt zwischen den Reitern.</li><li><b>Spielkarte antippen</b> zeigt Tabelle, Form, Halle und Aktionen.</li><li><b>Teilen</b> schickt Bild und Text an WhatsApp, Instagram &amp; Co.</li></ul></details>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
@@ -1987,7 +2032,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie auf Widerruf einer Einwilligung mit Wirkung für die Zukunft. Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren, in NRW bei der Landesbeauftragten für Datenschutz und Informationsfreiheit (LDI NRW).</p>
 <div class="small">Stand: Oktober 2026</div>
 </div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.26.1.159 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.26.2.160 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   <div id="hockeyGameModal" class="hockeyGameModal" hidden aria-hidden="true"><div class="hockeyGameBox" role="dialog" aria-modal="true" aria-labelledby="hockeyGameTitle"><div class="hwDeco hwFogA" aria-hidden="true"></div><div class="hwDeco hwFogB" aria-hidden="true"></div><div class="hwDeco hwGameEyes" aria-hidden="true"><i></i><i></i></div><div class="hwDeco hwGameSpider" aria-hidden="true"><b></b><span>🕷️</span></div><div class="hwDeco hwGameBat" aria-hidden="true"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwFlash" aria-hidden="true"></div><div id="hqFx" class="hqFx" aria-hidden="true"></div><div class="hockeyGameHead"><div id="hockeyGameTitle" class="hockeyGameTitle">🏒 Hockey Tic-Tac-Toe</div><button id="hockeyGameClose" class="hockeyGameClose" type="button" aria-label="Minispiel schließen">×</button></div><div class="hockeyGameBody"><div id="hockeyIntro" class="hockeyGameIntro">Best of 5 – wer zuerst 3 Runden gewinnt. Du bist der Puck.</div><div class="hqBoard" aria-live="polite"><div class="hqTeam"><i id="hqYou">GRIZZLYS</i><b id="hqScoreP">0</b></div><div class="hqMid"><div id="hqLamp" class="hqLamp" aria-hidden="true"></div><small id="hqSeriesInfo">Runde 1 · Best of 5</small></div><div class="hqTeam"><i id="hqFoe">GEGNER</i><b id="hqScoreC">0</b></div></div><div class="hqLevels" id="hqLevels" role="group" aria-label="Schwierigkeit"><button type="button" data-lv="easy">Anfänger</button><button type="button" data-lv="pro" class="on">Profi</button><button type="button" data-lv="keeper">Torwart</button></div><div class="hockeyRink"><div class="hqBanner" aria-hidden="true"><span>ESV GRIZZLYS</span><span>BERGKAMEN</span><span>U15</span></div><div id="hockeyBoard" class="hockeyBoard"></div><div class="hqBanner hqBannerB" aria-hidden="true"><span>BERGKAMEN</span><span>ESV GRIZZLYS</span><span>U15</span></div></div><div id="hockeyStatus" class="hockeyStatus">Dein Zug – schieße auf ein freies Feld!</div><div class="hqTools"><button id="hqPenBtn" class="hqPen" type="button">⏱ Strafzeit ×3</button><div id="hqTrophies" class="hqTrophies" aria-label="Pokale"></div></div><div class="hockeyActions"><button id="hockeyNewGame" class="action" type="button">🔄 Neue Serie</button><button id="hockeyGameClose2" class="action" type="button">Schließen</button></div><div class="hockeyHint">Das Spiel läuft nur auf deinem Gerät. Nur deine Pokale werden hier gespeichert.</div></div></div></div></div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -2492,7 +2537,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.26.1.159",
+      appVersion:"1.26.2.160",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -3186,7 +3231,7 @@ async function admRepLoad(g,force=false){
 function admRepEhvHint(k){
   const st=admRepState[k]||{};
   if(st.busy)return "⏳ Spieldetails vom EHV werden geladen …";
-  if(st.ok)return "✓ Spieldetails vom EHV eingerechnet (Tore, Über-/Unterzahl, Führung, Zuschauer)"+" · Spieler nur mit Rückennummer";
+  if(st.ok)return "✓ EHV-Spieldetails eingerechnet";
   if(st.err)return "ℹ️ "+esc(st.err)+" Der Entwurf nutzt nur Ergebnis, Drittel und Tabelle.";
   return "";
 }
@@ -3202,20 +3247,31 @@ const admRepGen=(g,v,kw)=>window.repDraft(g,v||0,kw!==undefined?kw:admRepKwGet(g
 function admRepChipsHtml(g){
   const d=admRepGen(g,0); if(!d||!d.facts)return "";
   const use=admRepUseGet(g), len=admRepLenGet(g);
-  const chips=Object.entries(d.facts).filter(([k,f])=>f.avail).map(([k,f])=>{const on=k in use?!!use[k]:f.def;
-    return `<button type="button" class="admChip${on?" on":""}" data-use="${k}" aria-pressed="${on}">${esc(f.label)}${!(k in use)&&!f.def?"":""}</button>`}).join("");
-  return `<div class="admRepLen" role="group" aria-label="Länge"><button type="button" data-len=""${len?"":' class="on"'}>Normal</button><button type="button" data-len="kurz"${len==="kurz"?' class="on"':""}>Kurz</button></div><div class="admChips">${chips}</div><small>Antippen schaltet eine Angabe ein oder aus. Vorbelegt ist, was meist interessant ist.</small>`;
+  /* 1.26.2: Angaben als kompakte Häkchen-Liste statt Chips */
+  const rows=Object.entries(d.facts).filter(([k,f])=>f.avail).map(([k,f])=>{const on=k in use?!!use[k]:f.def;
+    return `<label class="admUse"><input type="checkbox" data-use="${k}"${on?" checked":""}><span>${esc(f.label)}</span></label>`}).join("");
+  const MOM={comeback:"Aufholjagd",lc:"Führungswechsel",lateEq:"später Ausgleich",hat:"Hattrick",blitz:"Torflut",en:"leeres Tor"};
+  const det=!!window.repDetails[resultKey(g)];
+  const na=Object.keys(MOM).filter(k=>d.facts[k]&&!d.facts[k].avail).map(k=>MOM[k]);
+  return `<div class="admUseTop"><span>Länge</span><div class="admRepLen" role="group" aria-label="Länge"><button type="button" data-len=""${len?"":' class="on"'}>Normal</button><button type="button" data-len="kurz"${len==="kurz"?' class="on"':""}>Kurz</button></div></div>
+    <div class="admUseList">${rows}</div>${na.length?`<div class="admUseNa">${det?"Nicht in diesem Spiel":"Erst mit EHV-Spieldetails"}: ${esc(na.join(" · "))}</div>`:""}`;
+}
+function admRepMoreSum(g){
+  const d=admRepGen(g,0); if(!d||!d.facts)return "";
+  const use=admRepUseGet(g), n=Object.entries(d.facts).filter(([k,f])=>f.avail&&(k in use?!!use[k]:f.def)).length;
+  const kw=String(admRepKwGet(g)||"").split(/[,;\n]+/).filter(x=>x.trim()).length;
+  return (admRepLenGet(g)==="kurz"?"Kurz":"Normal")+" · "+n+" Angaben"+(kw?" · "+kw+" Schlagwort"+(kw===1?"":"e"):"");
 }
 function admRepChipsBind(g){
   const w=document.getElementById("admSheet"), box=w&&w.querySelector("#admRepUse"); if(!box)return;
-  box.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>{
+  box.querySelectorAll("[data-use]").forEach(b=>b.onchange=()=>{
     const use=admRepUseGet(g), d=admRepGen(g,0), f=d&&d.facts[b.dataset.use]; if(!f)return;
     const cur=b.dataset.use in use?!!use[b.dataset.use]:f.def; use[b.dataset.use]=!cur;
     admRepSelSet(g,use,admRepLenGet(g)); admRepRegen(g,true); admRepChipsRefresh(g);
   });
   box.querySelectorAll("[data-len]").forEach(b=>b.onclick=()=>{admRepSelSet(g,admRepUseGet(g),b.dataset.len);admRepRegen(g,true);admRepChipsRefresh(g)});
 }
-function admRepChipsRefresh(g){const w=document.getElementById("admSheet"),box=w&&w.querySelector("#admRepUse");if(box){box.innerHTML=admRepChipsHtml(g);admRepChipsBind(g)}}
+function admRepChipsRefresh(g){const w=document.getElementById("admSheet"),box=w&&w.querySelector("#admRepUse");if(box){box.innerHTML=admRepChipsHtml(g);admRepChipsBind(g)}const sm=w&&w.querySelector("#admRepMoreSum");if(sm)sm.textContent=admRepMoreSum(g)}
 /* Text neu erzeugen (mit Rückfrage, wenn er von Hand geändert wurde) */
 function admRepRegen(g,ask){
   const c=admRepCur(); if(!c.tx)return false;
@@ -3224,16 +3280,29 @@ function admRepRegen(g,ask){
   if(d){c.ti.value=d.title;c.tx.value=d.text;c.tx.dataset.auto="1";admRepRemember(g)}
   return true;
 }
+/* 1.26.2: Kurzinfo für den eingeklappten Spielbericht */
+function admRepSum(g,has){
+  if(!has)return "nach dem Spiel";
+  const r=window.gameReports[resultKey(g)];
+  return r&&r.published?'<span class="admSt ok">veröffentlicht</span>':r&&r.text?'<span class="admSt chg">Entwurf gespeichert</span>':"automatischer Entwurf";
+}
 function admRepBox(g,has){
   if(!has)return `<div class="admBox"><h5>📝 Spielbericht</h5><div class="admHint">Sobald ein Ergebnis da ist, erstellt die App hier einen Entwurf.</div></div>`;
   const k=resultKey(g), r=window.gameReports[k], F=admRepForm[k];
   const d=F?F:r&&r.text?r:(admRepGen(g,0)||{title:"",text:""});
   const st=r&&r.published?'<span class="admSt ok">veröffentlicht</span>':r&&r.text?'<span class="admSt chg">Entwurf gespeichert</span>':'<span class="admSt">automatischer Entwurf</span>';
   const auto=F?F.auto:!(r&&r.text);
-  return `<div class="admBox"><h5>📝 Spielbericht ${st}</h5><div class="admForm admRepForm"><label class="full">Überschrift<input id="admRepTitle" maxlength="120" value="${esc(d.title)}"></label><label class="full">Schlagworte<span class="admRepKwRow"><input id="admRepKw" maxlength="200" placeholder="z. B. Teamgeist, Kampfgeist, starker Torhüter" value="${esc(admRepKwGet(g))}"><button type="button" class="admBtn" data-rep="kw">Übernehmen</button></span><small class="admRepKwHint">Mit Komma trennen – die App macht daraus passende Sätze.</small></label><div class="full admRepUseWrap"><span class="admRepUseHead">Im Bericht verwenden</span><div id="admRepUse">${admRepChipsHtml(g)}</div></div><label class="full">Text<textarea id="admRepText" rows="9" maxlength="2000"${auto?' data-auto="1"':""} data-v="${F?F.v||0:0}">${esc(d.text)}</textarea></label>
-    <div class="full admNewsChk"><small>Spieler werden nie mit Namen genannt – Torschützen und Torhüter nur mit Rückennummer.</small></div></div>
-    <div class="admHint" id="admRepEhv">${admRepEhvHint(resultKey(g))}</div>
-    <div class="admBtns" style="margin-top:8px">${r&&r.published?'<button type="button" class="admBtn pri" data-rep="pub">💾 Änderung veröffentlichen</button><button type="button" class="admBtn no" data-rep="off">Zurückziehen</button>':'<button type="button" class="admBtn pri" data-rep="pub">📰 Veröffentlichen</button><button type="button" class="admBtn" data-rep="save">Entwurf speichern</button>'}<button type="button" class="admBtn" data-rep="new">↻ Neu erzeugen</button><button type="button" class="admBtn" data-rep="copy">📋 Kopieren</button></div></div>`;
+  adm.fold=adm.fold||{}; const more=!!adm.fold.repMore;
+  const btns=r&&r.published?'<button type="button" class="admBtn pri" data-rep="pub">💾 Änderung veröffentlichen</button><button type="button" class="admBtn no" data-rep="off">Zurückziehen</button>':'<button type="button" class="admBtn pri" data-rep="pub">📰 Veröffentlichen</button><button type="button" class="admBtn" data-rep="save">Als Entwurf speichern</button>';
+  return `<div class="admBox"><h5>📝 Spielbericht ${st}</h5><div class="admForm admRepForm">
+    <label class="full">Überschrift<input id="admRepTitle" maxlength="120" value="${esc(d.title)}"></label>
+    <div class="full admRepTxtHead"><span>Text</span><button type="button" class="admTxtBtn" data-rep="new" title="Neuen Entwurf erzeugen">↻ Neu</button><button type="button" class="admTxtBtn" data-rep="copy" title="Text kopieren">📋 Kopieren</button></div>
+    <label class="full admRepTxt"><textarea id="admRepText" aria-label="Text" rows="8" maxlength="2000"${auto?' data-auto="1"':""} data-v="${F?F.v||0:0}">${esc(d.text)}</textarea></label></div>
+    <div class="admBtns admRepBtns">${btns}</div>
+    <details class="admRepMore"${more?" open":""}><summary><b>⚙️ Inhalt anpassen</b><span id="admRepMoreSum">${esc(admRepMoreSum(g))}</span><i class="admChev" aria-hidden="true">⌄</i></summary>
+      <div class="admForm admRepForm"><label class="full">Schlagworte<span class="admRepKwRow"><input id="admRepKw" maxlength="200" placeholder="z. B. Teamgeist, Kampfgeist, starker Torhüter" value="${esc(admRepKwGet(g))}"><button type="button" class="admBtn" data-rep="kw">Übernehmen</button></span><small class="admRepKwHint">Mit Komma trennen – die App macht daraus passende Sätze.</small></label>
+      <div class="full"><div id="admRepUse">${admRepChipsHtml(g)}</div></div></div></details>
+    <div class="admRepFoot"><span id="admRepEhv">${admRepEhvHint(resultKey(g))}</span> · Spieler nur mit Rückennummer, nie mit Namen.</div></div>`;
 }
 function admRepCur(){const w=document.getElementById("admSheet");return w?{ti:w.querySelector("#admRepTitle"),tx:w.querySelector("#admRepText"),kw:w.querySelector("#admRepKw"),hint:w.querySelector(".admRepKwHint")}:{}}
 function admRepRemember(g){const c=admRepCur();if(!c.tx||!c.ti)return;admRepForm[resultKey(g)]={title:c.ti.value,text:c.tx.value,auto:c.tx.dataset.auto==="1",v:Number(c.tx.dataset.v)||0}}
@@ -3390,10 +3459,13 @@ function admStatus(g){
 }
 function admDate(g){const d=dt(g);return `<span class="admD"><small>${esc(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","").toUpperCase())}</small><b>${d.getDate()}.</b><small>${esc(d.toLocaleDateString("de-DE",{month:"short"}).replace(".","").toUpperCase())}</small></span>`}
 const admPair=g=>esc(shortTeam(g.home))+" – "+esc(shortTeam(g.away));
+/* 1.26.2: In der Liste steht der Gegner vorn (die Grizzlys sind ja immer dabei), davor Heim/Auswärts */
 function admRow(g){
-  const [c,t]=admStatus(g), mod=admOvChanged(g);
-  return `<button type="button" class="admRow team${esc(g.team)}" data-gid="${esc(scheduleGameId(g))}">${admDate(g)}<span class="admM"><b>${admPair(g)}</b><small>U15 ${esc(g.team)} · ${esc(g.time)} · ${esc(g.stadium)}${mod?'<span class="admMod">geändert</span>':""}${g.cancelled?'<span class="admMod admCx">abgesagt</span>':""}</small></span><span class="admSt ${c}">${esc(t)}</span></button>`;
+  const [c,t]=admStatus(g), mod=admOvChanged(g), h=isHome(g);
+  return `<button type="button" class="admRow team${esc(g.team)}" data-gid="${esc(scheduleGameId(g))}" title="${esc(g.home+" – "+g.away)}">${admDate(g)}<span class="admM"><b><i class="admHA${h?"":" aw"}">${h?"HEIM":"AUSW."}</i><span>${esc(shortTeam(h?g.away:g.home))}</span></b><small>U15 ${esc(g.team)} · ${esc(g.time)} · ${esc(g.stadium)}${mod?'<span class="admMod">geändert</span>':""}${g.cancelled?'<span class="admMod admCx">abgesagt</span>':""}</small></span><span class="admSt ${c}">${esc(t)}</span></button>`;
 }
+/* Monats-Zwischenüberschriften für längere Listen */
+function admRowsByMonth(arr){let m="",h="";arr.forEach(g=>{const k=dt(g).toLocaleDateString("de-DE",{month:"long",year:"numeric"});if(k!==m){m=k;h+=`<div class="admMonth">${esc(k)}</div>`}h+=admRow(g)});return h}
 const admGame=id=>games.find(x=>scheduleGameId(x)===id);
 /* 1.25.0: echte Terminänderung (nicht nur Absage) */
 function admOvChanged(g){const o=scheduleOverrides[scheduleGameId(g)],b=g._base||g;return !!o&&["date","time","home","away","stadium"].some(k=>o[k]&&o[k]!==b[k]);}
@@ -3472,18 +3544,29 @@ function admRenderGames(){
     const miss=list.filter(g=>admPast(g)&&!admHasRes(g)).sort(asc);
     const last=list.filter(g=>admPast(g)&&admHasRes(g)).sort(desc)[0];
     const up=list.filter(g=>!admPast(g)).sort(asc);
+    const live=up.filter(g=>Date.now()>=+dt(g)), soon=up.filter(g=>!live.includes(g)), N=5;
     if(miss.length)h+=`<div class="admSec">Ergebnis fehlt</div>`+miss.map(admRow).join("");
-    if(last)h+=`<div class="admSec">Letztes Spiel</div>`+admRow(last);
-    h+=`<div class="admSec">Als Nächstes</div>`+(up.length?up.map(admRow).join(""):'<div class="admEmpty">Keine kommenden Spiele.</div>');
+    if(live.length)h+=`<div class="admSec">Läuft gerade</div>`+live.map(admRow).join("");
+    if(last)h+=`<div class="admSec">Zuletzt gespielt</div>`+admRow(last);
+    h+=`<div class="admSec">Als Nächstes</div>`+(soon.length?(adm.upAll?admRowsByMonth(soon):soon.slice(0,N).map(admRow).join(""))
+      +(soon.length>N?`<button type="button" class="admMore" data-more>${adm.upAll?"Weniger anzeigen":`Alle ${soon.length} kommenden Spiele anzeigen`}</button>`:""):'<div class="admEmpty">Keine kommenden Spiele.</div>');
   }else if(adm.filter==="played"){
     const p=list.filter(admPast).sort(desc);
-    h=p.length?p.map(admRow).join(""):'<div class="admEmpty">Noch keine gespielten Spiele.</div>';
-  }else h=list.slice().sort(asc).map(admRow).join("");
+    h=p.length?admRowsByMonth(p):'<div class="admEmpty">Noch keine gespielten Spiele.</div>';
+  }else h=admRowsByMonth(list.slice().sort(asc));
   box.innerHTML=h;
+  box.querySelector("[data-more]")?.addEventListener("click",()=>{adm.upAll=!adm.upAll;admRenderGames()});
   box.querySelectorAll(".admRow").forEach(b=>b.onclick=()=>admOpenGame(b.dataset.gid));
 }
 
-function admOpenGame(id){adm.sheet=id;adm.edit=false;admRenderSheet()}
+function admOpenGame(id){if(adm.sheet!==id)adm.fold={};adm.sheet=id;adm.edit=false;admRenderSheet()}
+/* 1.26.2: Kasten im Spiel-Fenster als aufklappbarer Bereich mit Kurzinfo rechts; Zustand bleibt beim Neuzeichnen erhalten */
+function admFold(key,html,defOpen,sum){
+  const m=/^\s*<div class="(admBox[^"]*)">\s*<h5>([\s\S]*?)<\/h5>([\s\S]*)<\/div>\s*$/.exec(html); if(!m)return html;
+  adm.fold=adm.fold||{}; const open=key in adm.fold?adm.fold[key]:defOpen;
+  const head=m[2].replace(/<span class="admSt[^>]*>[\s\S]*?<\/span>/g,"").replace(/<span class="admRepState"[^>]*>[\s\S]*?<\/span>/g,"").trim();
+  return `<details class="${m[1]} admFoldBox" data-fold="${key}"${open?" open":""}><summary><h5>${head}</h5><span class="admSum">${sum||""}</span><i class="admChev" aria-hidden="true">⌄</i></summary><div class="admFoldIn">${m[3]}</div></details>`;
+}
 function admCloseSheet(){adm.sheet=null;const w=document.getElementById("admSheet");if(w)w.hidden=true}
 function admRenderSheet(){
   const w=document.getElementById("admSheet"); if(!w)return;
@@ -3499,20 +3582,22 @@ function admRenderSheet(){
   const cmp=d?admDiffHtml(d):"";
   box.innerHTML=`<div class="admGrab"></div>
    <div class="admSh team${esc(g.team)}">${admDate(g)}<div class="admM"><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><small>U15 ${esc(g.team)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</small></div><button type="button" class="admX" data-x aria-label="Schließen">×</button></div>
-   <div class="admBox"><h5>🏒 Ergebnis</h5>
+   ${admFold("res",`<div class="admBox"><h5>🏒 Ergebnis</h5>
      <div class="admScore"><div><input id="admHs" type="number" inputmode="numeric" min="0" max="99" value="${has?esc(r.homeScore):""}" aria-label="Tore Heim"><div class="lbl">Heim</div></div><b>:</b><div><input id="admAs" type="number" inputmode="numeric" min="0" max="99" value="${has?esc(r.awayScore):""}" aria-label="Tore Gast"><div class="lbl">Gast</div></div>
-     <div class="admBtns"><button type="button" class="admBtn pri" data-res="save">Speichern</button>${has?'<button type="button" class="admBtn del" data-res="del">Löschen</button>':""}</div></div>${hint}</div>
-   <div class="admBox"><h5>📅 Termin &amp; Ort ${d?'<span class="admSt chg">EHV weicht ab</span>':adm.ehv&&!adm.ehvErr?'<span class="admSt ok">stimmt mit EHV</span>':""}</h5>${cmp}
+     <div class="admBtns"><button type="button" class="admBtn pri" data-res="save">Speichern</button>${has?'<button type="button" class="admBtn del" data-res="del">Löschen</button>':""}</div></div>${hint}</div>`,!has||!admPast(g)?true:false,has?`<span class="admSt ok">${esc(r.homeScore+":"+r.awayScore)} ✓</span>`:admPast(g)?'<span class="admSt miss">fehlt</span>':"noch nicht gespielt")}
+   ${admFold("sch",`<div class="admBox"><h5>📅 Termin &amp; Ort ${d?'<span class="admSt chg">EHV weicht ab</span>':adm.ehv&&!adm.ehvErr?'<span class="admSt ok">stimmt mit EHV</span>':""}</h5>${cmp}
      <div class="admKv"><div><small>Datum</small>${esc(fmtDate(g))}</div><div><small>Uhrzeit</small>${esc(g.time)} Uhr</div><div style="grid-column:span 2"><small>Spielort</small>${esc(g.stadium)}</div></div>
      ${mod?`<div class="admHint">Geändert – ursprünglich ${esc(admFd(base.date))} · ${esc(base.time)} Uhr · ${esc(base.stadium)}<br>${admNewsState(g)}</div>`:""}
      ${adm.edit?`<div class="admForm"><label>Datum<input id="admFDate" type="date" value="${esc(g.date)}"></label><label>Uhrzeit<input id="admFTime" type="time" value="${esc(g.time)}"></label><label class="full">Heimteam<input id="admFHome" value="${esc(g.home)}"></label><label class="full">Gastteam<input id="admFAway" value="${esc(g.away)}"></label><label class="full">Spielort<input id="admFStad" value="${esc(g.stadium)}"></label><label class="full admNewsChk"><span><input id="admFNews" type="checkbox"${scheduleOverrides[id]&&typeof scheduleOverrides[id].news==="boolean"?(scheduleOverrides[id].news?" checked":"")+' data-man="1"':""}> In den News als Spieländerung melden</span><small id="admFNewsHint"></small></label><label class="full admNewsChk admPushChk"><span><input id="admFPush" type="checkbox"> 📲 Push an alle senden</span><small id="admFPushHint"></small></label></div>
        <div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn pri" data-sch="save">💾 Für alle speichern</button><button type="button" class="admBtn no" data-sch="cancel">Abbrechen</button></div>`
       :`<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-sch="edit">✏️ Termin ändern</button>${mod?'<button type="button" class="admBtn no" data-sch="reset">↩️ Original</button>':""}</div>`}
-   </div>
-   ${admRepBox(g,has)}
-   <div class="admBox admCxBox${g.cancelled?" on":""}"><h5>🚫 Absage</h5>${g.cancelled?`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button></div>`:`<div class="small" style="margin-bottom:8px">Nur Anzeige: Das Spiel wird überall als „Abgesagt“ gekennzeichnet (Spielkarten, Kalender, Social-Media-Bilder). Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button></div>`}</div>
-   <div class="admBox"><h5>📸 Social-Media-Bilder</h5><div class="admBtns"><button type="button" class="admBtn" data-img="announce">Ankündigung</button><button type="button" class="admBtn ${has?"pri":""}" data-img="result" ${has?"":"disabled"}>Ergebnis-Bild</button></div></div>
-   <div class="admBox"><h5>📰 Hinweis zu diesem Spiel</h5><button type="button" class="admBtn" style="width:100%" data-news>＋ News schreiben (z. B. Hallenwechsel)</button></div>`;
+   </div>`,!!(adm.edit||d),(d?'<span class="admSt chg">EHV weicht ab</span> ':mod?'<span class="admSt chg">geändert</span> ':"")+esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+g.time+" · "+g.stadium))}
+   ${admFold("rep",admRepBox(g,has),has,admRepSum(g,has))}
+   ${admFold("cx",`<div class="admBox admCxBox${g.cancelled?" on":""}"><h5>🚫 Absage</h5>${g.cancelled?`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button></div>`:`<div class="small" style="margin-bottom:8px">Nur Anzeige: Das Spiel wird überall als „Abgesagt“ gekennzeichnet (Spielkarten, Kalender, Social-Media-Bilder). Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button></div>`}</div>`,!!g.cancelled,g.cancelled?'<span class="admSt miss">abgesagt</span>':"nicht abgesagt")}
+   ${admFold("img",`<div class="admBox"><h5>📸 Social-Media-Bilder</h5><div class="admBtns"><button type="button" class="admBtn" data-img="announce">Ankündigung</button><button type="button" class="admBtn ${has?"pri":""}" data-img="result" ${has?"":"disabled"}>Ergebnis-Bild</button></div></div>`,false,has?"Ankündigung · Ergebnis":"Ankündigung")}
+   ${admFold("news",`<div class="admBox"><h5>📰 Hinweis zu diesem Spiel</h5><button type="button" class="admBtn" style="width:100%" data-news>＋ News schreiben (z. B. Hallenwechsel)</button></div>`,false,"News schreiben")}`;
+  box.querySelectorAll("details[data-fold]").forEach(x=>x.addEventListener("toggle",()=>{adm.fold=adm.fold||{};adm.fold[x.dataset.fold]=x.open}));
+  box.querySelector(".admRepMore")?.addEventListener("toggle",e=>{adm.fold=adm.fold||{};adm.fold.repMore=e.currentTarget.open});
   w.hidden=false;
   box.querySelector("[data-x]").onclick=admCloseSheet;
   w.onclick=e=>{if(e.target===w)admCloseSheet()};
