@@ -36,7 +36,7 @@ const API_KEY = "f4b71c8702bd3a6eadc89becf6da5a4e"; // öffentlicher Schlüssel 
 
 // Testphase: true = Live-Pushs gehen NUR an Admin-Geräte (unabhängig von deren Auswahl).
 // Erst auf false stellen (und neu deployen), wenn die Live-App die Push-Auswahl „Live“ hat.
-const LIVE_PUSH_NUR_ADMIN = true;
+const LIVE_PUSH_NUR_ADMIN = false;
 
 const VOR_BEGINN_MIN = 15;        // so viele Minuten vor Spielbeginn schon nachsehen
 const NACH_BEGINN_MIN = 210;      // so lange nach Spielbeginn höchstens
