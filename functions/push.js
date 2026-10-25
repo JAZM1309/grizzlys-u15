@@ -226,4 +226,7 @@ exports.sendGameReminders = onSchedule(
   }
 );
 
+// 1.26.0: für den Live-Ticker (live.js)
+exports._send = { sendPush, loadTokens, wantsTeam, berlinDate };
+
 exports._test = { isReminderTime, berlinDate, gameIdentity, applyScheduleOverrides, wantsTeam, teamOfResult };

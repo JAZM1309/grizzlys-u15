@@ -331,3 +331,6 @@ exports.deployControl = require("./deploy").deployControl;
 
 // 1.9.1.129: Spieldetails vom EHV für den Spielbericht-Entwurf (nur Admin)
 exports.gameReport = require("./game-report").gameReport;
+
+// 1.26.0: Live-Ticker (Spielstand, Tore und Drittel während des Spiels, Push „Live-Tore“ / „Drittelergebnisse“)
+exports.liveTicker = require("./live").liveTicker;

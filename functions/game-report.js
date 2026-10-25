@@ -4,8 +4,7 @@
  *  - Nur für den Admin (onCall mit Anmeldung) – es gibt keinen öffentlichen Abruf.
  *  - Liefert eine aufbereitete Zusammenfassung: Tore mit Spielzeit und Spielsituation,
  *    Strafen-Anzahl, Über-/Unterzahl, Zeit in Führung, Zuschauer.
- *  - Spielernamen (Torschützen/Vorlagen/Torhüter) nur, wenn die App sie ausdrücklich anfordert
- *    (Schalter „Namen nennen“ im Admin). Strafen werden nie mit Namen geliefert.
+ *  - Ab 1.26.0 nie mit Namen: Torschützen, Vorlagen und Torhüter nur mit Rückennummer.
  *
  * Einbinden in functions/index.js (eine Zeile):
  *   exports.gameReport = require("./game-report").gameReport;
@@ -104,7 +103,7 @@ exports.gameReport = onCall({ region: REGION, maxInstances: 2, timeoutSeconds: 3
       id = String(x.id);
     }
     const r = await fetchReport(id);
-    return { ok: true, report: summarize(r, q.names === true) };
+    return { ok: true, report: summarize(r, false) }; // 1.26.0: keine Namen, nur Rückennummern
   } catch (err) {
     logger.warn("gameReport fehlgeschlagen", { err: String(err && err.message) });
     throw new HttpsError("unavailable", "Spieldetails vom EHV gerade nicht abrufbar.");

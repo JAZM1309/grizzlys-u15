@@ -347,4 +347,4 @@ exports.scheduleWatch = onSchedule(
   async () => { logger.info("scheduleWatch", await runScheduleWatch()); }
 );
 
-exports._test = { runScheduleWatch, diffText, runAutoResults, runScheduleCheck, findEhvGame, sameTeam, resultKey };
+exports._test = { loadAppGames, runScheduleWatch, diffText, runAutoResults, runScheduleCheck, findEhvGame, sameTeam, resultKey };
