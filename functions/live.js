@@ -7,7 +7,7 @@
  *  - Quelle:     hockeydata „GetGameReport“ – dieselben Daten, die die EHV-Spielseite live zeigt.
  *  - Ergebnis:   Firestore live/{Spiel-ID} (Spiel-ID wie bei den Ergebnissen: Datum_Uhrzeit_Team).
  *                Die App liest es in Echtzeit (für alle lesbar, schreiben nur diese Function).
- *  - Push:       „Live-Tore“ (jedes Tor) und „Drittelergebnisse“ (nach dem 1. und 2. Drittel),
+ *  - Push:       „Live-Tore“ (jedes Tor) und „Bully & Drittelergebnisse“ (Spielbeginn sowie nach dem 1. und 2. Drittel),
  *                jeweils nur für Geräte, die das in der App ausdrücklich eingeschaltet haben.
  *                Das Endergebnis kommt wie bisher über den normalen Ergebnis-Push.
  *  - Spielende:  Sobald der EHV das Spiel als beendet führt, wird sofort der automatische
@@ -213,11 +213,22 @@ async function tick(db, g, now) {
   if (baseline) periodsPushed = s.periodsDone;
 
   const doc = { ...base, ...s, periodsPushed, updatedAt: ts() };
+  if (prev && prev.bullyPushed) doc.bullyPushed = true;
   if (baseline) doc.startedMidGame = true;
 
   const changed = !prev || prev.hs !== s.hs || prev.as !== s.as || prev.status !== s.status || prev.clock !== s.clock
     || prev.period !== s.period || (prev.goals || []).length !== s.goals.length;
   if (changed) await ref.set(doc, { merge: false });
+
+  // 1.26.4: Bully – das Spiel hat begonnen (Wechsel von „pre“ auf ein laufendes Spiel); geht an „Bully & Drittelergebnisse“
+  if (prev && prev.status === "pre" && s.status !== "final" && !prev.bullyPushed) {
+    const opp = label(isG(g.home) ? g.away : g.home);
+    const title = "🏒 Bully!";
+    const body = `U15 ${g.team}: ${isG(g.home) ? "Grizzlys gegen " + opp : opp + " gegen Grizzlys"} hat begonnen` + (s.hs || s.as ? ` – es steht ${scoreLine(g, s)}` : ".");
+    const st = await sendLive("livePeriods", g, title, body);
+    logger.info("Live-Bully-Push", { id: g.id, ...st });
+    await ref.update({ bullyPushed: true });
+  }
 
   // Tore melden (nicht mehr, wenn das Spiel in diesem Moment schon beendet ist – dann kommt der Ergebnis-Push)
   if (fresh.length && s.status !== "final") {
