@@ -16,6 +16,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.26.4.162 | – (nur Test) | 03.11.2026 | Kleine Verbesserung |
+| 1.26.3.161 | – (nur Test) | 26.10.2026 | Optisch |
 | 1.26.2.160 | – (nur Test) | 25.10.2026 | Optisch und kleine Verbesserung |
 | 1.26.1.159 | – (nur Test) | 25.10.2026 | Kleine Verbesserung |
 | 1.26.0.158 | – (nur Test) | 25.10.2026 | Neue Funktion |
@@ -60,6 +62,20 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.26.4
+
+### Neu in Version 1.26.4 (Stand 1.26.4.162, 03.11.2026) – Kleine Verbesserung
+
+- **Push „Bully & Drittelergebnisse“:** Die Auswahl heißt jetzt so; wer sie eingeschaltet hat, bekommt zusätzlich beim Spielbeginn „🏒 Bully! U15 A: Grizzlys gegen … hat begonnen.“ (`functions/live.js`, Function `liveTicker` neu bereitstellen)
+- **Kritische Schlagworte im Spielbericht:** „schlecht“, „schwach“, „zu viele“, „ausbaufähig“, „kaum“, „Luft nach oben“ usw. werden erkannt und als Kritik formuliert statt als Lob. Neu ist das Schlagwort Powerplay/Überzahl – kritisch mit echten Zahlen aus den EHV-Spieldetails („Nur ein Tor aus 3 Überzahlsituationen“); dann entfällt auch der lobende Überzahl-Satz. Ebenso entfällt das Lob für wenige Strafminuten, wenn Strafen oder Disziplin kritisiert werden. Freie kritische Schlagworte erscheinen als „Luft nach oben gibt es noch – …“ statt bisher fälschlich als „Positiv bleibt trotzdem: …“
+- **Mit KI-App schreiben:** im Spielbericht zwei Knöpfe – „1 · Auftrag kopieren“ legt einen fertigen Auftrag mit allen Fakten (Ergebnis, Drittel, Torfolge mit Rückennummern, Strafminuten, Powerplay, Torhüter, Tabelle, nächstes Spiel), Stilvorgaben (flüssiger Text, keine Namen, nichts erfinden, Kritik bleibt Kritik) und den Schlagworten in die Zwischenablage; nach dem Einfügen in Claude oder ChatGPT die Antwort kopieren und mit „2 · Antwort einfügen“ übernehmen (erste Zeile wird die Überschrift). Kostet nichts, braucht keinen Schlüssel
+
+## Version 1.26.3
+
+### Neu in Version 1.26.3 (Stand 1.26.3.161, 26.10.2026) – Optisch
+
+- **Social-Media-Bilder fürs Halloween-Spiel (31.10.):** Ankündigung und Ergebnisbild bekommen dezent das Halloween-Eisbild (`halloween/karte3.webp`) im Hintergrund und große Spinnennetze aus dem Halloween-Design der App (oben rechts, das U15-Schild hängt im Netz, und gespiegelt unten rechts). Gilt nur für Spiele am 31.10. (`isHwGame`), unabhängig davon, ob der Halloween-Modus am Gerät an ist; alle anderen Bilder bleiben unverändert
 
 ## Version 1.26.2
 
