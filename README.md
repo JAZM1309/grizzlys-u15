@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.26.5.163 | – (nur Test) | 06.11.2026 | Fehlerbehebung |
 | 1.26.4.162 | – (nur Test) | 03.11.2026 | Kleine Verbesserung |
 | 1.26.3.161 | – (nur Test) | 26.10.2026 | Optisch |
 | 1.26.2.160 | – (nur Test) | 25.10.2026 | Optisch und kleine Verbesserung |
@@ -62,6 +63,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.26.5
+
+### Neu in Version 1.26.5 (Stand 1.26.5.163, 06.11.2026) – Fehlerbehebung
+
+- **KI-Auftrag nur mit abgehakten Angaben:** „1 · Auftrag kopieren“ übernimmt jetzt nur, was unter „⚙️ Inhalt anpassen“ abgehakt ist (vorher alle Fakten). Ohne „Spielverlauf“ keine Drittel und keine Torfolge; Rückennummern in der Torfolge nur mit „Torschützen“ oder „Hattrick“; Strafminuten, Powerplay (oder Schlagwort Powerplay), Unterzahl, Torhüter (zu null), Zuschauer, Tabelle, Serie, letztes Duell und Ausblick nur, wenn abgehakt; abgehakte Spielmomente stehen als „Besonders erwähnen: …“. Die KI bekommt ausdrücklich gesagt, alles andere wegzulassen und ob ein Fazit, Tabelle oder Ausblick gewünscht ist
 
 ## Version 1.26.4
 
