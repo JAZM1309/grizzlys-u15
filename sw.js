@@ -59,7 +59,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v163";
+const CACHE = "grizzlys-u15-v164";
 // Update-Hinweis („Neue Version verfügbar“) für diese Version zeigen? false = Nutzer bekommen sie still beim nächsten Öffnen.
 // In Live wird der Wert beim „Live gehen“ aus dem Häkchen im Admin-Bereich gesetzt.
 const UPDATE_HINWEIS = false;
@@ -75,7 +75,9 @@ const CORE = [
   "./grizzlys-bug-icon.png",
   "./halloween-logo.png?v=2",
   "./christmas-logo.png",
-  "./christmas-logo-gross.png"
+  "./christmas-logo-gross.png",
+  "./img/header-hintergrund.webp",
+  "./fonts/grizzly-brush.woff"
 ];
 
 self.addEventListener("install", event => {

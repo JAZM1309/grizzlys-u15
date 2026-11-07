@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.27.0.164 | – (nur Test) | 07.11.2026 | Neue Funktionen |
 | 1.26.5.163 | – (nur Test) | 06.11.2026 | Fehlerbehebung |
 | 1.26.4.162 | – (nur Test) | 03.11.2026 | Kleine Verbesserung |
 | 1.26.3.161 | – (nur Test) | 26.10.2026 | Optisch |
@@ -63,6 +64,17 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.27.0
+
+### Neu in Version 1.27.0 (Stand 1.27.0.164, 07.11.2026) – Neue Funktionen
+
+- **Saisonbilanz:** unter den Mannschafts-Kacheln zwei Knöpfe „📊 Saisonbilanz U15 A / B“. Das Fenster zeigt Tabellenplatz und Punkte, Spiele/Siege/Unentschieden/Niederlagen, Tore, Differenz, Tore je Spiel, ein Balkendiagramm der Tordifferenz je Spiel, Heim- und Auswärtsbilanz, Tore je Drittel (aus den EHV-Daten, stärkstes Drittel markiert), Form, Serie, höchsten Sieg, höchste Niederlage, Zu-null-Spiele und Gegentore je Spiel – nur aus Ergebnissen, ohne Spielernamen
+- **Spielbericht-Archiv:** in der Saisonbilanz stehen alle veröffentlichten Spielberichte des Teams (antippen öffnet den Bericht im Spiel); „🖨 Alle Berichte als PDF (Saisonrückblick)“ öffnet ein Druckfenster im A4-Hochformat mit allen Berichten – dort „Als PDF speichern“
+- **Direktvergleich:** in der Gegnerübersicht (Gegner antippen) oben Bilanz je Mannschaft und alle bisherigen Ergebnisse gegen diesen Gegner
+- **Saisonende-Sicherung (Admin › Status):** „💾 Sicherung herunterladen“ speichert Ergebnisse, Spielberichte, News, Spieländerungen, Feedback, Adventskalender-Antworten, EHV-Abgleiche, Live-Ticker-Daten und den Spielplan der App als JSON-Datei (ohne Push-Anmeldungen)
+- **Schnellerer Start:** das Hallenfoto im Kopf (bisher 168 KB eingebettet) liegt jetzt als `img/header-hintergrund.webp`, die Pinsel-Schrift als `fonts/grizzly-brush.woff`; die index.html wird dadurch komprimiert von ca. 336 KB auf ca. 190 KB kleiner. Beide Dateien sind im Offline-Speicher der App (sw.js). Die Social-Media-Bilder nutzen dieselbe Datei
+- **Mannschaft und Saison zentral (`APP_CFG` im Kopf der index.html):** Verein, Altersklasse, Saison und Ligen stehen an einer Stelle; alle Texte, Social-Media-Bilder, Druck und Teilen übernehmen die Werte (`teamName("A")` → „U15 A“). Für die nächste Saison zusätzlich anpassen: Spielplan (`const games`), `functions/standings.js` (`DIVISIONS`), `manifest.webmanifest`, Seitentitel und Logos
 
 ## Version 1.26.5
 
