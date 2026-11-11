@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.31.0.175 | – (nur Test) | 11.11.2026 | Neue Funktion |
 | 1.30.1.174 | – (nur Test) | 11.11.2026 | Fehlerbehebung |
 | 1.30.0.173 | – (nur Test) | 11.11.2026 | Neue Funktionen |
 | 1.29.4.172 | – (nur Test) | 11.11.2026 | Optisch |
@@ -74,6 +75,15 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.31.0
+
+Admin-Bereich aufgeräumt:
+- 5 Reiter mit Symbolen: Spiele · News · **Social** (neu) · Feedback · **System** (bisher „Status“).
+- Social: „Jetzt passend“ (Spieltag ab 5 Tage vorher, Ergebnis bis 5 Tage danach, Verlegung, Absage – dieselben Bilder wie unter Downloads), „Saison“ (Tabelle A, Tabelle B, Jahresrückblick) und „Alle Spiele“ mit Filter Kommende/Gespielt und A/B.
+- Spiel-Fenster schlanker: Abschnitt „Social-Media-Bilder“ entfällt; nach eingetragenem Ergebnis gibt es direkt im Ergebnis-Kasten „📸 Ergebnis-Bild“. Der Spielbericht ist nur noch aufgeklappt, solange er nicht veröffentlicht ist.
+- System gruppiert: App (Veröffentlichen) · Werkzeuge (Push-Status, App-Statistik, Saisonende-Sicherung) · Saison (Adventskalender, nur 20.11.–15.1. sichtbar).
+- Behoben: Die Admin-Buttons „Tabelle A/B“ und „Rückblick“ aus 1.30.0 waren nicht zu sehen (alte Liste ohne Platz in der Oberfläche) – jetzt im Reiter Social.
 
 ## Version 1.30.1
 
