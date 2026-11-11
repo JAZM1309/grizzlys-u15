@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.29.3.171 | – (nur Test) | 11.11.2026 | Fehlerbehebung |
 | 1.29.2.170 | – (nur Test) | 11.11.2026 | Optisch |
 | 1.29.1.169 | – (nur Test) | 11.11.2026 | Optisch und kleine Verbesserung |
 | 1.29.0.168 | – (nur Test) | 11.11.2026 | Neues Design |
@@ -70,6 +71,15 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.29.3
+
+Kein Unentschieden mehr (U15: bei Gleichstand nach 60 Minuten Penaltyschießen):
+- Ausgang ist immer Sieg oder Niederlage, bei Penaltyschießen mit „n.P.“ (z. B. „Sieg n.P.“). Erkennung: Haken „n.P.“ im Ergebnis (neues Feld `so` in results) oder EHV-Daten (isShootOut).
+- Endstand wie beim EHV mit Siegtreffer (z. B. 4:3 n.P.). Admin: neuer Haken „n.P.“ im Spiel-Fenster; ein gleicher Endstand wird nicht mehr gespeichert, n.P. nur bei einem Tor Unterschied.
+- Steht ein älteres Ergebnis noch gleich (z. B. 2:2), entscheidet der EHV-Endstand; fehlt der, zeigt die App „Penaltyschießen“ ohne Sieger – dann im Admin korrigieren.
+- Bilanzen: Siege / Niederlagen / davon n.P. statt Unentschieden; Formkurve S/N; Fan-Tipp-Verteilung „Penaltys“ statt „Unentsch.“; Regel „Gleichstand nach 60 Minuten“ angepasst; KI-Auftrag weist ausdrücklich darauf hin.
+- Keine Function-Änderung nötig.
 
 ## Version 1.29.2
 
