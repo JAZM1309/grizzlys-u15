@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.28.0.166 | – (nur Test) | 11.11.2026 | Neue Funktionen |
 | 1.27.1.165 | – (nur Test) | 11.11.2026 | Kleine Verbesserung |
 | 1.27.0.164 | – (nur Test) | 07.11.2026 | Neue Funktionen |
 | 1.26.5.163 | – (nur Test) | 06.11.2026 | Fehlerbehebung |
@@ -65,6 +66,17 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.28.0
+
+### Neu in Version 1.28.0 (Stand 1.28.0.166, 11.11.2026) – Neue Funktionen
+
+- **Fan-Tipp (statt Minispiel):** In den Spieldetails jedes kommenden Spiels tippt man anonym das Ergebnis (− / + für beide Teams, „Tipp abgeben“, bis zum Bully änderbar). Danach zeigt die Kachel, wie die Fans getippt haben (Sieg / Unentschieden / Niederlage in Prozent, häufigster Tipp, Anzahl – Auswertung ab 3 Tipps). Nach dem Spiel: Anzahl Tipps, wie viele genau richtig lagen, wie viele den Ausgang richtig hatten, und der eigene Tipp mit „🎯 genau richtig“ / „✓ Tendenz richtig“. Speicherung: `fanTips/{Spiel-ID}__{Geräte-ID}` (ein Tipp je Gerät), Zusammenfassung durch die neue Cloud Function `onFanTipWritten` in `fanTipStats/{Spiel-ID}` – die App liest nur dieses eine Dokument. Neue Firestore-Regeln (`firestore.rules`): Tipps darf jeder anlegen/ändern (nur gültige Werte 0–20, passende ID), lesen nur der Admin; die Zusammenfassung lesen alle
+- **Startseite am Spieltag:** Die Karte des heutigen Spiels heißt „Heute“ (rotes Band) mit Countdown „Bully in 2:18 Std.“ und zeigt Halle und einen Route-Knopf direkt auf der Karte; in den letzten 24 Stunden vor einem Spiel läuft der Countdown auch auf „Nächstes Spiel“. Die Saisonbilanz-Knöpfe sind dezenter („📊 Saisonbilanz · U15 A · U15 B“)
+- **Monatsleiste im Spielplan:** unter Filter/Heute eine Leiste „Okt · Nov · Dez …“ (aktueller Monat markiert); antippen springt zum Monat und klappt bei Bedarf die gespielten Spiele auf
+- **Konfetti bei Siegen:** beim Öffnen eines gewonnenen Spiels (Karte aufklappen oder Spieldetails) einmal pro Spiel und Gerät; abschaltbar unter Einstellungen › Darstellung, entfällt automatisch bei „weniger Bewegung“
+- **Lesbarkeit:** Kontraste verbessert (Abzeichen „U15 A/B“, Datumsspalte, Monatsüberschriften, „VS“, Gameday-Chip im Kopf, gesperrter Push-Knopf, Halloween-Band, Weihnachts-Fortschrittstext)
+- **Minispiel entfernt** (Kachel, Fenster, Code und Styles, rund 33 KB)
 
 ## Version 1.27.1
 
