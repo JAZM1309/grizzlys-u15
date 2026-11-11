@@ -28,6 +28,25 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Fan-Tipp (1.28.0): anonym, ein Tipp je Gerät und Spiel (Dokument-ID = Spiel-ID__Geräte-ID).
+    // Einzelne Tipps liest nur der Admin; alle sehen die Zusammenfassung in fanTipStats.
+    match /fanTips/{tipId} {
+      allow create, update: if request.resource.data.keys().hasOnly(["gameId","team","hs","as","g","createdAt"])
+        && request.resource.data.gameId is string
+        && request.resource.data.gameId.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}_[AB]")
+        && tipId.matches(request.resource.data.gameId + "__[A-Za-z0-9_-]{8,64}")
+        && request.resource.data.team in ["A","B"]
+        && request.resource.data.g in ["h","a"]
+        && request.resource.data.hs is int && request.resource.data.hs >= 0 && request.resource.data.hs <= 20
+        && request.resource.data.as is int && request.resource.data.as >= 0 && request.resource.data.as <= 20
+        && request.resource.data.createdAt == request.time;
+      allow read, delete: if isAdmin();
+    }
+    match /fanTipStats/{gameId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     match /scheduleOverrides/{gameId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
