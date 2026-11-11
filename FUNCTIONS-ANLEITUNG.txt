@@ -1,5 +1,27 @@
 AKTUELL ZU TUN (Stand 11.11.2026)
 =================================
+Torschützen nach Rückennummer (1.30.0): functions/standings.js ersetzen und standings neu bereitstellen.
+Ohne diesen Schritt fehlt in der Saisonbilanz nur der Abschnitt „Tore nach Rückennummer“ – alles andere geht.
+
+  1. grizzlys-standings-torschuetzen.zip in die Cloud Shell hochladen und entpacken:
+       cd ~/grizzlys-u15 && unzip -o ~/grizzlys-standings-torschuetzen.zip
+     (enthält nur functions/standings.js)
+  2. firebase deploy --only functions:standings --project grizzlys-u15
+  3. functions/standings.js auch ins GitHub-Repo grizzlys-u15 übernehmen.
+
+Prüfen: https://europe-west1-grizzlys-u15.cloudfunctions.net/standings im Browser öffnen –
+bei "A" und "B" steht jetzt zusätzlich "scorers":{"games":…,"list":[{"nr":"17","g":…,"a":…}]}.
+Nur Rückennummern, keine Namen. Ein Spielbericht wird höchstens alle 12 Stunden neu beim EHV geholt.
+
+Falls noch offen (Fan-Tipp 1.28.0): die Firestore-Regeln veröffentlichen
+  firebase deploy --only firestore:rules --project grizzlys-u15
+(die Function onFanTipWritten ist bereits bereitgestellt).
+
+
+========================================================================
+FRÜHERE ÄNDERUNGEN (bereits erledigt)
+========================================================================
+
 Fan-Tipp (1.28.0): neue Function onFanTipWritten bereitstellen und die Firestore-Regeln veröffentlichen.
 Bitte VOR dem „Live gehen“ erledigen, sonst können die Tipps nicht gespeichert werden.
 
@@ -12,11 +34,6 @@ Bitte VOR dem „Live gehen“ erledigen, sonst können die Tipps nicht gespeich
 
 Neu in Firestore: fanTips/{Spiel-ID}__{Geräte-ID} (einzelne Tipps, nur Admin lesbar) und
 fanTipStats/{Spiel-ID} (Zusammenfassung, für alle lesbar, schreibt nur die Function).
-
-
-========================================================================
-FRÜHERE ÄNDERUNGEN (bereits erledigt)
-========================================================================
 
 Bully-Push (1.26.4): nur functions/live.js ersetzen und liveTicker neu bereitstellen.
 

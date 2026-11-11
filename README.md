@@ -16,6 +16,9 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.30.1.174 | – (nur Test) | 11.11.2026 | Fehlerbehebung |
+| 1.30.0.173 | – (nur Test) | 11.11.2026 | Neue Funktionen |
+| 1.29.4.172 | – (nur Test) | 11.11.2026 | Optisch |
 | 1.29.3.171 | – (nur Test) | 11.11.2026 | Fehlerbehebung |
 | 1.29.2.170 | – (nur Test) | 11.11.2026 | Optisch |
 | 1.29.1.169 | – (nur Test) | 11.11.2026 | Optisch und kleine Verbesserung |
@@ -71,6 +74,22 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.30.1
+
+- Lesbarkeit (Live-Sperre aus 1.30.0): Monat in der großen „Nächstes Spiel“-Karte jetzt hellblau bzw. hellorange statt schwarz; Saisonbilanz-Kachel im Halloween-Design mit heller Schrift; „Noch keine Ergebnisse“ im Weihnachtsdesign heller.
+
+## Version 1.30.0
+
+- Tore nach Rückennummer (Saisonbilanz): Tore, Vorlagen und Punkte je Rückennummer mit Balken, Top 8 sichtbar, Rest aufklappbar. Daten aus den EHV-Spielberichten über die Function standings (neu: `scorers`). Ohne Namen. **Function standings neu deployen** (FUNCTIONS-ANLEITUNG.txt).
+- Tabellenverlauf (Saisonbilanz): Platz nach jedem eigenen Spiel als Linie, berechnet aus allen EHV-Ligaergebnissen. Das Punktesystem wird am offiziellen Tabellenstand geprüft; der letzte Punkt entspricht dem offiziellen Platz.
+- Tabelle als Bild (1080×1350): Platz, Logo, Team, Spiele, Differenz, Punkte, eigene Mannschaft orange. Knopf in der Saisonbilanz, unter Downloads und im Admin bei den Social-Media-Bildern.
+- Jahresrückblick als Bild: Spiele, Siege, Tore, Tordifferenz, Heimsiege, längste Siegesserie, höchster Sieg und je Mannschaft eine Zeile. Unter Downloads vom 20.12. bis 31.1., im Admin jederzeit.
+- Einstellungen › „Große Schrift“: Texte ca. 18 % größer (Handy) bzw. ganze Seite 12 % größer (Computer). Kopfbereich und Menüleiste bleiben gleich, damit nichts abgeschnitten wird.
+
+## Version 1.29.4
+
+- Eis-Hintergrund intensiver: Kufenspuren etwa dreimal so deutlich, mehr Spuren mit Doppelkante und kleinen Eissplittern, etwas kräftigerer Eis-Blauton. Im dunklen Design ebenfalls deutlicher.
 
 ## Version 1.29.3
 
