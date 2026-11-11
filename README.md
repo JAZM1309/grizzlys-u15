@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.28.1.167 | – (nur Test) | 11.11.2026 | Kleine Änderung |
 | 1.28.0.166 | – (nur Test) | 11.11.2026 | Neue Funktionen |
 | 1.27.1.165 | – (nur Test) | 11.11.2026 | Kleine Verbesserung |
 | 1.27.0.164 | – (nur Test) | 07.11.2026 | Neue Funktionen |
@@ -66,6 +67,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.28.1
+
+- Heimspiele ohne Route: Der Route-Knopf entfällt bei Heimspielen in den Spieldetails und im „Heute“-Block der Startseite. Die Hallen-Kachel zeigt dann „Heimspiel“ und den Hallennamen. Auswärtsspiele unverändert.
+- Halloween ausgeblendet: Der Halloween-Schalter erscheint nur noch im Zeitraum 26.10.–2.11. – auch in der Test-App (bisher dort immer sichtbar). Der Code bleibt erhalten und taucht im Oktober 2027 automatisch wieder auf.
+- Für 1.28 weiterhin nötig: Fan-Tipp-Function und Firestore-Regeln deployen (siehe FUNCTIONS-ANLEITUNG.txt), bevor live gegangen wird.
 
 ## Version 1.28.0
 
