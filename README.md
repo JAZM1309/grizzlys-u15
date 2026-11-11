@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.27.1.165 | – (nur Test) | 11.11.2026 | Kleine Verbesserung |
 | 1.27.0.164 | – (nur Test) | 07.11.2026 | Neue Funktionen |
 | 1.26.5.163 | – (nur Test) | 06.11.2026 | Fehlerbehebung |
 | 1.26.4.162 | – (nur Test) | 03.11.2026 | Kleine Verbesserung |
@@ -64,6 +65,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.27.1
+
+### Neu in Version 1.27.1 (Stand 1.27.1.165, 11.11.2026) – Kleine Verbesserung
+
+- **Social-Media-Bild „Spielverlegung“:** Ist ein Spiel verlegt (Datum, Uhrzeit oder Halle geändert, nicht abgesagt), gibt es im Spiel-Fenster des Admins unter „📸 Social-Media-Bilder“ den Knopf „Verlegung“. Das Bild zeigt „Spiel verlegt“, einen orangen Stempel „Neuer Termin“, den bisherigen Termin klein und durchgestrichen (bei Hallenwechsel mit alter Halle) und groß „Neu: So., 22.11. · 11:45 Uhr“ mit der (neuen) Halle. Für alle Nutzer steht das Bild bis zum Spielbeginn auch unter Downloads (Datei …-verlegung.png)
 
 ## Version 1.27.0
 
