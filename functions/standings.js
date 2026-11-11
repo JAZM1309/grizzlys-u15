@@ -11,6 +11,9 @@
  *
  * Deploy (nur diese Function, alle anderen bleiben unberührt):
  *   firebase deploy --only functions:standings
+ *
+ * Ab 1.30.0 zusätzlich: Tore und Vorlagen der Grizzlys je Rückennummer (aus den
+ * EHV-Spielberichten, ohne Namen). Ein Spielbericht wird höchstens alle 12 Stunden neu geholt.
  */
 const { onRequest } = require("firebase-functions/v2/https");
 
@@ -43,8 +46,8 @@ function isFinished(x) {
 const PERIOD = /^\d{1,2}:\d{1,2}$/;
 
 /** Beendete Spiele der Liga (alle Teams): Datum, Teams, Endstand, Drittel. Ohne Spielernamen. */
-async function fetchGames(divisionId) {
-  const d = await fetchApi("Schedule", divisionId);
+async function fetchGames(divisionId, schedule) {
+  const d = schedule || (await fetchApi("Schedule", divisionId));
   return d.data.rows
     .filter((x) => isFinished(x) && typeof x.scheduledGameStart === "string")
     .map((x) => ({
@@ -61,6 +64,46 @@ async function fetchGames(divisionId) {
     .filter((x) => x.h && x.a && /^\d{4}-\d{2}-\d{2}$/.test(x.d))
     .sort((x, y) => x.t - y.t)
     .slice(-400);
+}
+
+/* 1.30.0: Torschützen der Grizzlys je Rückennummer – nur Nummern, nie Namen */
+const OWN = /bergkamen|grizzlys/i;
+const REPORT_MS = 12 * 60 * 60 * 1000;
+const reportCache = new Map(); // gameId -> { ts, goals }
+const num = (v) => (Number.isFinite(Number(v)) ? Number(v) : 0);
+const jersey = (p) => { const n = String((p && p.playerJerseyNr) ?? "").trim(); return /^\d{1,3}$/.test(n) ? n : ""; };
+
+async function fetchOwnGoals(gameId) {
+  const hit = reportCache.get(gameId);
+  if (hit && Date.now() - hit.ts < REPORT_MS) return hit.goals;
+  const url = `${API}/GetGameReport?apiKey=${API_KEY}&gameId=${gameId}&lang=de&referer=www.ehv-nrw.de&format=json`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const d = await res.json();
+  if (!d || d.statusId !== 1 || !d.data || !d.data.gameData) throw new Error("Unerwartete Antwort");
+  const r = d.data, g = r.gameData;
+  const side = OWN.test(String(g.homeTeamLongname || "")) ? "home" : OWN.test(String(g.awayTeamLongname || "")) ? "away" : "";
+  const goals = (side && Array.isArray(r[side + "Goals"]) ? r[side + "Goals"] : []).map((x) => ({
+    s: jersey(x.scoredBy), a1: jersey(x.assistBy), a2: jersey(x.assist2By),
+    pp: /^PP/i.test(String(x.gameStrength || "")), ps: x.isPenaltyShot === true,
+  }));
+  reportCache.set(gameId, { ts: Date.now(), goals });
+  return goals;
+}
+
+async function fetchScorers(schedule) {
+  const own = schedule.data.rows.filter((x) => isFinished(x) && x.id &&
+    (OWN.test(String(x.homeTeamLongName || "")) || OWN.test(String(x.awayTeamLongName || ""))));
+  const by = new Map(); let games = 0;
+  const add = (nr, k) => { if (!nr) return; const o = by.get(nr) || { nr, g: 0, a: 0, pp: 0 }; o[k]++; by.set(nr, o); };
+  const res = await Promise.allSettled(own.slice(-40).map((x) => fetchOwnGoals(String(x.id))));
+  res.forEach((r) => {
+    if (r.status !== "fulfilled") return;
+    games++;
+    r.value.forEach((x) => { add(x.s, "g"); if (x.pp) add(x.s, "pp"); add(x.a1, "a"); add(x.a2, "a"); });
+  });
+  if (!games) throw new Error("Keine Spielberichte");
+  return { games, list: [...by.values()].sort((a, b) => b.g + b.a - (a.g + a.a) || b.g - a.g || num(a.nr) - num(b.nr)).slice(0, 60) };
 }
 
 async function fetchDivision(divisionId) {
@@ -83,9 +126,16 @@ async function loadAll() {
   const body = { ts: Date.now() };
   const results = await Promise.allSettled(
     Object.entries(DIVISIONS).map(async ([team, id]) => {
-      const [table, games] = await Promise.allSettled([fetchDivision(id), fetchGames(id)]);
+      const sched = await fetchApi("Schedule", id).catch(() => null);
+      const [table, games, scorers] = await Promise.allSettled([
+        fetchDivision(id),
+        sched ? fetchGames(id, sched) : Promise.reject(new Error("Spielplan nicht abrufbar")),
+        sched ? fetchScorers(sched) : Promise.reject(new Error("Spielplan nicht abrufbar")),
+      ]);
       if (table.status !== "fulfilled") throw table.reason;
       const part = table.value;
+      if (scorers.status === "fulfilled") part.scorers = scorers.value;
+      else if (cache && cache.body[team] && cache.body[team].scorers) part.scorers = cache.body[team].scorers;
       if (games.status === "fulfilled") part.games = games.value;
       else {
         console.warn("Spiele U15 " + team + " nicht abrufbar:", games.reason && games.reason.message);
@@ -108,7 +158,7 @@ async function loadAll() {
 }
 
 exports.standings = onRequest(
-  { region: "europe-west1", cors: ALLOWED_ORIGINS, maxInstances: 2, memory: "256MiB", timeoutSeconds: 30 },
+  { region: "europe-west1", cors: ALLOWED_ORIGINS, maxInstances: 2, memory: "256MiB", timeoutSeconds: 60 },
   async (req, res) => {
     if (req.method !== "GET") { res.status(405).json({ error: "Nur GET" }); return; }
     try {
