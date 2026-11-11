@@ -16,6 +16,9 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.29.2.170 | – (nur Test) | 11.11.2026 | Optisch |
+| 1.29.1.169 | – (nur Test) | 11.11.2026 | Optisch und kleine Verbesserung |
+| 1.29.0.168 | – (nur Test) | 11.11.2026 | Neues Design |
 | 1.28.1.167 | – (nur Test) | 11.11.2026 | Kleine Änderung |
 | 1.28.0.166 | – (nur Test) | 11.11.2026 | Neue Funktionen |
 | 1.27.1.165 | – (nur Test) | 11.11.2026 | Kleine Verbesserung |
@@ -67,6 +70,32 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.29.2
+
+- Letzte Ergebnisse: Der blaue Rand der Karte schaute unter dem orangen/grünen Zeilen-Streifen durch. Die Karte hat jetzt keinen eigenen Rand mehr, jeder Zeilen-Streifen geht über die volle Höhe.
+
+## Version 1.29.1
+
+- Überschriften wieder in der normalen App-Schrift (Pinselschrift aus 1.29.0 war zu groß), Kopf von „Letzte Ergebnisse“ wieder grau.
+- Mannschafts-Kacheln ohne „S · U · N“-Bilanz – die Zahlen stehen in der Saisonbilanz-Kachel darunter. Formkurve und Tabellenplatz bleiben.
+- Spielplan-Kopf kompakt: Tabellen-Links als kleine Knöpfe neben der Überschrift; Liste/Kalender als Symbol-Umschalter, Filter und „Heute“ in einer Zeile, darunter die Monatsleiste. Spart gut die Hälfte der Höhe.
+- Neuigkeiten mit Reitern (Hinweise, Berichte, Änderungen, App). Neue Einträge zeigen eine rote Zahl am Reiter; geöffnet wird der erste Reiter mit Neuem.
+- Für 1.28 weiterhin nötig: Firestore-Regeln deployen, falls noch nicht geschehen (FUNCTIONS-ANLEITUNG.txt).
+
+## Version 1.29.0
+
+Design aufgepeppt (Startseite und Menü):
+- Großes „Nächstes Spiel“: dunkle Karte mit Eishallen-Hintergrund, große Logos, Puck statt „VS“, Countdown Tage/Std/Min/Sek. Das Spiel der anderen Mannschaft steht kompakt darunter.
+- Überschriften („Nächstes Spiel“, „Letzte Ergebnisse“, „Mannschaften“, „Saisonbilanz“) in der Grizzly-Pinselschrift.
+- Letzte Ergebnisse: Farbstreifen nach Ausgang (grün/rot/gelb), großer Spielstand, Sieg-Abzeichen mit 🏆.
+- Mannschafts-Kacheln: Formkurve als S/U/N-Kästchen, Tabellenplatz als Abzeichen (sobald der Tabellenstand geladen ist).
+- Saisonbilanz als eigene Kachel mit Siegen, Toren und Tordifferenz je Mannschaft; Antippen öffnet wie bisher die ganze Bilanz.
+- Hintergrund mit dezenten Kufenspuren (hell und dunkel).
+- Animationen: Karten gleiten herein, Countdown tickt, Logos ploppen beim Antippen. Bei „weniger Bewegung“ am Gerät aus.
+- Menüleiste mit Symbolen, aktiver Reiter in Grizzly-Orange.
+- Halloween- und Weihnachtsdesign behalten ihre eigenen Farben (Hero-Optik und Hintergrund greifen dort nicht).
+- Für 1.28 weiterhin nötig: Fan-Tipp-Function und Firestore-Regeln deployen (FUNCTIONS-ANLEITUNG.txt).
 
 ## Version 1.28.1
 

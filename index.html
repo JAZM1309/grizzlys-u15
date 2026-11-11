@@ -1832,6 +1832,139 @@ html.dark .ftSend{background:#1f7ae0}
 .ftBar.w::before{background:#16a34a}.ftBar.d::before{background:#d4a017}.ftBar.l::before{background:#d6453b}
 .ftBar span,.ftBar b{position:relative}
 .ftMeta{font-size:12px;color:var(--muted);font-weight:700;margin-top:6px}.ftMeta b{color:var(--text,#102033)}html.dark .ftMeta b{color:#e7eef8}
+/* ===== 1.29.0: Design aufgepeppt ===== */
+/* Menüleiste mit Symbolen */
+.tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.tabs .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 1px 6px!important;font-size:11.5px!important;letter-spacing:0!important;border-radius:14px}
+.tabs .tab span{letter-spacing:-.25px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabs .tab svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+html:not(.hw):not(.xm) .tabs .tab.active{background:linear-gradient(135deg,#c2410c,#9a3412);border-color:#9a3412;color:#fff;box-shadow:0 6px 14px rgba(154,52,18,.28)}
+html:not(.hw):not(.xm) .tabs .tab.active svg{stroke-width:2.2}
+/* Eis-Hintergrund mit Kufenspuren */
+html:not(.dark):not(.hw):not(.xm) body{background:transparent}
+html:not(.hw):not(.xm) body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='720' viewBox='0 0 720 720'%3E%3Cg fill='none' stroke='%231f6fb8' stroke-linecap='round'%3E%3Cpath stroke-opacity='.075' stroke-width='1.6' d='M-40 140C120 70 300 80 470 170S700 260 780 220'/%3E%3Cpath stroke-opacity='.05' stroke-width='1.2' d='M-40 150C130 85 300 95 460 182'/%3E%3Cpath stroke-opacity='.06' stroke-width='1.4' d='M60 420C220 330 420 350 760 460'/%3E%3Cpath stroke-opacity='.045' stroke-width='1' d='M-30 600C150 520 330 560 520 640'/%3E%3Cpath stroke-opacity='.05' stroke-width='1.2' d='M300 -20C380 120 520 200 760 230'/%3E%3Cpath stroke-opacity='.04' stroke-width='1' d='M420 720C470 610 600 560 760 560'/%3E%3C/g%3E%3C/svg%3E") 0 0/720px 720px repeat,radial-gradient(ellipse 120% 60% at 50% 0,#dcebfa 0,rgba(220,235,250,0) 70%),linear-gradient(180deg,#eef6ff 0,#f6faff 45%,#fbfdff 100%)}
+html.dark:not(.hw):not(.xm) body::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='720' viewBox='0 0 720 720'%3E%3Cg fill='none' stroke='%23ffffff' stroke-linecap='round'%3E%3Cpath stroke-opacity='.05' stroke-width='1.6' d='M-40 140C120 70 300 80 470 170S700 260 780 220'/%3E%3Cpath stroke-opacity='.035' stroke-width='1.2' d='M-40 150C130 85 300 95 460 182'/%3E%3Cpath stroke-opacity='.04' stroke-width='1.4' d='M60 420C220 330 420 350 760 460'/%3E%3Cpath stroke-opacity='.03' stroke-width='1' d='M-30 600C150 520 330 560 520 640'/%3E%3Cpath stroke-opacity='.035' stroke-width='1.2' d='M300 -20C380 120 520 200 760 230'/%3E%3C/g%3E%3C/svg%3E") 0 0/720px 720px repeat,radial-gradient(ellipse 120% 55% at 50% 0,#13294a 0,rgba(19,41,74,0) 70%),#0a1422}
+html.dark:not(.hw):not(.xm) body{background:transparent}
+@media print{body::before{display:none!important}}
+/* Großes „Nächstes Spiel“ */
+html:not(.hw):not(.xm) .card.g3Hero{border:0;box-shadow:0 16px 36px rgba(8,20,40,.28)}
+html:not(.hw):not(.xm) .g3Hero>.g3Top{background:linear-gradient(180deg,rgba(5,12,26,.62),rgba(5,12,26,.88)),url("img/header-hintergrund.webp") center 40%/cover #0b1a2e;color:#fff}
+html:not(.hw):not(.xm) .g3Hero .g3Date{background:rgba(255,255,255,.07)!important;color:color-mix(in srgb,var(--team) 55%,#fff)!important}
+html:not(.hw):not(.xm) .g3Hero .g3Date b,html:not(.hw):not(.xm) .g3Hero .g3Date i{color:#fff!important}
+html:not(.hw):not(.xm) .g3Hero .gcSide span{color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+html:not(.hw):not(.xm) .g3Hero .g3Head .teamBadge{background:var(--team)!important;color:#fff!important}
+html:not(.hw):not(.xm) .g3Hero.teamB .g3Head .teamBadge{color:#3a1d00!important}
+html:not(.hw):not(.xm) .g3Hero .g3Head .homeaway{background:rgba(255,255,255,.14)!important;color:#fff!important}
+html:not(.hw):not(.xm) .g3Hero .g3Tog{color:#a9d4ff!important}
+html:not(.hw):not(.xm) .g3Hero .g3Today{border-top-color:rgba(255,255,255,.16)}
+html:not(.hw):not(.xm) .g3Hero .g3TodayWhere small{color:#b9cbe3}
+html:not(.hw):not(.xm) .g3Hero .gcSide img,html:not(.hw):not(.xm) .g3Hero .gcSide .opponentLogo{filter:drop-shadow(0 4px 10px rgba(0,0,0,.55))}
+.g3Hero .gcSide img,.g3Hero .gcSide .opponentLogo{width:56px;height:56px}
+.g3Hero .gcSide .logos img{width:44px;height:44px}
+.g3Hero .gcSide span{font-size:15.5px}
+.g3Puck{display:block;width:44px;height:16px;margin:0 auto 14px;border-radius:50%;background:radial-gradient(ellipse 70% 60% at 50% 30%,#4a515c,#121417 72%);box-shadow:0 5px 0 #050607,0 9px 14px rgba(0,0,0,.45)}
+.g3Cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:12px}
+.g3Cd div{text-align:center;padding:7px 0 6px;border-radius:12px;background:rgba(127,140,160,.14)}
+html:not(.hw):not(.xm) .g3Hero .g3Cd div{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.g3Cd b{display:block;font-size:21px;font-weight:950;line-height:1.1;font-variant-numeric:tabular-nums}
+.g3Cd small{display:block;font-size:10.5px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+/* Zweites Spiel kompakt */
+.g3Compact .g3Main{padding:8px 12px 10px}
+.g3Compact .g3Band{padding:5px 14px;font-size:10.5px}
+.g3Compact .gcMatch{align-items:center!important}
+.g3Compact .g3Date{padding:6px 0}.g3Compact .g3Date i{margin-top:2px;font-size:12.5px}
+.g3Compact .gcSide img,.g3Compact .gcSide .opponentLogo{width:30px;height:30px}
+.g3Compact .gcSide{gap:3px!important}
+.g3Compact .gcSide span{font-size:13.5px!important}
+.g3Compact .g3Date b{font-size:19px}
+.g3Compact .card.gz3 .gcMatch,.g3Compact .gcMatch{padding-top:5px}
+/* Ergebnisse: Farbe nach Ausgang, großer Spielstand */
+.lrRow::before{top:0!important;bottom:0!important;width:6px!important;border-radius:0!important}
+/* 1.29.2: kein blauer Kartenrand mehr unter den Zeilen-Streifen */
+html:not(.hw):not(.xm) .lrCard{box-shadow:0 8px 24px rgba(16,32,51,.09)!important}
+html.dark:not(.hw):not(.xm) .lrCard{box-shadow:none!important}
+.lrRow.o_w::before{background:#1f9d55!important}.lrRow.o_l::before{background:#d6453b!important}.lrRow.o_d::before{background:#e0a100!important}
+.lrRow.o_w{background:linear-gradient(90deg,rgba(31,157,85,.09),rgba(31,157,85,0) 60%)}
+.lrRow.o_l{background:linear-gradient(90deg,rgba(214,69,59,.07),rgba(214,69,59,0) 60%)}
+.lrRow.o_d{background:linear-gradient(90deg,rgba(224,161,0,.08),rgba(224,161,0,0) 60%)}
+.lrRow[class*=" o_"] .lrScore b{font-size:27px;line-height:1.05}
+.lrRow.o_w .lrPill.w{background:#15803d!important;color:#fff!important;text-transform:uppercase;letter-spacing:.07em;padding:3px 9px}
+.lrRow.o_w .lrPill.w::before{content:"🏆";margin-right:4px;letter-spacing:0}
+/* Mannschafts-Karten: Form als S/U/N, Platz-Abzeichen */
+.tcForm{gap:4px!important}
+.tcForm .fd{width:21px;height:21px;border-radius:7px;display:grid;place-items:center;font-style:normal;font-size:11.5px;font-weight:950;color:#fff;line-height:1}
+.tcForm .fd.d{color:#2b1d00}
+.tcRank{position:absolute;top:10px;right:10px;z-index:2;font-size:11px;font-weight:950;padding:3px 8px;border-radius:999px;background:var(--team);color:#fff;white-space:nowrap}
+.teamCard.teamA .tcRank{background:#0e5799}.teamCard.teamB .tcRank{background:#9a4a00}
+.teamCard:has(.tcRank)::after{opacity:.05}
+/* Saisonbilanz-Kachel */
+.sbCard{margin:12px 0 0;padding:12px;border-radius:20px;background:var(--card,#fff);box-shadow:0 8px 22px rgba(16,32,51,.08)}
+html.dark .sbCard{background:#111f33;box-shadow:none;border:1px solid #213552}
+.hw .sbCard{background:rgba(14,11,9,.85)}
+.xm .sbCard{background:rgba(6,13,28,.72);color:#fff;border:1px solid rgba(255,255,255,.14)}
+.sbHead{display:flex;align-items:center;gap:8px;margin:0 2px 10px}
+.sbHead svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round;color:#c2410c}
+html.dark .sbHead svg{color:#ff9a4d}
+.sbHead b{font-size:15px;font-weight:950}
+.sbHead span{margin-left:auto;font-size:11.5px;font-weight:800;color:var(--muted)}
+.xm .sbHead span{color:#c9d6e8}
+.sbGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sbTeam{--team:var(--a);display:block;text-align:left;border:0;border-radius:14px;padding:9px 10px 8px;background:color-mix(in srgb,var(--team) 10%,transparent);box-shadow:inset 4px 0 0 var(--team);color:inherit;font:inherit;cursor:pointer;transition:transform .12s ease}
+.sbTeam.teamB{--team:var(--b)}
+.sbTeam:active{transform:scale(.97)}
+.sbName{display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:950;margin-bottom:5px;color:#0e5799}
+.sbTeam.teamB .sbName{color:#9a4a00}
+html.dark .sbName,.xm .sbName{color:#9fd0ff}html.dark .sbTeam.teamB .sbName,.xm .sbTeam.teamB .sbName{color:#ffc27a}
+.sbName svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sbNums{display:grid;grid-template-columns:auto auto auto;justify-content:space-between;gap:4px}
+.sbNums b{display:block;font-size:17px;font-weight:950;font-variant-numeric:tabular-nums;line-height:1.1}
+.sbNums small{display:block;font-size:10.5px;font-weight:800;color:var(--muted)}
+.xm .sbNums small{color:#c9d6e8}
+.sbNone{display:block;font-size:12px;font-weight:700;color:var(--muted)}
+/* Animationen (nicht bei „weniger Bewegung“) */
+@media (prefers-reduced-motion:no-preference){
+  #homeView>#g3HomeNext,#homeView>#g3HomeNext2,#homeView>#liveBars,#homeView>#lrCard,#homeView>.sectionTitle,#homeView>.teamCards>.teamCard,#homeView>.sbCard{animation:dzIn .55s cubic-bezier(.2,.8,.2,1) both}
+  #homeView>#g3HomeNext2{animation-delay:.07s}#homeView>#lrCard{animation-delay:.13s}#homeView>.sectionTitle{animation-delay:.18s}
+  #homeView>.teamCards>.teamA{animation-delay:.21s}#homeView>.teamCards>.teamB{animation-delay:.26s}#homeView>.sbCard{animation-delay:.31s}
+  .dzPop{animation:dzPop .45s ease}
+  .g3Cd b.tick{animation:dzTick .32s ease-out}
+  .g3Hero .g3Puck{animation:dzPuck 3.2s ease-in-out infinite}
+}
+@keyframes dzIn{from{opacity:0;transform:translateY(16px)}}
+@keyframes dzPop{40%{transform:scale(1.2) rotate(-5deg)}70%{transform:scale(.95)}}
+@keyframes dzTick{from{transform:translateY(-40%);opacity:.25}}
+@keyframes dzPuck{50%{transform:translateY(-3px) rotate(-3deg)}}
+/* 1.29.1: Spielplan-Kopf kompakt */
+#scheduleView .scheduleHead{margin:10px 0 6px;align-items:center;flex-wrap:nowrap}
+.shTitleBox{display:flex;align-items:baseline;gap:8px;min-width:0}
+.shTitleBox .small{white-space:nowrap}
+.shTables{display:flex;gap:6px;margin:0!important;flex:none}
+.shTables a{padding:6px 11px!important;font-size:12px;font-weight:850;white-space:nowrap}
+.scheduleSticky{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding-top:calc(env(safe-area-inset-top,0px) + 6px)!important;padding-bottom:6px!important}
+.scheduleSticky .scheduleModes{display:flex!important;flex:none;margin:0!important;padding:3px!important;gap:2px!important;border-radius:13px!important}
+.scheduleSticky .scheduleModes button{padding:7px 10px!important;border-radius:10px!important}
+.scheduleSticky .scheduleModes .mbTx{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.scheduleSticky .scheduleModes svg{width:19px;height:19px}
+.scheduleSticky .scheduleFilters{display:contents}
+.scheduleSticky .filterRow{flex:1 1 0;min-width:0;gap:6px}
+.scheduleSticky .filterToggle{padding:9px 12px!important;border-radius:13px!important;font-size:13px}
+.scheduleSticky .todayBtn{padding:9px 12px!important;border-radius:13px!important;font-size:12.5px}
+.scheduleSticky .filterPanel{flex:1 1 100%}
+.scheduleSticky .monthJump{flex:1 1 100%;margin:0!important}
+.scheduleSticky .monthJump button{padding:4px 11px;font-size:12px}
+.pastToggle{padding:8px 13px!important;margin:6px 0 2px!important}
+@media (max-width:370px){.scheduleSticky .filterSummary{display:none}}
+/* 1.29.1: Neuigkeiten mit Reitern */
+.newsTabs{position:sticky;top:-1px;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;margin:4px 0 12px;border-radius:15px;background:#e3ecf5}
+html.dark .newsTabs{background:#13243b}.xm .newsTabs{background:rgba(6,13,28,.8)}.hw .newsTabs{background:#1b1510}
+.newsTab{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;border-radius:12px;background:transparent;padding:7px 2px 6px;font:inherit;font-size:11.5px;font-weight:850;color:#4a5b70;cursor:pointer;min-width:0}
+.newsTab .ntIc{font-size:17px;line-height:1}
+.newsTab .ntL{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.2px}
+.newsTab.on{background:#fff;color:var(--navy,#102033);box-shadow:0 2px 8px rgba(16,32,51,.13)}
+html.dark .newsTab,.xm .newsTab,.hw .newsTab{color:#b9c8da}html.dark .newsTab.on,.xm .newsTab.on{background:#1f3a5f;color:#fff}.hw .newsTab.on{background:#ff7a00;color:#1a0f05}
+.newsTab .ntNew{position:absolute;top:3px;right:6px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#d6453b;color:#fff;font-style:normal;font-size:10.5px;font-weight:900;display:grid;place-items:center}
+.newsTab .ntN{position:absolute;top:4px;right:7px;font-size:10.5px;font-weight:900;opacity:.6}
+.newsPane .newsItem:first-child{margin-top:0}
 </style>
 <script>
 /* Halloween-Zeitraum: 26.10. bis 02.11. (automatisch), Schalter in der Info-Seite */
@@ -1882,7 +2015,7 @@ document.addEventListener("DOMContentLoaded",()=>{const C=window.APP_CFG;if(C.ag
 <header class="hero"><div class="heroRink" aria-hidden="true"></div><div class="heroIce" aria-hidden="true"></div><div class="hwDeco hwWeb" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M100 0L100.0 96.0M100 0L64.0 89.0M100 0L33.3 69.1M100 0L12.3 39.0M100 0L4.0 0.0M100.0 22.0Q96.4 18.6 91.8 20.4Q89.7 15.9 84.7 15.8Q84.5 10.9 79.9 8.9Q81.5 3.9 78.0 0.0M100.0 42.0Q93.1 35.5 84.3 38.9Q80.3 30.3 70.8 30.2Q70.4 20.7 61.6 17.1Q64.7 7.5 58.0 0.0M100.0 62.0Q89.8 52.3 76.8 57.5Q71.0 44.7 56.9 44.6Q56.3 30.6 43.4 25.2Q47.8 11.1 38.0 0.0M100.0 84.0Q86.2 70.9 68.5 77.9Q60.7 60.6 41.6 60.4Q40.8 41.4 23.3 34.2Q29.3 15.0 16.0 0.0" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round"/></svg></div><div class="hwDeco hwBat hwBat1"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwDeco hwBat hwBat2"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="hwDeco hwBat hwBat3"><svg viewBox="0 0 48 24" aria-hidden="true"><path d="M24 7c-1.6 0-2.6 1.2-2.8 3.2C18 5.8 11.600 4 2 6c3 2 3.600 5 3.200 8.600 3-2.200 6-1.800 8.400 1.600 2-2.800 4-2.800 6-1.600L24 21l4.400-6c2-1.200 4-1.200 6 1.600 2.400-3.400 5.400-3.800 8.400-1.600-.4-3.600.2-6.600 3.200-8.600-9.600-2-16 -.2-19.200 4.200C26.600 8.200 25.600 7 24 7z" fill="currentColor"/></svg></div><div class="heroTop"><img src="logo.png" alt="ESV Grizzlys Logo"><div><div class="kicker">ESV Grizzlys Bergkamen</div><h1>U15 Spielplan<span class="hwDeco hwPumpkin"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span></h1></div></div><div class="heroChips"><div class="season"><svg class="puckIc" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="9" rx="8" ry="3.4"/><path d="M4 9v5.4c0 1.900 3.600 3.400 8 3.400s8-1.500 8-3.400V9"/></svg>Saison 2026/27</div><div id="heroStatus" class="heroChip" hidden></div></div><button id="newsTopBtn" class="infoTop newsTop" type="button" aria-label="Neuigkeiten"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"/><path d="M8 8h4M8 12h4M8 16h4"/></svg><span id="newsBadge" class="newsBadge" hidden>0</span></button><button id="settingsTopBtn" class="infoTop settingsTop" type="button" aria-label="Einstellungen"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#gearPath"/></svg></button><button id="infoTopBtn" class="infoTop" type="button" aria-label="Info">ⓘ</button><div class="slg" role="text" aria-label="Ein Team, zwei starke Mannschaften"><span class="a">Ein Team</span><span class="b">Zwei starke</span><span class="c">Mannschaften</span><svg viewBox="0 0 118 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C20 3 50 9 80 5 S110 4 116 2 L114 6 C95 8 70 11 45 10 S12 11 2 10Z"/><path d="M10 9 L110 5" stroke-width="1.2" opacity=".7"/></svg></div><div class="heroEdge" aria-hidden="true"></div></header>
 <div id="miniBar" class="miniBar" aria-hidden="true"><div class="miniBarIn"><img src="logo.png" alt=""><b>U15 Spielplan</b><span id="miniStatus" class="miniStatus"></span></div></div>
 <main>
-<nav class="tabs"><button class="tab active" data-view="home">Start</button><button class="tab" data-view="schedule">Spielplan</button><button class="tab" data-view="opponents">Gegner</button><button class="tab" data-view="rules">Regeln</button><button class="tab" data-view="downloads">Downloads</button></nav>
+<nav class="tabs"><button class="tab active" data-view="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg><span>Start</span></button><button class="tab" data-view="schedule"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M8 15h2v2h-2z"/></svg><span>Spielplan</span></button><button class="tab" data-view="opponents"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></svg><span>Gegner</span></button><button class="tab" data-view="rules"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6v13"/><path d="M12 6v13"/><path d="M21 6v13"/></svg><span>Regeln</span></button><button class="tab" data-view="downloads"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4v12"/></svg><span>Downloads</span></button></nav>
 <section id="homeView">
 <div id="hwGreeting" class="hwGreeting" hidden><span class="hwGreetIcon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg></span><div class="hwGreetText"><b>Happy Halloween!</b><span><i class="hwTrick">Zeit für Spuk auf dem Eis</i> – wünscht das Grizzlys-Team</span></div><button id="hwGreetingClose" type="button" aria-label="Gruß schließen">&times;</button></div>
 <div class="next"><div class="nextHead"><div class="nextLabel">Nächstes Spiel</div><div id="nextTeam"></div></div><div id="nextDate" class="nextDate"></div><div id="nextMatch" class="match"></div><div id="nextMeta" class="meta"></div><div class="actions"><button id="nextRoute" class="action"><span class="aIcon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/></svg></span>Route</button><button id="nextCalendar" class="action"><span class="aIcon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span>Termin</button><button id="nextReminder" class="action"><span class="aIcon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"/><path d="M9 17v1a3 3 0 0 0 6 0v-1"/></svg></span>Erinnerung</button><button id="nextShare" class="action"><span class="aIcon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg></span>Teilen</button></div></div>
@@ -1910,10 +2043,10 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <div class="oppMapLegend"><span><i class="dA"></i>U15 A</span><span><i class="dB"></i>U15 B</span><span><i class="dH"></i>Unsere Halle</span><span class="small">Punkte = Hallen der Spielorte (ungefähr)</span></div></div>
 <div id="opponentsList" class="list"></div><div id="standNote" class="gzStandNote" hidden></div>
   </section>
-<section id="scheduleView" hidden><div class="scheduleHead"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg>Chronologisch</button><button id="monthBtn" class="modeBtn" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>Kalender</button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div><div id="monthJump" class="monthJump" role="navigation" aria-label="Zu einem Monat springen"></div></div><div class="tableLinks"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M4 20h14"/></svg>Tabelle U15 B</a></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
+<section id="scheduleView" hidden><div class="scheduleHead"><div class="shTitleBox"><div id="scheduleTitle" class="scheduleTitle">Spielplan</div><div id="scheduleCount" class="small"></div></div><div class="tableLinks shTables"><a href="https://ehv-nrw.de/leagues/league/u15/lln/66/" target="_blank" rel="noopener noreferrer" aria-label="Tabelle U15 A beim EHV NRW">Tabelle A</a><a href="https://ehv-nrw.de/leagues/league/u15/bzl/67/" target="_blank" rel="noopener noreferrer" aria-label="Tabelle U15 B beim EHV NRW">Tabelle B</a></div></div><div id="scheduleSticky" class="scheduleSticky"><div class="scheduleModes"><button id="chronoBtn" class="modeBtn active" type="button" aria-label="Liste" title="Liste"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l11 0"/><path d="M9 12l11 0"/><path d="M9 18l11 0"/><path d="M5 6l0 .01"/><path d="M5 12l0 .01"/><path d="M5 18l0 .01"/></svg><span class="mbTx">Liste</span></button><button id="monthBtn" class="modeBtn" type="button" aria-label="Kalender" title="Kalender"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg><span class="mbTx">Kalender</span></button></div><div class="scheduleFilters"><div class="filterRow"><button id="filterToggle" class="filterToggle" type="button" aria-expanded="false"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"/></svg>Filter</span><span id="filterSummary" class="filterSummary">Alle Spiele</span></button><button id="todayBtn" class="todayBtn" type="button" aria-label="Zum heutigen Tag springen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/></svg>Heute</button></div><div id="filterPanel" class="filterPanel" aria-hidden="true"><button class="filterOption teamAOpt selected" type="button" data-filter="A">U15 A</button><button class="filterOption teamBOpt selected" type="button" data-filter="B">U15 B</button><button class="filterOption homeOpt selected" type="button" data-filter="home">Heim</button><button class="filterOption awayOpt selected" type="button" data-filter="away">Auswärts</button><button id="filterReset" class="filterReset" type="button">↺ Alle Filter zurücksetzen</button></div></div><div id="monthJump" class="monthJump" role="navigation" aria-label="Zu einem Monat springen"></div></div><div id="gamesList" class="list"></div><div id="calendarView" class="calendarWrap" hidden></div></section>
 <section id="rulesView" hidden><div class="scheduleHead"><div class="scheduleTitle">Regeln</div><div id="rulesCount" class="small"></div></div><div class="small rlIntro">Die wichtigsten Eishockey-Regeln einfach erklärt – für Eltern, Fans und Spieler.</div><div class="searchWrap"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="rulesSearch" type="search" placeholder="Regel suchen, z. B. Abseits" aria-label="Regeln durchsuchen" autocomplete="off" style="width:100%;padding:12px 56px 12px 42px;border:0;box-shadow:0 4px 14px rgba(16,32,51,.08);border-radius:14px;background:#fff;font:inherit"><button id="rulesMenuBtn" class="rlMenuBtn" type="button" aria-label="Themen auswählen" aria-expanded="false" aria-controls="rulesMenu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div><div id="rulesChips" class="rlChips" role="tablist" aria-label="Themen"></div><div id="rulesTiles" class="rlTiles"></div><div id="rulesMenu" class="infoCard rlMenu" hidden></div><div id="rulesActive" class="rlActive" hidden></div><div id="rulesList" class="rlList"></div><div class="small rlSrc">Vereinfachte Erklärungen nach dem IIHF-Regelbuch (deutsche Fassung des DEB, Saison 2026/27); Handzeichen nach Anhang I „Game Official Signals“, Zeichnungen vereinfacht; Nachwuchs nach den Durchführungsbestimmungen des EHV NRW, Anhang 4 – Nachwuchs (Stand 13.05.2026). Verbindlich sind das offizielle Regelbuch und die <a href="https://ehv-nrw.de/documents/list/durchfuehrungsbestimmungen/" target="_blank" rel="noopener">Durchführungsbestimmungen des EHV NRW</a>. <a href="https://www.deb-online.de/2026/09/16/das-aendert-sich-im-regelwerk-zur-saison-2026-2027/" target="_blank" rel="noopener">Regeländerungen 2026/27 beim DEB</a></div></section>
 <section id="downloadsView" hidden><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/><path d="M7 11l5 5l5 -5"/><path d="M12 4l0 12"/></svg>Kalender-Downloads</div><div class="small" style="margin-bottom:14px">Lade den Spielplan als Kalenderdatei für dein Handy herunter oder drucke ihn als PDF.</div><div class="downloadCards"><button id="downloadCal" class="downloadCard dlCal"><span class="dlIcon" style="background:var(--navy)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></span><b>Kalender herunterladen</b><small>Mannschaft, Heim/Auswärts und Zeitraum selbst auswählen</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button id="downloadPdf" class="downloadCard"><span class="dlIcon" style="background:#fde8e6;color:#d6352b"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></svg></span><b>Spielplan als PDF</b><small>Alle Spiele · Ergebnisse, wenn vorhanden · zum Ausdrucken</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div></div><div class="infoCard"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"/><path d="M7 20h10"/><path d="M9 16v4"/><path d="M15 16v4"/></svg>Für das Kampfgericht</div><div class="small" style="margin-bottom:14px">Kurzanleitungen für die Technik in der Eishalle.</div><div class="downloadCards"><a id="downloadScoreboard" class="downloadCard" href="anleitung-anzeigetafel.html" style="text-decoration:none;color:inherit"><span class="dlIcon" style="background:#fff3d6;color:#b26b00"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M12 10v3l2 2"/><path d="M7 4l-2.75 2"/><path d="M17 4l2.75 2"/></svg></span><b>Anzeigetafel bedienen</b><small>Stramatel 452 · Hauptpult und Strafzeitpulte · Schritt für Schritt</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a></div></div><div class="infoCard dlInsta"><div class="dlTitle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16.5 7.5v.01"/></svg>Bilder für Social Media</div><div class="small" style="margin-bottom:14px">Spieltagsbild ab 5 Tage vor dem Spiel, Ergebnisbild bis 5 Tage nach dem Spiel – zum Teilen oder Speichern.</div><div id="dlInstaList" class="downloadCards"></div></div></section>
-<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.28.1.167</em></div>
+<section id="infoView" hidden><div class="inHero"><img src="logo.png" alt="" width="54" height="54"><div><b>ESV Grizzlys Bergkamen</b><span>U15 · Saison 2026/27</span></div><em class="inVer">1.29.2.170</em></div>
 <div class="infoCard inCard"><div class="inHead"><b>Dein digitaler Spielplan</b></div><p class="inText">Alle Termine und Ergebnisse von <b>U15 A</b> und <b>U15 B</b> an einem Ort – immer aktuell, auch unterwegs.</p><button id="shareApp" class="action inShare" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg>App teilen</button></div>
 <details class="infoCard inCard mapCard" id="appMap"><summary class="inHead"><b>So findest du dich zurecht</b><span class="mapSum">Alle Bereiche der App auf einen Blick</span></summary><div class="mapList"><button type="button" class="mapRow" data-go="start"><span class="mapIc">🏠</span><span class="mapTx"><b>Start</b><small>Nächstes und letztes Spiel, Spielbericht, Hinweise</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="schedule"><span class="mapIc">📅</span><span class="mapTx"><b>Spielplan</b><small>Alle Spiele, Kalender, Filter, „Heute“</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="opponents"><span class="mapIc">🛡️</span><span class="mapTx"><b>Gegner</b><small>Tabelle, Form, Spiele gegen jeden Gegner</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="rules"><span class="mapIc">📖</span><span class="mapTx"><b>Regeln</b><small>Regeln einfach erklärt, Handzeichen, Suche</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="downloads"><span class="mapIc">⬇️</span><span class="mapTx"><b>Downloads</b><small>Kalender, Spielplan-PDF, Bilder mit Bericht zum Teilen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="news"><span class="mapIc">📰</span><span class="mapTx"><b>News</b><small>Hinweise, Spielberichte, Spieländerungen</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button><button type="button" class="mapRow" data-go="settings"><span class="mapIc">⚙️</span><span class="mapTx"><b>Einstellungen</b><small>Design, Push an/aus oder neu einrichten, Feedback</small></span><svg class="mapGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button></div><ul class="mapTips"><li><b>Wischen</b> nach links oder rechts wechselt zwischen den Reitern.</li><li><b>Spielkarte antippen</b> zeigt Tabelle, Form, Halle und Aktionen.</li><li><b>Teilen</b> schickt Bild und Text an WhatsApp, Instagram &amp; Co.</li></ul></details>
 <div class="infoCard inCard"><div class="inHead"><b>Grizzlys Teamseiten</b></div><span class="small">Kader, Tabellen und News auf den offiziellen Vereinsseiten.</span><div class="inTeams"><a class="inTeam teamA" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15a" target="_blank" rel="noopener noreferrer"><span class="inBadge">A</span><span class="inTeamTx"><b>Grizzlys U15 A</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a><a class="inTeam teamB" href="http://www.grizzlys-bergkamen.de/teams/team.php?slug=grizzlys-u15b" target="_blank" rel="noopener noreferrer"><span class="inBadge">B</span><span class="inTeamTx"><b>Grizzlys U15 B</b><small>Teamseite öffnen</small></span><span class="inGo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></svg></span></a></div></div>
@@ -2024,7 +2157,7 @@ Tippe auf einen Gegner, um alle Spiele gegen ihn zu sehen.
 <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie auf Widerruf einer Einwilligung mit Wirkung für die Zukunft. Du kannst dich bei einer Datenschutz-Aufsichtsbehörde beschweren, in NRW bei der Landesbeauftragten für Datenschutz und Informationsfreiheit (LDI NRW).</p>
 <div class="small">Stand: Oktober 2026</div>
 </div></div>
-<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.28.1.167 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
+<div id="bugReportModal" class="bugReportModal" hidden aria-hidden="true"><div class="bugReportBox" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle"><div class="matchModalHead"><div id="bugReportTitle" class="matchModalTitle">🐞 Fehler melden</div><button id="bugReportClose" class="matchModalClose" type="button" aria-label="Fehlermeldung schließen">×</button></div><div id="bugReportIntro" class="small">Beschreibe kurz, was nicht funktioniert. Die Meldung wird zusammen mit App-Version und technischen Basisdaten an die Verwaltung übermittelt.</div><div class="fbSegWrap"><div class="fbSegTitle">Art der Meldung</div><div class="fbSeg" id="fbSeg" role="radiogroup" aria-label="Art der Meldung"><button type="button" role="radio" data-fb="Fehler"><span>🐞</span>Fehler</button><button type="button" role="radio" data-fb="Wunsch / Anregung"><span>💡</span>Idee</button><button type="button" role="radio" data-fb="Lob"><span>👍</span>Lob</button></div></div><div class="bugReportGrid"><div class="fbHiddenSel"><label>Art<select id="bugReportType"><option value="Fehler">🐞 Fehler</option><option value="Wunsch / Anregung">💡 Wunsch / Anregung</option><option value="Lob">👍 Lob</option></select></label></div><label>Name <span style="color:#c62828">*</span><input id="bugReportName" type="text" maxlength="80" autocomplete="name" placeholder="Vor- und Nachname" required></label><label>Bereich<select id="bugReportArea"><option>Spielplan</option><option>Kalender</option><option>Ergebnisse</option><option>Push</option><option>Gegner</option><option>Downloads / PDF</option><option>App / Darstellung</option><option>Neue Funktion</option><option>Sonstiges</option></select></label><label><span id="bugReportDescLabel">Fehlerbeschreibung</span><textarea id="bugReportDescription" maxlength="2000" placeholder="Was funktioniert nicht? Was hast du gemacht?"></textarea><span id="fbCount" class="fbCount">0 / 2000</span></label><label>E-Mail für Rückfragen (optional)<input id="bugReportContact" type="email" maxlength="160" placeholder="name@beispiel.de"></label></div><div class="bugReportMeta"><span class="fbLock">🔒</span> App-Version 1.29.2.170 · Geräte-/Browserdaten werden nur zur Analyse mitgesendet.</div><div id="bugReportError" class="fbError" role="alert" hidden></div><div class="bugReportActions"><button id="bugReportCancel" class="action" type="button">Abbrechen</button><button id="bugReportSend" class="action fbSend" type="button">Meldung senden</button></div></div></div>
   </div>
 <div id="calFilterModal" class="matchModal" hidden aria-hidden="true">
   <div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="calFilterTitle">
@@ -2549,7 +2682,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.28.1.167",
+      appVersion:"1.29.2.170",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -4376,6 +4509,15 @@ function renderLast(){
   hwDecorate(box,g);
   box.onclick=()=>openMatchDetails(g);
 }
+/* 1.29.0: Saisonbilanz als Kachel mit den wichtigsten Zahlen */
+const sbData={};
+function renderSbCard(){
+  const box=document.querySelector(".sbBtns,.sbCard"); if(!box)return;
+  box.className="sbCard";
+  box.innerHTML=`<div class="sbHead"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/><path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"/></svg><b>Saisonbilanz</b><span>Antippen für alle Zahlen</span></div><div class="sbGrid">`+["A","B"].map(t=>{const x=sbData[t]||{w:0,d:0,l:0,gf:0,ga:0,n:0},df=x.gf-x.ga;
+    return `<button type="button" class="sbTeam team${t}" data-bilanz="${t}" aria-label="Saisonbilanz ${esc(teamName(t))} öffnen"><span class="sbName">${esc(teamName(t))}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></span>${x.n?`<span class="sbNums"><span><b>${x.w}</b><small>Siege</small></span><span><b>${x.gf}:${x.ga}</b><small>Tore</small></span><span><b>${df>0?"+":""}${df}</b><small>Diff.</small></span></span>`:`<span class="sbNone">Noch keine Ergebnisse</span>`}</button>`}).join("")+`</div>`;
+  box.querySelectorAll("[data-bilanz]").forEach(b=>b.onclick=()=>openBilanz(b.dataset.bilanz));
+}
 function renderTeamTiles(){
   const now=new Date();
   ["A","B"].forEach(team=>{
@@ -4385,14 +4527,16 @@ function renderTeamTiles(){
     const res=all.map(g=>({g,r:resInfo(g)})).filter(x=>x.r);
     const w=res.filter(x=>x.r.o==="w").length,d=res.filter(x=>x.r.o==="d").length,l=res.filter(x=>x.r.o==="l").length;
     const gf=res.reduce((n,x)=>n+x.r.gs,0),ga=res.reduce((n,x)=>n+x.r.os,0);
-    const dots=res.slice(-5).map(x=>`<i class="fd ${x.r.o}"></i>`).join("");
+    const dots=res.slice(-5).map(x=>`<i class="fd ${x.r.o}" title="${{w:"Sieg",d:"Unentschieden",l:"Niederlage"}[x.r.o]}">${{w:"S",d:"U",l:"N"}[x.r.o]}</i>`).join("");
     const nx=all.find(g=>dt(g)>=now);
     const pct=all.length?Math.round(played/all.length*100):0;
     const own=all[0]?(isHome(all[0])?all[0].home:all[0].away):"", sr=own&&typeof standRow==="function"?standRow(team,own):null;
     const stats=res.length?`<div class="tcStats"><div><b>${w}</b><span>Siege</span></div><div><b>${d}</b><span>Unent.</span></div><div><b>${l}</b><span>Niederl.</span></div><div><b>${gf}:${ga}</b><span>Tore</span></div></div>`:"";
     const nextRow=nx?`<div class="tcNext">${isHome(nx)?teamLogoHtml(nx.home,"tcLogo")+"":logoHtml(opponent(nx),"tcLogo")}<div class="tcNextTxt"><small>Nächstes Spiel · ${isHome(nx)?"Heim":"Auswärts"}</small><b>${esc(opponent(nx))}</b><small>${fmtDate(nx)} · ${nx.time} Uhr</small></div>${ic("chev")}</div>`:`<div class="tcNext"><div class="tcNextTxt"><b>Saison abgeschlossen</b></div></div>`;
-    el.innerHTML=`<div class="tcTop"><div class="teamLetter">${team}</div><div><div class="teamTitle">${teamName(team)}</div><div class="tcSub">${sr&&sr.r?"Platz "+sr.r+" · ":""}${res.length?w+" S · "+d+" U · "+l+" N":"Noch keine Ergebnisse"}</div></div>${dots?`<div class="tcForm" title="Letzte Spiele">${dots}</div>`:""}</div>${stats}<div class="tcProg"><i style="width:${pct}%"></i></div><div class="tcProgTxt">${played} von ${all.length} Spielen gespielt</div>${nextRow}`;
+    sbData[team]={w,d,l,gf,ga,n:res.length};
+    el.innerHTML=`<div class="tcTop"><div class="teamLetter">${team}</div><div><div class="teamTitle">${teamName(team)}</div>${res.length?"":'<div class="tcSub">Noch keine Ergebnisse</div>'}</div>${sr&&sr.r?`<span class="tcRank">Platz ${sr.r}</span>`:""}${dots?`<div class="tcForm" title="Letzte Spiele">${dots}</div>`:""}</div>${stats}<div class="tcProg"><i style="width:${pct}%"></i></div><div class="tcProgTxt">${played} von ${all.length} Spielen gespielt</div>${nextRow}`;
   });
+  try{renderSbCard()}catch(e){console.warn(e)}
 }
 /* ===== 1.27.0: Saisonbilanz, Direktvergleich, Spielbericht-Archiv ===== */
 function sbOwn(team){const g=games.find(x=>x.team===team);return g?(isHome(g)?g.home:g.away):""}
@@ -4862,9 +5006,21 @@ function g3HomeCard(id,g,label,defOpen){
   if(rp){const m=el.querySelector(".g3Main");if(m)m.insertAdjacentHTML("beforeend",`<button class="g3RepLink" type="button"><span class="g3RepIc">📝</span><span class="g3RepTx"><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`);
     const b=el.querySelector(".g3RepLink");if(b)b.onclick=e=>{e.stopPropagation();openMatchDetails(g,true)};
     const dup=el.querySelector(".g3Btn.rep");if(dup)dup.remove();}
+  /* 1.29.0: großes „Nächstes Spiel“ (Puck, Countdown) und kompakte zweite Karte */
+  if(id==="g3HomeNext"&&!past&&!g.cancelled){el.classList.add("g3Hero");
+    const vs=el.querySelector(".gcMatch .vs");if(vs)vs.outerHTML='<span class="g3Puck" role="img" aria-label="gegen"></span>';
+    const m=el.querySelector(".g3Main");if(m&&dt(g)>Date.now())m.insertAdjacentHTML("beforeend",`<div class="g3Cd" data-cdt="${dt(g).getTime()}" aria-label="Countdown bis zum Bully">${dzCdHtml(dt(g).getTime())}</div>`);}
+  else if(id==="g3HomeNext2"&&!past)el.classList.add("g3Compact");
   g3Bind(el,g); g3SetOpen(el,id in g3HomeOpen?g3HomeOpen[id]:defOpen);
   hwDecorate(el,g);
 }
+function dzCdParts(t){let s=Math.max(0,Math.floor((t-Date.now())/1000));const d=Math.floor(s/86400);s-=d*86400;const h=Math.floor(s/3600);s-=h*3600;const m=Math.floor(s/60);return [d,h,m,s-m*60]}
+function dzCdHtml(t){const p=dzCdParts(t),L=[p[0]===1?"Tag":"Tage","Std","Min","Sek"];return p.map((v,i)=>`<div><b>${i?String(v).padStart(2,"0"):v}</b><small>${L[i]}</small></div>`).join("")}
+setInterval(()=>{if(document.hidden)return;document.querySelectorAll(".g3Cd[data-cdt]").forEach(box=>{const t=Number(box.dataset.cdt),p=dzCdParts(t),bs=box.querySelectorAll("b"),sm=box.querySelectorAll("small");
+  p.forEach((v,i)=>{const tx=i?String(v).padStart(2,"0"):String(v);if(bs[i]&&bs[i].textContent!==tx){bs[i].textContent=tx;bs[i].classList.remove("tick");void bs[i].offsetWidth;bs[i].classList.add("tick")}});
+  if(sm[0])sm[0].textContent=p[0]===1?"Tag":"Tage";})},1000);
+/* 1.29.0: Logos „ploppen“ beim Antippen */
+document.addEventListener("pointerdown",e=>{const l=e.target.closest&&e.target.closest(".opponentLogo,.lrLogo,.tcLogo,.gcSide img");if(!l)return;l.classList.remove("dzPop");void l.offsetWidth;l.classList.add("dzPop");setTimeout(()=>l.classList.remove("dzPop"),500)},{passive:true});
 /* 1.21.1: „Letzte Ergebnisse“ – beide letzten Spiele kompakt in einer Karte (Variante A).
    Die beiden großen Karten g3HomeLast/g3HomeLast2 bleiben im Dokument (versteckt), damit der übrige Code unverändert läuft. */
 function lrRender(list){
@@ -4879,7 +5035,7 @@ function lrRender(list){
   el.innerHTML=`<div class="lrHead">${list.length>1?"Letzte Ergebnisse":"Letztes Ergebnis"}<span>Antippen für Details</span></div>`+list.map((g,i)=>{
     const r=resInfo(g), d=dt(g), wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
     const rp=r&&window.repFor&&window.repFor(g);
-    return `<div class="lrRow team${esc(g.team)}" role="button" tabindex="0" data-i="${i}">
+    return `<div class="lrRow team${esc(g.team)}${r&&!g.cancelled?" o_"+r.o:""}" role="button" tabindex="0" data-i="${i}">
       <div class="lrDate">${esc(wd)}<b>${String(d.getDate()).padStart(2,"0")}.</b>${esc(mon)}</div>
       <div class="lrTeams"><span class="lrBadge">${esc(teamName(g.team))}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
@@ -5764,6 +5920,9 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.29.2.170",d:"November 2026",items:["Letzte Ergebnisse: Der Farbstreifen jeder Zeile geht jetzt über die volle Höhe, der blaue Kartenrand schaut nicht mehr durch."]},
+  {v:"1.29.1.169",d:"November 2026",items:["Spielplan übersichtlicher: Ansicht, Filter und „Heute“ in einer Zeile, die Tabellen-Links stehen oben neben der Überschrift.","Neuigkeiten mit Reitern: Hinweise, Berichte, Änderungen und App – neue Einträge sind am Reiter markiert.","Mannschafts-Kacheln ohne doppelte Bilanz – die Zahlen stehen in der Saisonbilanz darunter."]},
+  {v:"1.29.0.168",d:"November 2026",items:["Neues Design: Das nächste Spiel steht groß in Eishallen-Optik mit Puck und sekundengenauem Countdown, das zweite Spiel kompakt darunter.","Menüleiste mit Symbolen und dezente Kufenspuren im Hintergrund.","Ergebnisse farbig nach Ausgang mit großem Spielstand, Siege mit 🏆-Abzeichen.","Mannschafts-Kacheln mit Formkurve als S/U/N und Tabellenplatz, Saisonbilanz als eigene Kachel mit Siegen, Toren und Tordifferenz.","Sanfte Animationen beim Öffnen – abgeschaltet, wenn am Gerät „weniger Bewegung“ eingestellt ist."]},
   {v:"1.28.1.167",d:"November 2026",items:["Heimspiele ohne Route-Knopf – in den Spieldetails steht stattdessen „Heimspiel“ mit der Halle.","Der Halloween-Schalter ist bis zur nächsten Halloween-Zeit ausgeblendet."]},
   {v:"1.28.0.166",d:"November 2026",items:["Fan-Tipp: Tippe vor jedem Spiel das Ergebnis – anonym, direkt in den Spieldetails. Danach siehst du, wie die anderen Fans getippt haben, und nach dem Spiel, wer richtig lag.","Am Spieltag zeigt die Startseite „Heute“ mit Countdown bis zum Bully – bei Auswärtsspielen mit Route-Knopf.","Im Spielplan springst du über die Monatsleiste direkt zu einem Monat.","Konfetti, wenn du ein gewonnenes Spiel öffnest – abschaltbar unter Einstellungen.","Bessere Lesbarkeit im dunklen Design. Das Minispiel ist entfallen."]},
   {v:"1.27.0.164",d:"November 2026",items:["Saisonbilanz: Unter den Mannschafts-Kacheln öffnet „📊 Saisonbilanz“ Siege, Tore, Heim- und Auswärtsbilanz, Tore je Drittel, Formkurve und alle Spielberichte der Saison – auch als PDF zum Ausdrucken.","Gegner: Beim Antippen eines Gegners steht oben der Direktvergleich mit allen bisherigen Ergebnissen.","Die App startet schneller."]},
@@ -6268,14 +6427,24 @@ function renderNews(){
   }
   const m=document.getElementById("newsModal"); if(m&&!m.hidden)newsFill();
 }
+/* 1.29.1: Neuigkeiten mit Reitern */
+let newsTab=null, newsSnap=null;
 function newsFill(){
   const body=document.getElementById("newsBody"); if(!body)return;
-  const s=new Set(newsSeenMem), notes=newsActiveNotes(), ch=newsChanges(), rp=repPublished();
-  body.innerHTML=
-    `<div class="newsSec"><div class="newsSecTitle">📰 Hinweise</div>${notes.length?notes.map(n=>newsNoteHtml(n,!s.has("n:"+n.id))).join(""):'<div class="small newsEmpty">Aktuell keine Hinweise.</div>'}</div>`+
-    (rp.length?`<div class="newsSec"><div class="newsSecTitle">📝 Spielberichte</div>${rp.map(x=>newsReportHtml(x,!s.has(repNid(x)))).join("")}</div>`:"")+
-    `<div class="newsSec"><div class="newsSecTitle">📅 Spieländerungen</div>${ch.length?ch.map(c=>newsChangeHtml(c,!s.has(c.id))).join(""):'<div class="small newsEmpty">Keine geänderten Termine.</div>'}</div>`+
-    `<div class="newsSec"><div class="newsSecTitle">✨ Neu in der App</div>${APP_NEWS.slice(0,3).map(x=>`<div class="newsItem newsApp${s.has("v:"+(x.id||x.v))?"":" unread"}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+  const s=new Set(newsSeenMem), isNew=id=>newsSnap?newsSnap.has(id):!s.has(id);
+  const notes=newsActiveNotes(), ch=newsChanges(), rp=repPublished(), app=APP_NEWS.slice(0,5);
+  const T=[
+    {k:"notes",ic:"📰",l:"Hinweise",n:notes.length,u:notes.filter(x=>isNew("n:"+x.id)).length},
+    {k:"reports",ic:"📝",l:"Berichte",n:rp.length,u:rp.filter(x=>isNew(repNid(x))).length},
+    {k:"changes",ic:"📅",l:"Änderungen",n:ch.length,u:ch.filter(c=>isNew(c.id)).length},
+    {k:"app",ic:"✨",l:"App",n:app.length,u:app.filter(x=>isNew("v:"+(x.id||x.v))).length}];
+  if(!newsTab||!T.some(t=>t.k===newsTab))newsTab=(T.find(t=>t.u&&t.k!=="app")||T.find(t=>t.n&&t.k!=="app")||T.find(t=>t.u)||T[0]).k;
+  const pane=newsTab==="notes"?(notes.length?notes.map(x=>newsNoteHtml(x,isNew("n:"+x.id))).join(""):'<div class="small newsEmpty">Aktuell keine Hinweise.</div>')
+    :newsTab==="reports"?(rp.length?rp.map(x=>newsReportHtml(x,isNew(repNid(x)))).join(""):'<div class="small newsEmpty">Keine Spielberichte aus den letzten 14 Tagen.</div>')
+    :newsTab==="changes"?(ch.length?ch.map(c=>newsChangeHtml(c,isNew(c.id))).join(""):'<div class="small newsEmpty">Keine geänderten Termine.</div>')
+    :app.map(x=>`<div class="newsItem newsApp${isNew("v:"+(x.id||x.v))?" unread":""}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
+  body.innerHTML=`<div class="newsTabs" role="tablist" aria-label="Bereiche">${T.map(t=>`<button type="button" role="tab" class="newsTab${t.k===newsTab?" on":""}" aria-selected="${t.k===newsTab}" data-nt="${t.k}"><span class="ntIc" aria-hidden="true">${t.ic}</span><span class="ntL">${t.l}</span>${t.u?`<i class="ntNew" aria-label="${t.u} neu">${t.u}</i>`:t.n&&t.k!=="app"?`<small class="ntN">${t.n}</small>`:""}</button>`).join("")}</div><div class="newsPane" role="tabpanel">${pane}</div>`;
+  body.querySelectorAll(".newsTab").forEach(b=>b.onclick=()=>{newsTab=b.dataset.nt;newsFill()});
   body.querySelectorAll(".newsItem.newsChange[data-cid]").forEach(b=>{const c=ch.find(x=>x.id===b.dataset.cid);b.onclick=()=>{closeNews();openMatchDetails(c.g)}});
   body.querySelectorAll(".newsReport").forEach(b=>{const x=rp.find(y=>rkey(y.g)===b.dataset.rid);b.onclick=()=>{closeNews();openMatchDetails(x.g)}});
 }
@@ -6285,11 +6454,12 @@ function openNews(){
     m.innerHTML='<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="newsTitle"><div class="matchModalHead"><div id="newsTitle" class="matchModalTitle">Neuigkeiten</div><button id="newsClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div><div id="newsBody"></div></div>';
     document.body.appendChild(m);m.querySelector("#newsClose").onclick=closeNews;m.addEventListener("click",e=>{if(e.target===m)closeNews()});
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)closeNews()});}
+  newsTab=null;newsSnap=new Set(newsUnread().map(i=>i.id));
   newsFill();m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
   newsMarkSeen(newsItemsAll().map(i=>i.id));
   setTimeout(()=>{const b=document.getElementById("newsBadge");if(b)b.hidden=true;const ban=document.getElementById("newsBanner");if(ban)ban.hidden=true},0);
 }
-function closeNews(){const m=document.getElementById("newsModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true");m.querySelectorAll(".unread").forEach(x=>x.classList.remove("unread"))}document.body.style.overflow="";renderNews()}
+function closeNews(){newsSnap=null;const m=document.getElementById("newsModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true");m.querySelectorAll(".unread").forEach(x=>x.classList.remove("unread"))}document.body.style.overflow="";renderNews()}
 window.renderNews=renderNews;window.openNews=openNews;
 /* 1.9.1.138: Übersicht „So findest du dich zurecht“ in der Info – Einträge springen an die Stelle */
 document.querySelectorAll("#appMap [data-go]").forEach(b=>b.onclick=()=>{const k=b.dataset.go;
