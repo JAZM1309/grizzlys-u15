@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.33.3.182 | – (nur Test) | 12.11.2026 | Optisch |
 | 1.33.2.181 | – (nur Test) | 12.11.2026 | Optisch |
 | 1.33.1.180 | – (nur Test) | 12.11.2026 | Optisch |
 | 1.33.0.179 | – (nur Test) | 12.11.2026 | Neues Design (Kopfbereich) |
@@ -81,6 +82,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.33.3
+
+- Menüleiste (Start, Spielplan …) sitzt näher am Kopfbereich: Abstand unter dem Saison-Chip von ca. 50 px auf ca. 25 px verkleinert; Knöpfe bleiben mittig auf Höhe des Saison-Chips.
 
 ## Version 1.33.2
 
