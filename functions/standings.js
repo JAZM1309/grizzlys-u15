@@ -1,5 +1,5 @@
 /**
- * Tabellenstand und beendete Spiele der Ligen von U15 A / U15 B
+ * Tabellenstand und beendete Spiele der Ligen von U15 A / U15 B / U13 (ab 1.35.0)
  * vom EHV NRW (Datenquelle: hockeydata)
  *
  * Die App fragt nur diese Function ab – nie den externen Dienst direkt.
@@ -19,7 +19,8 @@ const { onRequest } = require("firebase-functions/v2/https");
 
 const API = "https://api.hockeydata.net/data/ih";
 const API_KEY = "f4b71c8702bd3a6eadc89becf6da5a4e"; // öffentlicher Schlüssel der EHV-Seite
-const DIVISIONS = { A: "21652", B: "21656" };        // A: U15 Landesliga NRW · B: Liga der U15 B
+const DIVISIONS = { A: "21652", B: "21656", U13: "21668" }; // A: U15 Landesliga NRW · B: Liga der U15 B · U13: U13 Landesliga NRW
+const { teamLabel } = require("./teams");
 const ALLOWED_ORIGINS = ["https://jazm1309.github.io"]; // Live- und Test-App
 const CACHE_MS = 30 * 60 * 1000;                     // höchstens alle 30 Minuten neu abrufen
 
@@ -138,7 +139,7 @@ async function loadAll() {
       else if (cache && cache.body[team] && cache.body[team].scorers) part.scorers = cache.body[team].scorers;
       if (games.status === "fulfilled") part.games = games.value;
       else {
-        console.warn("Spiele U15 " + team + " nicht abrufbar:", games.reason && games.reason.message);
+        console.warn("Spiele " + teamLabel(team) + " nicht abrufbar:", games.reason && games.reason.message);
         if (cache && cache.body[team] && cache.body[team].games) part.games = cache.body[team].games;
       }
       return [team, part];
@@ -149,7 +150,7 @@ async function loadAll() {
     const team = Object.keys(DIVISIONS)[i];
     if (r.status === "fulfilled") { body[team] = r.value[1]; ok++; }
     else {
-      console.warn("Tabellenstand U15 " + team + " nicht abrufbar:", r.reason && r.reason.message);
+      console.warn("Tabellenstand " + teamLabel(team) + " nicht abrufbar:", r.reason && r.reason.message);
       if (cache && cache.body[team]) body[team] = cache.body[team]; // letzter bekannter Stand
     }
   });

@@ -11,19 +11,18 @@ const REGION = "europe-west1";
 const SITE = "https://jazm1309.github.io/grizzlys-u15/";
 const ICON = SITE + "icon-192.png";
 const BADGE = SITE + "badge-96.png";
+const { TEAMS, teamLabel, wantsTeamPrefs } = require("./teams");
 
 // Geräte ohne gespeicherte Auswahl bekommen alles; bei einem Hinweis für nur eine Mannschaft
 // gilt die Mannschaftsauswahl des Geräts.
 function wantsNews(prefs, team) {
-  const p = prefs || {};
-  if (team === "A") return p.teamA !== false;
-  if (team === "B") return p.teamB !== false;
-  return true;
+  if (!team) return true; // Hinweis für alle Mannschaften
+  return wantsTeamPrefs(prefs, team); // 1.35.0: U13 nur bei ausdrücklicher Auswahl
 }
 
 function pushText(n) {
-  const team = String(n.team || "").toUpperCase();
-  const title = "📰 ESV Grizzlys U15" + (team === "A" || team === "B" ? " · U15 " + team : "");
+  const team = TEAMS[String(n.team || "").toUpperCase()] ? String(n.team).toUpperCase() : "";
+  const title = team ? "📰 ESV Grizzlys · " + teamLabel(team) : "📰 Young Grizzlys";
   const raw = String(n.title || "") + (n.text ? " – " + String(n.text).replace(/\s+/g, " ") : "");
   const body = raw.length > 180 ? raw.slice(0, 177).trimEnd() + "…" : raw;
   return { title, body, team };

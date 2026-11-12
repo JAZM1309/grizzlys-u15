@@ -20,6 +20,7 @@
  * Deploy (nur diese Function):
  *   firebase deploy --only functions:liveTicker --project grizzlys-u15
  */
+const { teamLabel } = require("./teams");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
@@ -166,7 +167,7 @@ async function sendLive(kind, g, title, body) {
 function goalPush(g, s, fresh) {
   const ourSide = isG(g.home) ? "h" : "a";
   const ours = fresh.filter(q => q.side === ourSide);
-  const head = `U15 ${g.team}: ${scoreLine(g, s)}`;
+  const head = `${teamLabel(g.team)}: ${scoreLine(g, s)}`;
   const last = fresh[fresh.length - 1];
   if (fresh.length === 1) {
     const q = fresh[0], extra = [q.pp ? "Überzahl" : "", q.sh ? "Unterzahl" : "", q.en ? "leeres Tor" : "", q.ps ? "Penalty" : ""].filter(Boolean);
@@ -224,7 +225,7 @@ async function tick(db, g, now) {
   if (prev && prev.status === "pre" && s.status !== "final" && !prev.bullyPushed) {
     const opp = label(isG(g.home) ? g.away : g.home);
     const title = "🏒 Bully!";
-    const body = `U15 ${g.team}: ${isG(g.home) ? "Grizzlys gegen " + opp : opp + " gegen Grizzlys"} hat begonnen` + (s.hs || s.as ? ` – es steht ${scoreLine(g, s)}` : ".");
+    const body = `${teamLabel(g.team)}: ${isG(g.home) ? "Grizzlys gegen " + opp : opp + " gegen Grizzlys"} hat begonnen` + (s.hs || s.as ? ` – es steht ${scoreLine(g, s)}` : ".");
     const st = await sendLive("livePeriods", g, title, body);
     logger.info("Live-Bully-Push", { id: g.id, ...st });
     await ref.update({ bullyPushed: true });
@@ -242,7 +243,7 @@ async function tick(db, g, now) {
     const p = s.periodsDone;
     const per = s.periods[p - 1];
     const title = `⏸️ Nach dem ${p}. Drittel`;
-    const body = `U15 ${g.team}: ${scoreLine(g, s)}` + (per && p > 1 ? `\n${p}. Drittel: ${per[0]}:${per[1]}` : "");
+    const body = `${teamLabel(g.team)}: ${scoreLine(g, s)}` + (per && p > 1 ? `\n${p}. Drittel: ${per[0]}:${per[1]}` : "");
     const st = await sendLive("livePeriods", g, title, body);
     logger.info("Live-Drittel-Push", { id: g.id, drittel: p, ...st });
     await ref.update({ periodsPushed: p });

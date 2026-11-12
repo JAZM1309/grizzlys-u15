@@ -92,7 +92,7 @@ exports.gameReport = onCall({ region: REGION, maxInstances: 2, timeoutSeconds: 3
   if (!request.auth?.uid) throw new HttpsError("unauthenticated", "Admin-Anmeldung erforderlich.");
   if (request.auth.uid !== ADMIN_UID) throw new HttpsError("permission-denied", "Keine Admin-Berechtigung.");
   const q = request.data || {};
-  const team = q.team === "B" ? "B" : "A";
+  const team = _ehv.DIVISIONS[String(q.team || "").toUpperCase()] ? String(q.team).toUpperCase() : "A"; // 1.35.0: auch U13
   try {
     let id = isId(q.ehvGameId) ? q.ehvGameId : "";
     if (!id) {

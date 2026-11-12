@@ -16,13 +16,14 @@ const SITE = "https://jazm1309.github.io/grizzlys-u15/";
 const RESULT_ICON = SITE + "grizzlys-result-icon.png";
 const REMINDER_ICON = SITE + "grizzlys-24h-icon-192.png";
 const BADGE = SITE + "badge-96.png";
+const { teamKey, teamLabel, teamAge, wantsTeamPrefs, GAMES_RE } = require("./teams");
 
 // ---------- Hilfsfunktionen ----------
 function prefsOf(data) { return (data && data.prefs) || {}; }
 // Geräte ohne gespeicherte Auswahl bekommen weiterhin alles.
+// 1.35.0: U15 A/B wie bisher, weitere Mannschaften (U13) nur bei ausdrücklicher Auswahl – siehe teams.js
 function wantsTeam(tokenDoc, team) {
-  const p = tokenDoc.prefs;
-  return String(team).toUpperCase() === "B" ? p.teamB !== false : p.teamA !== false;
+  return wantsTeamPrefs(tokenDoc.prefs, team);
 }
 
 async function loadTokens() {
@@ -71,7 +72,7 @@ async function sendPush(tokens, notification, webpush) {
 }
 
 function teamOfResult(r, id) {
-  return String(r.team || String(r.gameId || id || "").split("_").pop() || "A").toUpperCase();
+  return teamKey(r.team || String(r.gameId || id || "").split("_").pop() || "A");
 }
 
 function applyScheduleOverrides(games, overrides) {
@@ -121,7 +122,7 @@ async function loadGames() {
   const res = await fetch(SITE + "index.html?t=" + Date.now(), { headers: { "cache-control": "no-cache" } });
   if (!res.ok) throw new Error("index.html nicht ladbar: HTTP " + res.status);
   const html = await res.text();
-  const m = html.match(/const games=(\[[\s\S]*?\]);/);
+  const m = html.match(GAMES_RE);
   if (!m) throw new Error("Spielplan in index.html nicht gefunden");
   return JSON.parse(m[1]);
 }
@@ -150,7 +151,7 @@ exports.onResultWritten = onDocumentWritten(
     const team = teamOfResult(r, event.params.resultId);
     const all = await loadTokens();
     const tokens = all.filter(x => x.prefs.results !== false && wantsTeam(x, team));
-    const title = "🏒 ESV Grizzlys U15";
+    const title = "🏒 ESV Grizzlys " + teamAge(team);
     const body = `Ergebnis: ${r.home} ${r.homeScore}:${r.awayScore} ${r.away}`;
 
     let stats = { total: 0, success: 0, failed: 0 };
@@ -205,8 +206,8 @@ exports.sendGameReminders = onSchedule(
         const targets = tokens.filter(x => x.prefs.reminders !== false && wantsTeam(x, game.team));
         if (!targets.length) { logger.info("Erinnerung: niemand angemeldet", { reminderId }); continue; }
 
-        const title = "🏒 ESV Grizzlys U15";
-        const body = `Morgen: U15 ${game.team} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
+        const title = "🏒 ESV Grizzlys " + teamAge(game.team);
+        const body = `Morgen: ${teamLabel(game.team)} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
         const stats = await sendPush(targets, { title, body }, {
           notification: { icon: REMINDER_ICON, badge: BADGE },
           data: { type: "gameReminder", title, body },

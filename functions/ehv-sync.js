@@ -25,6 +25,7 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 const { _ehv } = require("./standings");
+const { teamLabel, GAMES_RE } = require("./teams");
 
 if (!admin.apps.length) admin.initializeApp();
 
@@ -44,7 +45,7 @@ async function loadGames() {
   const res = await fetch(SITE + "index.html?t=" + Date.now(), { headers: { "cache-control": "no-cache" } });
   if (!res.ok) throw new Error("index.html nicht ladbar: HTTP " + res.status);
   const html = await res.text();
-  const m = html.match(/const games=(\[[\s\S]*?\]);/);
+  const m = html.match(GAMES_RE);
   if (!m) throw new Error("Spielplan in index.html nicht gefunden");
   return JSON.parse(m[1]);
 }
@@ -122,7 +123,7 @@ async function loadEhvRows(teams) {
     const id = _ehv.DIVISIONS[team];
     if (!id) return;
     try { out[team] = (await _ehv.fetchApi("Schedule", id)).data.rows; }
-    catch (err) { logger.warn("EHV-Spielplan U15 " + team + " nicht abrufbar", { err: String(err) }); }
+    catch (err) { logger.warn("EHV-Spielplan " + teamLabel(team) + " nicht abrufbar", { err: String(err) }); }
   }));
   return out;
 }
@@ -263,7 +264,7 @@ function shortDate(ymd) {
 }
 function diffText(d) {
   const opp = /grizzlys/i.test(d.home) ? d.away : d.home;
-  const head = "U15 " + d.team + " gegen " + opp + ": ";
+  const head = teamLabel(d.team) + " gegen " + opp + ": ";
   if (!d.ehv) return head + "beim EHV nicht gefunden";
   if (d.ehv.open) return head + "beim EHV ohne Termin (bisher " + shortDate(d.app.date) + " " + d.app.time + ")";
   const parts = [];
@@ -308,7 +309,7 @@ async function runScheduleWatch() {
 
   const all = check.diffs.concat(check.extra.map(x => ({
     id: "extra_" + x.team + "_" + norm(x.home) + "_" + norm(x.away), team: x.team, home: x.home, away: x.away,
-    app: { date: "", time: "", stadium: "" }, ehv: x.ehv, what: ["extra"], text: "U15 " + x.team + ": " + x.home + " – " + x.away + " fehlt in der App"
+    app: { date: "", time: "", stadium: "" }, ehv: x.ehv, what: ["extra"], text: teamLabel(x.team) + ": " + x.home + " – " + x.away + " fehlt in der App"
   })));
   const keys = all.map(diffKey);
   const ref = admin.firestore().collection("ehvSync").doc("scheduleWatch");
