@@ -16,6 +16,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.33.1.180 | – (nur Test) | 12.11.2026 | Optisch |
+| 1.33.0.179 | – (nur Test) | 12.11.2026 | Neues Design (Kopfbereich) |
+| 1.32.2.178 | – (nur Test) | 12.11.2026 | Doku |
+| 1.32.1.177 | – (nur Test) | 12.11.2026 | Kleine Änderung |
 | 1.32.0.176 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.31.0.175 | – (nur Test) | 11.11.2026 | Neue Funktion |
 | 1.30.1.174 | – (nur Test) | 11.11.2026 | Fehlerbehebung |
@@ -76,6 +80,31 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.33.1
+
+- Übergang Kopfbereich → Seite ohne Kante: Die Menüleiste (Start, Spielplan …) hat erst einen Hintergrund, wenn sie beim Scrollen oben andockt; vorher ist sie durchsichtig. Im dunklen Design läuft zusätzlich der Eisnebel unten weich aus (vorher harte Kante).
+
+## Version 1.33.0
+
+Kopfbereich schon im neuen Arena-Look (Vorschlag B), Rest der App unverändert:
+- Hell: neues Hallenbild (Flutlicht oben, Eisfläche unten, `img/header-hell.webp`, 54 KB); das Eis läuft unten weich in den hellen Hintergrund aus – keine runde Kante, kein Schatten, kein Farbstreifen mehr.
+- Dunkel: bisheriges Hallenbild, ebenfalls weich auslaufend.
+- Titel „U15 SPIELPLAN“ in schmaler Sportschrift (Barlow Condensed ExtraBold, `fonts/barlow-condensed-extrabold.woff`, 29 KB, Lizenz SIL OFL in `fonts/barlow-condensed-OFL.txt`), „ESV Grizzlys Bergkamen“ darüber in Orange, Großbuchstaben.
+- Saison-Chip und die drei Knöpfe (News, Einstellungen, Info) als dunkle Glasflächen mit abgerundeten Ecken.
+- Halloween- und Weihnachtsdesign behalten ihren eigenen Kopfbereich. Gameday-Kopf geprüft.
+- Neue Dateien sind im Offline-Speicher (sw.js) aufgenommen.
+- Lesbarkeitsprüfung Start: 0 kaum lesbare Stellen.
+
+## Version 1.32.2
+
+- PDF „Seitenübersicht der App“ (Grizzlys-U15-App-Seitenuebersicht.pdf) auf den aktuellen Stand gebracht (vorher Stand 1.9.1.140): Live-Ticker, neue Startseite, Saisonbilanz mit Rückennummern und Tabellenverlauf, Fan-Tipp, Neuigkeiten mit Reitern, kompakter Spielplan, neue Einstellungen (Konfetti, Start-Animation, große Schrift, Live-Push), Admin mit Reiter Social/System, Penaltyschießen statt Unentschieden; entfernt: Mini-Spiel, Halloween-Gruselmoment.
+- App selbst unverändert (nur Versionsnummer).
+
+## Version 1.32.1
+
+- App-Neuigkeiten aufgeräumt: nur noch Änderungen, die für Nutzer wichtig sind. Entfernt: Start-Animation, Admin-Bereich, Lesbarkeits- und Optik-Feinschliff (Kufenspuren, Farbstreifen), Route bei Heimspielen, Halloween-Schalter, Minispiel. Die Einträge 1.29.0/1.29.1 sind zu einem zusammengefasst.
+- Grundsatz ab jetzt: In die App-Neuigkeiten kommen nur neue Funktionen und spürbare Änderungen für Fans – keine Admin-, Technik- oder Feinschliff-Punkte (die stehen nur hier im README).
 
 ## Version 1.32.0
 
