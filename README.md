@@ -16,6 +16,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.32.0.176 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.31.0.175 | – (nur Test) | 11.11.2026 | Neue Funktion |
 | 1.30.1.174 | – (nur Test) | 11.11.2026 | Fehlerbehebung |
 | 1.30.0.173 | – (nur Test) | 11.11.2026 | Neue Funktionen |
@@ -75,6 +76,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.32.0
+
+- Start-Animation: Ein Puck (mit Grizzlys-Logo, Gummistruktur, geriffeltem Rand) fliegt aus der Eishalle mit Bewegungsunschärfe auf den Bildschirm zu. Beim Aufprall: Blitz, Wackeln, Vibration (Android), das Glas reißt sternförmig mit unregelmäßigen Querrissen, dann fallen die Scherben mit Schwerkraft und Drehung weg und geben die App frei (ca. 2,7 Sekunden, Antippen überspringt).
+- Gezeichnet per Canvas direkt im Gerät (keine Video- oder Zusatzdateien, nutzt das vorhandene Hallenbild und Logo); die App lädt dahinter weiter.
+- Einmal pro App-Start, nicht bei „weniger Bewegung“ am Gerät, nicht bei automatischen Prüfungen. Einstellungen › Darstellung › „Start-Animation“ zum Abschalten. Gameday-Splash erst danach.
 
 ## Version 1.31.0
 
