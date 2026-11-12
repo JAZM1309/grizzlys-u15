@@ -27,7 +27,13 @@ def ersetze(alt, neu, was):
 
 
 ersetze('<meta name="theme-color" content="#e8760a">', '<meta name="theme-color" content="#071b33">', "Test-Farbe der Statusleiste")
-ersetze('<title>TEST – Grizzlys U15</title><script>window.GRIZZLYS_TEST=true</script>\n', '<title>ESV Grizzlys U15</title>\n', "Test-Titel")
+# Test-Titel: „TEST – <Name>“ → „<Name>“ (ab 1.36: „Young Grizzlys“; alte Stände: „Grizzlys U15“ → „ESV Grizzlys U15“)
+m = re.findall(r'<title>TEST – ([^<]+)</title><script>window\.GRIZZLYS_TEST=true</script>\n', s)
+if len(m) != 1:
+    stopp(f"Test-Titel ({len(m)}× gefunden statt 1×)")
+name = m[0].strip()
+live_name = "ESV Grizzlys U15" if name == "Grizzlys U15" else name
+s = s.replace(f'<title>TEST – {m[0]}</title><script>window.GRIZZLYS_TEST=true</script>\n', f'<title>{live_name}</title>\n')
 ersetze('eingebunden -->\n\n<script>', 'eingebunden -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-WJ539PL04L"></script>\n<script>', "Google-Analytics-Skript")
 ersetze('  /* Test: kein Analytics */', '  gtag("config", "G-WJ539PL04L");', "Google-Analytics-Einstellung")
 ersetze('.testRibbon{position:sticky;top:0;z-index:70;background:#e8760a;color:#fff;text-align:center;font:800 12px/1 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:7px 8px}\n', '', "Stil des Test-Balkens")
