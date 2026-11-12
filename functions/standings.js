@@ -45,6 +45,7 @@ function isFinished(x) {
 }
 
 const PERIOD = /^\d{1,2}:\d{1,2}$/;
+const OWN = /bergkamen|grizzlys/i;
 
 /** Beendete Spiele der Liga (alle Teams): Datum, Teams, Endstand, Drittel. Ohne Spielernamen. */
 async function fetchGames(divisionId, schedule) {
@@ -61,6 +62,7 @@ async function fetchGames(divisionId, schedule) {
       ot: x.isOvertime === true,
       so: x.isShootOut === true,
       p: [x.periodResults1, x.periodResults2, x.periodResults3].filter((v) => typeof v === "string" && PERIOD.test(v)),
+      _id: OWN.test(String(x.homeTeamLongName || "") + " " + String(x.awayTeamLongName || "")) && x.id ? String(x.id) : "",
     }))
     .filter((x) => x.h && x.a && /^\d{4}-\d{2}-\d{2}$/.test(x.d))
     .sort((x, y) => x.t - y.t)
@@ -68,7 +70,6 @@ async function fetchGames(divisionId, schedule) {
 }
 
 /* 1.30.0: Torschützen der Grizzlys je Rückennummer – nur Nummern, nie Namen */
-const OWN = /bergkamen|grizzlys/i;
 const REPORT_MS = 12 * 60 * 60 * 1000;
 const reportCache = new Map(); // gameId -> { ts, goals }
 const num = (v) => (Number.isFinite(Number(v)) ? Number(v) : 0);
@@ -95,16 +96,18 @@ async function fetchOwnGoals(gameId) {
 async function fetchScorers(schedule) {
   const own = schedule.data.rows.filter((x) => isFinished(x) && x.id &&
     (OWN.test(String(x.homeTeamLongName || "")) || OWN.test(String(x.awayTeamLongName || ""))));
-  const by = new Map(); let games = 0;
+  const by = new Map(), perGame = {}; let games = 0;
   const add = (nr, k) => { if (!nr) return; const o = by.get(nr) || { nr, g: 0, a: 0, pp: 0 }; o[k]++; by.set(nr, o); };
   const res = await Promise.allSettled(own.slice(-40).map((x) => fetchOwnGoals(String(x.id))));
-  res.forEach((r) => {
+  const ids = own.slice(-40).map((x) => String(x.id));
+  res.forEach((r, i) => {
     if (r.status !== "fulfilled") return;
     games++;
+    perGame[ids[i]] = r.value; // 1.36.5: Tore je Spiel (nur Rückennummern) für „Letzte Ergebnisse“
     r.value.forEach((x) => { add(x.s, "g"); if (x.pp) add(x.s, "pp"); add(x.a1, "a"); add(x.a2, "a"); });
   });
   if (!games) throw new Error("Keine Spielberichte");
-  return { games, list: [...by.values()].sort((a, b) => b.g + b.a - (a.g + a.a) || b.g - a.g || num(a.nr) - num(b.nr)).slice(0, 60) };
+  return { perGame, games, list: [...by.values()].sort((a, b) => b.g + b.a - (a.g + a.a) || b.g - a.g || num(a.nr) - num(b.nr)).slice(0, 60) };
 }
 
 async function fetchDivision(divisionId) {
@@ -135,9 +138,17 @@ async function loadAll() {
       ]);
       if (table.status !== "fulfilled") throw table.reason;
       const part = table.value;
-      if (scorers.status === "fulfilled") part.scorers = scorers.value;
+      const perGame = scorers.status === "fulfilled" ? scorers.value.perGame : {};
+      if (scorers.status === "fulfilled") { const { perGame: _pg, ...rest } = scorers.value; part.scorers = rest; }
       else if (cache && cache.body[team] && cache.body[team].scorers) part.scorers = cache.body[team].scorers;
-      if (games.status === "fulfilled") part.games = games.value;
+      if (games.status === "fulfilled") {
+        // 1.36.5: eigene Spiele bekommen die Torschützen als Rückennummern (sc), z. B. ["27","27","7"]; pp = Überzahltore
+        part.games = games.value.map(({ _id, ...g }) => {
+          const goals = _id && perGame[_id];
+          if (goals && goals.length) { g.sc = goals.map((q) => q.s).filter(Boolean).slice(0, 30); g.pp = goals.filter((q) => q.pp).length; }
+          return g;
+        });
+      }
       else {
         console.warn("Spiele " + teamLabel(team) + " nicht abrufbar:", games.reason && games.reason.message);
         if (cache && cache.body[team] && cache.body[team].games) part.games = cache.body[team].games;
