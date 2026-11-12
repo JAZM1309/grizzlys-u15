@@ -16,6 +16,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+| 1.34.0.183 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.33.3.182 | – (nur Test) | 12.11.2026 | Optisch |
 | 1.33.2.181 | – (nur Test) | 12.11.2026 | Optisch |
 | 1.33.1.180 | – (nur Test) | 12.11.2026 | Optisch |
@@ -82,6 +84,20 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.34.1
+
+- Admin › System › Werkzeuge › „Tipp-Fenster ansehen“: zeigt das Fan-Tipp-Fenster für das nächste Spiel, auch wenn man selbst schon getippt oder abgelehnt hat (der eigene Tipp steht vorausgefüllt in den Feldern). In der Vorschau werden „Später“ und „Nicht tippen“ nicht gespeichert; „Tipp abgeben“ ändert den eigenen Tipp wie gewohnt.
+- Alternativ: App mit `#tipp-vorschau` am Ende der Adresse öffnen.
+
+## Version 1.34.0
+
+Fan-Tipp-Popup (freiwillig):
+- Steht ein Spiel in den nächsten 4 Tagen an und der Nutzer hat noch nicht getippt, erscheint nach dem App-Start einmal ein Fenster „Wie geht das Spiel aus?“ mit denselben +/−-Feldern wie in den Spieldetails.
+- „Später“ (oder ×, Tippen daneben, Esc): fragt frühestens in 6 Stunden wieder. „Nicht tippen“: für dieses Spiel nie wieder. Nach dem Tipp: „Fertig“ oder direkt „Nächstes Spiel tippen“, falls noch ein Spiel offen ist.
+- Kommt erst nach Start-Animation, Gameday-Startbild und Datenschutz-Hinweis und nie über einem anderen Fenster; nicht in den letzten 10 Minuten vor dem Bully.
+- Einstellungen › „Tipp-Erinnerung“ schaltet das Fenster ganz ab.
+- Gespeichert wird nur im Gerät (welches Spiel abgelehnt/verschoben ist). Keine Function-Änderung.
 
 ## Version 1.33.3
 
