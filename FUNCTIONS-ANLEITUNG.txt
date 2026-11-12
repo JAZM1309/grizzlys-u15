@@ -1,3 +1,13 @@
+AKTUELL ZU TUN (Stand 12.11.2026, abends) – Torschützen in „Letzte Ergebnisse“ (1.36.5)
+=======================================================================================
+Nur functions/standings.js ist geändert (liefert jetzt die Torschützen je Spiel als Rückennummern).
+  1. grizzlys-functions-1_36_5.zip in die Cloud Shell hochladen und entpacken:
+       cd ~/grizzlys-u15 && unzip -o ~/grizzlys-functions-1_36_5.zip
+  2. firebase deploy --only functions:standings --project grizzlys-u15
+  3. functions/standings.js auch ins Live-Repo (Ordner functions) hochladen.
+Die App zeigt die Torschützen, sobald der neue Tabellenstand da ist (bis zu 30 Min. Zwischenspeicher).
+
+
 AKTUELL ZU TUN (Stand 12.11.2026) – U13 und „Young Grizzlys“ (1.36.0)
 ======================================================================
 Die Functions kennen jetzt die U13 (Tabelle, Ergebnisse, Abgleich, Live-Ticker, Push) und
