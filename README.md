@@ -1,6 +1,6 @@
-# ESV Grizzlys U15 App
+# Young Grizzlys (bisher ESV Grizzlys U15 App)
 
-Installierbare Web-App (PWA) für die ESV Grizzlys U15 A und U15 B, Saison 2026/27.
+Installierbare Web-App (PWA) für die ESV Grizzlys U15 A, U15 B und U13, Saison 2026/27.
 
 Entwickelt von **JAZM**.
 
@@ -16,6 +16,12 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.36.4.190 | – (nur Test) | 12.11.2026 | Optisch |
+| 1.36.3.189 | – (nur Test) | 12.11.2026 | Optisch |
+| 1.36.2.188 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+| 1.36.1.187 | – (nur Test) | 12.11.2026 | Optisch und Fehlerbehebung |
+| 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
+| 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
 | 1.34.0.183 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.33.3.182 | – (nur Test) | 12.11.2026 | Optisch |
@@ -84,6 +90,56 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.36.4
+
+### Neu in Version 1.36.4 (Stand 1.36.4.190, 12.11.2026, nur in der Test-App) – Optisch
+
+- Spruch „Jung · Wild · Grizzlys“ mittig ausgerichtet, blauer Pinselstrich darunter kürzer (118 → 84 px).
+
+## Version 1.36.3
+
+### Neu in Version 1.36.3 (Stand 1.36.3.189, 12.11.2026, nur in der Test-App) – Optisch
+
+- Neuer Spruch im Kopfbereich: „Jung · Wild · Grizzlys“ (vorher „Ein Team – zwei starke Mannschaften“).
+
+## Version 1.36.2
+
+### Neu in Version 1.36.2 (Stand 1.36.2.188, 12.11.2026, nur in der Test-App) – Kleine Ergänzung
+
+- Info › Grizzlys Teamseiten: Link zur Teamseite der U13 (`slug=grizzlys-u13`).
+
+## Version 1.36.1
+
+### Neu in Version 1.36.1 (Stand 1.36.1.187, 12.11.2026, nur in der Test-App) – Optisch
+
+- Titel „Young Grizzlys“ im Kopfbereich etwas kleiner (27 → 20 px, auf schmalen Handys 25 → 19 px; Halloween/Weihnachten entsprechend).
+- Fehlerbehebung: Bei drei Mannschaften stand das dritte letzte Spiel zusätzlich als eigene Karte unter „Letzte Ergebnisse“ (doppelt). Diese Karte wird jetzt wie die anderen ausgeblendet.
+
+## Version 1.36.0
+
+### Neu in Version 1.36.0 (Stand 1.36.0.186, 12.11.2026, nur in der Test-App) – Neue Funktion
+
+- **U13** als dritte Mannschaft (Farbe Gelb, `--u13: #f2b705`): 20 Spiele der U13 Landesliga NRW in `ALL_GAMES` (`"team":"U13"`), Tabelle, Form, Drittel, automatische Ergebnisse, Spielplan-Abgleich und Live-Ticker über dieselben Cloud Functions wie bei der U15 (hockeydata-Liga `21668`).
+- **App-Name „Young Grizzlys“** (`APP_CFG.appName`): Kopfbereich, Seitentitel, Info, Teilen, Druck, Social-Media-Bilder. Adresse (`…/grizzlys-u15/`) und Firebase-Projekt bleiben unverändert, damit Installationen und Push-Anmeldungen erhalten bleiben. `manifest.webmanifest` (`name`, `short_name`) muss von Hand angepasst werden.
+- **Bestandsnutzer** ohne Auswahl sehen weiterhin nur U15 A und U15 B (`APP_CFG.legacy`). Neue Nutzer wählen beim ersten Start aus allen drei.
+- **Push U13 nur auf ausdrücklichen Wunsch:** `prefs.teamU13 === true`. Fehlt die Angabe (alle bisherigen Geräte), gibt es keine U13-Pushs. Für A/B gilt weiter: fehlt die Angabe, gibt es Push.
+- Startseite: bis zu drei „Nächstes Spiel“- und „Letztes Spiel“-Karten (eine je gewählter Mannschaft).
+- Admin: Mannschafts-Filter, Hinweise, Social-Media-Bilder und Spielbericht-Abruf kennen die U13.
+- Halle Troisdorf (Icedome, Uckendorfer Straße 135) ergänzt; Entfernung ungefähr. Logo-Datei `logos/ehc-troisdorf.png` fehlt noch (bis dahin Kürzel).
+- **Cloud Functions** (neue Datei `functions/teams.js`): Mannschaftsnamen, Push-Auswahl und Erkennung des Spielplans (`ALL_GAMES` oder `games`) an einer Stelle. Geändert: `standings.js` (U13-Liga), `push.js`, `live.js`, `news.js`, `ehv-sync.js`, `game-report.js`. Deploy siehe `FUNCTIONS-ANLEITUNG.txt`.
+- **Reihenfolge beim Live-Gang:** zuerst die Functions deployen (sie verstehen alte und neue `index.html`), danach die App live schalten.
+
+## Version 1.35.0
+
+### Neu in Version 1.35.0 (Stand 1.35.0.185, 12.11.2026, nur in der Test-App) – Neue Funktion
+
+- **Meine Mannschaften** (Vorbereitung für weitere Mannschaften wie die U13): Jedes Gerät wählt, welche Mannschaften es sieht (Einstellungen › Meine Mannschaften, gespeichert als `grizzlysTeams`).
+- Neue Nutzer werden beim ersten Start gefragt; bestehende Nutzer behalten ohne Nachfrage alle Mannschaften.
+- Nicht gewählte Mannschaften verschwinden aus Startseite, Spielplan, Kalender, Gegnern, Karte, Saisonbilanz, Downloads, News-Hinweisen und Kalender-/PDF-Export. Ist nur eine Mannschaft gewählt, entfallen alle Mannschafts-Filter.
+- Push: Beim Ändern der Auswahl wird der Mannschafts-Push abgewählter Mannschaften ausgeschaltet (`prefs.teamA`/`teamB`), für neu gewählte eingeschaltet. Die Cloud Functions brauchen dafür keine Änderung.
+- Technik: Der Spielplan heißt jetzt `ALL_GAMES`; `games` enthält nur die gewählten Mannschaften. Der Admin-Bereich (Ergebnisse, Spielplan, Spieländerungen, Social-Media-Bilder, Spielberichte, Sicherung) und der Adventskalender arbeiten weiter mit allen Spielen.
+- Neue Mannschaft ergänzen: in `APP_CFG.teams` eintragen (z. B. `U13:{name:"U13",league:"…"}`), Spiele mit `"team":"U13"` in `ALL_GAMES`, Farbe im CSS. Für Tabelle/Ergebnisse/Push zusätzlich die Cloud Functions erweitern (`DIVISIONS` in `standings.js`, Push-Filter `prefs.teamU13`).
 
 ## Version 1.34.1
 
@@ -868,8 +924,8 @@ Die App zeigt Tabellenplatz, Spiele, Punkte, Tordifferenz, die Form der letzten 
 
 - Die App speichert den Tabellenstand 15 Minuten auf dem Gerät und holt ihn nach jedem App-Update sofort neu.
 - Fällt der Abruf aus, bleiben Chips, Form und Drittel weg; der Spielplan funktioniert unverändert.
-- Liga-Kennungen: U15 A `21652` (Landesliga NRW), U15 B `21656` (Bezirksliga NRW). Sie stehen in `functions/standings.js` und müssen zur neuen Saison angepasst werden.
-- Der Zugriffsschlüssel in `standings.js` und `game-report.js` ist der öffentliche Schlüssel der EHV-Seite. Eine ausdrückliche Erlaubnis von EHV / hockeydata zur Nutzung in der App liegt nicht vor – Anfrage beim EHV empfohlen.
+- Liga-Kennungen: U15 A `21652` (Landesliga NRW), U15 B `21656` (Bezirksliga NRW), U13 `21668` (U13 Landesliga NRW, ab 1.36.0). Sie stehen in `functions/standings.js` und müssen zur neuen Saison angepasst werden.
+- Der Zugriffsschlüssel in `standings.js` und `game-report.js` ist der öffentliche Schlüssel der EHV-Seite. Eine ausdrückliche Erlaubnis von EHV / hockeydata zur Nutzung in der App liegt nicht vor. Eine Anfrage beim EHV wurde zu Beginn der EHV-Abfragen gestellt, eine Antwort steht bis heute (12.11.2026) aus.
 - Überzahltore zählt `gameReport` aus den Toren selbst (`gameStrength` PP/SH), weil die Teamstatistik des EHV dafür teils 0 liefert. Schüsse aufs Tor werden in der U15 nicht erfasst und deshalb nicht verwendet.
 - Deploy und Schalter: siehe `FUNCTIONS-ANLEITUNG.txt`.
 

@@ -1,3 +1,25 @@
+AKTUELL ZU TUN (Stand 12.11.2026) – U13 und „Young Grizzlys“ (1.36.0)
+======================================================================
+Die Functions kennen jetzt die U13 (Tabelle, Ergebnisse, Abgleich, Live-Ticker, Push) und
+verstehen den neuen Spielplan-Namen ALL_GAMES in der index.html (der alte Name games geht weiter).
+WICHTIG: zuerst die Functions deployen, DANACH die App 1.36.0 live schalten.
+
+  1. grizzlys-functions-1_36_0.zip in die Cloud Shell hochladen (⋮ › Hochladen) und entpacken:
+       cd ~/grizzlys-u15 && unzip -o ~/grizzlys-functions-1_36_0.zip
+     (enthält functions/teams.js – neu – sowie standings.js, push.js, live.js, news.js,
+      ehv-sync.js und game-report.js)
+  2. Deployen (eine Zeile):
+       firebase deploy --only functions:standings,functions:autoResults,functions:scheduleCheck,functions:scheduleWatch,functions:onResultWritten,functions:sendGameReminders,functions:liveTicker,functions:onNewsCreated,functions:gameReport --project grizzlys-u15
+  3. Die geänderten Dateien auch ins GitHub-Repo grizzlys-u15 (Ordner functions) übernehmen.
+
+Prüfen: https://europe-west1-grizzlys-u15.cloudfunctions.net/standings im Browser öffnen –
+die Antwort enthält jetzt zusätzlich "U13" (kann bis zu 30 Minuten dauern, Zwischenspeicher).
+
+Push-Regel ab 1.36.0: U15 A/B wie bisher (ohne Angabe = Push). U13 nur, wenn das Gerät die U13
+ausdrücklich gewählt hat (prefs.teamU13 = true). Bisherige Geräte bekommen also keine U13-Pushs.
+Beim ersten autoResults-Lauf werden die schon gespielten U13-Spiele still (ohne Push) eingetragen.
+
+
 AKTUELL ZU TUN (Stand 11.11.2026)
 =================================
 Torschützen nach Rückennummer (1.30.0): functions/standings.js ersetzen und standings neu bereitstellen.
