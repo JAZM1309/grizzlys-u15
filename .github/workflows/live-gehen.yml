@@ -14,6 +14,7 @@ on:
 permissions:
   contents: write
   pages: write
+  actions: write   # 1.39.1: darf den Functions-Deploy starten
 
 concurrency:
   group: grizzlys-veroeffentlichen
