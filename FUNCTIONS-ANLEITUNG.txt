@@ -1,3 +1,9 @@
+NEUER ABLAUF (ab 1.39.1): Functions gehören ins Test-Paket (Ordner functions/ in der ZIP).
+„Live gehen“ übernimmt sie ins Live-Repo und startet das Deployen automatisch
+(Reiter Actions › Functions deployen, 5–10 Minuten). Cloud Shell und Hochladen von Hand sind nicht mehr nötig.
+Gleiche App-Version + geänderte Functions: „Live gehen“ übernimmt nur die Functions (und Doku).
+Mehr dazu in README.md, Abschnitt „Aufbau der App“.
+
 AKTUELL ZU TUN (Stand 13.11.2026) – Functions 1.39.0 (ersetzt 1.37.1) und automatisches Deployen
 =================================================================================================
 Siehe ANLEITUNG-1_39_0.txt in grizzlys-functions-1_39_0.zip.

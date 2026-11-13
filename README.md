@@ -20,6 +20,8 @@ Entwickelt von **JAZM**.
 
 Workflows im Live-Repo (`.github/workflows`): **Live gehen** (`live-gehen.yml` → `.github/werkzeug/live.sh`, `tolive.py`, `pruefen.py`, `startcheck.py`) und **Functions deployen** (`functions-deploy.yml`).
 
+**Functions (ab 1.39.1):** Der Ordner `functions/` gehört mit ins Test-Paket (ZIP). „Live gehen“ übernimmt ihn ins Live-Repo (Syntaxprüfung vorher; `node_modules` nie; nur in Live vorhandene Dateien bleiben) und startet bei Änderungen selbst „Functions deployen“. Ändern sich nur die Functions, genügt dasselbe Vorgehen mit gleicher App-Version (wie bei reiner Doku). Direktes Hochladen in `functions/` des Live-Repos löst den Deploy weiterhin aus. „Live zurücksetzen“ ändert die Functions nie.
+
 Mannschaften: `APP_CFG.teams` in `index.html` (U15 A, U15 B, U13). Jedes Gerät wählt in „Meine Mannschaften“, was es sieht und wofür es Push bekommt.
 
 ## Geplant zur neuen Saison (U17)
