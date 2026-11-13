@@ -28,5 +28,23 @@ function wantsTeamPrefs(prefs, team) {
 
 // Spielplan aus der index.html: ab 1.35.0 heißt er ALL_GAMES (vorher games) – beides wird erkannt.
 const GAMES_RE = /const (?:ALL_GAMES|games)=(\[[\s\S]*?\]);/;
+// Ab 1.39.0 liegt der Spielplan in einer eigenen Datei spielplan.js (Variable SPIELPLAN in spielplan.js)
+const SPIELPLAN_RE = /window\.SPIELPLAN\s*=\s*(\[[\s\S]*?\]);/;
 
-module.exports = { TEAMS, LEGACY, teamKey, teamLabel, teamAge, wantsTeamPrefs, GAMES_RE };
+/** Spielplan der Live-Seite laden: zuerst spielplan.js, sonst (ältere Stände) aus der index.html. */
+async function loadSpielplan(site) {
+  const get = async (f) => {
+    const res = await fetch(site + f + "?t=" + Date.now(), { headers: { "cache-control": "no-cache" } });
+    if (!res.ok) throw new Error(f + " nicht ladbar: HTTP " + res.status);
+    return res.text();
+  };
+  try {
+    const m = (await get("spielplan.js")).match(SPIELPLAN_RE);
+    if (m) return JSON.parse(m[1]);
+  } catch (e) { /* ältere Live-Stände haben keine spielplan.js */ }
+  const m = (await get("index.html")).match(GAMES_RE);
+  if (!m) throw new Error("Spielplan weder in spielplan.js noch in index.html gefunden");
+  return JSON.parse(m[1]);
+}
+
+module.exports = { TEAMS, LEGACY, teamKey, teamLabel, teamAge, wantsTeamPrefs, GAMES_RE, SPIELPLAN_RE, loadSpielplan };

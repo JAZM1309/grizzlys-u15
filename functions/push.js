@@ -16,7 +16,7 @@ const SITE = "https://jazm1309.github.io/grizzlys-u15/";
 const RESULT_ICON = SITE + "grizzlys-result-icon.png";
 const REMINDER_ICON = SITE + "grizzlys-24h-icon-192.png";
 const BADGE = SITE + "badge-96.png";
-const { teamKey, teamLabel, teamAge, wantsTeamPrefs, GAMES_RE } = require("./teams");
+const { teamKey, teamLabel, teamAge, wantsTeamPrefs, loadSpielplan } = require("./teams");
 
 // ---------- Hilfsfunktionen ----------
 function prefsOf(data) { return (data && data.prefs) || {}; }
@@ -119,12 +119,7 @@ function gameIdentity(game, occurrence) {
 }
 
 async function loadGames() {
-  const res = await fetch(SITE + "index.html?t=" + Date.now(), { headers: { "cache-control": "no-cache" } });
-  if (!res.ok) throw new Error("index.html nicht ladbar: HTTP " + res.status);
-  const html = await res.text();
-  const m = html.match(GAMES_RE);
-  if (!m) throw new Error("Spielplan in index.html nicht gefunden");
-  return JSON.parse(m[1]);
+  return loadSpielplan(SITE); // 1.39.0: spielplan.js, Fallback index.html (teams.js)
 }
 
 // ---------- Ergebnis-Push (sofort) ----------

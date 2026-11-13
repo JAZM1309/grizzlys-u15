@@ -25,7 +25,7 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 const { _ehv } = require("./standings");
-const { teamLabel, GAMES_RE } = require("./teams");
+const { teamLabel, loadSpielplan } = require("./teams");
 
 if (!admin.apps.length) admin.initializeApp();
 
@@ -42,12 +42,7 @@ const RESULT_PUSH_MAX_AGE_DAYS = 2;
 
 // ---------- Spielplan der App (wie in push.js) ----------
 async function loadGames() {
-  const res = await fetch(SITE + "index.html?t=" + Date.now(), { headers: { "cache-control": "no-cache" } });
-  if (!res.ok) throw new Error("index.html nicht ladbar: HTTP " + res.status);
-  const html = await res.text();
-  const m = html.match(GAMES_RE);
-  if (!m) throw new Error("Spielplan in index.html nicht gefunden");
-  return JSON.parse(m[1]);
+  return loadSpielplan(SITE); // 1.39.0: spielplan.js, Fallback index.html (teams.js)
 }
 
 function applyScheduleOverrides(games, overrides) {
