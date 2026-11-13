@@ -16,6 +16,9 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.38.0.198 | – (nur Test) | 13.11.2026 | Neue Funktion |
+| 1.37.3.197 | – (nur Test) | 13.11.2026 | Optisch |
+| 1.37.2.196 | – (nur Test) | 13.11.2026 | Optisch |
 | 1.37.1.195 | – (nur Test) | 13.11.2026 | Verbesserung |
 | 1.37.0.194 | – (nur Test) | 13.11.2026 | Neue Funktion |
 | 1.36.7.193 | – (nur Test) | 13.11.2026 | Fehlerbehebung |
@@ -95,6 +98,27 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.38.0
+
+### Neu in Version 1.38.0 (Stand 1.38.0.198, 13.11.2026, nur in der Test-App) – Neue Funktion
+
+- Einstellungen: Jede Karte (Meine Mannschaften, Darstellung, Saison-Designs, Push, Datenschutz, Feedback) lässt sich über ihre Überschrift auf- und zuklappen (Pfeil rechts). Der Zustand wird je Gerät gemerkt (`grizzlysSetOpen`).
+- Standard: alles eingeklappt – außer „Nichts mehr verpassen“, solange Push noch nicht aktiv ist (damit der Knopf „Push aktivieren“ sichtbar bleibt).
+
+## Version 1.37.3
+
+### Neu in Version 1.37.3 (Stand 1.37.3.197, 13.11.2026, nur in der Test-App) – Optisch
+
+- Einstellungen noch kompakter: Push-Auswahl (Ergebnisse, Erinnerung, Live, Mannschaften) erscheint erst, wenn Push aktiv ist; Push-Beispiel entfällt; Darstellungs- und Saison-Schalter ohne Erklärtext; Feedback ohne Untertitel.
+
+## Version 1.37.2
+
+### Neu in Version 1.37.2 (Stand 1.37.2.196, 13.11.2026, nur in der Test-App) – Optisch
+
+- Einstellungen kompakter (etwa 15 % kürzer): kleinere Kopfzeile ohne Untertitel, engere Karten und Zeilen, „Meine Mannschaften“ mit kurzem Hinweis und „Übernehmen“ erst nach einer Änderung, Push-Beispiel nur noch eine Meldung (bei aktivem Push ausgeblendet), Feedback-Kacheln ohne Untertitel, weniger Hinweistexte.
+- App-Neuigkeiten: kein eigener Eintrag zu den automatischen Spielberichten (Ablauf im Hintergrund, für Nutzer ohne Bedeutung).
+- Fußzeile: „ESV Grizzlys Bergkamen · Young Grizzlys · Saison 2026/27“ (vorher „U15“).
 
 ## Version 1.37.1
 
