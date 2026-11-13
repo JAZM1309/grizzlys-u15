@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Live gehen / Live zurücksetzen / Veröffentlichung neu anstoßen – gestartet aus dem Admin-Bereich.
+# 1.39.0: mit Startprüfung (startcheck.py) und App-Code in eigenen Dateien (tolive.py).
 # Gleiche Logik wie ./live-gehen.sh und ./zurueck.sh im Grizzlys-Werkzeug.
 WZ="$(cd "$(dirname "$0")" && pwd)"; source "$WZ/gemeinsam.sh"
 cd "$GITHUB_WORKSPACE"; git_name
@@ -59,6 +60,18 @@ live)
     || { git checkout -q -- . ; fehler "$(tail -2 "$RUNNER_TEMP/tolive.log" | tr '\n' ' ')"; }
   [ "$(version_von .)" = "$V" ] || fehler "Nach dem Umwandeln stimmt die Version nicht ($(version_von .) statt $V)."
   doku_kopieren
+  # 1.39.0: Startprüfung – startet die umgewandelte Live-App im Browser; JavaScript-Fehler stoppen den Live-Gang
+  if python3 -c "import playwright" 2>/dev/null; then
+    timeout 240 python3 "$WZ/startcheck.py" "$GITHUB_WORKSPACE" "$RUNNER_TEMP/pruefung" >"$RUNNER_TEMP/start.log" 2>&1; START_RC=$?
+    case $START_RC in
+      0) info "Startprüfung: Die App startet ohne Fehler." ;;
+      1) if [ "$TROTZDEM" = "ja" ]; then warnung "Startprüfung: $(head -2 "$RUNNER_TEMP/start.log" | tr '\n' ' ') – trotzdem live (Häkchen „Trotzdem live gehen“)."
+         else fehler "STARTPRÜFUNG: Live wurde NICHT geändert – die App meldet beim Start Fehler: $(head -2 "$RUNNER_TEMP/start.log" | tr '\n' ' ')"; fi ;;
+      *) warnung "Startprüfung konnte nicht laufen: $(tail -1 "$RUNNER_TEMP/start.log")" ;;
+    esac
+  else
+    warnung "Startprüfung übersprungen (Browser ließ sich bei GitHub nicht einrichten)."
+  fi
   # Update-Hinweis für Nutzer ja/nein (Häkchen im Admin-Bereich); ältere Versionen kennen den Schalter noch nicht
   if grep -q '^const UPDATE_HINWEIS = ' sw.js; then
     [ "$HINWEIS" = "ja" ] && W=true || W=false
