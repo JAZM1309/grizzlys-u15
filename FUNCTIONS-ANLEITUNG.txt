@@ -1,4 +1,19 @@
-AKTUELL ZU TUN (Stand 13.11.2026) – Automatische Spielberichte (1.37.1, ersetzt 1.37.0)
+AKTUELL ZU TUN (Stand 13.11.2026) – Functions 1.39.0 (ersetzt 1.37.1) und automatisches Deployen
+=================================================================================================
+Siehe ANLEITUNG-1_39_0.txt in grizzlys-functions-1_39_0.zip.
+
+Neu: Die Functions lesen den Spielplan aus spielplan.js (Rückfall: index.html).
+WICHTIG: Functions 1.39.0 deployen, BEVOR die App 1.39.0 live geht – sonst finden ältere
+Functions den Spielplan in der neuen index.html nicht mehr (24h-Erinnerung, Abgleich, Berichte).
+
+Automatisch deployen (ab 1.39.0, einmalig einrichten): FUNCTIONS-AUTODEPLOY-EINRICHTEN.txt.
+Danach genügt: Dateien in den Ordner functions/ des LIVE-Repos hochladen → GitHub deployt selbst
+(Reiter „Actions“ → „Functions deployen“, grüner Haken = fertig). Der Weg über die Cloud Shell
+(unten beschrieben) bleibt als Ersatz bestehen.
+
+
+ERLEDIGT bzw. ERSETZT:
+Automatische Spielberichte (1.37.1) – in 1.39.0 enthalten
 =======================================================================================
 Siehe ANLEITUNG-1_37_1.txt in grizzlys-functions-1_37_1.zip. Kurz:
   cd ~/grizzlys-u15 && unzip -o ~/grizzlys-functions-1_37_1.zip

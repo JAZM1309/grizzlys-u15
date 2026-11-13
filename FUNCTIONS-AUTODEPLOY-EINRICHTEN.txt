@@ -1,0 +1,31 @@
+FUNCTIONS AUTOMATISCH DEPLOYEN – EINMALIGE EINRICHTUNG (ab 1.39.0)
+===================================================================
+Danach reicht es, den functions-Ordner ins LIVE-Repo hochzuladen –
+GitHub deployt dann von selbst (Reiter „Actions“ → „Functions deployen“).
+
+1. Workflow ins Live-Repo
+   Datei functions-deploy.yml nach  .github/workflows/functions-deploy.yml  hochladen.
+
+2. Dienstkonto + Schlüssel anlegen (Google Cloud Shell)
+   - console.cloud.google.com öffnen, Projekt grizzlys-u15, oben rechts „Cloud Shell aktivieren“.
+   - Datei autodeploy-einrichten.sh hochladen (Drei-Punkte-Menü → Hochladen).
+   - Eingeben:   bash autodeploy-einrichten.sh
+   - Am Ende:    cat github-deploy-key.json
+     Den GESAMTEN Text von { bis } markieren und kopieren.
+
+3. Schlüssel als GitHub-Secret speichern
+   Live-Repo → Settings → Secrets and variables → Actions → „New repository secret“
+   Name:  FIREBASE_DEPLOY_KEY
+   Wert:  den kopierten Text einfügen → „Add secret“.
+
+4. Schlüsseldatei löschen (Cloud Shell):   rm github-deploy-key.json
+
+5. Testen
+   Live-Repo → Actions → „Functions deployen“ → „Run workflow“.
+   Grüner Haken nach ca. 5–10 Minuten = alles eingerichtet.
+
+Wichtig
+- Im functions-Ordner muss die Datei .env.grizzlys-u15 mit hochgeladen werden (wie bisher).
+- Die Secrets (SMTP, GitHub-Token usw.) bleiben im Google Secret Manager – nichts ändert sich.
+- Klappt es nicht, funktioniert das Deployen per Cloud Shell weiterhin wie bisher
+  (siehe FUNCTIONS-ANLEITUNG.txt).
