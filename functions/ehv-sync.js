@@ -179,10 +179,16 @@ async function runAutoResults() {
 }
 
 exports.autoResults = onSchedule(
-  { schedule: "every 30 minutes", timeZone: "Europe/Berlin", region: REGION, maxInstances: 1, timeoutSeconds: 60 },
+  { schedule: "every 30 minutes", timeZone: "Europe/Berlin", region: REGION, maxInstances: 1, timeoutSeconds: 180 },
   async () => {
     const stats = await runAutoResults();
     if (stats.pending) logger.info("autoResults", stats);
+    // 1.37.0: danach automatische Spielberichte (Entwurf + Freigabe nach Frist) – siehe auto-report.js
+    try {
+      const games = await loadAppGames();
+      const rep = await require("./auto-report").runAutoReports({ games, today: berlinToday(), loadEhvRows, findEhvGame, daysBefore });
+      if (rep.drafts || rep.published) logger.info("autoReports", rep);
+    } catch (err) { logger.warn("autoReports fehlgeschlagen", { err: String(err && err.message) }); }
   }
 );
 

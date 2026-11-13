@@ -111,3 +111,4 @@ exports.gameReport = onCall({ region: REGION, maxInstances: 2, timeoutSeconds: 3
 });
 
 exports._test = { summarize, nice };
+exports._report = { fetchReport, summarize }; // 1.37.0: für automatische Spielberichte (auto-report.js)

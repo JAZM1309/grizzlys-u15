@@ -8,9 +8,9 @@
  *     So bekommen bestehende U15-Nutzer nicht plötzlich U13-Meldungen.
  */
 const TEAMS = {
-  A: { label: "U15 A", age: "U15" },
-  B: { label: "U15 B", age: "U15" },
-  U13: { label: "U13", age: "U13" }
+  A: { label: "U15 A", age: "U15", league: "Landesliga NRW" },
+  B: { label: "U15 B", age: "U15", league: "Bezirksliga NRW" },
+  U13: { label: "U13", age: "U13", league: "Landesliga NRW" }
 };
 const LEGACY = ["A", "B"];
 
