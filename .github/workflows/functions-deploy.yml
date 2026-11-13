@@ -1,0 +1,60 @@
+# Functions automatisch deployen (ab 1.39.0)
+# Läuft, sobald im Live-Repo etwas im Ordner functions/ (oder firebase.json) hochgeladen wird.
+# Einmalig nötig: GitHub-Secret FIREBASE_DEPLOY_KEY (siehe FUNCTIONS-AUTODEPLOY-EINRICHTEN.txt).
+name: Functions deployen
+
+on:
+  push:
+    branches: [main]
+    paths: ["functions/**", "firebase.json"]
+  workflow_dispatch:
+
+concurrency:
+  group: functions-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Kurz warten (mehrere Uploads hintereinander sammeln)
+        if: github.event_name == 'push'
+        run: sleep 90
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Zugang prüfen
+        env:
+          KEY: ${{ secrets.FIREBASE_DEPLOY_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error title=Grizzlys::Secret FIREBASE_DEPLOY_KEY fehlt – siehe FUNCTIONS-AUTODEPLOY-EINRICHTEN.txt"; exit 1
+          fi
+          printf '%s' "$KEY" > "$RUNNER_TEMP/key.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/key.json" >> "$GITHUB_ENV"
+
+      - name: Dateien prüfen
+        run: |
+          test -f functions/package.json || { echo "::error title=Grizzlys::functions/package.json fehlt"; exit 1; }
+          test -f functions/.env.grizzlys-u15 || { echo "::error title=Grizzlys::functions/.env.grizzlys-u15 fehlt – bitte mit hochladen"; exit 1; }
+          test -f firebase.json || { echo "::error title=Grizzlys::firebase.json fehlt"; exit 1; }
+
+      - name: Pakete installieren
+        run: |
+          if [ -f functions/package-lock.json ]; then npm ci --prefix functions; else npm install --prefix functions; fi
+
+      - name: Syntax prüfen
+        run: |
+          for f in functions/*.js; do node --check "$f" || { echo "::error title=Grizzlys::Syntaxfehler in $f"; exit 1; }; done
+
+      - name: Deployen
+        run: npx --yes firebase-tools@latest deploy --only functions --project grizzlys-u15 --non-interactive --force
+
+      - name: Aufräumen
+        if: always()
+        run: rm -f "$RUNNER_TEMP/key.json"
