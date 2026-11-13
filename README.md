@@ -16,6 +16,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.37.1.195 | – (nur Test) | 13.11.2026 | Verbesserung |
+| 1.37.0.194 | – (nur Test) | 13.11.2026 | Neue Funktion |
 | 1.36.7.193 | – (nur Test) | 13.11.2026 | Fehlerbehebung |
 | 1.36.6.192 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
 | 1.36.5.191 | – (nur Test) | 12.11.2026 | Optisch und kleine Ergänzung |
@@ -93,6 +95,30 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 | 1.10.1.86 | 1.9.1.86 | 10.10.2026 | Fehlerbehebung und Verbesserung |
 | 1.10.0.83 | 1.9.1.83 | 10.10.2026 | Neue Funktion |
 | 1.9.1.66 | 1.9.1.66 | 08.10.2026 | Neue Funktion |
+
+## Version 1.37.1
+
+### Neu in Version 1.37.1 (Stand 1.37.1.195, 13.11.2026, nur in der Test-App) – Verbesserung
+
+- **Mehr Abwechslung in den Spielberichten** (gleiche Fakten, andere Erzählweise; U13 und U15 gleich):
+  - meist 4–7 Formulierungen je Stelle statt 2–3, vorher feste Sätze sind jetzt austauschbar; 4–5 Überschriften je Spielausgang.
+  - vier Aufbau-Varianten: klassisch, Mannschaftsleistung zuerst (nur wenn genug zu erzählen ist), Aufhänger zuerst (Hattrick, Drei-Tore-Lauf, Zu-null-Sieg), Zahlen (kompakter Verlauf mit Drittelergebnissen).
+  - **Keine Wiederholung:** Jeder Bericht speichert seine Bausteine (`bausteine`). Neue Berichte meiden die Bausteine der letzten 8 Berichte derselben Mannschaft – in der App und in der Function.
+- Messung mit 20 simulierten Spielen: gleiche Sätze zwischen zwei Berichten 12 % → 4 %, zwischen aufeinanderfolgenden Berichten 11 % → 0 %; verschiedene Einstiege 15 → 18 von 20, Überschriften-Muster 9 → 17. 2.400 Testberichte ohne Fehler.
+- Korrektur: Bei nur einem Torschützen und mehreren Toren hieß es „Das Tore erzielte …“ – jetzt „Alle drei Tore erzielte …“.
+
+## Version 1.37.0
+
+### Neu in Version 1.37.0 (Stand 1.37.0.194, 13.11.2026, nur in der Test-App) – Neue Funktion
+
+- **Automatische Spielberichte für alle Mannschaften** (U15 A, U15 B, U13): Die Cloud Function `autoResults` erzeugt nach jedem Spiel (letzte 4 Tage, Ergebnis vorhanden, noch kein Bericht) einen faktenbasierten Fließtext aus dem EHV-Spielbericht, speichert ihn als **Entwurf** (`reports/<Spiel>`, `auto: true`) und schickt einen Admin-Push.
+- **Freigabe:** Ohne Reaktion wird der Entwurf nach **12 Stunden** automatisch veröffentlicht (`autoPublishAt`). Im Admin-Bereich: „Veröffentlichen“ (sofort), „Als Entwurf speichern“ oder „⏸ Nicht automatisch veröffentlichen“ (beides stoppt die automatische Freigabe).
+- Wartet bis zu 36 Stunden auf einen vollständigen EHV-Spielbericht (Torzahl passt zum Ergebnis); danach Bericht ohne Torfolge. Höchstens 3 Entwürfe pro Lauf.
+- **Eine Vorlage für beide:** Die Textvorlage steckt jetzt in `spielbericht.js` (App lädt sie per `<script>`, sw.js speichert sie zwischen). Die Function lädt dieselbe Datei von der Live-Seite – Textverbesserungen gelten nach „Live gehen“ automatisch auch für Auto-Berichte. Fallback: Kopie `functions/spielbericht.js`.
+- Nur Fakten aus EHV-Daten, Spieler nur mit Rückennummer (auch U13). Keine Stichworte/KI in der Automatik.
+- Korrektur in der Vorlage: Beim Hattrick wird der Spieler mit den meisten Toren genannt (vorher die kleinste Rückennummer mit mindestens drei Toren).
+- KI-Auftrag (Admin) nennt die richtige Altersklasse (U13: „Kinder“, U15: „Jugendliche“).
+- Functions: neu `auto-report.js`, `spielbericht.js`; geändert `ehv-sync.js` (Aufruf nach autoResults, Laufzeit 180 s), `game-report.js` (Export für Auto-Berichte), `teams.js` (Liganamen).
 
 ## Version 1.36.7
 

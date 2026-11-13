@@ -1,3 +1,11 @@
+AKTUELL ZU TUN (Stand 13.11.2026) – Automatische Spielberichte (1.37.1, ersetzt 1.37.0)
+=======================================================================================
+Siehe ANLEITUNG-1_37_1.txt in grizzlys-functions-1_37_1.zip. Kurz:
+  cd ~/grizzlys-u15 && unzip -o ~/grizzlys-functions-1_37_1.zip
+  firebase deploy --only functions:autoResults,functions:gameReport --project grizzlys-u15
+Danach die Dateien aus functions/ auch ins Live-Repo (Ordner functions) hochladen.
+
+
 AKTUELL ZU TUN (Stand 12.11.2026, abends) – Torschützen in „Letzte Ergebnisse“ (1.36.5)
 =======================================================================================
 Nur functions/standings.js ist geändert (liefert jetzt die Torschützen je Spiel als Rückennummern).
