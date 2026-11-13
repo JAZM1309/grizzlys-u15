@@ -1,3 +1,4 @@
+// Probelauf automatisches Deployen (13.11.2026) – nur Kommentar, keine Funktion geändert.
 /**
  * Mannschaften der App „Young Grizzlys“ (ab 1.35.0) – an einer Stelle für alle Functions.
  *
