@@ -1037,7 +1037,7 @@ function ftInner(g){
   const pct=v=>S&&S.n?Math.round(v/S.n*100):0;
   const top=S&&S.scores?Object.entries(S.scores).sort((a,b)=>b[1]-a[1])[0]:null;
   const head=`<div class="ftHead"><b>🎯 Fan-Tipp</b><span>${open?"anonym · bis zum Bully":"Tipps geschlossen"}</span></div>`;
-  const bars=S&&S.n>=FT_MIN?`<div class="ftBars"><div class="ftBar w" style="--p:${pct(S.w)}%"><span>Sieg</span><b>${pct(S.w)} %</b></div><div class="ftBar d" style="--p:${pct(S.d)}%"><span>Penaltys</span><b>${pct(S.d)} %</b></div><div class="ftBar l" style="--p:${pct(S.l)}%"><span>Niederlage</span><b>${pct(S.l)} %</b></div></div><div class="ftMeta">${S.n} Tipps${top?` · häufigster Tipp <b>${esc(top[0])}</b>`:""}</div>`
+  const bars=S&&S.n>=FT_MIN?`<div class="ftBars"><div class="ftBar w" style="--p:${pct(S.w)}%"><span>Sieg</span><b>${pct(S.w)} %</b></div>${S.d>0?`<div class="ftBar d" style="--p:${pct(S.d)}%"><span>Gleichstand</span><b>${pct(S.d)} %</b></div>`:""}<div class="ftBar l" style="--p:${pct(S.l)}%"><span>Niederlage</span><b>${pct(S.l)} %</b></div></div><div class="ftMeta">${S.n} Tipps${top?` · häufigster Tipp <b>${esc(top[0])}</b>`:""}</div>`
     :S?`<div class="ftMeta">${S.n?S.n+" "+(S.n===1?"Tipp":"Tipps")+" – die Auswertung gibt es ab "+FT_MIN+" Tipps.":"Noch keine Tipps – sei der Erste!"}</div>`:`<div class="ftMeta">Tipps werden geladen …</div>`;
   if(res){
     const hit=S&&S.scores?(S.scores[res.hs+":"+res.as]||0):0, tend=S?S[res.o]:0;
@@ -1064,6 +1064,8 @@ function ftBind(t,g){
   t.querySelector("[data-ft-send]")?.addEventListener("click",async e=>{
     const b=e.currentTarget, hs=Number(t.querySelector('[data-ft-v="0"]').textContent), as=Number(t.querySelector('[data-ft-v="1"]').textContent);
     if(!ftOpen(g)){ftRefresh(key);return}
+    if(hs===as){let w=t.querySelector(".ftWarn");if(!w){w=document.createElement("div");w.className="ftWarn";b.before(w)}
+      w.textContent="Ein Unentschieden gibt es nicht – bitte einen Sieger tippen. Bei einem Penaltyschießen zählt der Endstand mit einem Tor Vorsprung (z. B. 3:2).";return}
     b.disabled=true;b.textContent="Wird gespeichert …";
     let ok=true;try{await window.ftSave(g,key,hs,as)}catch(err){ok=false;console.warn(err)}
     const m=ftMine();m[key]=hs+":"+as;try{localStorage.setItem("grizzlysFanTips",JSON.stringify(m))}catch(err){}

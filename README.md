@@ -48,7 +48,8 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
-| 1.39.0.199 | – (nur Test) | 13.11.2026 | Umbau |
+| 1.39.1.200 | – (nur Test) | 13.11.2026 | Fan-Tipp: kein Gleichstand |
+| 1.39.0.199 | 13.11.2026 | 13.11.2026 | Umbau |
 | 1.38.0.198 | – (nur Test) | 13.11.2026 | Neue Funktion |
 | 1.37.3.197 | – (nur Test) | 13.11.2026 | Optisch |
 | 1.37.2.196 | – (nur Test) | 13.11.2026 | Optisch |
@@ -64,6 +65,14 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.39.1
+
+### Neu in Version 1.39.1 (Stand 1.39.1.200, 13.11.2026, nur in der Test-App) – Fan-Tipp
+
+- **Kein Gleichstand beim Tippen:** Ein Tipp mit gleichem Stand (z. B. 2:2) wird nicht mehr angenommen – es erscheint der Hinweis, einen Sieger zu tippen (bei Penaltyschießen zählt der Endstand mit einem Tor Vorsprung, z. B. 3:2).
+- **Auswertung:** Die Zeile „Penaltys“ ist weg. Nur wenn es noch alte Tipps mit Gleichstand gibt, erscheint eine Zeile „Gleichstand“.
+- **Ablauf:** Functions gehören mit ins Test-Paket und werden mit „Live gehen“ automatisch deployt (siehe Abschnitt „Aufbau der App“).
 
 ## Version 1.39.0
 

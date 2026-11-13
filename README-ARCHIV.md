@@ -8,7 +8,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
-| 1.39.0.199 | – (nur Test) | 13.11.2026 | Umbau |
+| 1.39.1.200 | – (nur Test) | 13.11.2026 | Fan-Tipp: kein Gleichstand |
+| 1.39.0.199 | 13.11.2026 | 13.11.2026 | Umbau |
 | 1.38.0.198 | – (nur Test) | 13.11.2026 | Neue Funktion |
 | 1.37.3.197 | – (nur Test) | 13.11.2026 | Optisch |
 | 1.37.2.196 | – (nur Test) | 13.11.2026 | Optisch |
