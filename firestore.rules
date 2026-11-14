@@ -33,9 +33,9 @@ service cloud.firestore {
     match /fanTips/{tipId} {
       allow create, update: if request.resource.data.keys().hasOnly(["gameId","team","hs","as","g","createdAt"])
         && request.resource.data.gameId is string
-        && request.resource.data.gameId.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}_[AB]")
+        && request.resource.data.gameId.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}_(A|B|U13)")
         && tipId.matches(request.resource.data.gameId + "__[A-Za-z0-9_-]{8,64}")
-        && request.resource.data.team in ["A","B"]
+        && request.resource.data.team in ["A","B","U13"]
         && request.resource.data.g in ["h","a"]
         && request.resource.data.hs is int && request.resource.data.hs >= 0 && request.resource.data.hs <= 20
         && request.resource.data.as is int && request.resource.data.as >= 0 && request.resource.data.as <= 20
@@ -60,7 +60,7 @@ service cloud.firestore {
         && request.resource.data.title is string
         && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 80
         && request.resource.data.text is string && request.resource.data.text.size() <= 600
-        && request.resource.data.team in ["", "A", "B"]
+        && request.resource.data.team in ["", "A", "B", "U13"]
         && request.resource.data.until is string && request.resource.data.until.size() <= 10
         && request.resource.data.push is bool;
       allow update, delete: if isAdmin();
@@ -115,11 +115,12 @@ service cloud.firestore {
       allow read, delete: if isAdmin();
     }
 
-    // Spielberichte (1.9.1.129): veröffentlichte für alle lesbar, Entwürfe nur für den Admin
+    // Spielberichte (1.9.1.129; 1.39.1: Feld bausteine für die automatischen Berichte): veröffentlichte für alle lesbar, Entwürfe nur für den Admin
     match /reports/{reportId} {
       allow read: if resource.data.published == true || isAdmin();
       allow create, update: if isAdmin()
-        && request.resource.data.keys().hasOnly(["gameId","team","date","title","text","keywords","use","len","published","publishedAt","updatedAt"])
+        && request.resource.data.keys().hasOnly(["gameId","team","date","title","text","keywords","use","len","bausteine","published","publishedAt","updatedAt"])
+        && (request.resource.data.get("bausteine", null) == null || request.resource.data.get("bausteine", null) is map || request.resource.data.get("bausteine", null) is list)
         && request.resource.data.title is string && request.resource.data.title.size() <= 120
         && request.resource.data.text is string && request.resource.data.text.size() <= 2000
         && request.resource.data.get("keywords", "") is string && request.resource.data.get("keywords", "").size() <= 200
