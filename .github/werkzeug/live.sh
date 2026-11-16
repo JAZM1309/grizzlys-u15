@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Live gehen / Live zurücksetzen / Veröffentlichung neu anstoßen – gestartet aus dem Admin-Bereich.
+# 1.40.0: firestore.rules aus dem Test-Paket wird mit übernommen und deployt; Regelprüfung (regelcheck.py).
 # 1.39.1: functions/ aus dem Test-Paket wird mit übernommen und danach automatisch deployt.
 # 1.39.0: mit Startprüfung (startcheck.py) und App-Code in eigenen Dateien (tolive.py).
 # Gleiche Logik wie ./live-gehen.sh und ./zurueck.sh im Grizzlys-Werkzeug.
@@ -18,25 +19,38 @@ doku_kopieren() {   # Doku für Live, die mit dem Test-Paket kam (README, Anleit
   done
 }
 
-functions_kopieren() {   # functions/ aus dem Test-Paket → Live (ohne node_modules; nur in Live vorhandene Dateien bleiben) → setzt FN
+functions_kopieren() {   # functions/ und firestore.rules aus dem Test-Paket → Live (ohne node_modules; nur in Live vorhandene Dateien bleiben) → setzt FN
   FN=""
-  [ -d "$T/functions" ] || return 0
-  if command -v node >/dev/null 2>&1; then
-    for f in "$T"/functions/*.js; do [ -e "$f" ] || continue
-      node --check "$f" 2>"$RUNNER_TEMP/fn.log" || fehler "Functions: Syntaxfehler in $(basename "$f") – Live wurde NICHT geändert. $(head -3 "$RUNNER_TEMP/fn.log" | tr '\n' ' ')"
-    done
+  if [ -d "$T/functions" ]; then
+    if command -v node >/dev/null 2>&1; then
+      for f in "$T"/functions/*.js; do [ -e "$f" ] || continue
+        node --check "$f" 2>"$RUNNER_TEMP/fn.log" || fehler "Functions: Syntaxfehler in $(basename "$f") – Live wurde NICHT geändert. $(head -3 "$RUNNER_TEMP/fn.log" | tr '\n' ' ')"
+      done
+    fi
+    mkdir -p functions
+    ( cd "$T/functions" && tar -cf - --exclude=./node_modules . ) | ( cd functions && tar -xf - ) || fehler "Functions konnten nicht übernommen werden."
+    git add -A functions 2>/dev/null; git reset -q -- functions/node_modules 2>/dev/null
   fi
-  mkdir -p functions
-  ( cd "$T/functions" && tar -cf - --exclude=./node_modules . ) | ( cd functions && tar -xf - ) || fehler "Functions konnten nicht übernommen werden."
-  git add -A functions 2>/dev/null; git reset -q -- functions/node_modules 2>/dev/null
-  FN=$(git diff --cached --name-only -- functions | sed 's#^functions/##' | tr '\n' ' ')
+  if [ -f "$T/firestore.rules" ] && ! cmp -s "$T/firestore.rules" firestore.rules; then
+    cp "$T/firestore.rules" firestore.rules; git add firestore.rules
+  fi
+  FN=$(git diff --cached --name-only -- functions firestore.rules | sed 's#^functions/##' | tr '\n' ' ')
+}
+regeln_pruefen() {   # jede Mannschaft der App muss in den Firestore-Regeln vorkommen (sonst scheitern Tipps/News still)
+  [ -f firestore.rules ] || return 0
+  python3 "$WZ/regelcheck.py" . >"$RUNNER_TEMP/regel.log" 2>&1; RC=$?
+  if [ $RC -eq 1 ]; then
+    if [ "$TROTZDEM" = "ja" ]; then warnung "Regelprüfung: $(head -2 "$RUNNER_TEMP/regel.log" | tr '\n' ' ') – trotzdem live (Häkchen „Trotzdem live gehen“)."
+    else fehler "REGELPRÜFUNG: Live wurde NICHT geändert – $(head -2 "$RUNNER_TEMP/regel.log" | tr '\n' ' ')"; fi
+  elif [ $RC -eq 0 ]; then info "Regelprüfung: alle Mannschaften sind in den Firestore-Regeln erlaubt."
+  fi
 }
 functions_deploy() {   # startet den Deploy-Ablauf, wenn sich Functions geändert haben
   [ -n "$FN" ] || return 0
   if gh workflow run functions-deploy.yml --ref main >/dev/null 2>&1; then
-    info "Functions geändert ($FN) – Deploy gestartet, fertig in 5–10 Minuten (Reiter Actions › Functions deployen)."
+    info "Geändert ($FN) – Deploy gestartet, fertig in 5–10 Minuten (Reiter Actions › Functions deployen)."
   else
-    warnung "Functions wurden übernommen ($FN), der Deploy ließ sich aber nicht starten – bitte unter Actions „Functions deployen“ von Hand starten."
+    warnung "Änderungen wurden übernommen ($FN), der Deploy ließ sich aber nicht starten – bitte unter Actions „Functions deployen“ von Hand starten."
   fi
 }
 
@@ -65,11 +79,11 @@ live)
   [ -n "$V" ] || fehler "In der Test-App wurde keine Versionsnummer gefunden."
   grep -q 'class="testRibbon"' "$T/index.html" || fehler "Die Test-App hat keinen Test-Balken – Aufbau unerwartet, nichts geändert."
   if [ "$V" = "$L" ]; then
-    doku_kopieren; functions_kopieren
+    doku_kopieren; functions_kopieren; regeln_pruefen
     [ -n "$DOKU$FN" ] || { info "Live ist schon auf $V – nichts zu tun."; exit 0; }
     git add -A; git commit -q -m "Live-Doku/Functions $V (Admin-Bereich)"
     git push -q origin HEAD:main || fehler "Hochladen ins Live-Repo fehlgeschlagen."
-    pages_neu; info "Live ist schon auf $V – übernommen:${DOKU:+ Doku$DOKU}${FN:+ Functions $FN}"; functions_deploy; exit 0
+    pages_neu; info "Live ist schon auf $V – übernommen:${DOKU:+ Doku$DOKU}${FN:+ Functions/Regeln $FN}"; functions_deploy; exit 0
   fi
   if [ "$(printf '%s\n%s\n' "$L" "$V" | sort -V | tail -1)" = "$L" ]; then
     fehler "Die Test-App ($V) ist älter als Live ($L). Dafür bitte „Live zurücksetzen“ verwenden."
@@ -82,7 +96,7 @@ live)
   python3 "$WZ/tolive.py" "$T/index.html" index.html "$T/sw.js" sw.js 2>"$RUNNER_TEMP/tolive.log" \
     || { git checkout -q -- . ; fehler "$(tail -2 "$RUNNER_TEMP/tolive.log" | tr '\n' ' ')"; }
   [ "$(version_von .)" = "$V" ] || fehler "Nach dem Umwandeln stimmt die Version nicht ($(version_von .) statt $V)."
-  doku_kopieren; functions_kopieren
+  doku_kopieren; functions_kopieren; regeln_pruefen
   # 1.39.0: Startprüfung – startet die umgewandelte Live-App im Browser; JavaScript-Fehler stoppen den Live-Gang
   if python3 -c "import playwright" 2>/dev/null; then
     timeout 240 python3 "$WZ/startcheck.py" "$GITHUB_WORKSPACE" "$RUNNER_TEMP/pruefung" >"$RUNNER_TEMP/start.log" 2>&1; START_RC=$?
