@@ -48,7 +48,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
-| 1.40.2.204 | – (nur Test) | 16.11.2026 | „Teilen“ als Bild |
+| 1.40.2.205 | – (nur Test) | 16.11.2026 | „Teilen“ als Bild |
 | 1.40.1.203 | – (nur Test) | 16.11.2026 | Optik (Icons, Leerzustände, Übergänge, Dunkelmodus) |
 | 1.40.0.202 | – (nur Test) | 16.11.2026 | Neue Funktion (Fehlerübersicht, Regelcheck, Optik) |
 | 1.39.1.200 | – (nur Test) | 13.11.2026 | Fan-Tipp: kein Gleichstand |
@@ -71,9 +71,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 ## Version 1.40.2
 
-### Neu in Version 1.40.2 (Stand 1.40.2.204, 16.11.2026, nur in der Test-App)
+### Neu in Version 1.40.2 (Stand 1.40.2.205, 16.11.2026, nur in der Test-App)
 
 - **Ergebnis teilen als Bild:** „Ergebnis teilen“ (und „Teilen“ vor dem Spiel) öffnet jetzt das Bild-Fenster mit der fertigen Karte (Logos, Spielstand, Drittel) zum Teilen oder Speichern, statt nur Text zu senden. Abgesagte Spiele werden weiter als Text geteilt.
+- **App-Fehler:** Die Zeilennummer wird jetzt mit gespeichert (bisher abgeschnitten), damit Fehler auffindbar sind.
 
 ## Version 1.40.1
 

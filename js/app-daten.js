@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.40.2.204",
+      appVersion:"1.40.2.205",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1713,7 +1713,7 @@ function appErrHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charC
 async function appErrSend(e){
   try{
     if(window.GRIZZLYS_TEST||appErrSent.size>=5)return;
-    const msg=String(e.msg||"").slice(0,160), src=String(e.src||"").replace(/[?#].*$/,"").replace(location.origin,"").slice(0,100);
+    const msg=String(e.msg||"").slice(0,160), src=String(e.src||"").replace(/[?#][^:]*/,"").replace(location.origin,"").slice(0,100);
     if(!msg||APPERR_IGNORE.test(msg))return;
     const day=new Date().toISOString().slice(0,10), id=day+"_"+appErrHash(msg+"|"+src);
     if(appErrSent.has(id))return; appErrSent.add(id);
