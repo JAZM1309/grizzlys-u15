@@ -2225,3 +2225,24 @@ html:not(.hw):not(.xm) .hero h1{font-size:20px}
 .lrPill.sk{width:74px;height:20px}.tcSub.sk{width:110px;height:12px;margin-top:4px}
 @keyframes skShim{0%{background-position:100% 50%}100%{background-position:0 50%}}
 @media(prefers-reduced-motion:reduce){.sk,.lrPill.sk{animation:none}}
+
+/* 1.40.1: Admin-Reiter mit Linien-Icons, Leerzustände, weichere Übergänge, Dunkelmodus */
+.admTabs button{display:flex;flex-direction:column;align-items:center;gap:3px}
+.admTabs .admIc{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.admTabs .adminBugBadge{position:absolute;top:3px;right:6px;margin:0}
+.emptyBox{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:22px 14px;color:var(--muted)}
+.emptyBox svg{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.55;padding:12px;border-radius:50%;background:rgba(22,140,255,.09);box-sizing:content-box;width:30px;height:30px}
+.emptyBox b{font-size:15px;color:var(--text)}.emptyBox span{font-size:13px;line-height:1.4;max-width:260px}
+.admPane:not([hidden]){animation:viewIn .22s ease both}
+.admTabs button{transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+.card,.opponentCard,.infoCard,.adminAccordionHeader{transition:transform .14s ease,box-shadow .18s ease,background-color .18s ease}
+.card:active,.opponentCard:active{transform:scale(.985)}
+@media (hover:hover){.card:hover,.opponentCard:hover{box-shadow:0 10px 26px rgba(8,31,55,.12)}}
+@media (prefers-reduced-motion:reduce){.admPane:not([hidden]){animation:none}.card,.opponentCard,.infoCard,.adminAccordionHeader,.admTabs button{transition:none}.card:active,.opponentCard:active{transform:none}}
+html.dark .admTabs{background:#0f1c2f}
+html.dark .admTabs button{color:#93a7bd}
+html.dark .admTabs button.on{background:#1b2d47;color:#e7eef8;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+html.dark .emptyBox svg{background:rgba(110,175,255,.12)}
+html.dark .emptyBox b{color:#e7eef8}
+html.dark .card,html.dark .opponentCard,html.dark .infoCard{box-shadow:0 6px 18px rgba(0,0,0,.35)}
+html.dark .adminBox{box-shadow:0 14px 40px rgba(0,0,0,.55)}

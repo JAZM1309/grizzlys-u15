@@ -704,7 +704,7 @@ function scorerHtml(team){
 }
 function bilanzHtml(team){
   const S=seasonStats(team), t=S.tot, word=OUTW;
-  if(!t.gp)return `<div class="sbEmpty">Für ${esc(teamName(team))} gibt es noch keine Ergebnisse.</div>`;
+  if(!t.gp)return `<div class="sbEmpty">${emptyBox("puck","Noch keine Ergebnisse","Sobald ${esc(teamName(team))} gespielt hat, erscheint hier die Bilanz.")}</div>`;
   const tile=(v,l,c="")=>`<div class="sbTile ${c}"><b>${v}</b><span>${l}</span></div>`;
   const avg=v=>(v/t.gp).toLocaleString("de-DE",{maximumFractionDigits:1});
   const row=S.row&&S.row.r?`<div class="sbRank"><b>Platz ${esc(String(S.row.r))}</b><span>${S.row.p!==undefined?esc(String(S.row.p))+" Punkte · ":""}${esc(APP_CFG.teams[team]?APP_CFG.teams[team].league:"")}</span></div>`:"";
@@ -1273,11 +1273,18 @@ function g3Bind(card,g,fixed=false){
   card.onclick=e=>{if(e.target.closest("button,a"))return;tog()};
   card.onkeydown=e=>{if(e.target!==card)return;if(e.key==="Enter"||e.key===" "){e.preventDefault();tog()}};
 }
+const EMPTY_ICONS={
+  puck:'<ellipse cx="12" cy="9" rx="7" ry="3"/><path d="M5 9v5c0 1.7 3.1 3 7 3s7-1.3 7-3V9"/>',
+  doc:'<rect x="5" y="3.5" width="14" height="17" rx="3"/><path d="M9 9h6M9 13h6M9 16.5h3"/>',
+  cal:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/>'};
+function emptyBox(kind,title,text){return '<div class="emptyBox"><svg viewBox="0 0 24 24" aria-hidden="true">'+(EMPTY_ICONS[kind]||EMPTY_ICONS.puck)+'</svg><b>'+title+'</b>'+(text?'<span>'+text+'</span>':'')+'</div>'}
 function renderList(filter="all"){
   if(scheduleMode!=="chrono"){renderCalendar();return;}
   const list=document.getElementById("gamesList"); list.innerHTML="";
   const arr=games.filter(gameMatchesFilters).sort((a,b)=>dt(a)-dt(b));
   document.getElementById("scheduleTitle").textContent="Spielplan"; document.getElementById("scheduleCount").textContent=arr.length+" Spiele";
+  if(!arr.length){list.innerHTML=emptyBox("puck","Keine Spiele","Mit diesen Filtern gibt es keine Spiele. Wähle oben eine Mannschaft oder Heim/Auswärts.");return}
   let month=""; const ng=nextGame(), openKey=g3OpenKey===null?(ng?g3Key(ng):""):g3OpenKey;
   /* Gespielte Spiele stehen zugeklappt über den kommenden („Gespielte Spiele anzeigen“) */
   const isPast=g=>!!resInfo(g)||dt(g).getTime()+2*3600000<Date.now();
@@ -1337,6 +1344,8 @@ function icsFor(g,alarm=false){
 function downloadIcs(g,alarm){const blob=new Blob([icsFor(g,alarm)],{type:"text/calendar"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(alarm?"Erinnerung-":"U15-")+g.date+"-"+g.team+".ics";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function calendar(g){downloadIcs(g,false)} function reminder(g){downloadIcs(g,true);setTimeout(()=>alert("Kalenderdatei vorbereitet – die Erinnerung ist 24 Stunden vorher hinterlegt."),250)}
 async function shareGame(g){const r=resInfo(g), per=r?standPeriodsData(g):null;
+  /* 1.40.2: Ergebnis und Spieltag als Bild teilen (Bild-Fenster mit Teilen/Speichern); abgesagte Spiele bleiben Text */
+  if(!g.cancelled&&typeof instaOpen==="function"){try{await instaOpen(g,r?"result":"announce",true);return}catch(e){console.warn(e)}}
   const text=(g.cancelled?"❌ ABGESAGT\n":"")+(r?"🏒 "+teamName(g.team)+" – Endstand\n"+g.home+" "+r.hs+":"+r.as+" "+g.away+(per?"\nDrittel: "+per.p.join(" · ")+(per.so?" · n.P.":per.ot?" · n.V.":""):"")+"\n"+fmtDate(g)+" · "+g.stadium
     :"🏒 "+teamName(g.team)+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g));if(navigator.share){try{await navigator.share({title:"ESV Grizzlys "+teamName(g.team),text})}catch(e){}}else alert(text)}
 
@@ -1742,7 +1751,7 @@ function renderRules(){
   }
   if(cnt) cnt.textContent=hits.length===RULES.length?RULES.length+" Regeln":hits.length+" von "+RULES.length;
   list.innerHTML=hits.length?hits.map(r=>'<article class="infoCard rlItem'+(r.p?' rlHas':'')+'">'+(r.p?sigSvg(r.p):'')+'<div>'+(ruleCat==="Alle"||words.length?'<span class="rlCat">'+rlEsc(r.c)+'</span>':'')+'<b>'+rlMark(r.t,words)+'</b><p>'+rlMark(r.x,words)+'</p></div></article>').join("")
-    :'<div class="infoCard rlEmpty">Keine Regel gefunden.<br><span class="small">Versuch es mit einem anderen Wort, z. B. „Strafe“, „Tor“ oder „Torhüter“.</span></div>';
+    :'<div class="infoCard rlEmpty">'+emptyBox("search","Keine Regel gefunden","Versuch es mit einem anderen Wort, z. B. „Strafe“, „Tor“ oder „Torhüter“.")+'</div>';
 }
 document.getElementById("rulesSearch")?.addEventListener("input",()=>{renderRules();if(window.scrollY>140)window.scrollTo({top:0})});
 function rlTopicOpen(cat){
@@ -2366,8 +2375,8 @@ function newsFill(){
     {k:"app",ic:"✨",l:"App",n:app.length,u:app.filter(x=>isNew("v:"+(x.id||x.v))).length}];
   if(!newsTab||!T.some(t=>t.k===newsTab))newsTab=(T.find(t=>t.u&&t.k!=="app")||T.find(t=>t.n&&t.k!=="app")||T.find(t=>t.u)||T[0]).k;
   const pane=newsTab==="notes"?(notes.length?notes.map(x=>newsNoteHtml(x,isNew("n:"+x.id))).join(""):'<div class="small newsEmpty">Aktuell keine Hinweise.</div>')
-    :newsTab==="reports"?(rp.length?rp.map(x=>newsReportHtml(x,isNew(repNid(x)))).join(""):'<div class="small newsEmpty">Keine Spielberichte aus den letzten 14 Tagen.</div>')
-    :newsTab==="changes"?(ch.length?ch.map(c=>newsChangeHtml(c,isNew(c.id))).join(""):'<div class="small newsEmpty">Keine geänderten Termine.</div>')
+    :newsTab==="reports"?(rp.length?rp.map(x=>newsReportHtml(x,isNew(repNid(x)))).join(""):emptyBox("doc","Keine Spielberichte","In den letzten 14 Tagen gab es keine Berichte."))
+    :newsTab==="changes"?(ch.length?ch.map(c=>newsChangeHtml(c,isNew(c.id))).join(""):emptyBox("cal","Keine Terminänderungen","Alle Spiele finden wie geplant statt."))
     :app.map(x=>`<div class="newsItem newsApp${isNew("v:"+(x.id||x.v))?" unread":""}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
   body.innerHTML=`<div class="newsTabs" role="tablist" aria-label="Bereiche">${T.map(t=>`<button type="button" role="tab" class="newsTab${t.k===newsTab?" on":""}" aria-selected="${t.k===newsTab}" data-nt="${t.k}"><span class="ntIc" aria-hidden="true">${t.ic}</span><span class="ntL">${t.l}</span>${t.u?`<i class="ntNew" aria-label="${t.u} neu">${t.u}</i>`:t.n&&t.k!=="app"?`<small class="ntN">${t.n}</small>`:""}</button>`).join("")}</div><div class="newsPane" role="tabpanel">${pane}</div>`;
   body.querySelectorAll(".newsTab").forEach(b=>b.onclick=()=>{newsTab=b.dataset.nt;newsFill()});
