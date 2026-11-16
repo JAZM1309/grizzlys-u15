@@ -1,4 +1,4 @@
-# Functions automatisch deployen (ab 1.39.0)
+# Functions und Firestore-Regeln automatisch deployen (ab 1.39.0, Regeln ab 1.40.0)
 # Läuft, sobald im Live-Repo etwas im Ordner functions/ (oder firebase.json) hochgeladen wird.
 # Einmalig nötig: GitHub-Secret FIREBASE_DEPLOY_KEY (siehe FUNCTIONS-AUTODEPLOY-EINRICHTEN.txt).
 name: Functions deployen
@@ -6,7 +6,7 @@ name: Functions deployen
 on:
   push:
     branches: [main]
-    paths: ["functions/**", "firebase.json"]
+    paths: ["functions/**", "firebase.json", "firestore.rules"]
   workflow_dispatch:
 
 concurrency:
@@ -52,8 +52,22 @@ jobs:
         run: |
           for f in functions/*.js; do node --check "$f" || { echo "::error title=Grizzlys::Syntaxfehler in $f"; exit 1; }; done
 
-      - name: Deployen
+      - name: Firestore-Regeln deployen
+        id: regeln
+        continue-on-error: true
+        run: |
+          if [ ! -f firestore.rules ] || ! grep -q '"firestore"' firebase.json; then
+            echo "::notice title=Grizzlys::Keine Regeln zu deployen (firestore.rules oder Eintrag in firebase.json fehlt)."; exit 0
+          fi
+          npx --yes firebase-tools@latest deploy --only firestore:rules --project grizzlys-u15 --non-interactive --force
+
+      - name: Functions deployen
         run: npx --yes firebase-tools@latest deploy --only functions --project grizzlys-u15 --non-interactive --force
+
+      - name: Regeln-Ergebnis melden
+        if: steps.regeln.outcome == 'failure'
+        run: |
+          echo "::error title=Grizzlys::Die Functions sind deployt, die Firestore-Regeln NICHT (vermutlich fehlt dem Dienstkonto die Rolle firebaserules.admin – siehe FUNCTIONS-AUTODEPLOY-EINRICHTEN.txt, Abschnitt Regeln). Regeln bitte von Hand in der Firebase-Konsole veröffentlichen."; exit 1
 
       - name: Aufräumen
         if: always()
