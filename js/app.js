@@ -9,11 +9,20 @@ const logoUrls={"Dinslakener Kobras": "https://www.google.com/s2/favicons?domain
 const grizzlysLogo="logo.png";
 /* Gegner-Logos liegen als Dateien im Ordner "logos/" der App. logoUrls (oben) ist nur noch die Reserve,
    falls eine Datei im Ordner fehlt. */
+window.resultsLoading=true; setTimeout(()=>{if(window.resultsLoading){window.resultsLoading=false;window.applyResults&&window.applyResults()}},8000); /* 1.40.0: Platzhalter, solange die Ergebnisse laden */
 const LOGO_FILES={"Dinslakener Kobras":"dinslakener-kobras.png","ESC Darmstadt":"esc-darmstadt.png","ESC Rheine Young Cats":"esc-rheine-young-cats.png","EHC Gelsenkirchen":"ehc-gelsenkirchen.png","Herner EV":"herner-ev.png","Neusser EV":"neusser-ev.png","GSC Moers":"gsc-moers.png","TSVE Bielefeld":"tsve-bielefeld.png","EHC Neuwied":"ehc-neuwied.png","Eisadler Dortmund":"eisadler-dortmund.png","TuS Wiehl":"tus-wiehl.png","EC Bergisch Land":"ec-bergisch-land.png","EV Duisburg":"ev-duisburg.png","Ratinger Ice Aliens":"ratinger-ice-aliens.png","Lippe Hockey Hamm":"lippe-hockey-hamm.png","Herforder EV":"herforder-ev.png","Grefrather EC":"grefrather-ec.png","Aachener EC":"aachener-ec.png","Soester EG":"soester-eg.png","EHC Essen Ruhr":"ehc-essen-ruhr.webp","EHC Troisdorf":"ehc-troisdorf.png"};
 function logoImgHtml(k,cls){
   const local=LOGO_FILES[k]?"logos/"+LOGO_FILES[k]:"", ext=logoUrls[k]||"";
-  return `<img class="${cls}" src="${esc(local||ext)}" alt="${esc(k)}" loading="lazy"${local&&ext?` data-ext="${esc(ext)}"`:""} onerror="if(this.dataset.ext){this.src=this.dataset.ext;delete this.dataset.ext}else{this.style.display='none'}">`;
+  return `<img class="${cls}" src="${esc(local||ext)}" alt="${esc(k)}" loading="lazy"${local&&ext?` data-ext="${esc(ext)}"`:""} onerror="if(this.dataset.ext){this.src=this.dataset.ext;delete this.dataset.ext}else{window.logoFallback(this)}">`;
 }
+/* 1.40.0: fehlt ein Logo, erscheint ein Kürzel-Wappen (Farbe aus dem Namen) statt eines defekten Bildes */
+function logoFbHtml(name,cls){
+  const T=String(name||"").replace(/\b\d+[a-z]?\b/gi,"").split(/[\s\/\-]+/).filter(w=>w&&!/^(ESV|EHC|ESC|EC|EV|ERC|TSV|SG|ETC|EHV|e\.?v\.?)$/i.test(w));
+  let k=T.slice(0,3).map(w=>w[0]).join(""); if(k.length<2)k=(T[0]||String(name||"?")).slice(0,2); k=k.toUpperCase();
+  let h=0; for(const c of String(name||""))h=(h*31+c.charCodeAt(0))%360;
+  return `<span class="logoFb ${cls}" style="background:hsl(${h} 38% 90%);color:hsl(${h} 40% 28%)" role="img" aria-label="${esc(name)}">${esc(k)}</span>`;
+}
+window.logoFallback=function(img){const s=document.createElement("span");s.innerHTML=logoFbHtml(img.alt,img.className);img.replaceWith(s.firstChild)};
 const rinkAddresses={"Bergkamen": "Häupenweg 29, 59192 Bergkamen", "Gelsenkirchen": "Adenauerallee 118, 45891 Gelsenkirchen", "Neuss": "Jakob-Koch-Straße 1, 41466 Neuss", "Duisburg": "Margaretenstraße 17-19, 47055 Duisburg", "Hamm": "Karl-Koßmann-Straße 1, 59071 Hamm", "Herford": "Westring 108, 32051 Herford", "Grefeath": "Stadionstraße 161, 47929 Grefrath", "Grefrath": "Stadionstraße 161, 47929 Grefrath", "Dinslaken": "Am Stadtbad 1, 46537 Dinslaken", "Essen": "Curtiusstraße 2, 45144 Essen", "Dortmund": "Strobelallee 32, 44139 Dortmund", "Bielefeld": "Duisburger Straße 14, 33647 Bielefeld", "Solingen": "Brühler Straße 20, 42657 Solingen", "Aachen": "Hubert-Wienen-Straße 8, 52070 Aachen", "Ratingen": "Am Sandbach 12, 40878 Ratingen", "Wiehl": "Mühlenstraße 23, 51674 Wiehl", "Möhnesee": "Teigelhof 4, 59519 Möhnesee", "Neuwied": "Andernacher Straße 111, 56564 Neuwied", "Darmstadt": "Alsfelder Straße 45, 64289 Darmstadt", "Troisdorf": "Uckendorfer Straße 135, 53844 Troisdorf"};
 function dt(g){return new Date(g.date+"T"+g.time+":00")}
 function fmtDate(g){return dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"})}
@@ -194,7 +203,7 @@ function logoKeys(name){
 }
 function logoHtml(name, cls="opponentLogo"){
   const keys=logoKeys(name);
-  if(!keys.length) return `<div class="${cls}" style="display:grid;place-items:center;background:#eef3f7;border-radius:10px;font-size:10px;font-weight:900">${name.slice(0,3).toUpperCase()}</div>`;
+  if(!keys.length) return logoFbHtml(name,cls);
   return `<div class="logos">${keys.map(k=>logoImgHtml(k,cls)).join("")}</div>`;
 }
 function grizzlysHtml(cls="clubLogo"){return `<img class="${cls}" src="${grizzlysLogo}" alt="ESV Grizzlys">`}
@@ -630,7 +639,7 @@ function renderTeamTiles(){
     const stats=res.length?`<div class="tcStats"><div><b>${w}</b><span>Siege</span></div><div><b>${d}</b><span>Unent.</span></div><div><b>${l}</b><span>Niederl.</span></div><div><b>${gf}:${ga}</b><span>Tore</span></div></div>`:"";
     const nextRow=nx?`<div class="tcNext">${isHome(nx)?teamLogoHtml(nx.home,"tcLogo")+"":logoHtml(opponent(nx),"tcLogo")}<div class="tcNextTxt"><small>Nächstes Spiel · ${isHome(nx)?"Heim":"Auswärts"}</small><b>${esc(opponent(nx))}</b><small>${fmtDate(nx)} · ${nx.time} Uhr</small></div>${ic("chev")}</div>`:`<div class="tcNext"><div class="tcNextTxt"><b>Saison abgeschlossen</b></div></div>`;
     sbData[team]={w,d,l,gf,ga,n:res.length};
-    el.innerHTML=`<div class="tcTop"><div class="teamLetter">${(APP_CFG.teams[team]&&APP_CFG.teams[team].letter)||team}</div><div><div class="teamTitle">${teamName(team)}</div>${res.length?"":'<div class="tcSub">Noch keine Ergebnisse</div>'}</div>${sr&&sr.r?`<span class="tcRank">Platz ${sr.r}</span>`:""}${dots?`<div class="tcForm" title="Letzte Spiele">${dots}</div>`:""}</div>${stats}<div class="tcProg"><i style="width:${pct}%"></i></div><div class="tcProgTxt">${played} von ${all.length} Spielen gespielt</div>${nextRow}`;
+    el.innerHTML=`<div class="tcTop"><div class="teamLetter">${(APP_CFG.teams[team]&&APP_CFG.teams[team].letter)||team}</div><div><div class="teamTitle">${teamName(team)}</div>${res.length?"":window.resultsLoading?'<div class="tcSub sk"></div>':'<div class="tcSub">Noch keine Ergebnisse</div>'}</div>${sr&&sr.r?`<span class="tcRank">Platz ${sr.r}</span>`:""}${dots?`<div class="tcForm" title="Letzte Spiele">${dots}</div>`:""}</div>${stats}<div class="tcProg"><i style="width:${pct}%"></i></div><div class="tcProgTxt">${played} von ${all.length} Spielen gespielt</div>${nextRow}`;
   });
   try{renderSbCard()}catch(e){console.warn(e)}
 }
@@ -1192,7 +1201,7 @@ function lrRender(list){
       <div class="lrTeams"><span class="lrBadge">${esc(teamName(g.team))}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
         <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?lrScorers(g,r):""}</div>
-      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}</div>
+      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");
   el.querySelectorAll(".lrRow").forEach(row=>{const g=list[Number(row.dataset.i)];

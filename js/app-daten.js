@@ -2,7 +2,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, onSnapshot, query, where, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, onSnapshot, query, where, orderBy, limit, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 import { getMessaging, getToken, deleteToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-messaging.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-functions.js";
 
@@ -55,8 +55,8 @@ async function loadResults(){
     const snap=await getDocs(collection(db,"results"));
     results={}; snap.forEach(d=>results[d.id]=d.data());
     window.firebaseResults=results;
-    window.applyResults?.();
   }catch(err){ console.warn("Firestore Ergebnisse konnten nicht geladen werden",err); }
+  finally{ window.resultsLoading=false; window.applyResults?.(); }
 }
 
 /* 1.26.0: Live-Ticker – Spielstände von heute in Echtzeit (Firestore „live“, geschrieben von der Function liveTicker) */
@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.39.1.200",
+      appVersion:"1.40.0.202",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1705,3 +1705,40 @@ document.querySelectorAll("[data-adm-tab]").forEach(b=>b.onclick=()=>admSetTab(b
 document.querySelectorAll(".admFold").forEach(f=>{const h=f.querySelector(".admFoldHead"),b=f.querySelector(".admFoldBody");h.onclick=()=>{const o=b.hidden;b.hidden=!o;f.classList.toggle("open",o);h.setAttribute("aria-expanded",o?"true":"false")}});
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);admRenderAll()};}
 function admStart(){admSetTab(adm.tab);admRenderAll();if(!adm.ehv||Date.now()-adm.ehvAt>10*60000)admLoadEhv()}
+
+/* ===== 1.40.0: anonyme Fehlerzählung (Sammlung appErrors) + Admin-Karte „App-Fehler“ ===== */
+const APPERR_IGNORE=/Failed to fetch|NetworkError|Load failed|ResizeObserver|Script error|AbortError|offline|Importing a module script failed|extension:/i;
+const appErrSent=new Set();
+function appErrHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return h.toString(36)}
+async function appErrSend(e){
+  try{
+    if(window.GRIZZLYS_TEST||appErrSent.size>=5)return;
+    const msg=String(e.msg||"").slice(0,160), src=String(e.src||"").replace(/[?#].*$/,"").replace(location.origin,"").slice(0,100);
+    if(!msg||APPERR_IGNORE.test(msg))return;
+    const day=new Date().toISOString().slice(0,10), id=day+"_"+appErrHash(msg+"|"+src);
+    if(appErrSent.has(id))return; appErrSent.add(id);
+    const ua=navigator.userAgent||"", plat=/Android/i.test(ua)?"android":/iPhone|iPad|iPod/i.test(ua)?"ios":"desktop", v=String((document.querySelector(".inVer")||{}).textContent||"").slice(0,20);
+    await setDoc(doc(db,"appErrors",id),{day,msg,src,v,n:1,last:serverTimestamp(),plat},{merge:true});
+  }catch(err){}
+}
+window.__appErrHook=appErrSend; (window.__appErrQ||[]).splice(0).forEach(appErrSend);
+async function loadAppErrors(){
+  const list=document.getElementById("admErrList"), sum=document.getElementById("admErrSum"); if(!list)return;
+  if(auth.currentUser?.uid!==ADMIN_UID){list.innerHTML='<div class="small">Admin-Anmeldung erforderlich.</div>';return}
+  list.innerHTML='<div class="small">Wird geladen …</div>';
+  try{
+    const snap=await getDocs(query(collection(db,"appErrors"),orderBy("last","desc"),limit(40))), rows=[]; snap.forEach(d=>rows.push({id:d.id,...d.data()}));
+    sum.textContent=rows.length?rows.length+(rows.length===1?" Meldung":" Meldungen"):"keine";
+    list.innerHTML=rows.length?rows.map(r=>'<div class="apRow warn"><i>!</i><div><b>'+esc(r.msg||"")+'</b><span>'+esc(r.day||"")+' · '+(Number(r.n)||1)+'× · '+esc(r.v||"?")+' · '+esc(r.plat||"")+(r.src?' · '+esc(r.src):'')+'</span></div></div>').join(""):'<div class="small">Keine Fehler gemeldet – gut so.</div>';
+  }catch(e){console.error(e);sum.textContent="Fehler";list.innerHTML='<div class="small analyticsError">Konnte nicht geladen werden (Firestore-Regeln für appErrors veröffentlicht?).</div>'}
+}
+async function clearAppErrors(){
+  if(auth.currentUser?.uid!==ADMIN_UID)return;
+  try{const cut=new Date(Date.now()-14*864e5).toISOString().slice(0,10), snap=await getDocs(collection(db,"appErrors")); let n=0;
+    for(const d of snap.docs){ if(String((d.data()||{}).day||"")<cut){await deleteDoc(d.ref);n++} }
+    alert(n+" alte Meldungen gelöscht.");}catch(e){alert("Löschen nicht möglich: "+(e.message||e))}
+  loadAppErrors();
+}
+document.querySelector("#admErrBox .admFoldHead")?.addEventListener("click",()=>{ if(document.getElementById("admErrBody")?.hidden) loadAppErrors(); });
+document.getElementById("admErrRefresh")?.addEventListener("click",loadAppErrors);
+document.getElementById("admErrClear")?.addEventListener("click",clearAppErrors);

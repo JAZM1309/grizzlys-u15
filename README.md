@@ -48,6 +48,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.40.0.202 | – (nur Test) | 16.11.2026 | Neue Funktion (Fehlerübersicht, Regelcheck, Optik) |
 | 1.39.1.200 | – (nur Test) | 13.11.2026 | Fan-Tipp: kein Gleichstand |
 | 1.39.0.199 | 13.11.2026 | 13.11.2026 | Umbau |
 | 1.38.0.198 | – (nur Test) | 13.11.2026 | Neue Funktion |
@@ -65,6 +66,15 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.40.0
+
+### Neu in Version 1.40.0 (Stand 1.40.0.202, 16.11.2026, nur in der Test-App)
+
+- **App-Fehler (Admin):** Unerwartete Fehler der App werden anonym gemeldet (Tag, Meldung, App-Version, Plattform – keine Personendaten) und stehen im Admin-Bereich unter „🧯 App-Fehler“ (Aktualisieren / Leeren). Dort auch Link „💶 Kosten ansehen“ (Google-Abrechnung; die Kostenwarnung per E-Mail bleibt die Hauptwarnung). Regel `appErrors` in `firestore.rules`.
+- **Regeln-Check:** „Live gehen“ prüft, ob jede Mannschaft aus der App in `firestore.rules` (Tipps, News) steht (`regelcheck.py`). Bei Fehlern stoppt Live; `firestore.rules` wird mit den Functions automatisch veröffentlicht (Rolle `roles/firebaserules.admin` fürs Dienstkonto nötig).
+- **Optik:** Graue Kleintexte und das orange B-Label kontrastreicher; Platzhalter statt „Ergebnis folgt“-Flackern beim Laden; fehlt ein Gegner-Logo, erscheint ein Kürzel-Wappen.
+- **Sommerpause:** Admin-Code nachladen (ca. 80 KB sparen).
 
 ## Version 1.39.1
 

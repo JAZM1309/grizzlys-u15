@@ -130,6 +130,20 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Fehlerzählung der App (1.40.0): anonym, nur Fehlertext/Datei/Zeile/Version/Gerätetyp; nur der Admin liest
+    match /appErrors/{errId} {
+      allow create, update: if errId.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9]{4,12}")
+        && request.resource.data.keys().hasOnly(["day","msg","src","v","n","last","plat"])
+        && request.resource.data.day == errId.split("_")[0]
+        && request.resource.data.msg is string && request.resource.data.msg.size() <= 160
+        && request.resource.data.get("src", "") is string && request.resource.data.get("src", "").size() <= 100
+        && request.resource.data.get("v", "") is string && request.resource.data.get("v", "").size() <= 20
+        && request.resource.data.get("plat", "desktop") in ["android","ios","desktop"]
+        && request.resource.data.n is int && request.resource.data.n >= 1 && request.resource.data.n <= 5000
+        && request.resource.data.last == request.time;
+      allow read, delete: if isAdmin();
+    }
+
     match /gameReminders/{reminderId} {
       allow read, write: if isAdmin();
     }
