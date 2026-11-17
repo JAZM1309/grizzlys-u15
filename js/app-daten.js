@@ -97,7 +97,7 @@ function applyScheduleOverrides(){
     const o=scheduleOverrides[g._baseId];
     if(o){ Object.assign(g,{day:o.day||g._base.day,date:o.date||g._base.date,time:o.time||g._base.time,home:o.home||g._base.home,away:o.away||g._base.away,stadium:o.stadium||g._base.stadium}); }
     else Object.assign(g,g._base);
-    g.cancelled=!!(o&&o.cancelled===true); /* 1.25.0: Spiel abgesagt – nur Anzeige */
+    /* 1.40.3: Absage gilt nur für den Tag, an dem sie gesetzt wurde – wird das Spiel verlegt, ist es nicht mehr abgesagt */ g.cancelled=!!(o&&o.cancelled===true&&g.date===(o.cancelDate||o.originalDate||g.date)); /* 1.25.0: Spiel abgesagt – nur Anzeige */
   });
 }
 async function loadScheduleOverrides(){
@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.40.2.205",
+      appVersion:"1.40.6.209",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1646,7 +1646,7 @@ async function admSendChangePush(g,text){
 async function admSetCancelled(g,on){
   const id=scheduleGameId(g), base=g._base||g, o=scheduleOverrides[id];
   if(on){
-    const data=o?{...o,cancelled:true}:{gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day:base.day,date:base.date,time:base.time,home:base.home,away:base.away,stadium:base.stadium,cancelled:true,news:true};
+    const data=o?{...o,cancelled:true,cancelDate:o.date||base.date}:{gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day:base.day,date:base.date,time:base.time,home:base.home,away:base.away,stadium:base.stadium,cancelled:true,cancelDate:base.date,news:true};
     await setDoc(doc(db,"scheduleOverrides",id),{...data,cancelledAt:serverTimestamp(),updatedAt:serverTimestamp()});
     scheduleOverrides[id]=data;
   }else if(o){
@@ -1659,7 +1659,7 @@ async function admSaveOverride(g,v){
   const id=scheduleGameId(g), base=g._base||g, day=new Date(v.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long"});
   const data={gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day,date:v.date,time:v.time,home:v.home,away:v.away,stadium:v.stadium};
   if(typeof v.news==="boolean")data.news=v.news; /* fehlt = automatisch erkennen */
-  if(scheduleOverrides[id]&&scheduleOverrides[id].cancelled===true)data.cancelled=true;
+  {const oc=scheduleOverrides[id]; if(oc&&oc.cancelled===true){const cd=oc.cancelDate||oc.originalDate; if(v.date===cd){data.cancelled=true;data.cancelDate=cd}}} /* verlegt = nicht mehr abgesagt */
   await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});
   scheduleOverrides[id]=data; applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.(); adminNewsEditor();
 }

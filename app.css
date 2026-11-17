@@ -2246,3 +2246,16 @@ html.dark .emptyBox svg{background:rgba(110,175,255,.12)}
 html.dark .emptyBox b{color:#e7eef8}
 html.dark .card,html.dark .opponentCard,html.dark .infoCard{box-shadow:0 6px 18px rgba(0,0,0,.35)}
 html.dark .adminBox{box-shadow:0 14px 40px rgba(0,0,0,.55)}
+.nIc{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em}
+.newsTab .ntIc .nIc{width:22px;height:22px;vertical-align:baseline}
+.newsBannerIc .nIc{width:22px;height:22px;vertical-align:middle}
+.newsNew .nIc{width:1.05em;height:1.05em}
+/* 1.40.5: Linien-Icons in Einstellungen, Gegner, Regeln */
+.sIc{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+.scheduleModes button .sIc{width:18px;height:18px;vertical-align:middle}
+.oppMapAskIc .sIc{width:40px;height:40px;opacity:.7}
+.pfIc .sIc{width:21px;height:21px;vertical-align:baseline}
+.hwSwitchIcon .sIc{width:26px;height:26px;vertical-align:baseline}
+[data-theme] span .sIc{width:22px;height:22px;vertical-align:baseline}
+.rlTile .ti .sIc{width:30px;height:30px;vertical-align:baseline}
+.omPop h4 .sIc,.omRoute .sIc{width:16px;height:16px}
