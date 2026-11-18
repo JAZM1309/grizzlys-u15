@@ -8,6 +8,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.41.3.213 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages ohne Hintergrund, mittig |
 | 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |
 | 1.41.1.211 | – (nur Test) | 18.11.2026 | Fix: Admin-Link in den Einstellungen |
 | 1.41.0.210 | – (nur Test) | 18.11.2026 | Neue Funktion (Spruch des Tages) |

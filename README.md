@@ -49,6 +49,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.41.3.213 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages ohne Hintergrund, mittig |
 | 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |
 | 1.41.1.211 | – (nur Test) | 18.11.2026 | Fix: Admin-Link in den Einstellungen |
 | 1.41.0.210 | – (nur Test) | 18.11.2026 | Neue Funktion (Spruch des Tages) |
@@ -76,6 +77,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.41.3
+
+- **Spruch des Tages ohne Karte:** steht weiter ganz oben auf der Startseite, jetzt ohne Hintergrund und mittig wie ein Motto – Titel schräg in Pinselschrift mit farbigem Pinselstrich (blau, nach einem Sieg grün, Halloween orange), Spruch groß und kursiv in Navy (im Dunkelmodus weiß), Urheber darunter. Das Bären-Wasserzeichen entfällt.
 
 ## Version 1.41.2
 

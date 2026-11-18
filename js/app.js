@@ -2734,7 +2734,7 @@ xmRefresh();
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderNews()}catch(e){console.warn(e)}};}
 renderNews();
 
-/* ===== 1.41.0: Spruch des Tages auf der Startseite (1.41.2: dunkle Karte ganz oben, Titel in Pinselschrift) =====
+/* ===== 1.41.0: Spruch des Tages auf der Startseite (1.41.3: ganz oben, ohne Hintergrund, mittig, Titel in Pinselschrift) =====
    Jeden Tag ein anderer Spruch, für alle Geräte derselbe (hängt am Datum). Anlass:
    „spieltag“ = heute spielt eine meiner Mannschaften und das Ergebnis fehlt noch,
    „sieg“ / „niederlage“ = letztes Spiel heute oder gestern, sonst „allgemein“.
