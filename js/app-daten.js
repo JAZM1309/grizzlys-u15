@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.41.3.213",
+      appVersion:"1.41.4.214",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1765,6 +1765,7 @@ function adminSpruchEditor(){
   const sum=document.getElementById("admSprSum"); if(sum)sum.textContent=spr.list.length+" Sprüche · "+(spr.on?"an":"aus")+(spr.dirty?" · nicht gespeichert":"");
   const cnt=k=>spr.list.filter(x=>x.k===k).length;
   const today=I.pick(spr.list), sit=I.situation();
+  const have=new Set(spr.list.map(x=>x.t.toLowerCase())), missing=I.clean(window.SPRUECHE_STANDARD).filter(x=>!have.has(x.t.toLowerCase()));
   const opts=v=>Object.keys(K).map(k=>`<option value="${k}"${k===v?" selected":""}>${e(K[k])}</option>`).join("");
   const form=(x,i)=>`<div class="admSprForm" data-i="${i}"><textarea maxlength="200" rows="3" placeholder="Spruch (keine Spielernamen)">${e(x.t)}</textarea>
     <div class="newsFormRow"><label>Urheber<input maxlength="60" value="${e(x.a)}" placeholder="z. B. Wayne Gretzky oder leer"></label><label>Anlass<select>${opts(x.k)}</select></label></div>
@@ -1776,7 +1777,7 @@ function adminSpruchEditor(){
   <div class="rlChips admSprChips">${["alle",...Object.keys(K)].map(k=>`<button type="button" data-spr-f="${k}" class="${spr.filter===k?"on":""}">${k==="alle"?"Alle":e(K[k])} <small>${k==="alle"?spr.list.length:cnt(k)}</small></button>`).join("")}</div>
   ${spr.form?form({t:"",a:"",k:spr.filter==="alle"?"allgemein":spr.filter},-1):`<button type="button" class="admNewsBtn" data-spr-new>＋ Neuen Spruch hinzufügen</button>`}
   <div class="admSprList">${rows.length?rows.map(({x,i})=>i===spr.edit?form(x,i):`<div class="adminGame newsAdminItem admSprItem"><div class="admSprTx"><q>${e(x.t)}</q><div class="small">${x.a?e(x.a)+" · ":""}${e(K[x.k])}</div></div><div class="admSprAct"><button type="button" class="action" data-spr-edit="${i}" aria-label="Bearbeiten"><svg class="admSprIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button><button type="button" class="action" data-spr-del="${i}" aria-label="Löschen"><svg class="admSprIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div></div>`).join(""):'<div class="small">In diesem Anlass gibt es noch keinen Spruch.</div>'}</div>
-  <div class="admSprBar"><button type="button" class="action admSprSave" data-spr-save${spr.dirty?"":" disabled"}>Speichern</button><button type="button" class="action" data-spr-reset>↺ Standardliste</button>${spr.dirty?`<button type="button" class="action" data-spr-undo>Verwerfen</button>`:""}</div>`;
+  <div class="admSprBar"><button type="button" class="action admSprSave" data-spr-save${spr.dirty?"":" disabled"}>Speichern</button>${missing.length?`<button type="button" class="action" data-spr-merge>＋ ${missing.length} neue Standard-Sprüche</button>`:""}<button type="button" class="action" data-spr-reset>↺ Standardliste</button>${spr.dirty?`<button type="button" class="action" data-spr-undo>Verwerfen</button>`:""}</div>`;
   const redo=()=>adminSpruchEditor(), changed=()=>{spr.dirty=true;redo()};
   box.querySelector("#sprOn").onchange=ev=>{spr.on=ev.target.checked;changed()};
   box.querySelectorAll("[data-spr-f]").forEach(b=>b.onclick=()=>{spr.filter=b.dataset.sprF;redo()});
@@ -1796,6 +1797,7 @@ function adminSpruchEditor(){
     };
   });
   box.querySelector("[data-spr-undo]")?.addEventListener("click",()=>{if(confirm("Änderungen verwerfen?")){sprFromApp();redo()}});
+  box.querySelector("[data-spr-merge]")?.addEventListener("click",()=>{if(!confirm(missing.length+" Standard-Sprüche ergänzen, die noch nicht in der Liste stehen? Deine eigenen Sprüche bleiben erhalten."))return;spr.list=spr.list.concat(missing);spr.edit=-1;spr.form=false;changed()});
   box.querySelector("[data-spr-reset]").onclick=()=>{if(!confirm("Die Liste durch die Standard-Sprüche ersetzen? Eigene Sprüche gehen dabei verloren (erst beim Speichern)."))return;spr.list=I.clean(window.SPRUECHE_STANDARD);spr.edit=-1;spr.form=false;changed()};
   box.querySelector("[data-spr-save]").onclick=async ev=>{
     const b=ev.currentTarget; b.disabled=true;

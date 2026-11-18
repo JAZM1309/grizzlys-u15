@@ -49,6 +49,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.41.4.214 | – (nur Test) | 18.11.2026 | Mehr Sprüche mit Namen |
 | 1.41.3.213 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages ohne Hintergrund, mittig |
 | 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |
 | 1.41.1.211 | – (nur Test) | 18.11.2026 | Fix: Admin-Link in den Einstellungen |
@@ -78,6 +79,11 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
 
+## Version 1.41.4
+
+- **Mehr Sprüche mit Namen:** Standardliste in `sprueche.js` um 19 Zitate bekannter Spieler und Trainer erweitert (u. a. Bobby Orr, Sidney Crosby, Brett Hull, Mark Messier, Henrik Lundqvist, Herb Brooks, Scotty Bowman, Fred Shero, „Badger“ Bob Johnson, Anatoli Tarassow) – jetzt 83 Sprüche, davon 24 mit Namen; Sprüche mit und ohne Namen wechseln sich ab.
+- **Admin › Spruch des Tages:** neuer Knopf „＋ x neue Standard-Sprüche“ – ergänzt nur die Standard-Sprüche, die noch nicht in der gespeicherten Liste stehen; eigene Sprüche bleiben erhalten (erscheint nur, wenn es neue gibt).
+
 ## Version 1.41.3
 
 - **Spruch des Tages ohne Karte:** steht weiter ganz oben auf der Startseite, jetzt ohne Hintergrund und mittig wie ein Motto – Titel schräg in Pinselschrift mit farbigem Pinselstrich (blau, nach einem Sieg grün, Halloween orange), Spruch groß und kursiv in Navy (im Dunkelmodus weiß), Urheber darunter. Das Bären-Wasserzeichen entfällt.
@@ -97,7 +103,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 - **Spruch des Tages (Startseite):** zwischen „Nächstes Spiel“ und „Letzte Ergebnisse“ steht jeden Tag ein anderer Eishockey-Spruch – für alle Geräte derselbe (hängt am Datum). Keine Sammlung in der App, immer nur ein Spruch.
 - **Passend zum Anlass:** Spielt heute eine der gewählten Mannschaften und fehlt das Ergebnis noch, kommt ein Spruch zum Spieltag; nach einem Sieg oder einer Niederlage (am selben und am nächsten Tag) ein passender Spruch, sonst einer aus „Allgemein“. Fehlt für einen Anlass ein Spruch, kommt einer aus „Allgemein“.
 - **Admin › News › Spruch des Tages:** Sprüche hinzufügen, bearbeiten und löschen (Text, Urheber, Anlass), Vorschau „Heute zu sehen“, Schalter „Auf der Startseite zeigen“, Standardliste wiederherstellen. Gespeichert wird erst mit „Speichern“ (die Test-App übernimmt nur auf dem Gerät).
-- **Daten:** Firestore-Dokument `appConfig/sprueche` (`on`, `list` mit `t`/`a`/`k`, `updatedAt`), für alle lesbar, nur der Admin schreibt – **`firestore.rules` geändert** (geht mit „Live gehen“ mit). Nutzer lesen das Dokument höchstens alle 3 Stunden, sonst aus dem Gerätespeicher; solange nichts gespeichert ist, gilt die Standardliste aus `sprueche.js` (64 Sprüche, auch offline). Die Admin-Sicherung enthält jetzt auch `appConfig`.
+- **Daten:** Firestore-Dokument `appConfig/sprueche` (`on`, `list` mit `t`/`a`/`k`, `updatedAt`), für alle lesbar, nur der Admin schreibt – **`firestore.rules` geändert** (geht mit „Live gehen“ mit). Nutzer lesen das Dokument höchstens alle 3 Stunden, sonst aus dem Gerätespeicher; solange nichts gespeichert ist, gilt die Standardliste aus `sprueche.js` (seit 1.41.4: 83 Sprüche, auch offline). Die Admin-Sicherung enthält jetzt auch `appConfig`.
 - Neue Datei `sprueche.js` (Standardliste), im Offline-Speicher der App.
 
 ## Version 1.40.6
