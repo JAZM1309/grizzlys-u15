@@ -52,6 +52,16 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // Spruch des Tages (1.41.0): eine Liste für die Startseite, für alle lesbar, nur der Admin schreibt
+    match /appConfig/{docId} {
+      allow read: if true;
+      allow write: if isAdmin() && docId == "sprueche"
+        && request.resource.data.keys().hasOnly(["on","list","updatedAt"])
+        && request.resource.data.on is bool
+        && request.resource.data["list"] is list
+        && request.resource.data["list"].size() <= 400;
+    }
+
     // News-Hinweise aus dem Adminbereich (für alle lesbar, nur Admin schreibt)
     match /news/{newsId} {
       allow read: if true;

@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.40.6.209",
+      appVersion:"1.41.2.212",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -977,7 +977,7 @@ document.querySelector("#admAdvBox .admFoldHead")?.addEventListener("click",()=>
 /* 1.27.0: Saisonende-Sicherung – Firestore-Sammlungen + Spielplan als JSON-Datei */
 async function admBackup(){
   const btn=document.getElementById("admBackupBtn"), msg=document.getElementById("admBackupMsg"); if(!btn)return;
-  const NAMES=["results","reports","news","scheduleOverrides","bugReports","adventAnswers","ehvSync","live"];
+  const NAMES=["results","reports","news","scheduleOverrides","bugReports","adventAnswers","ehvSync","live","appConfig"];
   const plain=v=>v&&typeof v.toDate==="function"?v.toDate().toISOString():Array.isArray(v)?v.map(plain):v&&typeof v==="object"?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,plain(x)])):v;
   btn.disabled=true; msg.hidden=false; msg.className="apResult"; msg.textContent="Wird gesammelt …";
   const out={app:APP_CFG.appName,season:APP_CFG.season,version:(document.querySelector(".inVer")||{}).textContent||"",created:new Date().toISOString(),games:ALL_GAMES,collections:{}}, cnt=[];
@@ -990,7 +990,7 @@ async function admBackup(){
 document.getElementById("admBackupBtn")?.addEventListener("click",admBackup);
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
-  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); }
+  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); loadSprueche(true).then(()=>adminSpruchEditor()); }
   else { login.hidden=false; panel.hidden=true; document.getElementById("adminLogout").hidden=true; status.textContent=user?"Angemeldet, aber keine Admin-Berechtigung":"Nicht angemeldet"; }
 }
 
@@ -1067,6 +1067,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   startLive();
   loadScheduleOverrides();
   loadNews();
+  loadSprueche();
   loadReports();
   isSupported().then(ok=>{
   if(ok && FIREBASE_VAPID_KEY){
@@ -1742,3 +1743,71 @@ async function clearAppErrors(){
 document.querySelector("#admErrBox .admFoldHead")?.addEventListener("click",()=>{ if(document.getElementById("admErrBody")?.hidden) loadAppErrors(); });
 document.getElementById("admErrRefresh")?.addEventListener("click",loadAppErrors);
 document.getElementById("admErrClear")?.addEventListener("click",clearAppErrors);
+
+/* ===== 1.41.0: Spruch des Tages – Liste in Firestore (appConfig/sprueche), nur der Admin schreibt =====
+   Nutzer lesen das Dokument höchstens alle 3 Stunden (sonst aus dem Gerätespeicher), der Admin immer frisch.
+   Fehlt das Dokument, gilt die Standardliste aus sprueche.js. */
+async function loadSprueche(force){
+  try{
+    let c=null; try{c=JSON.parse(localStorage.getItem("grizzlysSprueche")||"null")}catch(e){}
+    if(!force&&c&&c.ts&&Date.now()-c.ts<3*3600000)return;
+    const s=await getDoc(doc(db,"appConfig","sprueche"));
+    if(s.exists()){const x=s.data()||{};window.setSprueche?.({on:x.on!==false,list:Array.isArray(x.list)?x.list:null})}
+    else window.setSprueche?.({on:true,list:null});
+  }catch(err){console.warn("Sprüche konnten nicht geladen werden",err)}
+}
+const spr={on:true,list:[],dirty:false,filter:"alle",edit:-1,form:false};
+function sprFromApp(){const c=window.spruchInfo?.cur()||{on:true,list:[]};spr.on=c.on;spr.list=c.list.map(x=>({...x}));spr.dirty=false;spr.edit=-1;spr.form=false}
+function adminSpruchEditor(){
+  const box=document.getElementById("adminSprueche"); if(!box||!window.spruchInfo)return;
+  if(!spr.dirty&&spr.edit<0&&!spr.form)sprFromApp();
+  const I=window.spruchInfo, K=I.KINDS, e=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const sum=document.getElementById("admSprSum"); if(sum)sum.textContent=spr.list.length+" Sprüche · "+(spr.on?"an":"aus")+(spr.dirty?" · nicht gespeichert":"");
+  const cnt=k=>spr.list.filter(x=>x.k===k).length;
+  const today=I.pick(spr.list), sit=I.situation();
+  const opts=v=>Object.keys(K).map(k=>`<option value="${k}"${k===v?" selected":""}>${e(K[k])}</option>`).join("");
+  const form=(x,i)=>`<div class="admSprForm" data-i="${i}"><textarea maxlength="200" rows="3" placeholder="Spruch (keine Spielernamen)">${e(x.t)}</textarea>
+    <div class="newsFormRow"><label>Urheber<input maxlength="60" value="${e(x.a)}" placeholder="z. B. Wayne Gretzky oder leer"></label><label>Anlass<select>${opts(x.k)}</select></label></div>
+    <div class="apBtns"><button type="button" class="action" data-spr-ok>${i<0?"＋ Hinzufügen":"✓ Übernehmen"}</button><button type="button" class="action" data-spr-cancel>Abbrechen</button></div></div>`;
+  const rows=spr.list.map((x,i)=>({x,i})).filter(o=>spr.filter==="alle"||o.x.k===spr.filter);
+  box.innerHTML=`<div class="small" style="margin:0 2px 10px">Auf der Startseite steht jeden Tag ein anderer Spruch – für alle derselbe. Am Spieltag und nach Sieg oder Niederlage (am selben und am nächsten Tag) kommt ein passender Spruch, sonst einer aus „Allgemein“.</div>
+  <div class="adminGame newsAdminItem"><div class="adminGameHead"><div><b>Auf der Startseite zeigen</b><div class="small">${spr.on?"Sichtbar für alle":"Ausgeblendet"}</div></div><label class="admSw"><input type="checkbox" id="sprOn"${spr.on?" checked":""}><span></span></label></div></div>
+  <div class="admSprToday"><small>Heute zu sehen · ${e(K[sit.k]||"Allgemein")}</small>${today?`<q>${e(today.t)}</q>${today.a?`<span>– ${e(today.a)}</span>`:""}`:"<span>Kein Spruch vorhanden.</span>"}</div>
+  <div class="rlChips admSprChips">${["alle",...Object.keys(K)].map(k=>`<button type="button" data-spr-f="${k}" class="${spr.filter===k?"on":""}">${k==="alle"?"Alle":e(K[k])} <small>${k==="alle"?spr.list.length:cnt(k)}</small></button>`).join("")}</div>
+  ${spr.form?form({t:"",a:"",k:spr.filter==="alle"?"allgemein":spr.filter},-1):`<button type="button" class="admNewsBtn" data-spr-new>＋ Neuen Spruch hinzufügen</button>`}
+  <div class="admSprList">${rows.length?rows.map(({x,i})=>i===spr.edit?form(x,i):`<div class="adminGame newsAdminItem admSprItem"><div class="admSprTx"><q>${e(x.t)}</q><div class="small">${x.a?e(x.a)+" · ":""}${e(K[x.k])}</div></div><div class="admSprAct"><button type="button" class="action" data-spr-edit="${i}" aria-label="Bearbeiten"><svg class="admSprIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button><button type="button" class="action" data-spr-del="${i}" aria-label="Löschen"><svg class="admSprIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div></div>`).join(""):'<div class="small">In diesem Anlass gibt es noch keinen Spruch.</div>'}</div>
+  <div class="admSprBar"><button type="button" class="action admSprSave" data-spr-save${spr.dirty?"":" disabled"}>Speichern</button><button type="button" class="action" data-spr-reset>↺ Standardliste</button>${spr.dirty?`<button type="button" class="action" data-spr-undo>Verwerfen</button>`:""}</div>`;
+  const redo=()=>adminSpruchEditor(), changed=()=>{spr.dirty=true;redo()};
+  box.querySelector("#sprOn").onchange=ev=>{spr.on=ev.target.checked;changed()};
+  box.querySelectorAll("[data-spr-f]").forEach(b=>b.onclick=()=>{spr.filter=b.dataset.sprF;redo()});
+  box.querySelector("[data-spr-new]")?.addEventListener("click",()=>{spr.form=true;spr.edit=-1;redo();box.querySelector(".admSprForm textarea")?.focus()});
+  box.querySelectorAll("[data-spr-edit]").forEach(b=>b.onclick=()=>{spr.edit=Number(b.dataset.sprEdit);spr.form=false;redo()});
+  box.querySelectorAll("[data-spr-del]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.sprDel);if(!confirm("Diesen Spruch löschen?\n\n„"+spr.list[i].t+"“"))return;spr.list.splice(i,1);spr.edit=-1;changed()});
+  box.querySelectorAll(".admSprForm").forEach(f=>{
+    const i=Number(f.dataset.i);
+    f.querySelector("[data-spr-cancel]").onclick=()=>{spr.form=false;spr.edit=-1;redo()};
+    f.querySelector("[data-spr-ok]").onclick=()=>{
+      const t=f.querySelector("textarea").value.replace(/\s+/g," ").trim(), a=f.querySelector("input").value.trim(), k=f.querySelector("select").value;
+      if(t.length<3){alert("Bitte einen Spruch mit mindestens 3 Zeichen eingeben.");return}
+      if(spr.list.some((x,j)=>j!==i&&x.t.toLowerCase()===t.toLowerCase())){alert("Diesen Spruch gibt es schon.");return}
+      const x={t:t.slice(0,200),a:a.slice(0,60),k};
+      if(i<0)spr.list.unshift(x);else spr.list[i]=x;
+      spr.form=false;spr.edit=-1;changed();
+    };
+  });
+  box.querySelector("[data-spr-undo]")?.addEventListener("click",()=>{if(confirm("Änderungen verwerfen?")){sprFromApp();redo()}});
+  box.querySelector("[data-spr-reset]").onclick=()=>{if(!confirm("Die Liste durch die Standard-Sprüche ersetzen? Eigene Sprüche gehen dabei verloren (erst beim Speichern)."))return;spr.list=I.clean(window.SPRUECHE_STANDARD);spr.edit=-1;spr.form=false;changed()};
+  box.querySelector("[data-spr-save]").onclick=async ev=>{
+    const b=ev.currentTarget; b.disabled=true;
+    const list=I.clean(spr.list), local=()=>{window.setSprueche?.({on:spr.on,list});spr.dirty=false;spr.edit=-1;spr.form=false};
+    try{
+      await setDoc(doc(db,"appConfig","sprueche"),{on:spr.on,list,updatedAt:serverTimestamp()});
+      local(); alert("Gespeichert. Die Startseite zeigt die neue Liste ab sofort (bei anderen Geräten spätestens nach 3 Stunden).");
+    }catch(err){
+      if(String(err.message||err).startsWith("Testversion")){local();alert("Testversion: nur auf diesem Gerät übernommen, nicht gespeichert.")}
+      else{console.error(err);alert("Speichern nicht möglich: "+(err.message||err));b.disabled=false;return}
+    }
+    redo();
+  };
+}
+window.adminSpruchEditor=adminSpruchEditor;

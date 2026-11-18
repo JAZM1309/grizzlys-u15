@@ -2259,3 +2259,32 @@ html.dark .adminBox{box-shadow:0 14px 40px rgba(0,0,0,.55)}
 [data-theme] span .sIc{width:22px;height:22px;vertical-align:baseline}
 .rlTile .ti .sIc{width:30px;height:30px;vertical-align:baseline}
 .omPop h4 .sIc,.omRoute .sIc{width:16px;height:16px}
+/* 1.41.0: Spruch des Tages (Startseite) und Admin-Editor */
+.spruch{position:relative;overflow:hidden;isolation:isolate;margin:0 0 12px;padding:13px 18px 13px;border-radius:20px;background:linear-gradient(145deg,#041426,#0a2d52 58%,#071b33);color:#fff;box-shadow:0 10px 26px rgba(7,27,51,.28);--sk:#168cff;--sk2:#4fb3ff;animation:spruchIn .45s ease both}
+.spruch[hidden]{display:none}
+.spruch[data-k="sieg"]{--sk:#1f9d55;--sk2:#5fd18f}
+.spruchBear{position:absolute;right:-18px;bottom:-22px;width:110px;opacity:.10;pointer-events:none;z-index:-1}
+.spruchLab{position:relative;display:inline-block;font-family:GrizzlyBrush,"Permanent Marker",cursive;font-size:17px;line-height:1.1;color:#fff;transform:rotate(-2deg);padding:0 4px 5px}
+.spruchLab:after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--sk),var(--sk2) 80%,transparent);z-index:-1}
+.spruch blockquote{position:relative;margin:8px 0 0;font-size:18.5px;line-height:1.3;font-style:italic;font-weight:800;color:#fff}
+.spruch figcaption{position:relative;margin-top:6px;font-size:12.5px;color:#a9c1db;text-align:right}
+html.dark .spruch{background:linear-gradient(145deg,#06182c,#0c2a4c 58%,#081b31);box-shadow:0 10px 26px rgba(0,0,0,.35),inset 0 0 0 1px #1d3555}
+html.hw .spruch{background:linear-gradient(145deg,#1a1109,#2b1707);box-shadow:0 0 0 1px rgba(255,122,0,.35),0 8px 24px rgba(255,100,0,.18);--sk:#ff7a00;--sk2:#ffb066}
+html.hw .spruch figcaption{color:#e8bf94}
+@media (max-width:360px){.spruch blockquote{font-size:16.5px}}
+@keyframes spruchIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.spruch{animation:none}}
+.admSprToday{background:#eef6ff;border-radius:14px;padding:10px 12px;margin:0 0 10px}
+.admSprToday small{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
+.admSprToday q{display:block;font-weight:700;font-style:italic}.admSprToday span{display:block;font-size:12.5px;color:var(--muted);margin-top:3px}
+.admSprChips{margin:0 0 10px}.admSprChips small{opacity:.7;font-weight:700}
+.admSprItem{display:flex;gap:10px;align-items:flex-start}.admSprTx{flex:1;min-width:0}.admSprTx q{display:block;font-size:14.5px;font-weight:600;line-height:1.3}
+.admSprIc{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}
+.admSprAct{display:flex;gap:6px;flex:none}.admSprAct .action{min-width:38px;padding:7px 9px}
+.admSprForm{background:#f5f9fe;border:1px solid var(--border);border-radius:14px;padding:10px;margin:0 0 10px;display:grid;gap:8px}
+.admSprForm textarea,.admSprForm input,.admSprForm select{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text)}
+.admSprBar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;position:sticky;bottom:0;padding:8px 0 2px;background:linear-gradient(transparent,#fff 30%)}
+.admSprSave:not(:disabled){background:var(--navy);color:#fff}
+html.dark .admSprToday,html.dark .admSprForm{background:#0d1a2c;border-color:#263a55}
+html.dark .admSprForm textarea,html.dark .admSprForm input,html.dark .admSprForm select{background:#121f33;border-color:#263a55;color:#e7eef8}
+html.dark .admSprBar{background:linear-gradient(transparent,#121f33 30%)}

@@ -593,6 +593,7 @@ function outLabel(r,short){if(!r)return "";if(r.o==="d")return short?"n.P. offen
 window.outLabel=outLabel;
 function renderLast(){
   heroUpdate();
+  try{window.renderSpruch&&window.renderSpruch()}catch(e){console.warn(e)}
   const box=document.getElementById("lastGameCard"); if(!box)return;
   const now=new Date();
   const past=games.filter(g=>dt(g)<now).sort((a,b)=>dt(b)-dt(a));
@@ -2209,6 +2210,7 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.41.0.210",d:"November 2026",items:["Neu auf der Startseite: der Spruch des Tages – jeden Tag ein anderer Eishockey-Spruch. Am Spieltag und nach einem Sieg oder einer Niederlage passt er zum Spiel."]},
   {v:"1.39.0.199",d:"November 2026",items:["Push-Meldungen folgen jetzt „Meine Mannschaften“: Du bekommst nur Push für die Mannschaften, die du ausgewählt hast.","Die App lädt schneller und aktualisiert sich gezielter."]},
   {v:"1.38.0.198",d:"November 2026",items:["Neu: die U13 – mit Spielplan, Ergebnissen, Tabelle, Live-Ticker und Push. Die App heißt jetzt „Young Grizzlys“.","Unter Einstellungen › Meine Mannschaften wählst du, ob du U15 A, U15 B und/oder U13 sehen möchtest. Push für die U13 gibt es nur, wenn du sie auswählst."]},
   {v:"1.34.0.183",d:"November 2026",items:["Fan-Tipp: Vor einem Spiel fragt die App einmal freiwillig nach deinem Tipp – mit „Später“ oder „Nicht tippen“. Abschaltbar unter Einstellungen › Tipp-Erinnerung."]},
@@ -2731,3 +2733,44 @@ window.xmOpenCalendar=xmOpenCalendar;
 xmRefresh();
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderNews()}catch(e){console.warn(e)}};}
 renderNews();
+
+/* ===== 1.41.0: Spruch des Tages auf der Startseite (1.41.2: dunkle Karte ganz oben, Titel in Pinselschrift) =====
+   Jeden Tag ein anderer Spruch, für alle Geräte derselbe (hängt am Datum). Anlass:
+   „spieltag“ = heute spielt eine meiner Mannschaften und das Ergebnis fehlt noch,
+   „sieg“ / „niederlage“ = letztes Spiel heute oder gestern, sonst „allgemein“.
+   Die Liste kommt aus dem Admin-Bereich (Firestore appConfig/sprueche, im Gerät gemerkt) oder aus sprueche.js. */
+(function(){
+  const KEY="grizzlysSprueche";
+  const KINDS={allgemein:"Allgemein",spieltag:"Spieltag",sieg:"Nach einem Sieg",niederlage:"Nach einer Niederlage"};
+  const LABEL={allgemein:"Spruch des Tages",spieltag:"Spruch zum Spieltag",sieg:"Spruch zum Sieg",niederlage:"Kopf hoch"};
+  let data=null;
+  try{const c=JSON.parse(localStorage.getItem(KEY)||"null");if(c&&typeof c==="object")data=c}catch(e){}
+  function clean(list){return (Array.isArray(list)?list:[]).map(x=>({t:String(x&&x.t||"").replace(/\s+/g," ").trim().slice(0,200),a:String(x&&x.a||"").trim().slice(0,60),k:KINDS[x&&x.k]?x.k:"allgemein"})).filter(x=>x.t)}
+  function cur(){return {on:!data||data.on!==false,list:clean(data&&Array.isArray(data.list)?data.list:window.SPRUECHE_STANDARD)}}
+  const dayNo=d=>Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
+  function situation(now){
+    now=now||new Date(); const today=dayNo(now), mine=games.filter(g=>!g.cancelled);
+    const open=mine.filter(g=>dayNo(dt(g))===today&&!resInfo(g)).sort((a,b)=>dt(a)-dt(b));
+    if(open.length)return {k:"spieltag",g:open[0]};
+    const done=mine.filter(g=>{const n=today-dayNo(dt(g));return n>=0&&n<=1&&dt(g)<=now}).map(g=>({g,r:resInfo(g)})).filter(x=>x.r&&(x.r.o==="w"||x.r.o==="l")).sort((a,b)=>dt(b.g)-dt(a.g));
+    if(done.length)return {k:done[0].r.o==="w"?"sieg":"niederlage",g:done[0].g};
+    return {k:"allgemein"};
+  }
+  function pick(list,now){
+    now=now||new Date(); list=list||cur().list; if(!list.length)return null;
+    const s=situation(now); let pool=list.filter(x=>x.k===s.k); if(!pool.length)pool=list.filter(x=>x.k==="allgemein"); if(!pool.length)pool=list;
+    return {...pool[dayNo(now)%pool.length],sk:s.k};
+  }
+  function render(){
+    const box=document.getElementById("spruchCard"); if(!box)return;
+    const c=cur(), q=c.on?pick(c.list):null;
+    if(!q){box.hidden=true;return}
+    box.hidden=false; box.dataset.k=q.sk;
+    box.innerHTML=`<img class="spruchBear" src="logo.png" alt="" aria-hidden="true"><span class="spruchLab">${esc(LABEL[q.sk]||LABEL.allgemein)}</span><blockquote>„${esc(q.t)}“</blockquote>${q.a?`<figcaption>– ${esc(q.a)}</figcaption>`:""}`;
+  }
+  window.setSprueche=function(o){data={ts:Date.now(),on:!o||o.on!==false,list:o&&Array.isArray(o.list)?clean(o.list):null};try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}render()};
+  window.spruchInfo={KINDS,clean,cur,situation,pick};
+  window.renderSpruch=render;
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)render()});
+  render();
+})();

@@ -15,6 +15,7 @@ Entwickelt von **JAZM**.
 | `js/app-daten.js` | Firebase: Ergebnisse, Push, Fehlermeldungen, Admin-Bereich |
 | `spielplan.js` | alle Spiele (`window.SPIELPLAN`), eine Zeile pro Spiel – hier Termine der neuen Saison eintragen |
 | `spielbericht.js` | Textbausteine der Spielberichte (von App und Functions gemeinsam genutzt) |
+| `sprueche.js` | Standardliste für den „Spruch des Tages“ (gilt, bis im Admin-Bereich eine eigene Liste gespeichert ist) |
 | `sw.js` | Service Worker (Offline, Update-Hinweis, Push-Anzeige) |
 | `nur-live/bauen.py` | trägt nach jeder Änderung die Prüfsummen ein: `python3 nur-live/bauen.py .` |
 
@@ -48,6 +49,9 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |
+| 1.41.1.211 | – (nur Test) | 18.11.2026 | Fix: Admin-Link in den Einstellungen |
+| 1.41.0.210 | – (nur Test) | 18.11.2026 | Neue Funktion (Spruch des Tages) |
 | 1.40.6.209 | – (nur Test) | 17.11.2026 | Fix: Start-Animation-Fehler |
 | 1.40.5.208 | – (nur Test) | 17.11.2026 | Linien-Icons in Einstellungen, Gegner, Regeln |
 | 1.40.4.207 | – (nur Test) | 17.11.2026 | News: Linien-Icons statt Emojis |
@@ -72,6 +76,24 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.41.2
+
+- **Spruch des Tages auffälliger:** steht jetzt ganz oben auf der Startseite (vor dem nächsten Spiel) als dunkle Karte im Header-Look – Titel „Spruch des Tages“ leicht schräg in Pinselschrift mit farbigem Pinselstrich (blau, nach einem Sieg grün, im Halloween-Design orange), der Spruch groß und kursiv, Bären-Logo als Wasserzeichen.
+
+## Version 1.41.1
+
+- **Fix:** Der Link „Admin-Bereich“ unten in den Einstellungen war seit 1.40.5 unsichtbar (beim Umstellen auf Linien-Icons war das Symbol kaputtgegangen und hat den Text verschluckt). Jetzt wieder sichtbar, mit Schloss-Symbol. Dasselbe beim Titel „Admin-Bereich“ im Admin-Fenster und beim Knopf „Anmelden“.
+
+## Version 1.41.0
+
+### Neu in Version 1.41.0 (Stand 1.41.0.210, 18.11.2026, nur in der Test-App)
+
+- **Spruch des Tages (Startseite):** zwischen „Nächstes Spiel“ und „Letzte Ergebnisse“ steht jeden Tag ein anderer Eishockey-Spruch – für alle Geräte derselbe (hängt am Datum). Keine Sammlung in der App, immer nur ein Spruch.
+- **Passend zum Anlass:** Spielt heute eine der gewählten Mannschaften und fehlt das Ergebnis noch, kommt ein Spruch zum Spieltag; nach einem Sieg oder einer Niederlage (am selben und am nächsten Tag) ein passender Spruch, sonst einer aus „Allgemein“. Fehlt für einen Anlass ein Spruch, kommt einer aus „Allgemein“.
+- **Admin › News › Spruch des Tages:** Sprüche hinzufügen, bearbeiten und löschen (Text, Urheber, Anlass), Vorschau „Heute zu sehen“, Schalter „Auf der Startseite zeigen“, Standardliste wiederherstellen. Gespeichert wird erst mit „Speichern“ (die Test-App übernimmt nur auf dem Gerät).
+- **Daten:** Firestore-Dokument `appConfig/sprueche` (`on`, `list` mit `t`/`a`/`k`, `updatedAt`), für alle lesbar, nur der Admin schreibt – **`firestore.rules` geändert** (geht mit „Live gehen“ mit). Nutzer lesen das Dokument höchstens alle 3 Stunden, sonst aus dem Gerätespeicher; solange nichts gespeichert ist, gilt die Standardliste aus `sprueche.js` (64 Sprüche, auch offline). Die Admin-Sicherung enthält jetzt auch `appConfig`.
+- Neue Datei `sprueche.js` (Standardliste), im Offline-Speicher der App.
 
 ## Version 1.40.6
 

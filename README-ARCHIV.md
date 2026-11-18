@@ -8,6 +8,9 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |
+| 1.41.1.211 | – (nur Test) | 18.11.2026 | Fix: Admin-Link in den Einstellungen |
+| 1.41.0.210 | – (nur Test) | 18.11.2026 | Neue Funktion (Spruch des Tages) |
 | 1.40.6.209 | – (nur Test) | 17.11.2026 | Fix: Start-Animation-Fehler |
 | 1.40.5.208 | – (nur Test) | 17.11.2026 | Linien-Icons in Einstellungen, Gegner, Regeln |
 | 1.40.4.207 | – (nur Test) | 17.11.2026 | News: Linien-Icons statt Emojis |
