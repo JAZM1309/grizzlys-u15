@@ -189,6 +189,13 @@ function detectPlatform(){
   return "Sonstiges";
 }
 
+/* 1.44.4: welche App (Test/Live) und Version das Token angelegt hat – für die Geräteliste im Admin-Bereich */
+function pushAppInfo(){return {app:window.GRIZZLYS_TEST?"test":"live",ver:String((document.querySelector(".inVer")||{}).textContent||"").slice(0,20)}}
+/* Gerät und Browser aus dem gespeicherten User-Agent, z. B. „Android 14 · SM-S918B · Chrome“ */
+function devLabel(ua){ua=String(ua||"");let os=/iPhone/.test(ua)?"iPhone":/iPad/.test(ua)?"iPad":/Android/.test(ua)?"Android":/CrOS/.test(ua)?"Chromebook":/Windows/.test(ua)?"Windows":/Mac OS X/.test(ua)?"Mac":/Linux/.test(ua)?"Linux":"Sonstiges";
+  const av=/Android (\d+)/.exec(ua);if(av)os+=" "+av[1];const md=/Android [\d.]+; ([^;)]+)[;)]/.exec(ua);const model=md&&md[1]!=="K"&&!/^wv$/.test(md[1])?md[1].trim():"";
+  const br=/SamsungBrowser/.test(ua)?"Samsung Internet":/EdgA?\//.test(ua)?"Edge":/Firefox|FxiOS/.test(ua)?"Firefox":/OPR\//.test(ua)?"Opera":/CriOS|Chrome/.test(ua)?"Chrome":/Safari/.test(ua)?"Safari":"";
+  return [os,model,br].filter(Boolean).join(" · ")}
 function detectPlatformFromStoredUserAgent(ua){
   const value=ua||"";
   if(/iPhone|iPad|iPod/i.test(value)) return "Apple";
@@ -216,7 +223,7 @@ async function registerAdminPushToken(requestPermission=false){
     if(!token) return;
     await setDoc(doc(db,"pushTokens",token),{
       token,installationId:getInstallationId(),updatedAt:serverTimestamp(),
-      platform:navigator.userAgent||"",admin:true,adminUid:ADMIN_UID,prefs:pushPrefs()
+      platform:navigator.userAgent||"",admin:true,adminUid:ADMIN_UID,prefs:pushPrefs(),...pushAppInfo()
     },{merge:true});
     try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);}catch(e){}window.dispatchEvent(new Event("grizzlysPushChanged"));
     console.log("Admin-Push-Token registriert.");
@@ -265,7 +272,7 @@ function renewPushRegistration(){
       const isAdmin=auth.currentUser?.uid===ADMIN_UID, installationId=getInstallationId();
       await setDoc(doc(db,"pushTokens",token),{
         token,installationId,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),
-        platform:navigator.userAgent||"",prefs:pushPrefs(),
+        platform:navigator.userAgent||"",prefs:pushPrefs(),...pushAppInfo(),
         ...(isAdmin?{admin:true,adminUid:ADMIN_UID}:{})
       });
       try{localStorage.setItem("grizzlysPushRegistered","1");localStorage.setItem("grizzlysPushToken",token);localStorage.setItem(PUSH_RENEW_KEY,String(Date.now()));}catch(e){}
@@ -297,6 +304,7 @@ async function syncExistingPushRegistration(){
       updatedAt:serverTimestamp(),
       platform:navigator.userAgent,
       prefs:pushPrefs(),
+      ...pushAppInfo(),
       ...(auth.currentUser?.uid===ADMIN_UID ? {admin:true,adminUid:ADMIN_UID} : {})
     },{merge:true});
     await setDoc(doc(db,"appInstallations",installationId),{
@@ -449,7 +457,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.44.3.222",
+      appVersion:"1.44.4.223",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -668,7 +676,7 @@ async function refreshAdminPushStatus(){
   let token=""; try{token=localStorage.getItem("grizzlysPushToken")||""}catch(e){}
   if(token) rows.push(adminPushRow("ok","Push-Token auf diesem Gerät vorhanden","…"+token.slice(-8)));
   else{ verdict="bad"; rows.push(adminPushRow("bad","Kein Push-Token auf diesem Gerät","Push wurde hier noch nicht aktiviert.")); }
-  let adminDevices=[], mine=null, loadError=false;
+  let adminDevices=[], mine=null, loadError=false, adminDevicesHtml="";
   try{
     const snap=await getDocs(collection(db,"pushTokens"));
     snap.forEach(d=>{const x=d.data()||{}; if(d.id===token) mine=x; if(x.admin===true&&x.adminUid===ADMIN_UID) adminDevices.push({id:d.id,x});});
@@ -694,12 +702,13 @@ async function refreshAdminPushStatus(){
   }
   if(!loadError){
     const others=adminDevices.filter(d=>d.id!==token).length;
-    const list=adminDevices.map(d=>detectPlatformFromStoredUserAgent(d.x.platform)+(d.id===token?" (dieses Gerät)":"")).join(", ");
-    rows.push(adminPushRow(adminDevices.length?"ok":"bad","Admin-Geräte insgesamt: "+adminDevices.length,list||"Aktuell ist kein Gerät als Admin registriert."));
+    rows.push(adminPushRow(adminDevices.length?"ok":"bad","Admin-Geräte insgesamt: "+adminDevices.length,adminDevices.length?"Jede Push-Anmeldung zählt einzeln: Test- und Live-App, jeder Browser und jede Neuanmeldung. Liste unten.":"Aktuell ist kein Gerät als Admin registriert."));
+    adminDevicesHtml=admDevList(adminDevices,token,fmt);
     if(verdict==="bad"&&others>0) hint=" Auf "+others+" anderen Gerät"+(others===1?"":"en")+" kommt Admin-Push aber an.";
   }
   const vText=verdict==="ok"?"✓ Dieses Gerät ist als Admin für Push angemeldet.":verdict==="warn"?"Status konnte nicht vollständig geprüft werden.":"✗ Dieses Gerät bekommt aktuell keinen Admin-Push."+hint;
-  box.innerHTML='<div class="apVerdict '+verdict+'">'+esc(vText)+'</div>'+rows.join("");
+  box.innerHTML='<div class="apVerdict '+verdict+'">'+esc(vText)+'</div>'+rows.join("")+adminDevicesHtml;
+  admDevBind(box);
   if(dot) dot.textContent=verdict==="ok"?"✓":verdict==="warn"?"":"⚠️";
   {const sum=document.getElementById("adminPushSum");if(sum){const n=rows.length,ok=rows.filter(r=>r.includes('apRow ok')).length,bad=rows.filter(r=>r.includes('apRow bad')).length,warn=n-ok-bad;
     sum.textContent=ok===n?ok+" von "+n+" ✓":ok+" von "+n+" ✓"+(bad?" · "+bad+" ✗":"")+(warn?" · "+warn+" !":"");
@@ -1893,3 +1902,23 @@ async function adminReactions(){
   }catch(err){box.innerHTML='<div class="small">Konnte nicht geladen werden.</div>';console.warn(err)}
 }
 window.adminWishEditor=adminWishEditor;window.adminReactions=adminReactions;
+
+/* ===== 1.44.4: Admin-Geräte – Liste mit Test/Live, Gerät, zuletzt aktiv; einzeln oder alle alten entfernen ===== */
+const ADM_DEV_OLD=30*864e5;
+function admDevList(list,token,fmt){
+  if(!list.length)return "";
+  const ms=d=>{try{return d.x.updatedAt.toMillis()}catch(e){return 0}};
+  const L=list.slice().sort((a,b)=>(b.id===token)-(a.id===token)||ms(b)-ms(a)), old=L.filter(d=>d.id!==token&&Date.now()-ms(d)>ADM_DEV_OLD);
+  const e=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  return `<div class="admDevList"><div class="admDevHead">Admin-Geräte</div>${L.map(d=>{const me=d.id===token,age=Date.now()-ms(d),app=d.x.app==="test"?"Test-App":d.x.app==="live"?"Live-App":"App unbekannt";
+    return `<div class="admDev${me?" me":""}${!me&&age>ADM_DEV_OLD?" old":""}"><div class="admDevTx"><b>${e(devLabel(d.x.platform))}${me?' <span class="admDevMe">dieses Gerät</span>':""}</b><small><span class="admDevApp ${e(d.x.app||"")}">${app}</span>${d.x.ver?" · "+e(d.x.ver):""} · zuletzt aktiv ${ms(d)?e(fmt(d.x.updatedAt)):"unbekannt"}${!me&&age>ADM_DEV_OLD?" · länger als 30 Tage inaktiv":""}</small></div>${me?"":`<button type="button" class="admBtn no" data-devdel="${e(d.id)}">Entfernen</button>`}</div>`}).join("")}
+    ${old.length?`<button type="button" class="admBtn" data-devold="1">🧹 ${old.length} alte ${old.length===1?"Anmeldung":"Anmeldungen"} entfernen (über 30 Tage inaktiv)</button>`:""}
+    <div class="admHint">„Entfernen“ löscht nur die Push-Anmeldung. Wird das Gerät noch benutzt, meldet es sich beim nächsten Öffnen von selbst wieder an – als Admin aber nur, solange dort noch jemand im Admin-Bereich angemeldet ist. Fremde Geräte also dort auch „Abmelden“.</div></div>`;
+}
+function admDevBind(box){
+  const del=async ids=>{let n=0;for(const id of ids){try{await deleteDoc(doc(db,"pushTokens",id));n++}catch(err){if(String(err.message||err).startsWith("Testversion")){alert("Testversion: nichts gelöscht.");return -1}console.warn(err)}}return n};
+  box.querySelectorAll("[data-devdel]").forEach(b=>b.onclick=async()=>{if(!confirm("Diese Push-Anmeldung entfernen?\n\nDas Gerät bekommt dann keine Admin-Pushs mehr – bis es sich beim nächsten Öffnen der App neu anmeldet."))return;
+    b.disabled=true;const n=await del([b.dataset.devdel]);if(n===0)alert("Entfernen nicht möglich.");refreshAdminPushStatus()});
+  box.querySelector("[data-devold]")?.addEventListener("click",async ev=>{const b=ev.currentTarget,ids=[...box.querySelectorAll(".admDev.old [data-devdel]")].map(x=>x.dataset.devdel);
+    if(!ids.length||!confirm(ids.length+" alte Push-Anmeldung(en) entfernen?"))return;b.disabled=true;const n=await del(ids);if(n>=0)alert(n+" entfernt.");refreshAdminPushStatus()});
+}

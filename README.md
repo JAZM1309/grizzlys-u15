@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.44.4.223 | – (nur Test) | 19.11.2026 | Admin: Geräteliste mit Entfernen |
 | 1.44.3.222 | – (nur Test) | 19.11.2026 | Admin: EHV „ohne Termin“ und abgesagte Spiele |
 | 1.44.2.221 | – (nur Test) | 19.11.2026 | Neu: Status „Verlegt – Termin offen“ |
 | 1.44.1.220 | – (nur Test) | 19.11.2026 | Fix: zwei App-Fehler aus der Fehler-Liste |
@@ -86,6 +87,11 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.44.4
+
+- **Admin › System › Push-Status – Geräteliste:** Statt „Android, Android, …“ jetzt eine Liste aller Admin-Push-Anmeldungen mit Gerät und Browser (aus dem gespeicherten User-Agent, z. B. „Android 14 · Chrome“), Test- oder Live-App, App-Version und „zuletzt aktiv“. Je Eintrag „Entfernen“ (nicht beim eigenen Gerät) und „🧹 x alte Anmeldungen entfernen“ für alles, was länger als 30 Tage nicht aktiv war. Warum es mehr Einträge als Geräte gibt: Test- und Live-App, jeder Browser und jede Neuanmeldung (Daten löschen, Push neu einrichten) haben eine eigene Anmeldung. Entfernte Geräte melden sich beim nächsten Öffnen von selbst wieder an – als Admin nur, solange dort jemand im Admin-Bereich angemeldet ist.
+- `pushTokens` speichert dafür zusätzlich `app` („test“/„live“) und `ver` (App-Version) – `firestore.rules` entsprechend erweitert. Ältere Einträge zeigen „App unbekannt“, bis sich das Gerät das nächste Mal meldet.
 
 ## Version 1.44.3
 

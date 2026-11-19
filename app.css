@@ -2393,3 +2393,12 @@ html.dark .wishItem{background:#0d1a2c;border-color:#263a55}html.dark .wishItem.
 .lastPill.cx.pp,.lrPill.cx.pp{background:#e07a00!important;color:#fff!important}
 .month.monthTbd{color:#e07a00}
 .card.isPp .g3Date b,.card.isPp .g3Date i{text-decoration:line-through;text-decoration-thickness:2px}
+/* 1.44.4: Admin-Geräte */
+.admDevList{margin-top:12px;display:grid;gap:8px}
+.admDevHead{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.admDev{display:flex;gap:10px;align-items:center;padding:9px 11px;border:1px solid var(--border);border-radius:14px}
+.admDev.me{border-color:#1f9d55;box-shadow:inset 3px 0 0 #1f9d55}.admDev.old{opacity:.7}
+.admDevTx{flex:1;min-width:0}.admDevTx b{display:block;font-size:14px;line-height:1.3}.admDevTx small{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.35}
+.admDevMe{font-size:11px;font-weight:850;color:#1f9d55;background:rgba(31,157,85,.12);padding:1px 6px;border-radius:6px}
+.admDevApp{font-weight:850}.admDevApp.test{color:#e07a00}.admDevApp.live{color:#1f6fb8}
+html.dark .admDev{border-color:#263a55}html.dark .admDevApp.live{color:#8fcbff}

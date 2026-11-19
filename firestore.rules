@@ -113,7 +113,7 @@ service cloud.firestore {
       allow create, update: if request.resource.data.token == tokenId
         && tokenId.size() < 600
         && request.resource.data.keys().hasOnly(
-             ["token","installationId","createdAt","updatedAt","platform","admin","adminUid","prefs"])
+             ["token","installationId","createdAt","updatedAt","platform","admin","adminUid","prefs","app","ver"])
         && (request.resource.data.get("admin", false) != true || isAdmin())
         && (request.resource.data.get("adminUid", null) == null || isAdmin());
       allow read, delete: if isAdmin();
