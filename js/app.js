@@ -24,6 +24,8 @@ function logoFbHtml(name,cls){
 }
 window.logoFallback=function(img){const s=document.createElement("span");s.innerHTML=logoFbHtml(img.alt,img.className);img.replaceWith(s.firstChild)};
 const rinkAddresses={"Bergkamen": "Häupenweg 29, 59192 Bergkamen", "Gelsenkirchen": "Adenauerallee 118, 45891 Gelsenkirchen", "Neuss": "Jakob-Koch-Straße 1, 41466 Neuss", "Duisburg": "Margaretenstraße 17-19, 47055 Duisburg", "Hamm": "Karl-Koßmann-Straße 1, 59071 Hamm", "Herford": "Westring 108, 32051 Herford", "Grefeath": "Stadionstraße 161, 47929 Grefrath", "Grefrath": "Stadionstraße 161, 47929 Grefrath", "Dinslaken": "Am Stadtbad 1, 46537 Dinslaken", "Essen": "Curtiusstraße 2, 45144 Essen", "Dortmund": "Strobelallee 32, 44139 Dortmund", "Bielefeld": "Duisburger Straße 14, 33647 Bielefeld", "Solingen": "Brühler Straße 20, 42657 Solingen", "Aachen": "Hubert-Wienen-Straße 8, 52070 Aachen", "Ratingen": "Am Sandbach 12, 40878 Ratingen", "Wiehl": "Mühlenstraße 23, 51674 Wiehl", "Möhnesee": "Teigelhof 4, 59519 Möhnesee", "Neuwied": "Andernacher Straße 111, 56564 Neuwied", "Darmstadt": "Alsfelder Straße 45, 64289 Darmstadt", "Troisdorf": "Uckendorfer Straße 135, 53844 Troisdorf"};
+/* Ungefähre Lage der Hallen (Schlüssel wie rinkAddresses) – Gegner-Karte und Wetter (Function weatherForecast liest diese Zeile) */
+const RINK_GEO={"Bergkamen":[51.6275,7.6460],"Gelsenkirchen":[51.5560,7.0880],"Neuss":[51.1830,6.6950],"Duisburg":[51.4170,6.7780],"Hamm":[51.6730,7.8350],"Herford":[52.1170,8.6560],"Grefeath":[51.3420,6.3420],"Grefrath":[51.3420,6.3420],"Dinslaken":[51.5620,6.7370],"Essen":[51.4500,6.9900],"Dortmund":[51.4930,7.4560],"Bielefeld":[51.9960,8.5240],"Solingen":[51.1640,7.0690],"Aachen":[50.7930,6.0970],"Ratingen":[51.2970,6.8460],"Wiehl":[50.9500,7.5400],"Möhnesee":[51.4980,8.1300],"Neuwied":[50.4300,7.4400],"Darmstadt":[49.8865,8.6625],"Troisdorf":[50.8240,7.1660]};
 function dt(g){return new Date(g.date+"T"+g.time+":00")}
 function fmtDate(g){return dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"})}
 function monthLabel(g){return dt(g).toLocaleDateString("de-DE",{month:"long",year:"numeric"})}
@@ -470,8 +472,8 @@ function hwUpdateGreeting(){
   el.hidden=!(document.documentElement.classList.contains("hw")&&!closed);
 }
 /* Push-Bereich: Status anzeigen */
-(function(){const ids={results:"pfResults",reminders:"pfReminders",teamA:"pfTeamA",teamB:"pfTeamB",teamU13:"pfTeamU13",liveGoals:"pfLiveGoals",livePeriods:"pfLivePeriods"},E={};for(const k in ids){E[k]=document.getElementById(ids[k]);if(!E[k])return}
-  const OPTIN={liveGoals:1,livePeriods:1,teamU13:1}; /* 1.35.0: U13 nur bei ausdrücklicher Auswahl */ /* 1.26.0: Live-Pushs nur, wenn ausdrücklich eingeschaltet */
+(function(){const ids={results:"pfResults",reminders:"pfReminders",reports:"pfReports",teamA:"pfTeamA",teamB:"pfTeamB",teamU13:"pfTeamU13",liveGoals:"pfLiveGoals",livePeriods:"pfLivePeriods",liveMyNr:"pfLiveMyNr"},E={};for(const k in ids){E[k]=document.getElementById(ids[k]);if(!E[k])return}
+  const OPTIN={liveGoals:1,livePeriods:1,teamU13:1,reports:1,liveMyNr:1}; /* 1.43.0: Spielbericht und „Tore meiner Nummer“ nur auf Wunsch */ /* 1.35.0: U13 nur bei ausdrücklicher Auswahl */ /* 1.26.0: Live-Pushs nur, wenn ausdrücklich eingeschaltet */
   let p={};try{p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}")}catch(e){}for(const k in E)E[k].checked=OPTIN[k]?p[k]===true:p[k]!==false;
   const save=()=>{let o={};try{o=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}")||{}}catch(e){}for(const k in E)o[k]=E[k].checked;try{localStorage.setItem("grizzlysPushPrefs",JSON.stringify(o))}catch(e){}window.savePushPrefs&&window.savePushPrefs()};
   for(const k in E)E[k].addEventListener("change",save);})();
@@ -727,7 +729,7 @@ function bilanzHtml(team){
       ${S.worst?`<li><span>Höchste Niederlage</span><b>${S.worst.r.gs}:${S.worst.r.os} · ${vs(S.worst)}</b></li>`:""}
       ${S.shut?`<li><span>Zu null gespielt</span><b>${S.shut}×</b></li>`:""}
       <li><span>Gegentore je Spiel</span><b>${avg(t.ga)}</b></li>
-    </ul></div>${scorerHtml(team)}${reps}
+    </ul></div>${specialHtml(team)}${msList(team)}${scorerHtml(team)}${reps}
     ${S.row&&S.row.r?`<button type="button" class="action sbTabImg" data-tabimg="${team}">📸 Tabelle als Bild teilen</button>`:""}
     <div class="sbNote">Berechnet aus den eingetragenen Ergebnissen${S.perN?", Drittel aus den EHV-Daten":""}. Spieler werden nicht genannt.</div>`;
 }
@@ -852,7 +854,7 @@ window.applyResults=function(){
   /* 1.22.0: Gegner-Karte – alle Gegner an ihren Spielorten (Hallen), Filter Alle / U15 A / U15 B.
      Leaflet + OpenStreetMap werden erst nach „Karte laden“ geholt (Datenschutz); die Entscheidung kann gemerkt werden.
      Koordinaten: ungefähre Lage der Eishallen (Schlüssel wie in rinkAddresses). */
-  const RINK_GEO={"Bergkamen":[51.6275,7.6460],"Gelsenkirchen":[51.5560,7.0880],"Neuss":[51.1830,6.6950],"Duisburg":[51.4170,6.7780],"Hamm":[51.6730,7.8350],"Herford":[52.1170,8.6560],"Grefeath":[51.3420,6.3420],"Grefrath":[51.3420,6.3420],"Dinslaken":[51.5620,6.7370],"Essen":[51.4500,6.9900],"Dortmund":[51.4930,7.4560],"Bielefeld":[51.9960,8.5240],"Solingen":[51.1640,7.0690],"Aachen":[50.7930,6.0970],"Ratingen":[51.2970,6.8460],"Wiehl":[50.9500,7.5400],"Möhnesee":[51.4980,8.1300],"Neuwied":[50.4300,7.4400],"Darmstadt":[49.8865,8.6625],"Troisdorf":[50.8240,7.1660]};
+  /* RINK_GEO steht seit 1.43.0 oben (auch für die Cloud Function weatherForecast) */
   /* Gegner, die auf der Karte an ihrer eigenen Halle stehen sollen, auch wenn sie ihr Heimspiel woanders austragen */
   const OPP_HOME={"ESC Darmstadt":"Darmstadt"};
   const OM={map:null,layer:null,filter:"all",mode:"list",loading:null,pts:[],size:""};
@@ -1153,6 +1155,7 @@ function g3HomeCard(id,g,label,defOpen){
     const vs=el.querySelector(".gcMatch .vs");if(vs)vs.outerHTML='<span class="g3Puck" role="img" aria-label="gegen"></span>';
     const m=el.querySelector(".g3Main");if(m&&dt(g)>Date.now())m.insertAdjacentHTML("beforeend",`<div class="g3Cd" data-cdt="${dt(g).getTime()}" aria-label="Countdown bis zum Bully">${dzCdHtml(dt(g).getTime())}</div>`);}
   else if(id==="g3HomeNext2"&&!past)el.classList.add("g3Compact");
+  if(id.startsWith("g3HomeNext")&&!past&&!g.cancelled){const wx=wxLine(g);const m=el.querySelector(".g3Main");if(wx&&m)m.insertAdjacentHTML("beforeend",wx)} /* 1.43.0: Wetter am Spielort */
   g3Bind(el,g); g3SetOpen(el,id in g3HomeOpen?g3HomeOpen[id]:defOpen);
   hwDecorate(el,g);
 }
@@ -1201,7 +1204,7 @@ function lrRender(list){
       <div class="lrDate">${esc(wd)}<b>${String(d.getDate()).padStart(2,"0")}.</b>${esc(mon)}</div>
       <div class="lrTeams"><span class="lrBadge">${esc(teamName(g.team))}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
-        <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?lrScorers(g,r):""}</div>
+        <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?lrScorers(g,r)+msChips(g):""}</div>
       <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");
@@ -1364,7 +1367,8 @@ function openMatchDetails(g,toReport=false){
   const sideL=homeLogo, sideR=awayLogo;
   const res=resInfo(g), past=!!res||dt(g).getTime()+2*3600000<Date.now();
   const rep=(window.gameReports||{})[rkey(g)];
-  content.innerHTML=`<article class="card gz2 gz3 mdCard ${"team"+g.team}" data-team="${g.team}">${gameCardHtml(g,past,res,true)}</article>`+(rep&&rep.published&&rep.text?repHtml(rep):"");
+  content.innerHTML=`<article class="card gz2 gz3 mdCard ${"team"+g.team}" data-team="${g.team}">${gameCardHtml(g,past,res,true)}</article>`+msBox(g)+wxBox(g)+(rep&&rep.published&&rep.text?repHtml(rep):"");
+  {const mr=content.querySelector(".mdReport");if(mr)mr.insertAdjacentHTML("beforeend",rxBar("rep_"+rkey(g),"War der Bericht gut?"))} /* 1.44.0 */
   hwDecorate(content.querySelector(".mdCard"),g);
   g3Bind(content.querySelector(".mdCard"),g,true);
   modal.hidden=false;
@@ -2103,8 +2107,8 @@ async function instaOpen(g,type,pub=false){
   const body=m.querySelector("#instaBody"),hint=m.querySelector("#instaHint"),bS=m.querySelector("#instaShare"),bD=m.querySelector("#instaSave");
   /* 1.9.1.137: Kurzfassung des Spielberichts als Text zum Ergebnisbild */
   const capBox=m.querySelector("#instaCap"),capOn=m.querySelector("#instaCapOn"),capTx=m.querySelector("#instaCapTx"),bC=m.querySelector("#instaCopy");
-  const special=type==="table"||type==="year";
-  m.querySelector("#instaTitle").textContent=type==="table"?"Tabelle als Bild":type==="year"?"Jahresrückblick":"Social-Media-Bild";
+  const special=type==="table"||type==="year"||type==="weekend";
+  m.querySelector("#instaTitle").textContent=type==="table"?"Tabelle als Bild":type==="year"?"Jahresrückblick":type==="weekend"?"Wochenende als Bild":"Social-Media-Bild";
   const cap=type==="result"?instaCaption(g,pub):"";
   capBox.hidden=!cap; bC.hidden=!cap; capTx.value=cap; capOn.checked=!!cap;
   capOn.onchange=()=>{capTx.disabled=!capOn.checked};capTx.disabled=false;
@@ -2113,9 +2117,9 @@ async function instaOpen(g,type,pub=false){
   bC.onclick=async()=>{if(await copyCap()){bC.textContent="✓ Kopiert";setTimeout(()=>bC.textContent="Text kopieren",1800)}else{capTx.focus();capTx.select()}};
   body.textContent="Bild wird erstellt …";hint.textContent="";bS.disabled=bD.disabled=true;m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
   try{
-    const cv=type==="table"?await instaTable(g.team):type==="year"?await instaYear(g.year):await instaDraw(g,type), blob=await new Promise(r=>cv.toBlob(r,"image/png"));
+    const cv=type==="table"?await instaTable(g.team):type==="year"?await instaYear(g.year):type==="weekend"?await instaWeekend(g):await instaDraw(g,type), blob=await new Promise(r=>cv.toBlob(r,"image/png"));
     if(!blob)throw new Error("Bild konnte nicht erzeugt werden");
-    const name=type==="table"?"grizzlys-u15"+g.team.toLowerCase()+"-tabelle-"+new Date().toISOString().slice(0,10)+".png":type==="year"?"grizzlys-u15-jahresrueckblick-"+g.year+".png":"grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(g.cancelled?"abgesagt":type==="result"?"ergebnis":type==="moved"?"verlegung":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
+    const name=type==="weekend"?"young-grizzlys-wochenende-"+g.list[0].date+".png":type==="table"?"grizzlys-u15"+g.team.toLowerCase()+"-tabelle-"+new Date().toISOString().slice(0,10)+".png":type==="year"?"grizzlys-u15-jahresrueckblick-"+g.year+".png":"grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(g.cancelled?"abgesagt":type==="result"?"ergebnis":type==="moved"?"verlegung":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
     body.innerHTML="";const img=new Image();img.src=url;img.alt="Vorschau des Bildes";img.className="instaPreview";body.appendChild(img);
     const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     bS.hidden=!canShare;bS.disabled=false;bD.disabled=false;
@@ -2159,11 +2163,11 @@ function renderAdmSocial(){
   const row=(g,i)=>{const r=resInfo(g),mv=instaMoved(g);return `<div class="socRow team${esc(g.team)}" data-row="${i}"><div class="socRowTx"><b>${opp(g)}</b><small>${sub(g)}${g.cancelled?" · abgesagt":""}</small></div><div class="socRowB">${admSoc.f==="next"?`<button type="button" class="admBtn" data-k="announce">📣 Spieltag</button>${mv?'<button type="button" class="admBtn" data-k="moved">🔁 Verlegung</button>':""}`:`<button type="button" class="admBtn${r?" pri":""}" data-k="result"${r?"":" disabled"}>${r?"🏆 "+r.hs+":"+r.as:"Ergebnis fehlt"}</button>`}</div></div>`};
   const chip=(k,v,l)=>`<button type="button" class="${admSoc[k]===v?"on":""}" data-${k}="${v}">${l}</button>`;
   box.innerHTML=`<div class="socSec"><div class="socH">Jetzt passend <small>sehen Nutzer auch unter Downloads</small></div>${now1.length?`<div class="socCards">${now1.map(card).join("")}</div>`:'<div class="small socEmpty">Gerade steht kein Spieltag und kein frisches Ergebnis an.</div>'}</div>
-  <div class="socSec"><div class="socH">Saison</div><div class="socTiles"><button type="button" class="socTile teamA" data-x="tA"><span>📊</span><b>Tabelle</b><small>${esc(teamName("A"))}</small></button><button type="button" class="socTile teamB" data-x="tB"><span>📊</span><b>Tabelle</b><small>${esc(teamName("B"))}</small></button><button type="button" class="socTile teamU13" data-x="tU13"><span>📊</span><b>Tabelle</b><small>${esc(teamName("U13"))}</small></button><button type="button" class="socTile" data-x="y"${yN?"":" disabled"}><span>🎆</span><b>Rückblick</b><small>${yy}${yN?"":" · noch leer"}</small></button></div></div>
+  <div class="socSec"><div class="socH">Saison</div><div class="socTiles"><button type="button" class="socTile teamA" data-x="tA"><span>📊</span><b>Tabelle</b><small>${esc(teamName("A"))}</small></button><button type="button" class="socTile teamB" data-x="tB"><span>📊</span><b>Tabelle</b><small>${esc(teamName("B"))}</small></button><button type="button" class="socTile teamU13" data-x="tU13"><span>📊</span><b>Tabelle</b><small>${esc(teamName("U13"))}</small></button><button type="button" class="socTile" data-x="w"${weekendGames(ALL_GAMES).length?"":" disabled"}><span>📅</span><b>Wochenende</b><small>${weekendGames(ALL_GAMES).length||"keine"} Spiele</small></button><button type="button" class="socTile" data-x="y"${yN?"":" disabled"}><span>🎆</span><b>Rückblick</b><small>${yy}${yN?"":" · noch leer"}</small></button></div></div>
   <div class="socSec"><div class="socH">Alle Spiele</div><div class="admFlt socFlt">${chip("f","next","Kommende")}${chip("f","past","Gespielt")}<span class="socSp"></span>${chip("t","","Alle")}${chip("t","A","A")}${chip("t","B","B")}${chip("t","U13","U13")}</div>
    <div class="socRows">${list.slice(0,admSoc.n).map(row).join("")||'<div class="small socEmpty">Keine Spiele.</div>'}</div>${list.length>admSoc.n?`<button type="button" class="admMore socMore">Alle ${list.length} Spiele anzeigen</button>`:""}</div>`;
   box.querySelectorAll("[data-now]").forEach(b=>{const x=now1[Number(b.dataset.now)];b.onclick=()=>instaOpen(x.g,x.type)});
-  box.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{const k=b.dataset.x;if(k==="y")instaOpen({year:yy},"year");else instaOpen({team:k.slice(1)},"table")});
+  box.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{const k=b.dataset.x;if(k==="w")instaOpen({list:weekendGames(ALL_GAMES)},"weekend");else if(k==="y")instaOpen({year:yy},"year");else instaOpen({team:k.slice(1)},"table")});
   box.querySelectorAll(".socRow").forEach(r=>{const g=list[Number(r.dataset.row)];r.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>instaOpen(g,b.dataset.k))});
   box.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{admSoc.f=b.dataset.f;admSoc.n=12;renderAdmSocial()});
   box.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{admSoc.t=b.dataset.t;renderAdmSocial()});
@@ -2183,10 +2187,12 @@ function renderInstaDownloads(){
     if(instaMoved(g)&&now<t&&!r)items.push({g,type:"moved",t});
     if(r&&now<=t+INSTA_DAYS*day)items.push({g,type:"result",t,r});
   });
-  const ord={result:0,moved:1,announce:2,year:3,table:4}; items.sort((a,b)=>a.type===b.type?a.t-b.t:ord[a.type]-ord[b.type]);
+  const ord={result:0,moved:1,announce:2,weekend:2.5,year:3,table:4}; items.sort((a,b)=>a.type===b.type?a.t-b.t:ord[a.type]-ord[b.type]);
   /* 1.30.0: Tabelle immer, Jahresrückblick vom 20.12. bis 31.1. */
   {const d=new Date(now),yy=yearReviewYear(d);if(((d.getMonth()===11&&d.getDate()>=20)||d.getMonth()===0)&&yearStats(yy).T.gp)items.push({g:{year:yy},type:"year",t:0});
    window.MY_TEAMS.forEach(t=>{if(standings[t]&&Array.isArray(standings[t].rows)&&standings[t].rows.length)items.push({g:{team:t},type:"table",t:0})});}
+  /* 1.43.0: Wochenend-Vorschau – ab Montag für das kommende Wochenende (Fr–So), solange dort Spiele anstehen */
+  {const wl=weekendGames(games,now);if(wl.length&&wl.some(g=>dt(g).getTime()+2*3600000>now))items.push({g:{list:wl},type:"weekend",t:-1});}
   if(!items.length){
     const nx=games.filter(g=>dt(g).getTime()>now).sort((a,b)=>dt(a)-dt(b))[0];
     const from=nx?new Date(dt(nx).getTime()-INSTA_DAYS*day):null;
@@ -2199,6 +2205,7 @@ function renderInstaDownloads(){
   const go='<svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg>';
   box.innerHTML=items.map((x,i)=>{const g=x.g, cls="team"+g.team;
     if(x.type==="table"){const st=standRow(g.team,sbOwn(g.team));return `<button class="downloadCard dlInstaItem ${cls}" data-i="${i}" type="button"><span class="dlIcon">${icT}</span><b>Tabelle · ${esc(teamName(g.team))}</b><small>${st&&st.r?"Platz "+esc(String(st.r))+" · ":""}${esc(INSTA_LEAGUE[g.team]||"")}</small>${go}</button>`}
+    if(x.type==="weekend"){const L=g.list,f=d=>d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}).replace(/\.$/,"");return `<button class="downloadCard dlInstaItem teamA" data-i="${i}" type="button"><span class="dlIcon">${icA}</span><b>Wochenende · ${L.length} ${L.length===1?"Spiel":"Spiele"}</b><small>${esc(f(dt(L[0])))}${L.length>1&&dt(L[0]).toDateString()!==dt(L[L.length-1]).toDateString()?" – "+esc(f(dt(L[L.length-1]))):""} · alle deine Mannschaften</small>${go}</button>`}
     if(x.type==="year")return `<button class="downloadCard dlInstaItem teamB" data-i="${i}" type="button"><span class="dlIcon">${icR}</span><b>Jahresrückblick ${g.year}</b><small>U15 A und B in Zahlen</small>${go}</button>`;
     const title=x.type==="result"?"Ergebnis "+x.r.hs+":"+x.r.as:x.type==="moved"?"Spielverlegung":"Spieltag";
     return `<button class="downloadCard dlInstaItem ${cls}" data-i="${i}" type="button"><span class="dlIcon">${x.type==="result"?icR:icA}</span><b>${title} · ${esc(teamName(g.team))}</b><small>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))} · ${esc(dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))}</small><svg class="ic dlGo" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`}).join("");
@@ -2210,6 +2217,9 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.44.0.219",d:"November 2026",items:["Wunschliste: Stimm ab, welche Funktion als Nächstes kommen soll – bis zu 3 Stimmen, anonym (Startseite unten und News).","Mit einem Tipp sagen, ob dir ein Spielbericht oder eine Neuerung gefällt (👍/👎).","Feedback ist jetzt schneller erreichbar: auf der Startseite, in der Info und in den News."]},
+  {v:"1.43.0.218",d:"November 2026",items:["Meine Rückennummer: In den Einstellungen die Nummer deines Kindes eintragen – sie wird bei Torschützen, Spielberichten und in der Saisonbilanz hervorgehoben. Auf Wunsch Push bei Tor oder Vorlage dieser Nummer.","Neuer Push „Spielbericht ist online“ – ein Tipp öffnet den Bericht.","Wochenende als Bild: Unter Downloads alle Spiele des Wochenendes als Bild für die WhatsApp-Gruppe.","Wetter am Spielort: Temperatur und Glättegefahr beim nächsten Spiel und in der Erinnerung am Vortag.","Saisonbilanz: Strafminuten, Überzahl- und Unterzahlquote."]},
+  {v:"1.42.1.216",d:"November 2026",items:["Meilensteine: erster Saisonsieg, Siegesserien, 50. Saisontor & Co. stehen bei den Ergebnissen, im Spiel und in der Saisonbilanz.","App weiterempfehlen: In der Info zeigt „QR-Code zeigen“ einen Code zum Scannen – so ist die App in Sekunden auf dem Handy.","Schneller zur Statistik: Lange auf das App-Symbol drücken bietet die Saisonbilanz von U13, U15 A und U15 B an (Android)."]},
   {v:"1.41.0.210",d:"November 2026",items:["Neu auf der Startseite: der Spruch des Tages – jeden Tag ein anderer Eishockey-Spruch. Am Spieltag und nach einem Sieg oder einer Niederlage passt er zum Spiel."]},
   {v:"1.39.0.199",d:"November 2026",items:["Push-Meldungen folgen jetzt „Meine Mannschaften“: Du bekommst nur Push für die Mannschaften, die du ausgewählt hast.","Die App lädt schneller und aktualisiert sich gezielter."]},
   {v:"1.38.0.198",d:"November 2026",items:["Neu: die U13 – mit Spielplan, Ergebnissen, Tabelle, Live-Ticker und Push. Die App heißt jetzt „Young Grizzlys“.","Unter Einstellungen › Meine Mannschaften wählst du, ob du U15 A, U15 B und/oder U13 sehen möchtest. Push für die U13 gibt es nur, wenn du sie auswählst."]},
@@ -2389,7 +2399,7 @@ function newsFill(){
   const pane=newsTab==="notes"?(notes.length?notes.map(x=>newsNoteHtml(x,isNew("n:"+x.id))).join(""):'<div class="small newsEmpty">Aktuell keine Hinweise.</div>')
     :newsTab==="reports"?(rp.length?rp.map(x=>newsReportHtml(x,isNew(repNid(x)))).join(""):emptyBox("doc","Keine Spielberichte","In den letzten 14 Tagen gab es keine Berichte."))
     :newsTab==="changes"?(ch.length?ch.map(c=>newsChangeHtml(c,isNew(c.id))).join(""):emptyBox("cal","Keine Terminänderungen","Alle Spiele finden wie geplant statt."))
-    :app.map(x=>`<div class="newsItem newsApp${isNew("v:"+(x.id||x.v))?" unread":""}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul></div>`).join("");
+    :wishTeaser()+app.map((x,ai)=>`<div class="newsItem newsApp${isNew("v:"+(x.id||x.v))?" unread":""}"><div class="newsItemHead"><b>Version ${esc(x.v)}</b><span class="newsDate">${esc(x.d)}</span></div><ul>${x.items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>${ai<3?rxBar("neu_"+x.v,"Gefällt dir das?"):""}</div>`).join("")+fbLinkHtml("news");
   body.innerHTML=`<div class="newsTabs" role="tablist" aria-label="Bereiche">${T.map(t=>`<button type="button" role="tab" class="newsTab${t.k===newsTab?" on":""}" aria-selected="${t.k===newsTab}" data-nt="${t.k}"><span class="ntIc" aria-hidden="true">${t.ic}</span><span class="ntL">${t.l}</span>${t.u?`<i class="ntNew" aria-label="${t.u} neu">${t.u}</i>`:t.n&&t.k!=="app"?`<small class="ntN">${t.n}</small>`:""}</button>`).join("")}</div><div class="newsPane" role="tabpanel">${pane}</div>`;
   body.querySelectorAll(".newsTab").forEach(b=>b.onclick=()=>{newsTab=b.dataset.nt;newsFill()});
   body.querySelectorAll(".newsItem.newsChange[data-cid]").forEach(b=>{const c=ch.find(x=>x.id===b.dataset.cid);b.onclick=()=>{closeNews();openMatchDetails(c.g)}});
@@ -2773,4 +2783,291 @@ renderNews();
   window.renderSpruch=render;
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)render()});
   render();
+})();
+
+/* ===== 1.42.0: Meilensteine – aus den eingetragenen Ergebnissen je Mannschaft (keine Namen) =====
+   Erster Saisonsieg, 5./10./15. … Saisonsieg, 3/5/7/10/15 Siege in Folge, 25./50./75./100. … Saisontor,
+   zu null gewonnen, höchster Saisonsieg (ab 5 Toren Unterschied, wenn höher als der bisherige). */
+const MS_IC='<svg class="msIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>';
+let msCache={key:"",map:{}};
+function milestones(team){
+  const all=games.filter(g=>g.team===team&&!g.cancelled).sort((a,b)=>dt(a)-dt(b)), out=[];
+  const GOALS=[25,50,75,100,125,150,175,200,250,300], WINS=[5,10,15,20,25,30], ROW=[3,5,7,10,15];
+  let gf=0,w=0,row=0,best=0;
+  all.forEach(g=>{const r=resInfo(g); if(!r)return; const L=[], before=gf; gf+=r.gs;
+    if(r.o==="w"){w++;row++;
+      if(w===1)L.push({k:"first",t:"Erster Saisonsieg"});
+      if(WINS.includes(w))L.push({k:"wins",t:w+". Saisonsieg"});
+      if(ROW.includes(row))L.push({k:"row",t:row+". Sieg in Folge"});
+      const d=r.gs-r.os; if(d>=5&&d>best){L.push({k:"big",t:"Höchster Saisonsieg"});} if(d>best)best=d;
+      if(r.os===0)L.push({k:"shut",t:"Zu null gewonnen"});
+    }else row=0;
+    GOALS.forEach(n=>{if(before<n&&gf>=n)L.push({k:"goals",t:n+". Saisontor"})});
+    if(L.length)out.push({g,r,L});
+  });
+  return out;
+}
+function msFor(g){
+  const key=games.length+"|"+games.filter(x=>resInfo(x)).length+"|"+Object.keys(window.gameResults||{}).length;
+  if(msCache.key!==key){msCache={key,map:{}};[...new Set(games.map(x=>x.team))].forEach(t=>milestones(t).forEach(m=>{msCache.map[rkey(m.g)]=m.L}))}
+  return msCache.map[rkey(g)]||[];
+}
+function msChips(g){const L=msFor(g);return L.length?`<div class="msRow">${MS_IC}<span>${L.map(x=>esc(x.t)).join(" · ")}</span></div>`:""}
+function msBox(g){const L=msFor(g);if(!L.length)return "";
+  return `<div class="msBox"><div class="msBoxHead">${MS_IC}<b>${L.length>1?"Meilensteine":"Meilenstein"}</b></div>${L.map(x=>`<div class="msItem ms_${x.k}">${esc(x.t)}</div>`).join("")}</div>`}
+function msList(team){const M=milestones(team); if(!M.length)return "";
+  return `<div class="sbSec"><h4>Meilensteine <small>(${M.reduce((a,m)=>a+m.L.length,0)})</small></h4><ul class="msList">${M.slice().reverse().map(m=>`<li><span class="msDate">${esc(dt(m.g).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}))}</span><span class="msTx">${m.L.map(x=>`<b>${esc(x.t)}</b>`).join(" · ")}<small>${m.r.gs}:${m.r.os} ${isHome(m.g)?"gegen":"bei"} ${esc(shortTeam(opponent(m.g)))}</small></span></li>`).join("")}</ul></div>`}
+
+/* ===== 1.42.0: App weiterempfehlen – QR-Code der Live-App (in der Info) ===== */
+const APP_LIVE_URL="https://jazm1309.github.io/grizzlys-u15/";
+const QR_PATH="M4 4h7v1h-7zM15 4h4v1h-4zM21 4h1v1h-1zM26 4h3v1h-3zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM15 5h3v1h-3zM19 5h1v1h-1zM21 5h1v1h-1zM23 5h2v1h-2zM26 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h1v1h-1zM19 6h2v1h-2zM25 6h1v1h-1zM27 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM18 7h1v1h-1zM20 7h5v1h-5zM26 7h3v1h-3zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h3v1h-3zM16 8h1v1h-1zM18 8h1v1h-1zM22 8h3v1h-3zM26 8h2v1h-2zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h2v1h-2zM15 9h1v1h-1zM17 9h1v1h-1zM19 9h1v1h-1zM23 9h1v1h-1zM25 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM16 11h1v1h-1zM19 11h4v1h-4zM25 11h1v1h-1zM27 11h2v1h-2zM5 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM12 12h2v1h-2zM15 12h3v1h-3zM21 12h1v1h-1zM23 12h3v1h-3zM27 12h1v1h-1zM29 12h1v1h-1zM31 12h2v1h-2zM34 12h1v1h-1zM6 13h2v1h-2zM9 13h1v1h-1zM12 13h1v1h-1zM17 13h3v1h-3zM22 13h1v1h-1zM26 13h4v1h-4zM33 13h3v1h-3zM5 14h1v1h-1zM7 14h1v1h-1zM9 14h2v1h-2zM12 14h1v1h-1zM14 14h4v1h-4zM19 14h1v1h-1zM21 14h1v1h-1zM25 14h4v1h-4zM30 14h1v1h-1zM33 14h1v1h-1zM35 14h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM13 15h1v1h-1zM18 15h1v1h-1zM21 15h2v1h-2zM24 15h2v1h-2zM27 15h2v1h-2zM30 15h1v1h-1zM35 15h1v1h-1zM5 16h1v1h-1zM8 16h1v1h-1zM10 16h6v1h-6zM19 16h1v1h-1zM22 16h4v1h-4zM27 16h2v1h-2zM30 16h4v1h-4zM35 16h1v1h-1zM6 17h2v1h-2zM11 17h1v1h-1zM13 17h1v1h-1zM17 17h5v1h-5zM23 17h1v1h-1zM26 17h3v1h-3zM31 17h1v1h-1zM33 17h1v1h-1zM5 18h3v1h-3zM9 18h2v1h-2zM12 18h3v1h-3zM17 18h3v1h-3zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h6v1h-6zM32 18h1v1h-1zM34 18h2v1h-2zM7 19h3v1h-3zM11 19h1v1h-1zM14 19h1v1h-1zM21 19h6v1h-6zM29 19h3v1h-3zM33 19h1v1h-1zM6 20h1v1h-1zM9 20h2v1h-2zM13 20h1v1h-1zM15 20h7v1h-7zM25 20h1v1h-1zM28 20h1v1h-1zM30 20h1v1h-1zM32 20h1v1h-1zM35 20h1v1h-1zM5 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM12 21h4v1h-4zM18 21h1v1h-1zM20 21h3v1h-3zM26 21h2v1h-2zM29 21h1v1h-1zM33 21h3v1h-3zM4 22h1v1h-1zM6 22h1v1h-1zM9 22h2v1h-2zM12 22h1v1h-1zM14 22h2v1h-2zM17 22h3v1h-3zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h1v1h-1zM30 22h2v1h-2zM33 22h1v1h-1zM35 22h1v1h-1zM6 23h1v1h-1zM8 23h2v1h-2zM12 23h1v1h-1zM18 23h4v1h-4zM25 23h1v1h-1zM30 23h2v1h-2zM36 23h1v1h-1zM4 24h2v1h-2zM10 24h1v1h-1zM16 24h2v1h-2zM20 24h3v1h-3zM25 24h1v1h-1zM27 24h1v1h-1zM30 24h1v1h-1zM32 24h2v1h-2zM4 25h1v1h-1zM6 25h2v1h-2zM9 25h1v1h-1zM13 25h2v1h-2zM16 25h2v1h-2zM19 25h1v1h-1zM23 25h3v1h-3zM27 25h1v1h-1zM29 25h1v1h-1zM31 25h1v1h-1zM33 25h1v1h-1zM35 25h1v1h-1zM9 26h2v1h-2zM13 26h1v1h-1zM17 26h1v1h-1zM22 26h1v1h-1zM24 26h5v1h-5zM30 26h2v1h-2zM34 26h2v1h-2zM7 27h1v1h-1zM9 27h1v1h-1zM11 27h1v1h-1zM14 27h3v1h-3zM18 27h2v1h-2zM21 27h2v1h-2zM25 27h1v1h-1zM27 27h1v1h-1zM30 27h3v1h-3zM4 28h5v1h-5zM10 28h3v1h-3zM16 28h1v1h-1zM18 28h1v1h-1zM21 28h1v1h-1zM23 28h3v1h-3zM27 28h6v1h-6zM35 28h1v1h-1zM12 29h2v1h-2zM15 29h1v1h-1zM18 29h3v1h-3zM25 29h1v1h-1zM27 29h2v1h-2zM32 29h1v1h-1zM34 29h2v1h-2zM4 30h7v1h-7zM15 30h2v1h-2zM18 30h2v1h-2zM24 30h1v1h-1zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h2v1h-2zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM15 31h2v1h-2zM19 31h1v1h-1zM23 31h3v1h-3zM28 31h1v1h-1zM32 31h1v1h-1zM36 31h1v1h-1zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM15 32h7v1h-7zM23 32h2v1h-2zM28 32h6v1h-6zM35 32h2v1h-2zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM13 33h1v1h-1zM15 33h4v1h-4zM22 33h2v1h-2zM25 33h1v1h-1zM27 33h2v1h-2zM30 33h6v1h-6zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM13 34h1v1h-1zM15 34h5v1h-5zM22 34h2v1h-2zM27 34h1v1h-1zM30 34h3v1h-3zM34 34h1v1h-1zM4 35h1v1h-1zM10 35h1v1h-1zM12 35h1v1h-1zM15 35h1v1h-1zM18 35h9v1h-9zM28 35h3v1h-3zM4 36h7v1h-7zM13 36h5v1h-5zM24 36h7v1h-7zM33 36h1v1h-1zM36 36h1v1h-1z", QR_N=41;
+function openQr(){
+  let m=document.getElementById("qrModal");
+  if(!m){m=document.createElement("div");m.id="qrModal";m.className="matchModal qrModal";m.hidden=true;
+    m.innerHTML=`<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="qrTitle"><div class="matchModalHead"><div id="qrTitle" class="matchModalTitle">App weiterempfehlen</div><button id="qrClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div>
+      <div class="qrBody"><div class="qrCard"><div class="qrBrand"><img src="logo.png" alt="" width="40" height="40"><div><b>${esc(APP_CFG.appName)}</b><small>Spielplan U13 &amp; U15 · ${esc(APP_CFG.club)}</small></div></div>
+      <svg class="qrCode" viewBox="0 0 ${QR_N} ${QR_N}" role="img" aria-label="QR-Code zur App"><rect width="${QR_N}" height="${QR_N}" fill="#fff"/><path d="${QR_PATH}" fill="#071b33"/></svg>
+      <div class="qrUrl">${esc(APP_LIVE_URL.replace("https://",""))}</div></div>
+      <ol class="qrSteps"><li>Mit der <b>Handykamera</b> auf den Code halten und den Link öffnen.</li><li>Im Browser <b>„Zum Startbildschirm hinzufügen“</b> bzw. <b>„App installieren“</b> wählen.</li><li>Fertig – Spielplan, Ergebnisse und Push immer dabei.</li></ol>
+      <button type="button" class="action qrShare" id="qrShare">Link teilen</button></div></div>`;
+    document.body.appendChild(m);
+    const close=()=>{m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow=""};
+    m.querySelector("#qrClose").onclick=close; m.addEventListener("click",e=>{if(e.target===m)close()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)close()});
+    m.querySelector("#qrShare").onclick=async()=>{const d={title:APP_CFG.appName,text:APP_CFG.appName+" – Spielplan U13 und U15 des "+APP_CFG.club,url:APP_LIVE_URL};
+      try{if(navigator.share)await navigator.share(d);else if(navigator.clipboard){await navigator.clipboard.writeText(APP_LIVE_URL);alert("App-Link wurde kopiert.")}else window.prompt("App-Link kopieren:",APP_LIVE_URL)}catch(e){if(e&&e.name!=="AbortError")alert("Teilen war nicht möglich.")}};
+  }
+  m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  try{trackAnalyticsEvent("app_qr")}catch(e){}
+}
+window.openQr=openQr;
+document.getElementById("qrApp")?.addEventListener("click",openQr);
+
+/* ===== 1.42.0: App-Verknüpfungen (langes Drücken auf das App-Symbol, siehe manifest.webmanifest „shortcuts“)
+   ./?go=bilanz-U13 | bilanz-A | bilanz-B öffnet die Saisonbilanz der Mannschaft und räumt die Adresse wieder auf.
+   Ist die Mannschaft unter „Meine Mannschaften“ nicht ausgewählt, kommt ein Hinweis und die Einstellungen öffnen sich. */
+(function(){
+  let go=""; try{go=new URLSearchParams(location.search).get("go")||""}catch(e){}
+  /* 1.43.0: Tipp auf eine Push-Meldung bei schon offener App – der Service Worker schickt {type:"GO",go} */
+  try{navigator.serviceWorker&&navigator.serviceWorker.addEventListener("message",e=>{if(e.data&&e.data.type==="GO"&&e.data.go)goTo(String(e.data.go))})}catch(e){}
+  if(!go)return;
+  try{history.replaceState(null,"",location.pathname+location.hash)}catch(e){}
+  const run=()=>goTo(go);
+  setTimeout(run,(window.__introMs||0)+300);
+  function goTo(go){try{
+    const rp=/^report-(.+)$/.exec(go);
+    if(rp){const g=ALL_GAMES.find(x=>rkey(x)===rp[1]);if(g){showView("home");openMatchDetails(g,true)}trackAnalyticsEvent("shortcut_opened",{ziel:"bericht"});return}
+    const m=/^bilanz-(.+)$/.exec(go), team=m&&m[1];
+    if(team&&APP_CFG.teams&&APP_CFG.teams[team]){
+      showView("home");
+      if(window.myTeam(team))openBilanz(team);
+      else{alert(teamName(team)+" ist unter „Meine Mannschaften“ nicht ausgewählt. Wähle sie in den Einstellungen aus, dann klappt die Verknüpfung.");showView("settings")}
+    }else if(["schedule","opponents","rules","home"].includes(go))showView(go);
+    trackAnalyticsEvent("shortcut_opened",{ziel:go});
+  }catch(e){console.warn(e)}}
+})();
+
+/* ===== 1.43.0: Wetter am Spielort (nur Anzeige; Daten von der Cloud Function weatherForecast) ===== */
+function wxFor(g){const w=(window.weatherData||{})[g.date+"_"+String(g.time).replace(/:/g,"")+"_"+g.team]; /* nicht rkey(): läuft schon beim ersten Zeichnen der Startseite */if(!w||!w.txt)return null;const t=dt(g).getTime();if(t<Date.now()-3*3600000||t>Date.now()+4*86400000)return null;return w}
+const WX_IC='<svg class="wxIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 9a3.5 3.5 0 0 1 .5 6.97V16"/><path d="M7 18h10.5"/></svg>';
+const WX_ICE='<svg class="wxIc" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><path d="M9.5 4.5L12 7l2.5-2.5M9.5 19.5L12 17l2.5 2.5"/></svg>';
+function wxLine(g){const w=wxFor(g);if(!w)return "";return `<div class="wxLine${w.ice?" ice":w.frost?" frost":""}">${w.ice||w.frost?WX_ICE:WX_IC}<span>${esc(w.txt)}${w.warn?` · <b>${esc(w.warn)}</b>`:""}</span><small>am Spielort${isHome(g)?"":" · "+esc(g.stadium)}</small></div>`}
+function wxBox(g){const w=wxFor(g);if(!w)return "";
+  return `<div class="wxBox${w.ice?" ice":w.frost?" frost":""}"><div class="wxBoxHead">${w.ice||w.frost?WX_ICE:WX_IC}<b>Wetter am Spielort</b><small>${esc(g.stadium)} · ${esc(g.time)} Uhr</small></div><div class="wxBoxTx">${esc(w.txt)}</div>${w.warn?`<div class="wxWarn">${esc(w.warn)}${w.ice?" – bei der Anfahrt vorsichtig fahren und mehr Zeit einplanen.":" – morgens und abends kann es glatt sein."}</div>`:""}<div class="wxSrc">Vorhersage: Open-Meteo</div></div>`}
+window.renderWeather=function(){try{renderNext()}catch(e){}};
+
+/* ===== 1.43.0: Saisonbilanz – Strafen und Special Teams (aus den EHV-Spielberichten, Function standings) ===== */
+function specialHtml(team){
+  const sp=standings[team]&&standings[team].scorers&&standings[team].scorers.special; if(!sp||!sp.games)return "";
+  const pct=(a,b)=>b?Math.round(a/b*100)+" %":"–", avg=v=>(v/sp.games).toFixed(1).replace(".",",");
+  const pk=sp.pkSit?Math.max(0,sp.pkSit-sp.ppGA):0;
+  return `<div class="sbSec"><h4>Strafen &amp; Special Teams <small>(${sp.games} EHV-Spielberichte)</small></h4><div class="spGrid">
+    <div class="spTile"><small>Strafminuten</small><b>${sp.pim}</b><span>${avg(sp.pim)} je Spiel · Gegner ${sp.oppPim}</span></div>
+    <div class="spTile"><small>Überzahl</small><b>${pct(sp.ppG,sp.ppOpp)}</b><span>${sp.ppG} ${sp.ppG===1?"Tor":"Tore"} aus ${sp.ppOpp} Überzahl${sp.ppOpp===1?"":"spielen"}</span></div>
+    <div class="spTile"><small>Unterzahl</small><b>${pct(pk,sp.pkSit)}</b><span>${pk} von ${sp.pkSit} überstanden</span></div>
+  </div></div>`;
+}
+
+/* ===== 1.43.0: Meine Rückennummer – nur Nummern, keine Namen; gespeichert auf dem Gerät (grizzlysMyNr),
+   für den Push „Tore meiner Nummer“ zusätzlich in der Push-Auswahl. ===== */
+function myNrAll(){let m={};try{m=JSON.parse(localStorage.getItem("grizzlysMyNr")||"{}")||{}}catch(e){}const o={};
+  window.TEAM_KEYS.forEach(k=>{const L=(Array.isArray(m[k])?m[k]:[]).map(v=>String(v).trim()).filter(v=>/^\d{1,2}$/.test(v)).slice(0,3);if(L.length)o[k]=L});return o}
+window.myNrAll=myNrAll;
+function myNrSet(team){return new Set((myNrAll()[team])||[])}
+function myNrCard(){
+  if(document.getElementById("myNrCard"))return;
+  const after=document.getElementById("myTeamsCard")||document.querySelector("#settingsView .settingsHead"); if(!after)return;
+  const c=document.createElement("div"); c.className="infoCard myNrCard"; c.id="myNrCard";
+  const cur=myNrAll();
+  c.innerHTML=`<div class="infoTitle">Meine Rückennummer</div><div class="small mtSub">Die Nummer deines Kindes wird bei Torschützen, Spielberichten und in der Saisonbilanz hervorgehoben. Keine Namen – die Nummer bleibt auf diesem Gerät.</div>
+    <div class="mnRows">${window.MY_TEAMS.map(t=>`<label class="mnRow team${esc(t)}"><span class="mnTeam">${esc(teamName(t))}</span><input type="text" inputmode="numeric" maxlength="12" autocomplete="off" data-team="${esc(t)}" placeholder="z. B. 17" value="${esc((cur[t]||[]).join(", "))}"><span class="mnOk" aria-hidden="true"></span></label>`).join("")}</div>
+    <div class="small mnHint">Mehrere Kinder in einer Mannschaft? Nummern mit Komma trennen (höchstens 3). Push bei Toren: unten unter „Live während des Spiels“ › „Tore meiner Nummer“.</div>`;
+  after.after(c);
+  let tmr=null;
+  const save=inp=>{const t=inp.dataset.team, L=[...new Set(String(inp.value).split(/[^0-9]+/).filter(v=>/^\d{1,2}$/.test(v)).map(v=>String(Number(v))))].slice(0,3);
+    let m={};try{m=JSON.parse(localStorage.getItem("grizzlysMyNr")||"{}")||{}}catch(e){}
+    if(L.length)m[t]=L;else delete m[t];
+    try{localStorage.setItem("grizzlysMyNr",JSON.stringify(m))}catch(e){}
+    inp.closest(".mnRow").classList.toggle("set",L.length>0);
+    clearTimeout(tmr);tmr=setTimeout(()=>{window.savePushPrefs&&window.savePushPrefs();myNrApply(document.body);myNrNote()},400);
+    try{trackAnalyticsEvent("my_number_set",{team:teamName(t),anzahl:L.length})}catch(e){}};
+  c.querySelectorAll("input[data-team]").forEach(inp=>{inp.closest(".mnRow").classList.toggle("set",!!inp.value.trim());
+    inp.addEventListener("change",()=>{save(inp);const t=inp.dataset.team;inp.value=(myNrAll()[t]||[]).join(", ")});inp.addEventListener("input",()=>{clearTimeout(inp._t);inp._t=setTimeout(()=>save(inp),700)})});
+}
+function myNrNote(){const n=document.getElementById("pfMyNrNote");if(!n)return;const has=Object.keys(myNrAll()).length;
+  n.textContent=has?"bei Tor oder Vorlage der Nr. "+Object.entries(myNrAll()).map(([t,L])=>L.join("/")+(window.MY_TEAMS.length>1?" ("+teamName(t)+")":"")).join(", ")+" – auch ohne „Live-Tore“":"zuerst oben unter „Meine Rückennummer“ eine Nummer eintragen"}
+/* Hervorheben: „Nr. 17“ im Text und die Zeile in „Tore nach Rückennummer“ – nur bei der passenden Mannschaft, nie beim Gegner */
+function myNrTeamOf(n){
+  const mm=n.closest&&n.closest("#matchModal"); if(mm&&window._mdGame)return window._mdGame.team;
+  const bz=n.closest&&n.closest("#bilanzModalContent"); if(bz&&bz.dataset.team)return bz.dataset.team;
+  const t=n.closest&&n.closest("[data-team]"); if(t)return t.dataset.team;
+  const c=n.closest&&n.closest('[class*="team"]'); if(c){const m=/\bteam(A|B|U13)\b/.exec(c.className);if(m)return m[1]}
+  return "";
+}
+function myNrApply(root){
+  const all=myNrAll(); if(!Object.keys(all).length){document.querySelectorAll("mark.myNr").forEach(m=>m.replaceWith(document.createTextNode(m.textContent)));document.querySelectorAll(".scR.myNrRow").forEach(r=>r.classList.remove("myNrRow"));return}
+  if(!root||!root.querySelectorAll)return;
+  const skip=n=>n.closest("textarea,input,script,style,.adminModal,#adminModal,.opp,.instaModal,mark.myNr");
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:t=>/Nr\.\s?\d/.test(t.nodeValue)&&t.parentElement&&!skip(t.parentElement)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});
+  const list=[];while(walker.nextNode())list.push(walker.currentNode);
+  list.forEach(t=>{const team=myNrTeamOf(t.parentElement), set=new Set(all[team]||[]); if(!set.size)return;
+    const re=/Nr\.\s?(\d{1,2})(?!\d)/g; let m,last=0,hit=false; const frag=document.createDocumentFragment(), v=t.nodeValue;
+    while((m=re.exec(v))){if(!set.has(String(Number(m[1]))))continue;hit=true;frag.appendChild(document.createTextNode(v.slice(last,m.index)));const mk=document.createElement("mark");mk.className="myNr";mk.textContent=m[0];frag.appendChild(mk);last=m.index+m[0].length}
+    if(!hit)return; frag.appendChild(document.createTextNode(v.slice(last))); t.replaceWith(frag)});
+  root.querySelectorAll(".scR").forEach(r=>{const nr=r.querySelector(".scNr"),team=myNrTeamOf(r);r.classList.toggle("myNrRow",!!(nr&&myNrSet(team).has(String(Number(nr.textContent.trim())))))});
+}
+(function(){
+  let q=new Set(),raf=0;
+  const run=()=>{raf=0;const L=[...q];q.clear();L.forEach(n=>{if(n.isConnected)myNrApply(n)})};
+  new MutationObserver(ms=>{if(!Object.keys(myNrAll()).length)return;ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&!n.closest("mark.myNr"))q.add(n);else if(n.nodeType===3&&n.parentElement)q.add(n.parentElement)}));if(q.size&&!raf)raf=requestAnimationFrame(run)})
+    .observe(document.body,{childList:true,subtree:true});
+  myNrCard(); myNrNote(); myNrApply(document.body);
+})();
+
+/* ===== 1.43.0: Wochenend-Vorschau als Bild (Downloads und Admin › Social Media) ===== */
+function weekendRange(now){
+  const d=new Date(now||Date.now()); d.setHours(0,0,0,0); const wd=d.getDay(); /* 0 So … 6 Sa */
+  const fri=new Date(d); fri.setDate(d.getDate()+(wd===0?-2:wd===6?-1:5-wd)); const sun=new Date(fri); sun.setDate(fri.getDate()+2); sun.setHours(23,59,59,999);
+  return {from:fri,to:sun};
+}
+function weekendGames(list,now){const R=weekendRange(now);return (list||games).filter(g=>{const t=dt(g);return t>=R.from&&t<=R.to}).sort((a,b)=>dt(a)-dt(b))}
+async function instaWeekend(W0){
+  const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;const c=cv.getContext("2d");
+  try{await Promise.all([document.fonts.load('100px "GrizzlyBrush"'),document.fonts.ready])}catch(e){}
+  const L=W0.list.slice(0,6); if(!L.length)throw new Error("Keine Spiele am Wochenende");
+  const f=d=>d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}), d0=dt(L[0]), d1=dt(W0.list[W0.list.length-1]);
+  const tag=d0.toDateString()===d1.toDateString()?d0.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" "+f(d0):f(d0)+"–"+f(d1);
+  const [rink,...logos]=await Promise.all([instaImg(instaRinkSrc()),...L.map(g=>Promise.all([instaLogos(g.home),instaLogos(g.away)]))]);
+  instaBg(c,W,H,rink); instaHead(c,W,tag,"Wochen","ende");
+  instaFont(c,800,30);c.fillStyle="#d5e1ef";c.textAlign="left";c.fillText(L.length+(L.length===1?" Spiel":" Spiele")+" der "+APP_CFG.appName,62,272);
+  const top=320,bottom=1220,gap=18,rh=Math.min(190,(bottom-top-gap*(L.length-1))/L.length),CX=610;
+  L.forEach((g,i)=>{const y=top+i*(rh+gap),r=resInfo(g),d=dt(g),home=isHome(g);
+    c.save();c.shadowColor="rgba(0,0,0,.45)";c.shadowBlur=26;c.shadowOffsetY=8;instaRR(c,48,y,W-96,rh,24);c.fillStyle="rgba(7,27,51,.80)";c.fill();c.restore();
+    instaRR(c,48,y,W-96,rh,24);c.lineWidth=2;c.strokeStyle="rgba(255,255,255,.16)";c.stroke();
+    const col=g.team==="B"?"#ff8a00":g.team==="U13"?"#f2b705":"#168cff"; instaRR(c,48,y,12,rh,6);c.fillStyle=col;c.fill();
+    /* Datum links */
+    c.textAlign="center";c.textBaseline="alphabetic";instaFont(c,800,24);c.fillStyle="#9fb3ca";c.fillText(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","").toUpperCase(),135,y+rh*.36);
+    instaFont(c,900,Math.min(44,rh*.3));c.fillStyle="#fff";c.fillText(g.time,135,y+rh*.66);
+    instaFont(c,800,20);c.fillStyle=col;c.fillText(teamName(g.team).toUpperCase(),135,y+rh*.88);
+    /* Logos und Namen */
+    const lr=Math.min(40,rh*.27), mid=y+rh*.44;
+    [[g.home,logos[i][0],390],[g.away,logos[i][1],830]].forEach(([n,lg,x])=>{c.save();c.beginPath();c.arc(x,mid,lr,0,Math.PI*2);c.fillStyle="rgba(255,255,255,.94)";c.fill();c.clip();
+      if(lg&&lg.imgs.length)instaContain(c,lg.imgs[0],x,mid,lr*1.55);else{instaFont(c,900,lr*.7);c.fillStyle="#12263f";c.textBaseline="middle";c.fillText(shortTeam(n).slice(0,2).toUpperCase(),x,mid+1);c.textBaseline="alphabetic"}c.restore();
+      instaFont(c,800,Math.min(26,rh*.17));c.fillStyle="#e7eef8";let nm=shortTeam(n);while(c.measureText(nm).width>250&&nm.length>6)nm=nm.slice(0,-2);if(nm!==shortTeam(n))nm=nm.replace(/\s*$/,"")+"…";c.fillText(nm,x,y+rh*.88)});
+    instaFont(c,900,r?Math.min(56,rh*.36):Math.min(34,rh*.24));c.fillStyle=r?(r.o==="w"?"#5fd18f":"#fff"):"#ff8a00";c.textBaseline="middle";
+    c.fillText(g.cancelled?"ABGESAGT":r?r.hs+":"+r.as:"VS",CX,mid);c.textBaseline="alphabetic";
+    instaFont(c,700,18);instaSpace(c,1);c.fillStyle="#9fb3ca";const lbs=home?["HEIMSPIEL"]:["AUSWÄRTS",String(g.stadium).toUpperCase()];lbs.forEach((lb,k)=>{while(c.measureText(lb).width>180&&lb.length>4)lb=lb.slice(0,-1);c.fillText(lb,CX,y+rh*(.72+k*.13))});instaSpace(c,0);
+  });
+  if(W0.list.length>L.length){instaFont(c,800,26);c.fillStyle="#d5e1ef";c.textAlign="left";c.fillText("+ "+(W0.list.length-L.length)+" weitere Spiele in der App",62,1250)}
+  instaFoot(c,W,APP_CFG.appName+" · Saison "+APP_CFG.season);
+  return cv;
+}
+
+/* ===== 1.44.0: Feedback antreiben – Ein-Tipp-Feedback, Wunschliste, Feedback-Einstiege ===== */
+window.WUENSCHE_STANDARD=[
+  {id:"fahrgemeinschaften",t:"Fahrgemeinschaften",d:"Bei Auswärtsspielen freie Plätze anbieten oder einen Platz suchen."},
+  {id:"trainingszeiten",t:"Trainingszeiten",d:"Eiszeiten je Mannschaft – mit Push, wenn ein Training ausfällt."},
+  {id:"einsteiger",t:"Neu bei den Grizzlys",d:"Infos für neue Eltern: Ablauf, Ausrüstung, Ansprechpartner, Begriffe."},
+  {id:"umfragen",t:"Umfragen",d:"Kurze Abstimmungen in den News, z. B. zum Termin der Weihnachtsfeier."},
+  {id:"regelquiz",t:"Regel-Quiz",d:"Fünf zufällige Fragen zu Regeln und Handzeichen – das ganze Jahr."},
+  {id:"losfahren",t:"Losfahren um …",d:"Bei Auswärtsspielen: wann man spätestens losfahren sollte."}
+];
+const wishSlug=t=>String(t).toLowerCase().replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"wunsch";
+function wishClean(L){return (Array.isArray(L)?L:[]).map(w=>({id:/^[a-z0-9-]{2,40}$/.test(w&&w.id)?w.id:wishSlug(w&&w.t),t:String(w&&w.t||"").trim().slice(0,60),d:String(w&&w.d||"").trim().slice(0,180),done:!!(w&&w.done)})).filter(w=>w.t)}
+window.wishInfo={clean:wishClean,slug:wishSlug};
+function wishMine(){try{const v=JSON.parse(localStorage.getItem("grizzlysWishVotes")||"[]");return Array.isArray(v)?v.slice(0,3):[]}catch(e){return []}}
+var wishData=null, wishOrder=null; /* var: newsFill kann vor dieser Zeile laufen */
+async function wishRefresh(){try{if(window.wishLoad){const d=await window.wishLoad();wishData={on:d.on,list:wishClean(d.list||window.WUENSCHE_STANDARD),counts:d.counts||{},voters:d.voters||0}}}catch(e){}
+  if(!wishData)wishData={on:true,list:wishClean(window.WUENSCHE_STANDARD),counts:{},voters:0};return wishData}
+function wishTeaser(){if(wishData&&!wishData.on)return "";return `<button type="button" class="wishTeaser" data-wish-open><span class="wishTIc">💡</span><span><b>Was soll als Nächstes kommen?</b><small>Stimm in der Wunschliste ab – bis zu 3 Stimmen</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`}
+function fbLinkHtml(where){return `<div class="fbLink" data-where="${where}"><span>Idee, Fehler oder Lob?</span><button type="button" data-fb-open>Sag's uns</button>${wishData&&!wishData.on?"":`<button type="button" data-wish-open>Wunschliste</button>`}</div>`}
+async function openWishes(){
+  let m=document.getElementById("wishModal");
+  if(!m){m=document.createElement("div");m.id="wishModal";m.className="matchModal wishModal";m.hidden=true;
+    m.innerHTML='<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="wishTitle"><div class="matchModalHead"><div id="wishTitle" class="matchModalTitle">Wunschliste</div><button id="wishClose" class="matchModalClose" type="button" aria-label="Schließen">×</button></div><div id="wishBody"></div></div>';
+    document.body.appendChild(m);const close=()=>{m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow=""};
+    m.querySelector("#wishClose").onclick=close;m.addEventListener("click",e=>{if(e.target===m)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)close()});}
+  m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  const body=m.querySelector("#wishBody"); if(!wishData)body.innerHTML='<div class="small">Lädt …</div>';
+  wishOrder=null; wishFill(); await wishRefresh(); wishOrder=null; wishFill();
+  try{trackAnalyticsEvent("wishlist_opened")}catch(e){}
+}
+function wishFill(){
+  const body=document.getElementById("wishBody"); if(!body||!wishData)return;
+  const mine=wishMine(), open=wishData.list.filter(w=>!w.done), done=wishData.list.filter(w=>w.done);
+  const cnt=w=>(wishData.counts[w.id]||0), max=Math.max(1,...open.map(cnt)), left=3-mine.filter(id=>open.some(w=>w.id===id)).length;
+  /* Reihenfolge nur beim Öffnen nach Stimmen sortieren – beim Abstimmen springt nichts */
+  if(!wishOrder)wishOrder=open.slice().sort((a,b)=>cnt(b)-cnt(a)).map(w=>w.id);
+  open.sort((a,b)=>{const ia=wishOrder.indexOf(a.id),ib=wishOrder.indexOf(b.id);return (ia<0?99:ia)-(ib<0?99:ib)});
+  body.innerHTML=`<div class="wishIntro">Welche Funktion wünschst du dir als Nächstes? Du hast <b>${left} von 3</b> Stimmen frei – antippen zum Abstimmen oder Zurücknehmen. Anonym.</div>
+    <div class="wishList">${open.map(w=>{const on=mine.includes(w.id);return `<button type="button" class="wishItem${on?" on":""}" data-wid="${esc(w.id)}"${!on&&left<=0?" disabled":""} aria-pressed="${on}"><span class="wishTx"><b>${esc(w.t)}</b><small>${esc(w.d)}</small><span class="wishBar"><i style="width:${(cnt(w)/max*100).toFixed(0)}%"></i></span></span><span class="wishVote"><span class="wishThumb">${on?"✓":"👍"}</span><small>${cnt(w)}</small></span></button>`}).join("")||'<div class="small">Gerade keine offenen Wünsche.</div>'}</div>
+    ${done.length?`<div class="wishDoneH">Umgesetzt dank euch</div><div class="wishDone">${done.map(w=>`<div><b>✓ ${esc(w.t)}</b><small>${esc(w.d)}</small></div>`).join("")}</div>`:""}
+    <div class="wishOwn"><span>Deine Idee fehlt?</span><button type="button" class="action" data-fb-open="idee">💡 Eigene Idee schicken</button></div>
+    ${wishData.voters?`<div class="small wishVoters">${wishData.voters} ${wishData.voters===1?"Person hat":"Personen haben"} schon abgestimmt.</div>`:""}`;
+  body.querySelectorAll(".wishItem").forEach(b=>b.onclick=async()=>{const id=b.dataset.wid;let L=wishMine();
+    if(L.includes(id))L=L.filter(x=>x!==id);else{if(L.filter(x=>open.some(w=>w.id===x)).length>=3)return;L.push(id)}
+    L=L.filter(x=>wishData.list.some(w=>w.id===x)).slice(0,3);
+    const was=wishMine();wishData.counts[id]=Math.max(0,(wishData.counts[id]||0)+(L.includes(id)?1:-1));
+    if(!was.length&&L.length)wishData.voters++; else if(was.length&&!L.length)wishData.voters=Math.max(0,wishData.voters-1);
+    try{localStorage.setItem("grizzlysWishVotes",JSON.stringify(L))}catch(e){}
+    wishFill(); window.wishVote&&window.wishVote(L); try{trackAnalyticsEvent("wish_vote",{wunsch:id})}catch(e){}});
+}
+window.openWishes=openWishes;
+/* 👍/👎 mit einem Tipp – eigene Wahl merkt sich das Gerät */
+function rxMine(){try{return JSON.parse(localStorage.getItem("grizzlysReactions")||"{}")||{}}catch(e){return {}}}
+function rxBar(target,q){const v=rxMine()[target]||0;return `<div class="rxBar${v?" done":""}" data-rx="${esc(target)}"><span class="rxQ">${v?"Danke für dein Feedback!":esc(q)}</span><button type="button" class="rxB${v===1?" on":""}" data-v="1" aria-label="Gefällt mir" aria-pressed="${v===1}">👍</button><button type="button" class="rxB${v===-1?" on":""}" data-v="-1" aria-label="Gefällt mir nicht" aria-pressed="${v===-1}">👎</button>${v===-1?`<button type="button" class="rxMore" data-fb-open="rx">Was können wir besser machen?</button>`:""}</div>`}
+function fbOpen(type,area,text){
+  document.getElementById("openBugReport")?.click();
+  setTimeout(()=>{try{fbSetType(type||"Wunsch / Anregung");const a=document.getElementById("bugReportArea");if(a&&area)a.value=area;const t=document.getElementById("bugReportDescription");if(t&&text&&(!t.value.trim()||/^[^\n]{0,90}:\s*$/.test(t.value))){t.value=text;fbCount()}t&&t.focus()}catch(e){}},80);
+}
+window.fbOpen=fbOpen;
+document.addEventListener("click",e=>{
+  const rb=e.target.closest&&e.target.closest(".rxBar .rxB");
+  if(rb){e.stopPropagation();const bar=rb.closest(".rxBar"),t=bar.dataset.rx,v=Number(rb.dataset.v),M=rxMine();
+    M[t]=v;try{localStorage.setItem("grizzlysReactions",JSON.stringify(M))}catch(err){}
+    const q=t.startsWith("rep_")?"War der Bericht gut?":"Gefällt dir das?";bar.outerHTML=rxBar(t,q);
+    window.fbReact&&window.fbReact(t,v);try{trackAnalyticsEvent("reaction",{ziel:t.slice(0,3),wert:v})}catch(err){}return}
+  const fo=e.target.closest&&e.target.closest("[data-fb-open]");
+  if(fo){e.stopPropagation();const k=fo.dataset.fbOpen, bar=fo.closest(".rxBar");
+    if(k==="rx"&&bar){const t=bar.dataset.rx;let txt="";
+      if(t.startsWith("rep_")){const g=ALL_GAMES.find(x=>"rep_"+rkey(x)===t);txt="Zum Spielbericht"+(g?" vom "+dt(g).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+" ("+shortTeam(g.home)+" – "+shortTeam(g.away)+")":"")+": "}
+      else txt="Zu „Neu in der App“ (Version "+t.slice(4)+"): ";
+      ["matchModal","newsModal"].forEach(id=>{const m=document.getElementById(id);if(m&&!m.hidden){if(id==="matchModal")closeMatchDetails();else closeNews()}});
+      fbOpen("Wunsch / Anregung",t.startsWith("rep_")?"Spielbericht":"Neue Funktion",txt)}
+    else{const wm=document.getElementById("wishModal");if(wm&&!wm.hidden){wm.hidden=true;document.body.style.overflow=""}
+      const nm=document.getElementById("newsModal");if(nm&&!nm.hidden)closeNews();
+      fbOpen(k==="idee"?"Wunsch / Anregung":"Fehler",k==="idee"?"Neue Funktion":"",k==="idee"?"Meine Idee: ":"")}
+    return}
+  const wo=e.target.closest&&e.target.closest("[data-wish-open]");
+  if(wo){e.stopPropagation();const nm=document.getElementById("newsModal");if(nm&&!nm.hidden)closeNews();openWishes()}
+},true);
+/* Einstiege: Startseite (unten) und Info */
+(function(){
+  const home=document.getElementById("homeView");
+  if(home&&!document.getElementById("fbHome")){const c=document.createElement("section");c.id="fbHome";c.className="card fbHome";
+    c.innerHTML=`<div class="fbHomeTx"><b>Deine Stimme zählt</b><small>Was soll als Nächstes in die App? Oder ist dir etwas aufgefallen?</small></div><div class="fbHomeBtns"><button type="button" class="action" data-wish-open>💡 Wunschliste</button><button type="button" class="action" data-fb-open>✉️ Feedback</button></div>`;
+    home.appendChild(c)}
+  const info=document.querySelector("#infoView .inShareRow");
+  if(info&&!document.getElementById("fbInfo")){const d=document.createElement("div");d.id="fbInfo";d.innerHTML=fbLinkHtml("info");info.after(d)}
+  setTimeout(()=>{wishRefresh().then(d=>{if(!d.on){document.querySelectorAll("[data-wish-open]").forEach(b=>{if(!b.closest(".fbHome"))b.remove()});const hb=document.querySelector(".fbHome [data-wish-open]");if(hb)hb.remove()}})},(window.__introMs||0)+2500);
 })();

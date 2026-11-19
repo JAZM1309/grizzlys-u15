@@ -196,7 +196,7 @@ function detectPlatformFromStoredUserAgent(ua){
   return "Sonstiges";
 }
 
-function pushPrefs(){let r=true,m=true,ta=true,tb=true,lg=false,lp=false;try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");if(p.results===false)r=false;if(p.reminders===false)m=false;if(p.teamA===false)ta=false;if(p.teamB===false)tb=false;if(p.liveGoals===true)lg=true;if(p.livePeriods===true)lp=true;}catch(e){}const o={results:r,reminders:m,teamA:ta,teamB:tb,liveGoals:lg,livePeriods:lp};/* 1.35.0: weitere Mannschaften (z. B. teamU13) */try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");(window.TEAM_KEYS||[]).forEach(k=>{if(k!=="A"&&k!=="B")o["team"+k]=p["team"+k]===true});}catch(e){}return o;}
+function pushPrefs(){let r=true,m=true,ta=true,tb=true,lg=false,lp=false;try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");if(p.results===false)r=false;if(p.reminders===false)m=false;if(p.teamA===false)ta=false;if(p.teamB===false)tb=false;if(p.liveGoals===true)lg=true;if(p.livePeriods===true)lp=true;}catch(e){}const o={results:r,reminders:m,teamA:ta,teamB:tb,liveGoals:lg,livePeriods:lp};/* 1.43.0: Spielbericht-Push, „Tore meiner Nummer“ und die Rückennummern je Mannschaft */try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");o.reports=p.reports===true;o.liveMyNr=p.liveMyNr===true;o.myNr=window.myNrAll?window.myNrAll():{};}catch(e){}/* 1.35.0: weitere Mannschaften (z. B. teamU13) */try{const p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}");(window.TEAM_KEYS||[]).forEach(k=>{if(k!=="A"&&k!=="B")o["team"+k]=p["team"+k]===true});}catch(e){}return o;}
 window.savePushPrefs=async function(){try{const token=localStorage.getItem("grizzlysPushToken");if(!token)return;await setDoc(doc(db,"pushTokens",token),{token,updatedAt:serverTimestamp(),prefs:pushPrefs()},{merge:true});}catch(e){console.warn("Push-Auswahl konnte nicht gespeichert werden",e);}};
 async function registerAdminPushToken(requestPermission=false){
   try{
@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.41.4.214",
+      appVersion:"1.44.0.219",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -990,7 +990,7 @@ async function admBackup(){
 document.getElementById("admBackupBtn")?.addEventListener("click",admBackup);
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
-  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); loadSprueche(true).then(()=>adminSpruchEditor()); }
+  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); loadSprueche(true).then(()=>adminSpruchEditor()); try{adminWishEditor();adminReactions()}catch(e){console.warn(e)} }
   else { login.hidden=false; panel.hidden=true; document.getElementById("adminLogout").hidden=true; status.textContent=user?"Angemeldet, aber keine Admin-Berechtigung":"Nicht angemeldet"; }
 }
 
@@ -1068,6 +1068,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   loadScheduleOverrides();
   loadNews();
   loadSprueche();
+  loadWeather();
   loadReports();
   isSupported().then(ok=>{
   if(ok && FIREBASE_VAPID_KEY){
@@ -1087,9 +1088,10 @@ document.addEventListener("DOMContentLoaded",()=>{
       const d=payload.data||{}, typ=d.type||"";
       const title=n.title||d.title||"🏒 ESV Grizzlys U15", body=n.body||d.body||"";
       if(typ==="result"){try{loadResults()}catch(e){}}
+      if(typ==="report"){try{loadReports()}catch(e){}} /* 1.43.0 */
       if(!title&&!body) return;
       const SITE="https://jazm1309.github.io/grizzlys-u15/";
-      const icon=typ==="result"||/^live/.test(typ)?SITE+"grizzlys-result-icon.png":typ==="gameReminder"?SITE+"grizzlys-24h-icon-192.png":SITE+"icon-192.png";
+      const icon=typ==="result"||typ==="report"||/^live/.test(typ)?SITE+"grizzlys-result-icon.png":typ==="gameReminder"?SITE+"grizzlys-24h-icon-192.png":SITE+"icon-192.png";
       (async()=>{
         try{
           if(Notification.permission!=="granted") throw new Error("keine Erlaubnis");
@@ -1813,3 +1815,76 @@ function adminSpruchEditor(){
   };
 }
 window.adminSpruchEditor=adminSpruchEditor;
+
+/* ===== 1.43.0: Wetter am Spielort – Firestore weather/{Spiel-ID}, geschrieben von der Cloud Function weatherForecast =====
+   Höchstens stündlich neu laden (sonst aus dem Gerätespeicher). Die Geräte fragen keinen Wetterdienst selbst. */
+async function loadWeather(force){
+  try{
+    let c=null; try{c=JSON.parse(localStorage.getItem("grizzlysWeather")||"null")}catch(e){}
+    if(c&&c.data){window.weatherData=c.data;window.renderWeather?.()}
+    if(!force&&c&&c.ts&&Date.now()-c.ts<3600000)return;
+    const snap=await getDocs(collection(db,"weather")), data={};
+    snap.forEach(d=>{const x=d.data()||{};data[d.id]={t:x.t,tMin:x.tMin,pp:x.pp,txt:String(x.txt||""),warn:String(x.warn||""),ice:!!x.ice,frost:!!x.frost,code:x.code,at:x.at&&x.at.toMillis?x.at.toMillis():0}});
+    window.weatherData=data; try{localStorage.setItem("grizzlysWeather",JSON.stringify({ts:Date.now(),data}))}catch(e){}
+    window.renderWeather?.();
+  }catch(err){console.warn("Wetter konnte nicht geladen werden",err)}
+}
+
+/* ===== 1.44.0: Ein-Tipp-Feedback (reactions) und Wunschliste (appConfig/wuensche, wishVotes, wishStats) ===== */
+const fbDevId=()=>String(getInstallationId()).replace(/[^A-Za-z0-9_-]/g,"").slice(0,64);
+window.fbReact=async function(target,v){
+  if(!/^(rep|neu)_[A-Za-z0-9._-]{3,60}$/.test(target))return false;
+  try{await setDoc(doc(db,"reactions",target+"__"+fbDevId()),{target,v:v>0?1:-1,createdAt:serverTimestamp()});return true}
+  catch(err){if(String(err.message||err).startsWith("Testversion"))return true;console.warn("Reaktion nicht gespeichert",err);return false}
+};
+window.wishLoad=async function(){
+  const out={list:null,on:true,counts:{},voters:0};
+  try{const s=await getDoc(doc(db,"appConfig","wuensche"));if(s.exists()){const x=s.data()||{};out.on=x.on!==false;out.list=Array.isArray(x.list)?x.list:null}}catch(e){console.warn("Wunschliste nicht ladbar",e)}
+  try{const s=await getDoc(doc(db,"wishStats","all"));if(s.exists()){const x=s.data()||{};out.counts=x.counts||{};out.voters=x.voters||0}}catch(e){console.warn("Wunsch-Stimmen nicht ladbar",e)}
+  return out;
+};
+window.wishVote=async function(ids){
+  try{await setDoc(doc(db,"wishVotes",fbDevId()),{v:ids.slice(0,3),updatedAt:serverTimestamp()});return true}
+  catch(err){if(String(err.message||err).startsWith("Testversion"))return true;console.warn("Stimme nicht gespeichert",err);return false}
+};
+/* Admin: Wunschliste bearbeiten und Reaktionen ansehen (Reiter Rückmeldungen) */
+async function adminWishEditor(){
+  const box=document.getElementById("adminWishes"); if(!box||!window.wishInfo)return;
+  const I=window.wishInfo, e=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  if(!box._st){const d=await window.wishLoad();box._st={on:d.on,list:I.clean(d.list||window.WUENSCHE_STANDARD),counts:d.counts,voters:d.voters,dirty:false,edit:-2}}
+  const st=box._st, sum=document.getElementById("admWishSum"); if(sum)sum.textContent=st.list.filter(w=>!w.done).length+" offen · "+st.voters+" abgestimmt"+(st.dirty?" · nicht gespeichert":"");
+  const max=Math.max(1,...st.list.map(w=>st.counts[w.id]||0));
+  const form=(w,i)=>`<div class="admSprForm" data-i="${i}"><input maxlength="60" placeholder="Titel, z. B. Fahrgemeinschaften" value="${e(w.t)}"><textarea maxlength="180" rows="2" placeholder="Kurze Beschreibung">${e(w.d)}</textarea><label class="pubChk"><input type="checkbox"${w.done?" checked":""}> umgesetzt (erscheint unter „Umgesetzt dank euch“)</label><div class="apBtns"><button type="button" class="action" data-w-ok>${i<0?"＋ Hinzufügen":"✓ Übernehmen"}</button><button type="button" class="action" data-w-cancel>Abbrechen</button></div></div>`;
+  const sorted=st.list.map((w,i)=>({w,i})).sort((a,b)=>(a.w.done-b.w.done)||((st.counts[b.w.id]||0)-(st.counts[a.w.id]||0)));
+  box.innerHTML=`<div class="small" style="margin:0 2px 10px">Nutzer geben bis zu 3 Stimmen (News › App und Startseite). Reihenfolge nach Stimmen. Umgesetzte Wünsche bleiben sichtbar unter „Umgesetzt dank euch“.</div>
+    <div class="adminGame newsAdminItem"><div class="adminGameHead"><div><b>Wunschliste anzeigen</b><div class="small">${st.on?"Sichtbar für alle":"Ausgeblendet"}</div></div><label class="admSw"><input type="checkbox" id="wishOn"${st.on?" checked":""}><span></span></label></div></div>
+    ${st.edit===-1?form({t:"",d:"",done:false},-1):`<button type="button" class="admNewsBtn" data-w-new>＋ Neuen Wunsch hinzufügen</button>`}
+    <div class="admSprList">${sorted.map(({w,i})=>i===st.edit?form(w,i):`<div class="adminGame newsAdminItem admSprItem"><div class="admSprTx"><b>${e(w.t)}</b>${w.done?' <span class="wishDoneTag">umgesetzt</span>':""}<div class="small">${e(w.d)}</div><div class="wishBar"><i style="width:${((st.counts[w.id]||0)/max*100).toFixed(0)}%"></i></div><div class="small">${st.counts[w.id]||0} ${st.counts[w.id]===1?"Stimme":"Stimmen"}</div></div><div class="admSprAct"><button type="button" class="action" data-w-edit="${i}" aria-label="Bearbeiten">✎</button><button type="button" class="action" data-w-del="${i}" aria-label="Löschen">✕</button></div></div>`).join("")}</div>
+    <div class="admSprBar"><button type="button" class="action admSprSave" data-w-save${st.dirty?"":" disabled"}>Speichern</button></div>`;
+  const redo=()=>adminWishEditor(), changed=()=>{st.dirty=true;redo()};
+  box.querySelector("#wishOn").onchange=ev=>{st.on=ev.target.checked;changed()};
+  box.querySelector("[data-w-new]")?.addEventListener("click",()=>{st.edit=-1;redo()});
+  box.querySelectorAll("[data-w-edit]").forEach(b=>b.onclick=()=>{st.edit=Number(b.dataset.wEdit);redo()});
+  box.querySelectorAll("[data-w-del]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.wDel);if(!confirm("Wunsch „"+st.list[i].t+"“ löschen? Seine Stimmen zählen dann nicht mehr."))return;st.list.splice(i,1);st.edit=-2;changed()});
+  box.querySelectorAll(".admSprForm").forEach(f=>{const i=Number(f.dataset.i);
+    f.querySelector("[data-w-cancel]").onclick=()=>{st.edit=-2;redo()};
+    f.querySelector("[data-w-ok]").onclick=()=>{const t=f.querySelector("input:not([type])").value.trim(),d=f.querySelector("textarea").value.trim(),done=f.querySelector("input[type=checkbox]").checked;
+      if(t.length<3){alert("Bitte einen Titel eingeben.");return}
+      if(i<0){let id=I.slug(t),n=2;while(st.list.some(w=>w.id===id))id=I.slug(t)+"-"+(n++);st.list.push({id,t,d,done})}else Object.assign(st.list[i],{t,d,done});
+      st.edit=-2;changed()}});
+  box.querySelector("[data-w-save]").onclick=async ev=>{ev.currentTarget.disabled=true;const list=I.clean(st.list);
+    try{await setDoc(doc(db,"appConfig","wuensche"),{on:st.on,list,updatedAt:serverTimestamp()});st.dirty=false;alert("Wunschliste gespeichert.")}
+    catch(err){if(String(err.message||err).startsWith("Testversion")){st.dirty=false;alert("Testversion: nicht gespeichert.")}else{alert("Speichern nicht möglich: "+(err.message||err))}}
+    redo()};
+}
+async function adminReactions(){
+  const box=document.getElementById("adminReactions"); if(!box)return;
+  box.innerHTML='<div class="small">Lädt …</div>';
+  try{const snap=await getDocs(collection(db,"reactionStats")), L=[];snap.forEach(d=>{const x=d.data()||{};L.push({id:d.id,up:x.up||0,down:x.down||0,at:x.updatedAt&&x.updatedAt.toMillis?x.updatedAt.toMillis():0})});
+    L.sort((a,b)=>b.at-a.at);
+    const name=id=>{if(id.startsWith("neu_"))return "Neu in der App · Version "+id.slice(4);const g=ALL_GAMES.find(x=>("rep_"+resultKey(x))===id);return g?"Spielbericht · "+teamName(g.team)+" · "+fmtDate(g)+" · "+shortTeam(g.home)+" – "+shortTeam(g.away):"Spielbericht · "+id.slice(4)};
+    const sum=document.getElementById("admReactSum"); if(sum)sum.textContent=L.reduce((a,x)=>a+x.up,0)+" 👍 · "+L.reduce((a,x)=>a+x.down,0)+" 👎";
+    box.innerHTML=L.length?L.slice(0,40).map(x=>`<div class="adminGame newsAdminItem reactRow"><div class="admSprTx"><b>${name(x.id).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}</b></div><div class="reactCnt"><span>👍 ${x.up}</span><span>👎 ${x.down}</span></div></div>`).join(""):'<div class="small">Noch keine Reaktionen.</div>';
+  }catch(err){box.innerHTML='<div class="small">Konnte nicht geladen werden.</div>';console.warn(err)}
+}
+window.adminWishEditor=adminWishEditor;window.adminReactions=adminReactions;

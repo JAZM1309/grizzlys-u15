@@ -43,7 +43,7 @@ exports.onFanTipWritten = onDocumentWritten(
     const after = event.data && event.data.after && event.data.after.exists ? event.data.after.data() : null;
     const before = event.data && event.data.before && event.data.before.exists ? event.data.before.data() : null;
     const gameId = String((after && after.gameId) || (before && before.gameId) || "");
-    if (!/^\d{4}-\d{2}-\d{2}_\d{4}_[AB]$/.test(gameId)) return;
+    if (!/^\d{4}-\d{2}-\d{2}_\d{4}_(A|B|U13)$/.test(gameId)) return; // 1.44.0: auch U13 (vorher nur A/B gezählt)
     const db = admin.firestore();
     const snap = await db.collection("fanTips").where("gameId", "==", gameId).get();
     const s = summarize(snap.docs.map((d) => d.data()));

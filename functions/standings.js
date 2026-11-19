@@ -77,7 +77,7 @@ const jersey = (p) => { const n = String((p && p.playerJerseyNr) ?? "").trim(); 
 
 async function fetchOwnGoals(gameId) {
   const hit = reportCache.get(gameId);
-  if (hit && Date.now() - hit.ts < REPORT_MS) return hit.goals;
+  if (hit && Date.now() - hit.ts < REPORT_MS) return Array.isArray(hit.goals) ? { goals: hit.goals, st: null } : hit.goals;
   const url = `${API}/GetGameReport?apiKey=${API_KEY}&gameId=${gameId}&lang=de&referer=www.ehv-nrw.de&format=json`;
   const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
   if (!res.ok) throw new Error("HTTP " + res.status);
@@ -89,8 +89,21 @@ async function fetchOwnGoals(gameId) {
     s: jersey(x.scoredBy), a1: jersey(x.assistBy), a2: jersey(x.assist2By),
     pp: /^PP/i.test(String(x.gameStrength || "")), ps: x.isPenaltyShot === true,
   }));
-  reportCache.set(gameId, { ts: Date.now(), goals });
-  return goals;
+  // 1.43.0: Strafen und Special Teams der Grizzlys in diesem Spiel (für die Saisonbilanz)
+  let st = null;
+  if (side) {
+    const other = side === "home" ? "away" : "home";
+    const S = r[side + "TeamStats"] || {}, O = r[other + "TeamStats"] || {};
+    const oppGoals = Array.isArray(r[other + "Goals"]) ? r[other + "Goals"] : [];
+    st = {
+      pim: num(S.penaltyMinutes), oppPim: num(O.penaltyMinutes),
+      ppOpp: num(S.powerplayOpportunities), ppG: goals.filter((q) => q.pp).length,
+      pkSit: num(S.penaltykillSituations), ppGA: oppGoals.filter((x) => /^PP/i.test(String(x.gameStrength || ""))).length,
+    };
+  }
+  const out = { goals, st };
+  reportCache.set(gameId, { ts: Date.now(), goals: out });
+  return out;
 }
 
 async function fetchScorers(schedule) {
@@ -100,14 +113,18 @@ async function fetchScorers(schedule) {
   const add = (nr, k) => { if (!nr) return; const o = by.get(nr) || { nr, g: 0, a: 0, pp: 0 }; o[k]++; by.set(nr, o); };
   const res = await Promise.allSettled(own.slice(-40).map((x) => fetchOwnGoals(String(x.id))));
   const ids = own.slice(-40).map((x) => String(x.id));
+  const sp = { games: 0, pim: 0, oppPim: 0, ppOpp: 0, ppG: 0, pkSit: 0, ppGA: 0 };
   res.forEach((r, i) => {
     if (r.status !== "fulfilled") return;
     games++;
-    perGame[ids[i]] = r.value; // 1.36.5: Tore je Spiel (nur Rückennummern) für „Letzte Ergebnisse“
-    r.value.forEach((x) => { add(x.s, "g"); if (x.pp) add(x.s, "pp"); add(x.a1, "a"); add(x.a2, "a"); });
+    const goals = r.value.goals || [];
+    perGame[ids[i]] = goals; // 1.36.5: Tore je Spiel (nur Rückennummern) für „Letzte Ergebnisse“
+    goals.forEach((x) => { add(x.s, "g"); if (x.pp) add(x.s, "pp"); add(x.a1, "a"); add(x.a2, "a"); });
+    const st = r.value.st; // 1.43.0: Strafen / Überzahl / Unterzahl über die Saison
+    if (st) { sp.games++; Object.keys(st).forEach((k) => { sp[k] += st[k]; }); }
   });
   if (!games) throw new Error("Keine Spielberichte");
-  return { perGame, games, list: [...by.values()].sort((a, b) => b.g + b.a - (a.g + a.a) || b.g - a.g || num(a.nr) - num(b.nr)).slice(0, 60) };
+  return { perGame, games, special: sp.games ? sp : null, list: [...by.values()].sort((a, b) => b.g + b.a - (a.g + a.a) || b.g - a.g || num(a.nr) - num(b.nr)).slice(0, 60) };
 }
 
 async function fetchDivision(divisionId) {

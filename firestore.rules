@@ -52,14 +52,47 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
-    // Spruch des Tages (1.41.0): eine Liste für die Startseite, für alle lesbar, nur der Admin schreibt
+    // Wetter am Spielort (1.43.0): schreibt nur die Cloud Function weatherForecast
+    match /weather/{gameId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Spruch des Tages (1.41.0) und Wunschliste (1.44.0): für alle lesbar, nur der Admin schreibt
     match /appConfig/{docId} {
       allow read: if true;
-      allow write: if isAdmin() && docId == "sprueche"
+      allow write: if isAdmin() && docId in ["sprueche","wuensche"]
         && request.resource.data.keys().hasOnly(["on","list","updatedAt"])
         && request.resource.data.on is bool
         && request.resource.data["list"] is list
         && request.resource.data["list"].size() <= 400;
+    }
+
+    // Ein-Tipp-Feedback (1.44.0): 👍/👎 je Gerät und Ziel (Spielbericht „rep_…“, „Neu in der App“ „neu_…“), anonym
+    match /reactions/{rid} {
+      allow create, update: if request.resource.data.keys().hasOnly(["target","v","createdAt"])
+        && request.resource.data.target is string
+        && request.resource.data.target.matches("(rep|neu)_[A-Za-z0-9._-]{3,60}")
+        && rid.matches(request.resource.data.target + "__[A-Za-z0-9_-]{8,64}")
+        && request.resource.data.v in [1, -1]
+        && request.resource.data.createdAt == request.time;
+      allow read, delete: if isAdmin();
+    }
+    match /reactionStats/{target} {
+      allow read: if true;
+      allow write: if false;
+    }
+    // Wunschliste (1.44.0): bis zu 3 Stimmen je Gerät, anonym
+    match /wishVotes/{deviceId} {
+      allow create, update: if deviceId.matches("[A-Za-z0-9_-]{8,64}")
+        && request.resource.data.keys().hasOnly(["v","updatedAt"])
+        && request.resource.data.v is list && request.resource.data.v.size() <= 3
+        && request.resource.data.updatedAt == request.time;
+      allow read, delete: if isAdmin();
+    }
+    match /wishStats/{docId} {
+      allow read: if true;
+      allow write: if false;
     }
 
     // News-Hinweise aus dem Adminbereich (für alle lesbar, nur Admin schreibt)

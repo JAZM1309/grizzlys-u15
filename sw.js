@@ -33,6 +33,8 @@ messaging.onBackgroundMessage(payload => {
     icon = RESULT_ICON_URL;
   } else if (type === "gameReminder") {
     icon = REMINDER_ICON_URL;
+  } else if (type === "report") {
+    icon = RESULT_ICON_URL;
   }
 
   const options = {
@@ -49,29 +51,31 @@ messaging.onBackgroundMessage(payload => {
 
 self.addEventListener("notificationclick", event => {
   event.notification.close();
+  // 1.43.0: Meldungen mit Ziel (z. B. Spielbericht) öffnen die passende Stelle der App
+  const go = (event.notification.data && event.notification.data.go) || "";
   event.waitUntil(
     clients.matchAll({type: "window", includeUncontrolled: true}).then(list => {
       for (const client of list) {
-        if ("focus" in client) return client.focus();
+        if ("focus" in client) { if (go) client.postMessage({ type: "GO", go }); return client.focus(); }
       }
-      if (clients.openWindow) return clients.openWindow("./");
+      if (clients.openWindow) return clients.openWindow(go ? "./?go=" + encodeURIComponent(go) : "./");
     })
   );
 });
 
-const CACHE = "grizzlys-u15-v214";
+const CACHE = "grizzlys-u15-v219";
 // Update-Hinweis („Neue Version verfügbar“) für diese Version zeigen? false = Nutzer bekommen sie still beim nächsten Öffnen.
 // In Live wird der Wert beim „Live gehen“ aus dem Häkchen im Admin-Bereich gesetzt.
-const UPDATE_HINWEIS = false;
+const UPDATE_HINWEIS = true;
 
 const CORE = [
   "./",
   "./index.html",
   "./spielplan.js?h=5afc53c9",
-  "./js/app.js?h=a265920c",
-  "./js/app-daten.js?h=5ca20171",
-  "./app.css?h=c378cf5e",
-  "./spielbericht.js?h=f8daaaba",
+  "./js/app.js?h=c467de4f",
+  "./js/app-daten.js?h=f2013d2e",
+  "./app.css?h=4516f9cc",
+  "./spielbericht.js?h=7d4b1618",
   "./sprueche.js?h=37f027d6",
   "./manifest.webmanifest",
   "./logo.png",
@@ -130,10 +134,12 @@ self.addEventListener("fetch", event => {
       .then(response => {
         if (response.ok) {
           const copy = response.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, copy));
+          // 1.42.0: Seitenaufrufe mit ?go=… (App-Verknüpfungen) unter der Adresse ohne ?… speichern
+          const key = req.mode === "navigate" && url.search ? url.origin + url.pathname : event.request;
+          caches.open(CACHE).then(cache => cache.put(key, copy));
         }
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => caches.match(event.request, req.mode === "navigate" ? { ignoreSearch: true } : undefined))
   );
 });

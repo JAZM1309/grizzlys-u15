@@ -8,6 +8,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.44.0.219 | – (nur Test) | 19.11.2026 | Neue Funktionen (Wunschliste, Ein-Tipp-Feedback, Feedback-Einstiege) |
+| 1.43.0.218 | – (nur Test) | 19.11.2026 | Neue Funktionen (Rückennummer, Bericht-Push, Wochenende, Wetter, Special Teams) |
+| 1.42.2.217 | – (nur Test) | 19.11.2026 | Spielbericht: Meilensteine |
+| 1.42.1.216 | – (nur Test) | 19.11.2026 | Neue Funktionen (Meilensteine, QR-Code, App-Verknüpfungen zur Saisonbilanz) |
 | 1.41.4.214 | – (nur Test) | 18.11.2026 | Mehr Sprüche mit Namen |
 | 1.41.3.213 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages ohne Hintergrund, mittig |
 | 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |

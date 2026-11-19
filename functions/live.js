@@ -155,8 +155,8 @@ async function targets(kind, team) {
   return all.filter(x => x.prefs[kind] === true && _send.wantsTeam(x, team));
 }
 
-async function sendLive(kind, g, title, body) {
-  const tokens = await targets(kind, g.team);
+async function sendLive(kind, g, title, body, skip) {
+  const tokens = (await targets(kind, g.team)).filter(x => !(skip && skip.has(x.token)));
   if (!tokens.length) return { total: 0, success: 0 };
   return _send.sendPush(tokens, { title, body }, {
     data: { type: kind, title, body, tag: "live-" + g.id, gameId: g.id },
@@ -181,6 +181,50 @@ function goalPush(g, s, fresh) {
     title: ours.length === fresh.length ? `🚨 ${fresh.length} Tore für die Grizzlys!` : `🏒 ${fresh.length} Tore`,
     body: `${head}\nzuletzt in der ${minute(last.t)}. Minute`
   };
+}
+
+// 1.43.0: „Meine Rückennummer“ – Geräte mit prefs.liveMyNr === true und prefs.myNr = { A: ["17"], … }
+// bekommen bei Tor oder Vorlage „ihrer“ Nummer eine eigene Meldung (statt der allgemeinen Live-Tor-Meldung).
+function myNrsOf(x, team) {
+  const m = x.prefs && x.prefs.myNr, L = m && Array.isArray(m[team]) ? m[team] : [];
+  return L.map(v => String(v).trim()).filter(v => /^\d{1,3}$/.test(v)).slice(0, 3);
+}
+async function sendMyNr(g, s, fresh) {
+  const ourSide = isG(g.home) ? "h" : "a";
+  const ours = fresh.filter(q => q.side === ourSide && (q.nr || (q.ast && q.ast.length)));
+  const sent = new Set();
+  if (!ours.length || LIVE_PUSH_NUR_ADMIN) return sent;
+  const all = (await _send.loadTokens()).filter(x => x.prefs.liveMyNr === true && _send.wantsTeam(x, g.team) && myNrsOf(x, g.team).length);
+  const head = `${teamLabel(g.team)}: ${scoreLine(g, s)}`;
+  const groups = new Map(); // Meldungstext -> Geräte
+  for (const x of all) {
+    const mine = new Set(myNrsOf(x, g.team));
+    const goal = ours.filter(q => mine.has(String(q.nr)));
+    const ast = ours.filter(q => !mine.has(String(q.nr)) && (q.ast || []).some(a => mine.has(String(a))));
+    if (!goal.length && !ast.length) continue;
+    let title, body;
+    if (goal.length) {
+      const q = goal[goal.length - 1];
+      title = goal.length > 1 ? `🎉 ${goal.length} Tore durch die Nr. ${q.nr}!` : `🎉 Tor durch die Nr. ${q.nr}!`;
+      body = `${head}\n${minute(q.t)}. Minute${q.pp ? " · Überzahl" : q.sh ? " · Unterzahl" : ""}`;
+    } else {
+      const q = ast[ast.length - 1], a = (q.ast || []).find(v => mine.has(String(v)));
+      title = `🎯 Vorlage von der Nr. ${a}!`;
+      body = `${head}\nTor der Nr. ${q.nr || "?"} in der ${minute(q.t)}. Minute`;
+    }
+    const k = title + "\n" + body;
+    if (!groups.has(k)) groups.set(k, { title, body, tokens: [] });
+    groups.get(k).tokens.push(x);
+  }
+  for (const grp of groups.values()) {
+    const st = await _send.sendPush(grp.tokens, { title: grp.title, body: grp.body }, {
+      data: { type: "liveGoals", title: grp.title, body: grp.body, tag: "live-" + g.id, gameId: g.id },
+      fcmOptions: { link: SITE }
+    });
+    grp.tokens.forEach(x => sent.add(x.token));
+    logger.info("Meine-Nummer-Push", { id: g.id, ...st });
+  }
+  return sent;
 }
 
 // ---------- Ein Spiel bearbeiten ----------
@@ -234,7 +278,9 @@ async function tick(db, g, now) {
   // Tore melden (nicht mehr, wenn das Spiel in diesem Moment schon beendet ist – dann kommt der Ergebnis-Push)
   if (fresh.length && s.status !== "final") {
     const p = goalPush(g, s, fresh);
-    const st = await sendLive("liveGoals", g, p.title, p.body);
+    let skip = new Set();
+    try { skip = await sendMyNr(g, s, fresh); } catch (err) { logger.warn("Meine-Nummer-Push fehlgeschlagen", { id: g.id, err: String(err && err.message) }); }
+    const st = await sendLive("liveGoals", g, p.title, p.body, skip);
     logger.info("Live-Tor-Push", { id: g.id, tore: fresh.length, ...st });
   }
 

@@ -35,6 +35,7 @@ Bewusst auf die Saison 2027/28 verschoben (dann kommt die U17 dazu):
 - **Lade-Platzhalter:** graue Platzhalter statt leerer Flächen, solange Tabelle/Ergebnisse laden
 - **Logo-Ersatz:** einheitliches Kürzel-Wappen, wenn ein Gegner-Logo fehlt
 - **Admin-Code nur bei Bedarf laden:** ca. 80 KB von `js/app-daten.js` gehören nur zum Admin-Bereich; Trennung erst mit ausreichender Testzeit (Admin-Bereich ist ohne Anmeldung nicht automatisch prüfbar)
+- **Helfer-Dienste am Heimspieltag:** Liste der Dienste je Heimspiel (Kampfgericht, Anzeigetafel, Kiosk, Kasse), Eltern tragen sich mit Kürzel ein, offene Dienste sichtbar, Erinnerung per Push am Vortag (wird in dieser Saison noch anders geregelt)
 - Saisonwechsel wie immer: Liga-Kennungen (`functions/standings.js`, `functions/teams.js`), `spielplan.js`, Ferien (`nrwFerien`)
 
 ## Versionsnummern
@@ -49,6 +50,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.44.0.219 | – (nur Test) | 19.11.2026 | Neue Funktionen (Wunschliste, Ein-Tipp-Feedback, Feedback-Einstiege) |
+| 1.43.0.218 | – (nur Test) | 19.11.2026 | Neue Funktionen (Rückennummer, Bericht-Push, Wochenende, Wetter, Special Teams) |
+| 1.42.2.217 | – (nur Test) | 19.11.2026 | Spielbericht: Meilensteine |
+| 1.42.1.216 | – (nur Test) | 19.11.2026 | Neue Funktionen (Meilensteine, QR-Code, App-Verknüpfungen zur Saisonbilanz) |
 | 1.41.4.214 | – (nur Test) | 18.11.2026 | Mehr Sprüche mit Namen |
 | 1.41.3.213 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages ohne Hintergrund, mittig |
 | 1.41.2.212 | – (nur Test) | 18.11.2026 | Optik: Spruch des Tages als dunkle Karte oben |
@@ -78,6 +83,41 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.44.0
+
+### Neu in Version 1.44.0 (Stand 1.44.0.219, 19.11.2026, nur in der Test-App)
+
+- **Wunschliste:** Nutzer stimmen ab, welche Funktion als Nächstes kommt – bis zu 3 Stimmen je Gerät, anonym, jederzeit änderbar. Zu finden auf der Startseite (Karte „Deine Stimme zählt“ ganz unten), in News › App (oben) und in der Info. Umgesetzte Wünsche stehen unter „Umgesetzt dank euch“. Standardliste in `js/app.js` (`WUENSCHE_STANDARD`: Fahrgemeinschaften, Trainingszeiten, Neu bei den Grizzlys, Umfragen, Regel-Quiz, Losfahren um …). **Admin › Rückmeldungen › 💡 Wunschliste:** Wünsche hinzufügen, bearbeiten, löschen, als „umgesetzt“ markieren, Stimmen ansehen, Liste ein-/ausblenden (Firestore `appConfig/wuensche`). Stimmen: `wishVotes/{Geräte-ID}`, gezählt von der neuen Function `onWishVoteWritten` nach `wishStats/all`.
+- **Ein-Tipp-Feedback:** Unter jedem Spielbericht „War der Bericht gut? 👍 👎“, unter den drei neuesten Einträgen in „Neu in der App“ „Gefällt dir das? 👍 👎“. Bei 👎 bietet die App „Was können wir besser machen?“ an – das öffnet das Feedback-Formular mit passender Art, Bereich (neu: „Spielbericht“) und Bezug im Text. Stimmen: `reactions/{Ziel}__{Geräte-ID}`, gezählt von der neuen Function `onReactionWritten` nach `reactionStats/{Ziel}`. **Admin › Rückmeldungen › 👍 Reaktionen:** Übersicht je Bericht bzw. Version.
+- **Feedback-Einstiege:** Startseite (unten), Info (unter „App teilen“) und News › App (unten) – „Idee, Fehler oder Lob? Sag's uns“.
+- **Fehler behoben:** Fan-Tipps der U13 wurden von `onFanTipWritten` nicht gezählt (nur A/B erlaubt) – jetzt auch U13 (`functions/fan-tips.js`).
+- **Functions/Regeln:** neu `functions/feedback-votes.js` (`onReactionWritten`, `onWishVoteWritten`), geändert `fan-tips.js`, `index.js`; `firestore.rules` um `reactions`, `reactionStats`, `wishVotes`, `wishStats` und `appConfig/wuensche` ergänzt. Alles geht mit „Live gehen“ mit; die Zähler laufen erst nach dem Deploy.
+
+## Version 1.43.0
+
+### Neu in Version 1.43.0 (Stand 1.43.0.218, 19.11.2026, nur in der Test-App)
+
+- **Meine Rückennummer:** Einstellungen › Karte „Meine Rückennummer“ (unter „Meine Mannschaften“) – je gewählter Mannschaft bis zu 3 Nummern (`localStorage grizzlysMyNr`, z. B. `{"A":["17"]}`). „Nr. 17“ wird überall in Grizzlys-Texten gelb markiert (Torschützen, Live-Tore, Spielbericht, Spieldetails), in „Tore nach Rückennummer“ die ganze Zeile – nur bei der passenden Mannschaft, nie bei Gegnertoren. Push-Auswahl „Tore meiner Nummer“ (Live, `prefs.liveMyNr`, nur auf Wunsch): `functions/live.js` schickt bei Tor oder Vorlage dieser Nummer „🎉 Tor durch die Nr. 17!“ bzw. „🎯 Vorlage von der Nr. 17!“ statt der allgemeinen Live-Tor-Meldung (`prefs.myNr` wird mit der Push-Auswahl gespeichert – nur Nummern, keine Namen).
+- **Push „Spielbericht ist online“:** neuer Schalter in der Push-Auswahl (`prefs.reports`, nur auf Wunsch). Neue Function `onReportPublished` (`functions/report-push.js`): meldet jeden Bericht einmal, sobald er veröffentlicht ist (Admin oder automatisch nach der Frist), Sperre `reportPushes/{Spiel-ID}`, keine Meldung für Spiele älter als 7 Tage. Ein Tipp auf die Meldung öffnet den Bericht (`./?go=report-<Spiel-ID>`; bei offener App per Nachricht vom Service Worker).
+- **Wochenende als Bild:** Downloads › „Wochenende · x Spiele“ (ab Montag für das kommende Wochenende Fr–So, alle eigenen Mannschaften, bis zu 6 Spiele mit Logos, Uhrzeit, Heim/Auswärts, schon gespielte mit Ergebnis); im Admin-Bereich › Social Media als Kachel „Wochenende“ (alle Mannschaften).
+- **Wetter am Spielort:** neue Function `weatherForecast` (`functions/weather.js`, alle 3 Stunden): holt für Spiele der nächsten 3 Tage die Vorhersage bei Open-Meteo (kostenlos, ohne Schlüssel) und speichert sie in `weather/{Spiel-ID}` (für alle lesbar, `firestore.rules` ergänzt). Ort = Koordinaten aus `RINK_GEO` in `js/app.js` (steht dafür jetzt oben in der Datei; neue Halle dort eintragen). Glättegefahr: ≤ 1 °C rund um die Anfahrt (4 Std. vor bis 3 Std. nach Bully) mit Niederschlag/Regenwahrscheinlichkeit ab 40 % oder Schnee bzw. gefrierender Regen; Frost ohne Niederschlag = „Frost“. Anzeige: Zeile auf den Karten „Nächstes Spiel“ und Kasten in den Spieldetails; die 24h-Erinnerung (`push.js`) hängt die Zusammenfassung an. Die Geräte fragen keinen Wetterdienst selbst (Datenschutz-Seite ergänzt).
+- **Saisonbilanz – Strafen & Special Teams:** Strafminuten (gesamt, je Spiel, Gegner), Überzahlquote (Tore/Überzahlspiele) und Unterzahlquote (überstanden/Unterzahlspiele) aus den EHV-Spielberichten. Dafür liefert die Function `standings` jetzt `scorers.special` mit (`functions/standings.js`).
+- **Functions:** neu `onReportPublished`, `weatherForecast`; geändert `live.js`, `push.js`, `standings.js`, `index.js`. Gehen mit „Live gehen“ automatisch mit. Der Push „Spielbericht“, die Wetteranzeige und die Special-Teams-Zahlen funktionieren erst nach dem Deploy.
+
+## Version 1.42.2
+
+- **Meilensteine im Spielbericht:** Der automatische Bericht (App und Cloud Function `autoResults`, gemeinsame Vorlage `spielbericht.js`) erwähnt jetzt das 25./50./75./100. … Saisontor – mit Rückennummer des Torschützen, wenn die EHV-Spieldetails vorliegen („Ein Meilenstein: Die Nr. 17 erzielte das 100. Saisontor der U15 A.“) –, den ersten Saisonsieg, den 5./10./15. … Saisonsieg und den höchsten Saisonsieg (ab 5 Toren Unterschied). Neuer Chip „🏆 …“ unter „Im Bericht verwenden“ (standardmäßig an), auch in der Kurzfassung und im KI-Auftrag. „x. Sieg in Folge“ und „Zu null“ hatten schon eigene Bausteine.
+- `functions/spielbericht.js` (Rückfall-Kopie der Function) ist identisch mit `spielbericht.js`; die Function lädt die Vorlage sonst von der Live-Seite – wirksam also nach „Live gehen“.
+
+## Version 1.42.0
+
+### Neu in Version 1.42.0 (Stand 1.42.1.216, 19.11.2026, nur in der Test-App)
+
+- **Meilensteine:** aus den eingetragenen Ergebnissen je Mannschaft – erster Saisonsieg, 5./10./15. … Saisonsieg, 3/5/7/10/15 Siege in Folge, 25./50./75./100. … Saisontor, zu null gewonnen, höchster Saisonsieg (ab 5 Toren Unterschied und höher als der bisherige). Anzeige in „Letzte Ergebnisse“ (goldene Zeile), in den Spieldetails (Kasten „Meilenstein“) und in der Saisonbilanz (Liste „Meilensteine“). Keine Namen, keine neuen Daten oder Abfragen.
+- **App weiterempfehlen:** Info › neben „App teilen“ der Knopf „QR-Code zeigen“ – großer QR-Code der **Live-App** (`https://jazm1309.github.io/grizzlys-u15/`, fest eingebaut, auch in der Test-App) mit kurzer Anleitung und „Link teilen“. Der Code ist im Programm gespeichert und funktioniert offline.
+- **App-Verknüpfungen (Android):** langes Drücken auf das App-Symbol zeigt „U13“, „U15 A“ und „U15 B“ und öffnet direkt die Saisonbilanz der Mannschaft (`shortcuts` in `manifest.webmanifest`, Symbole `img/shortcut-u13.png`, `-u15a.png`, `-u15b.png` in den Mannschaftsfarben). Die App öffnet dazu `./?go=bilanz-U13|bilanz-A|bilanz-B` und räumt die Adresse danach wieder auf; ist die Mannschaft unter „Meine Mannschaften“ nicht gewählt, kommt ein Hinweis und die Einstellungen öffnen sich. Kommt zur neuen Saison die U17 dazu, die Verknüpfungen im Manifest (Test und Live) anpassen; der Service Worker speichert solche Aufrufe unter der normalen Adresse (offline nutzbar). iPhone kennt keine App-Verknüpfungen. Android übernimmt neue Verknüpfungen erst, wenn Chrome die installierte App aktualisiert (kann einen Tag dauern).
+- **Wichtig für Live:** `manifest.webmanifest` gehört zu den Dateien, die „Live gehen“ **nicht** überträgt (Test hat einen eigenen Namen). Für die Verknüpfungen in der Live-App die mitgelieferte Live-Fassung einmal von Hand ins Live-Repo hochladen (ersetzt die alte Datei).
 
 ## Version 1.41.4
 

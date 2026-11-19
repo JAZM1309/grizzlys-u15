@@ -202,7 +202,13 @@ exports.sendGameReminders = onSchedule(
         if (!targets.length) { logger.info("Erinnerung: niemand angemeldet", { reminderId }); continue; }
 
         const title = "🏒 ESV Grizzlys " + teamAge(game.team);
-        const body = `Morgen: ${teamLabel(game.team)} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
+        let body = `Morgen: ${teamLabel(game.team)} – ${game.home} gegen ${game.away} um ${game.time} Uhr in ${game.stadium}.`;
+        // 1.43.0: Wetter am Spielort (weather.js), wenn eine frische Vorhersage da ist
+        try {
+          const ws = await db.collection("weather").doc(game.date + "_" + game.time.replace(/:/g, "") + "_" + game.team).get();
+          const w = ws.exists ? ws.data() : null, age = w && w.at && w.at.toMillis ? Date.now() - w.at.toMillis() : Infinity;
+          if (w && w.txt && age < 12 * 3600000) body += `\n${w.warn ? "❄️ " + w.warn + " · " : "🌡️ "}${w.txt}`;
+        } catch (err) { logger.warn("Wetter für Erinnerung nicht lesbar", { reminderId, err: String(err) }); }
         const stats = await sendPush(targets, { title, body }, {
           notification: { icon: REMINDER_ICON, badge: BADGE },
           data: { type: "gameReminder", title, body },

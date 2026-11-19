@@ -137,6 +137,7 @@ function repAiPrompt(g,kw,len,use){
   }
   const me2=standRow(g.team,home?g.home:g.away); if(on("table")&&me2&&me2.gp)L.push(`Tabelle danach: Platz ${me2.r}, ${me2.p} Punkte aus ${me2.gp} Spielen`);
   if(on("streak"))L.push("Serie: "+lbl("streak"));
+  if(on("ms"))L.push("Meilenstein der Saison (unbedingt erwähnen): "+lbl("ms"));
   if(on("duel"))L.push("Vergleich mit dem letzten Duell: "+lbl("duel"));
   const HL=["start","dbl","late","sh","comeback","lc","lateEq","hat","blitz","en"].filter(on).map(lbl);
   if(HL.length)L.push("Besonders erwähnen: "+HL.join("; "));
@@ -215,6 +216,20 @@ function repDraft(g,variant=0,kw="",use={},len=""){
   let tab=null; if(e){const meR=home?e.h:e.a, L=e.L.filter(y=>y.h===meR.n||y.a===meR.n).sort((p,q)=>p.t-q.t);
     if(L.length&&L[L.length-1]===x){const won=y=>(y.h===meR.n?y.hs>y.as:y.as>y.hs);let n=0;const w=won(x);for(let i=L.length-1;i>=0&&won(L[i])===w;i--)n++;
       tab={meR,w,n,drought:w&&n===1&&L.length>=3&&!won(L[L.length-2])&&!won(L[L.length-3])}}}
+  /* 1.42.2: Meilensteine der Saison (wie in der App): 25./50./75./100. … Saisontor (mit Rückennummer, wenn bekannt),
+     erster Saisonsieg, 5./10./15. … Saisonsieg, höchster Saisonsieg (ab 5 Toren Unterschied). „x. Sieg in Folge“ und „zu null“ haben eigene Bausteine. */
+  const MS=[]; {
+    const PR=ALL_GAMES.filter(y=>y.team===g.team&&!y.cancelled&&dt(y)<dt(g)).map(y=>{const q=window.resultFor(y);if(!q||q.homeScore===undefined||q.homeScore==="")return null;const h=isHome(y);return {u:Number(h?q.homeScore:q.awayScore),t:Number(h?q.awayScore:q.homeScore)}}).filter(Boolean);
+    const gB=PR.reduce((a,q)=>a+q.u,0), wB=PR.filter(q=>q.u>q.t).length, bestB=PR.reduce((a,q)=>Math.max(a,q.u-q.t),0);
+    const ordW=n=>REP_NUM[n]?REP_NUM[n].replace(/n$/,""):n+".";
+    [25,50,75,100,125,150,175,200,250,300].forEach(n=>{if(gB<n&&gB+us>=n){const q=ours[n-gB-1], nr=q&&q.scorer&&q.scorer.nr?q.scorer.nr:"";
+      MS.push({t:`${n}. Saisontor${nr?" (Nr. "+nr+")":""}`,s:nr?[`Ein Meilenstein: Die Nr. ${nr} erzielte das ${n}. Saisontor der ${T}.`,`Das ${n}. Saisontor der ${T} geht auf das Konto der Nr. ${nr}.`,`Runde Sache: Die Nr. ${nr} knackte mit ihrem Treffer die Marke von ${n} Saisontoren.`]:[`Ein Meilenstein: In diesem Spiel fiel das ${n}. Saisontor der ${T}.`,`Runde Sache: Die ${T} knackte die Marke von ${n} Saisontoren.`]})}});
+    if(diff>0){const w=wB+1;
+      if(w===1)MS.push({t:"Erster Saisonsieg",s:[`Es ist der erste Saisonsieg der ${T}.`,`Damit ist der erste Saisonsieg geschafft.`,`Der erste Sieg der Saison ist unter Dach und Fach.`]});
+      if([5,10,15,20,25,30].includes(w))MS.push({t:w+". Saisonsieg",s:[`Es ist bereits der ${ordW(w)} Saisonsieg.`,`Damit steht der ${ordW(w)} Saisonsieg zu Buche.`]});
+      if(diff>=5&&diff>bestB)MS.push({t:"Höchster Saisonsieg",s:[`Es ist der bisher höchste Saisonsieg.`,`Einen höheren Sieg gab es in dieser Saison noch nicht.`]});
+    }
+  }
   const oppRaw=home?g.away:g.home;
   const prev=ALL_GAMES.filter(y=>y.team===g.team&&dt(y)<dt(g)&&(y.home===oppRaw||y.away===oppRaw)).sort((p,q)=>dt(q)-dt(p))[0];
   const pr0=prev&&window.resultFor(prev), pr=pr0&&pr0.homeScore!==undefined&&pr0.homeScore!==""?pr0:null;
@@ -242,6 +257,7 @@ function repDraft(g,variant=0,kw="",use={},len=""){
     hat:{avail:!!hatNr,def:true,label:`🎩 Hattrick Nr. ${hatNr}`},
     blitz:{avail:!!blitz,def:true,label:blitz?`🌪 3 Tore in ${Math.max(1,Math.ceil(blitz.span/60))} Min.`:""},
     en:{avail:!!enLast,def:true,label:"🥅 Schlusspunkt ins leere Tor"},
+    ms:{avail:MS.length>0,def:true,label:"🏆 "+MS.map(m=>m.t).join(", ")},
     fazit:{avail:true,def:true,label:"💬 Fazit"},
   };
   const on=k=>F[k]&&F[k].avail&&(k in use?!!use[k]:F[k].def);
@@ -287,6 +303,7 @@ function repDraft(g,variant=0,kw="",use={},len=""){
     if(on("verlauf")&&per)K1.push(pick([`Die Drittel: ${per.map(v=>v.join(":")).join(", ")}.`,`Drittel für Drittel: ${per.map(v=>v.join(":")).join(", ")}.`,`Die Drittelergebnisse lauteten ${repList(per.map(v=>v.join(":")))}.`],"kurz-drittel"));
     K1.push(...KS);
     const K2=[]; if(on("table"))K2.push(pick([`${tab.w&&on("streak")&&tab.n>=2?`Mit dem ${REP_NUM[tab.n]||tab.n+"."} Sieg in Folge`:"Damit"} steht die ${T} auf Platz ${tab.meR.r}.`,`In der Tabelle bedeutet das Platz ${tab.meR.r}.`,`Die ${T} belegt damit Platz ${tab.meR.r}.`],"kurz-tabelle"));
+    if(on("ms"))K2.push(pick(MS[0].s,"meilenstein-0"));
     if(on("next"))K2.push(nextTxt());
     const title=repTitle(g,diff,sc,opp,xtra,behind,pick);
     return {title,text:[K1.join(" "),K2.join(" ")].filter(Boolean).join("\n\n"),facts:F,bausteine:used};
@@ -381,6 +398,7 @@ function repDraft(g,variant=0,kw="",use={},len=""){
     A.push(pick([`Nach ${what} steht die ${T} auf Platz ${R.r} der Tabelle (${sp}).`,`In der Tabelle bedeutet das Platz ${R.r} – ${sp}.`,`Mit ${sp} belegt die ${T} Platz ${R.r}.`,`Platz ${R.r} mit ${sp} – so steht die ${T} nach ${what} da.`],"tabelle"))}
   if(on("streak")&&tab.w&&tab.n>=2)A.push(pick([`Es ist bereits der ${NUMN(tab.n)} Sieg in Folge.`,`Damit hält die Serie: ${repCap(NUMN(tab.n))} Sieg nacheinander.`,`${repCap(repW(tab.n))} Siege in Serie – die Mannschaft ist in Form.`],"serie"));
   if(on("streak")&&tab.drought)A.push(pick(["Damit ist auch die kleine Durststrecke beendet.","Nach zwei Spielen ohne Sieg ist der Bann gebrochen.","Endlich wieder ein Sieg."],"durststrecke"));
+  if(on("ms"))MS.forEach((m,k)=>A.push(pick(m.s,"meilenstein-"+k)));
   if(on("duel")){
     if(diff>0&&prU<prT)A.push(pick([`Damit gelang auch die Revanche für die ${prU}:${prT}-Niederlage im ersten Duell.`,`Revanche geglückt: Das erste Duell hatten die Grizzlys noch ${prU}:${prT} verloren.`,`Die ${prU}:${prT}-Niederlage aus dem ersten Aufeinandertreffen ist damit wettgemacht.`],"revanche"));
     else if(diff>0&&prU>prT)A.push(pick([`Schon das erste Duell hatten die Grizzlys mit ${prU}:${prT} gewonnen.`,`Auch im ersten Aufeinandertreffen hatten die Grizzlys mit ${prU}:${prT} die Nase vorn.`],"duell-zwei-siege"));
