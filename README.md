@@ -50,6 +50,8 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.44.2.221 | – (nur Test) | 19.11.2026 | Neu: Status „Verlegt – Termin offen“ |
+| 1.44.1.220 | – (nur Test) | 19.11.2026 | Fix: zwei App-Fehler aus der Fehler-Liste |
 | 1.44.0.219 | – (nur Test) | 19.11.2026 | Neue Funktionen (Wunschliste, Ein-Tipp-Feedback, Feedback-Einstiege) |
 | 1.43.0.218 | – (nur Test) | 19.11.2026 | Neue Funktionen (Rückennummer, Bericht-Push, Wochenende, Wetter, Special Teams) |
 | 1.42.2.217 | – (nur Test) | 19.11.2026 | Spielbericht: Meilensteine |
@@ -83,6 +85,15 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.44.2
+
+- **Neuer Status „Verlegt – neuer Termin offen“:** Admin › Spiel › „🚫 Absage / Termin offen“ hat jetzt zwei Knöpfe: „🚫 Spiel absagen“ und „⏸ Verlegt – Termin offen“ (bei einem schon abgesagten Spiel: „⏸ Nur verlegt – Termin offen“, umgekehrt „🚫 Doch abgesagt“). Technisch eine Absage mit `postponed: true` im Dokument `scheduleOverrides/{Spiel-ID}`: Das Spiel ist kein nächstes Spiel, bekommt keine Erinnerung und kein Live-Ticker, bleibt am alten Datum im Spielplan – angezeigt wird aber überall „Verlegt · Termin offen“ in Orange (Spielkarten, Letzte Ergebnisse, Kalender-Download, Druckansicht, News, Social-Media-Bilder, Wochenend-Bild). Optionaler Push: „Spiel gegen … ist verlegt – neuer Termin folgt.“ Steht der neue Termin fest, einfach unter „Termin & Ort“ ändern – dann gilt das Spiel automatisch wieder als normales Spiel.
+
+## Version 1.44.1
+
+- **Fix Start-Animation** („Cannot read properties of null (reading 'forEach')“, `index.html` Zeile ~197): Lief die App beim Start im Hintergrund oder ruckelte stark, sprang die Animation über den Aufprall hinweg; die Scherben wurden dann nie erzeugt. Jetzt werden sie nachgeholt, und falls das nicht geht, endet die Animation einfach.
+- **Fix Admin-Bereich** („Cannot read properties of null (reading 'hidden')“, `js/app-daten.js`): Die Link-Kästen „App-Statistik“ und „Tipp-Fenster ansehen“ sehen aus wie aufklappbare Kästen, haben aber nichts zum Aufklappen – ein Tipp darauf warf zusätzlich einen Fehler. Sie werden beim Aufklappen jetzt übersprungen.
 
 ## Version 1.44.0
 

@@ -2388,3 +2388,8 @@ html.dark .wishTeaser{background:linear-gradient(135deg,#2a2210,#162033);border-
 .wishDoneTag{font-size:11px;font-weight:850;color:#1f9d55;background:rgba(31,157,85,.1);padding:1px 6px;border-radius:6px}
 html.dark .wishItem{background:#0d1a2c;border-color:#263a55}html.dark .wishItem.on{background:#2a2210;border-color:#a3801f}html.dark .wishBar{background:rgba(255,255,255,.1)}html.dark .wishThumb{background:rgba(255,255,255,.08)}
 .reactRow{display:flex;gap:10px;align-items:center}.reactCnt{display:flex;gap:8px;font-weight:850;flex:none}
+/* 1.44.2: verlegt, neuer Termin offen – orange statt rot */
+.cxBadge.pp{background:#e07a00}
+.lastPill.cx.pp,.lrPill.cx.pp{background:#e07a00!important;color:#fff!important}
+.month.monthTbd{color:#e07a00}
+.card.isPp .g3Date b,.card.isPp .g3Date i{text-decoration:line-through;text-decoration-thickness:2px}

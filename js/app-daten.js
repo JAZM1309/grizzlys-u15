@@ -97,7 +97,7 @@ function applyScheduleOverrides(){
     const o=scheduleOverrides[g._baseId];
     if(o){ Object.assign(g,{day:o.day||g._base.day,date:o.date||g._base.date,time:o.time||g._base.time,home:o.home||g._base.home,away:o.away||g._base.away,stadium:o.stadium||g._base.stadium}); }
     else Object.assign(g,g._base);
-    /* 1.40.3: Absage gilt nur für den Tag, an dem sie gesetzt wurde – wird das Spiel verlegt, ist es nicht mehr abgesagt */ g.cancelled=!!(o&&o.cancelled===true&&g.date===(o.cancelDate||o.originalDate||g.date)); /* 1.25.0: Spiel abgesagt – nur Anzeige */
+    /* 1.40.3: Absage gilt nur für den Tag, an dem sie gesetzt wurde – wird das Spiel verlegt, ist es nicht mehr abgesagt */ g.cancelled=!!(o&&o.cancelled===true&&g.date===(o.cancelDate||o.originalDate||g.date)); /* 1.25.0: Spiel abgesagt – nur Anzeige */ g.postponed=!!(g.cancelled&&o.postponed===true); /* 1.44.2: verlegt, neuer Termin offen – gilt wie eine Absage (kein nächstes Spiel, keine Erinnerung), wird aber als „Verlegt“ angezeigt */
   });
 }
 async function loadScheduleOverrides(){
@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.44.0.219",
+      appVersion:"1.44.2.221",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1412,7 +1412,7 @@ const admPair=g=>esc(shortTeam(g.home))+" – "+esc(shortTeam(g.away));
 /* 1.26.2: In der Liste steht der Gegner vorn (die Grizzlys sind ja immer dabei), davor Heim/Auswärts */
 function admRow(g){
   const [c,t]=admStatus(g), mod=admOvChanged(g), h=isHome(g);
-  return `<button type="button" class="admRow team${esc(g.team)}" data-gid="${esc(scheduleGameId(g))}" title="${esc(g.home+" – "+g.away)}">${admDate(g)}<span class="admM"><b><i class="admHA${h?"":" aw"}">${h?"HEIM":"AUSW."}</i><span>${esc(shortTeam(h?g.away:g.home))}</span></b><small>${esc(teamName(g.team))} · ${esc(g.time)} · ${esc(g.stadium)}${mod?'<span class="admMod">geändert</span>':""}${g.cancelled?'<span class="admMod admCx">abgesagt</span>':""}</small></span><span class="admSt ${c}">${esc(t)}</span></button>`;
+  return `<button type="button" class="admRow team${esc(g.team)}" data-gid="${esc(scheduleGameId(g))}" title="${esc(g.home+" – "+g.away)}">${admDate(g)}<span class="admM"><b><i class="admHA${h?"":" aw"}">${h?"HEIM":"AUSW."}</i><span>${esc(shortTeam(h?g.away:g.home))}</span></b><small>${esc(teamName(g.team))} · ${esc(g.time)} · ${esc(g.stadium)}${mod?'<span class="admMod">geändert</span>':""}${g.cancelled?'<span class="admMod admCx">'+(g.postponed?'Termin offen':'abgesagt')+'</span>':""}</small></span><span class="admSt ${c}">${esc(t)}</span></button>`;
 }
 /* Monats-Zwischenüberschriften für längere Listen */
 function admRowsByMonth(arr){let m="",h="";arr.forEach(g=>{const k=dt(g).toLocaleDateString("de-DE",{month:"long",year:"numeric"});if(k!==m){m=k;h+=`<div class="admMonth">${esc(k)}</div>`}h+=admRow(g)});return h}
@@ -1543,7 +1543,7 @@ function admRenderSheet(){
       :`<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-sch="edit">✏️ Termin ändern</button>${mod?'<button type="button" class="admBtn no" data-sch="reset">↩️ Original</button>':""}</div>`}
    </div>`,!!(adm.edit||d),(d?'<span class="admSt chg">EHV weicht ab</span> ':mod?'<span class="admSt chg">geändert</span> ':"")+esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+g.time+" · "+g.stadium))}
    ${admFold("rep",admRepBox(g,has),has&&!(window.gameReports&&window.gameReports[rkey(g)]&&window.gameReports[rkey(g)].published),admRepSum(g,has))}
-   ${admFold("cx",`<div class="admBox admCxBox${g.cancelled?" on":""}"><h5>🚫 Absage</h5>${g.cancelled?`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button></div>`:`<div class="small" style="margin-bottom:8px">Nur Anzeige: Das Spiel wird überall als „Abgesagt“ gekennzeichnet (Spielkarten, Kalender, Social-Media-Bilder). Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button></div>`}</div>`,!!g.cancelled,g.cancelled?'<span class="admSt miss">abgesagt</span>':"nicht abgesagt")}
+   ${admFold("cx",`<div class="admBox admCxBox${g.cancelled?" on":""}"><h5>🚫 Absage / Termin offen</h5>${g.cancelled?(g.postponed?`<div class="admHint">Dieses Spiel ist als <b>verlegt – neuer Termin offen</b> markiert. Steht der neue Termin fest, einfach oben unter „Termin &amp; Ort“ ändern – dann gilt das Spiel automatisch wieder.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Zurücknehmen</button><button type="button" class="admBtn no" data-cx="on">🚫 Doch abgesagt</button></div>`:`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button><button type="button" class="admBtn" data-cx="pp">⏸ Nur verlegt – Termin offen</button></div>`):`<div class="small" style="margin-bottom:8px">Nur Anzeige: „Abgesagt“ oder „Verlegt – Termin offen“ steht dann überall (Spielkarten, Kalender, News, Social-Media-Bilder). Das Spiel ist kein nächstes Spiel mehr und bekommt keine Erinnerung. Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“ bzw. „… ist verlegt – neuer Termin folgt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button><button type="button" class="admBtn" data-cx="pp">⏸ Verlegt – Termin offen</button></div>`}</div>`,!!g.cancelled,g.cancelled?'<span class="admSt miss">'+(g.postponed?'verlegt, Termin offen':'abgesagt')+'</span>':"nicht abgesagt")}
    ${admFold("news",`<div class="admBox"><h5>📰 Hinweis zu diesem Spiel</h5><button type="button" class="admBtn" style="width:100%" data-news>＋ News schreiben (z. B. Hallenwechsel)</button></div>`,false,"News schreiben")}`;
   box.querySelectorAll("details[data-fold]").forEach(x=>x.addEventListener("toggle",()=>{adm.fold=adm.fold||{};adm.fold[x.dataset.fold]=x.open}));
   box.querySelector(".admRepMore")?.addEventListener("toggle",e=>{adm.fold=adm.fold||{};adm.fold.repMore=e.currentTarget.open});
@@ -1585,12 +1585,12 @@ function admRenderSheet(){
   });
   box.querySelectorAll("[data-img]").forEach(b=>b.onclick=()=>{if(typeof instaOpen==="function")instaOpen(g,b.dataset.img)});
   box.querySelectorAll("[data-cx]").forEach(b=>b.onclick=async()=>{
-    const on=b.dataset.cx==="on", pushIt=on&&!!box.querySelector("#admCxPush")?.checked;
-    if(!confirm(on?"Spiel als abgesagt markieren?\n\nDas Spiel bleibt im Spielplan, wird aber überall als „Abgesagt“ angezeigt."+(pushIt?"\n\nAlle Geräte mit Push für "+teamName(g.team)+" bekommen eine Nachricht.":""):"Absage zurücknehmen?"))return;
+    const pp=b.dataset.cx==="pp", on=b.dataset.cx==="on"||pp, pushIt=on&&!!box.querySelector("#admCxPush")?.checked;
+    if(!confirm(pp?"Spiel als verlegt markieren – neuer Termin noch offen?\n\nDas Spiel bleibt am alten Datum im Spielplan, wird aber überall als „Verlegt – Termin offen“ angezeigt."+(pushIt?"\n\nAlle Geräte mit Push für "+teamName(g.team)+" bekommen eine Nachricht.":""):on?"Spiel als abgesagt markieren?\n\nDas Spiel bleibt im Spielplan, wird aber überall als „Abgesagt“ angezeigt."+(pushIt?"\n\nAlle Geräte mit Push für "+teamName(g.team)+" bekommen eine Nachricht.":""):"Zurücknehmen?"))return;
     b.disabled=true;
-    try{await admSetCancelled(g,on);let msg=on?"Als abgesagt markiert – gilt sofort für alle Nutzer.":"Absage zurückgenommen.";
+    try{await admSetCancelled(g,on,pp);let msg=pp?"Als verlegt (Termin offen) markiert – gilt sofort für alle Nutzer.":on?"Als abgesagt markiert – gilt sofort für alle Nutzer.":"Zurückgenommen.";
       if(pushIt){try{const opp=shortTeam(/grizzlys/i.test(g.home)?g.away:g.home),wd=new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
-        await admSendChangePush(g,"Spiel gegen "+opp+" am "+wd+" ("+g.time+" Uhr) ist abgesagt.");msg+="\n\nPush an alle Geräte ("+teamName(g.team)+") wird verschickt."}catch(err){msg+="\n\nAchtung: Push konnte nicht verschickt werden ("+(err.message||err)+")."}}
+        await admSendChangePush(g,"Spiel gegen "+opp+" am "+wd+" ("+g.time+" Uhr) ist "+(pp?"verlegt – neuer Termin folgt.":"abgesagt."));msg+="\n\nPush an alle Geräte ("+teamName(g.team)+") wird verschickt."}catch(err){msg+="\n\nAchtung: Push konnte nicht verschickt werden ("+(err.message||err)+")."}}
       alert(msg)}catch(err){console.error(err);alert("Speichern nicht möglich: "+(err.message||err))}
     admRenderAll();
   });
@@ -1646,14 +1646,15 @@ async function admSendChangePush(g,text){
 }
 /* 1.25.0: Absage speichern – im selben Dokument wie Terminänderungen (scheduleOverrides), Feld „cancelled“.
    Gab es nur die Absage (keine Terminänderung), wird das Dokument beim Zurücknehmen wieder gelöscht. */
-async function admSetCancelled(g,on){
+async function admSetCancelled(g,on,pp){
   const id=scheduleGameId(g), base=g._base||g, o=scheduleOverrides[id];
   if(on){
     const data=o?{...o,cancelled:true,cancelDate:o.date||base.date}:{gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day:base.day,date:base.date,time:base.time,home:base.home,away:base.away,stadium:base.stadium,cancelled:true,cancelDate:base.date,news:true};
+    if(pp)data.postponed=true;else delete data.postponed; /* 1.44.2: verlegt, neuer Termin offen */
     await setDoc(doc(db,"scheduleOverrides",id),{...data,cancelledAt:serverTimestamp(),updatedAt:serverTimestamp()});
     scheduleOverrides[id]=data;
   }else if(o){
-    if(admOvChanged(g)){const data={...o,cancelled:false};delete data.cancelledAt;await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});scheduleOverrides[id]=data;}
+    if(admOvChanged(g)){const data={...o,cancelled:false};delete data.cancelledAt;delete data.postponed;await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});scheduleOverrides[id]=data;}
     else{await deleteDoc(doc(db,"scheduleOverrides",id));delete scheduleOverrides[id];}
   }
   applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.(); adminNewsEditor();
@@ -1662,7 +1663,7 @@ async function admSaveOverride(g,v){
   const id=scheduleGameId(g), base=g._base||g, day=new Date(v.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"long"});
   const data={gameId:id,team:g.team,originalDate:base.date,originalTime:base.time,day,date:v.date,time:v.time,home:v.home,away:v.away,stadium:v.stadium};
   if(typeof v.news==="boolean")data.news=v.news; /* fehlt = automatisch erkennen */
-  {const oc=scheduleOverrides[id]; if(oc&&oc.cancelled===true){const cd=oc.cancelDate||oc.originalDate; if(v.date===cd){data.cancelled=true;data.cancelDate=cd}}} /* verlegt = nicht mehr abgesagt */
+  {const oc=scheduleOverrides[id]; if(oc&&oc.cancelled===true){const cd=oc.cancelDate||oc.originalDate; if(v.date===cd){data.cancelled=true;data.cancelDate=cd;if(oc.postponed===true)data.postponed=true}}} /* verlegt = nicht mehr abgesagt; neuer Termin = nicht mehr „Termin offen“ */
   await setDoc(doc(db,"scheduleOverrides",id),{...data,updatedAt:serverTimestamp()});
   scheduleOverrides[id]=data; applyScheduleOverrides(); renderNext(); renderList(); renderOpponents(); window.applyResults?.(); window.renderNews?.(); adminNewsEditor();
 }
@@ -1705,7 +1706,7 @@ function admRenderAll(){
 window.admBugsChanged=n=>{adm.bugs=n;try{admRenderTodo()}catch(e){}};
 window.admRenderAll=admRenderAll;
 document.querySelectorAll("[data-adm-tab]").forEach(b=>b.onclick=()=>admSetTab(b.dataset.admTab));
-document.querySelectorAll(".admFold").forEach(f=>{const h=f.querySelector(".admFoldHead"),b=f.querySelector(".admFoldBody");h.onclick=()=>{const o=b.hidden;b.hidden=!o;f.classList.toggle("open",o);h.setAttribute("aria-expanded",o?"true":"false")}});
+document.querySelectorAll(".admFold").forEach(f=>{const h=f.querySelector(".admFoldHead"),b=f.querySelector(".admFoldBody");if(!h||!b)return; /* 1.44.1: Link-Kästen (App-Statistik, Tipp-Fenster) haben keinen Inhalt zum Aufklappen */h.onclick=()=>{const o=b.hidden;b.hidden=!o;f.classList.toggle("open",o);h.setAttribute("aria-expanded",o?"true":"false")}});
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);admRenderAll()};}
 function admStart(){admSetTab(adm.tab);admRenderAll();if(!adm.ehv||Date.now()-adm.ehvAt>10*60000)admLoadEhv()}
 

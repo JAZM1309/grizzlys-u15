@@ -23,6 +23,8 @@ function logoFbHtml(name,cls){
   return `<span class="logoFb ${cls}" style="background:hsl(${h} 38% 90%);color:hsl(${h} 40% 28%)" role="img" aria-label="${esc(name)}">${esc(k)}</span>`;
 }
 window.logoFallback=function(img){const s=document.createElement("span");s.innerHTML=logoFbHtml(img.alt,img.className);img.replaceWith(s.firstChild)};
+/* 1.44.2: Absage oder „verlegt, neuer Termin offen“ (g.postponed) – Anzeigetexte */
+function cxW(g){return g&&g.postponed?"Verlegt":"Abgesagt"}function cxw(g){return g&&g.postponed?"verlegt":"abgesagt"}function cxU(g){return g&&g.postponed?"VERLEGT":"ABGESAGT"}
 const rinkAddresses={"Bergkamen": "Häupenweg 29, 59192 Bergkamen", "Gelsenkirchen": "Adenauerallee 118, 45891 Gelsenkirchen", "Neuss": "Jakob-Koch-Straße 1, 41466 Neuss", "Duisburg": "Margaretenstraße 17-19, 47055 Duisburg", "Hamm": "Karl-Koßmann-Straße 1, 59071 Hamm", "Herford": "Westring 108, 32051 Herford", "Grefeath": "Stadionstraße 161, 47929 Grefrath", "Grefrath": "Stadionstraße 161, 47929 Grefrath", "Dinslaken": "Am Stadtbad 1, 46537 Dinslaken", "Essen": "Curtiusstraße 2, 45144 Essen", "Dortmund": "Strobelallee 32, 44139 Dortmund", "Bielefeld": "Duisburger Straße 14, 33647 Bielefeld", "Solingen": "Brühler Straße 20, 42657 Solingen", "Aachen": "Hubert-Wienen-Straße 8, 52070 Aachen", "Ratingen": "Am Sandbach 12, 40878 Ratingen", "Wiehl": "Mühlenstraße 23, 51674 Wiehl", "Möhnesee": "Teigelhof 4, 59519 Möhnesee", "Neuwied": "Andernacher Straße 111, 56564 Neuwied", "Darmstadt": "Alsfelder Straße 45, 64289 Darmstadt", "Troisdorf": "Uckendorfer Straße 135, 53844 Troisdorf"};
 /* Ungefähre Lage der Hallen (Schlüssel wie rinkAddresses) – Gegner-Karte und Wetter (Function weatherForecast liest diese Zeile) */
 const RINK_GEO={"Bergkamen":[51.6275,7.6460],"Gelsenkirchen":[51.5560,7.0880],"Neuss":[51.1830,6.6950],"Duisburg":[51.4170,6.7780],"Hamm":[51.6730,7.8350],"Herford":[52.1170,8.6560],"Grefeath":[51.3420,6.3420],"Grefrath":[51.3420,6.3420],"Dinslaken":[51.5620,6.7370],"Essen":[51.4500,6.9900],"Dortmund":[51.4930,7.4560],"Bielefeld":[51.9960,8.5240],"Solingen":[51.1640,7.0690],"Aachen":[50.7930,6.0970],"Ratingen":[51.2970,6.8460],"Wiehl":[50.9500,7.5400],"Möhnesee":[51.4980,8.1300],"Neuwied":[50.4300,7.4400],"Darmstadt":[49.8865,8.6625],"Troisdorf":[50.8240,7.1660]};
@@ -275,7 +277,7 @@ function renderCalendar(){
     const dayGames=arr.filter(g=>g.date===key);
     const today=new Date(); const todayKey=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
     const fer=ferienFor(key);
-    html+='<div class="dayCell '+(todayKey===key?'today':'')+(fer?' ferien':'')+'"'+(fer?' title="'+esc(fer.name)+' NRW"':'')+'><div class="dayNum">'+d+'</div><div class="dayGames">'+dayGames.map(g=>'<button type="button" class="dayGame '+g.team+(g.cancelled?' isCx':'')+'" data-game-index="'+games.indexOf(g)+'" title="'+esc(g.time+' · '+opponent(g)+(g.cancelled?' · abgesagt':''))+'"><span class="gameTime">U15 '+g.team+' · '+(g.cancelled?'abgesagt':esc(g.time))+'</span><span class="gameOpp">'+esc(opponent(g))+'</span><span class="gameVenue">'+(isHome(g)?'🏠':'✈️')+' '+esc(g.stadium)+'</span></button>').join("")+'</div></div>';
+    html+='<div class="dayCell '+(todayKey===key?'today':'')+(fer?' ferien':'')+'"'+(fer?' title="'+esc(fer.name)+' NRW"':'')+'><div class="dayNum">'+d+'</div><div class="dayGames">'+dayGames.map(g=>'<button type="button" class="dayGame '+g.team+(g.cancelled?' isCx':'')+'" data-game-index="'+games.indexOf(g)+'" title="'+esc(g.time+' · '+opponent(g)+(g.cancelled?' · '+cxw(g):''))+'"><span class="gameTime">U15 '+g.team+' · '+(g.cancelled?cxw(g):esc(g.time))+'</span><span class="gameOpp">'+esc(opponent(g))+'</span><span class="gameVenue">'+(isHome(g)?'🏠':'✈️')+' '+esc(g.stadium)+'</span></button>').join("")+'</div></div>';
   }
   const cells=7+start+last.getDate();
   for(let i=cells;i%7!==0;i++) html+='<div class="dayCell" style="visibility:hidden"></div>';
@@ -403,7 +405,7 @@ function printAllGamesPdf(filters=["all"]){
       "<td class=\"printTeam"+g.team+"\">"+teamName(esc)(g.team)+"</td>"+
       "<td>"+esc(g.home)+"</td>"+
       "<td>"+esc(g.away)+"</td>"+
-      "<td class=\"printResult\">"+(g.cancelled?(score!=="–"?score+" ":"")+"<b>abgesagt</b>":score)+"</td>"+
+      "<td class=\"printResult\">"+(g.cancelled?(score!=="–"?score+" ":"")+"<b>"+(g.postponed?"verlegt, Termin offen":"abgesagt")+"</b>":score)+"</td>"+
       "<td>"+esc(g.stadium)+"</td>"+
     "</tr>";
   }).join("");
@@ -431,7 +433,7 @@ function printAllGamesPdf(filters=["all"]){
   printWindow.onload=()=>setTimeout(()=>printWindow.print(),150);
 }
 function downloadIcsBundle(arr,filename){const body=arr.flatMap(g=>icsForEvent(g));const content=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN",...body,"END:VCALENDAR"].join("\r\n");const blob=new Blob([content],{type:"text/calendar;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),...(g.cancelled?["STATUS:CANCELLED"]:[]),"SUMMARY:"+(g.cancelled?"ABGESAGT: ":"")+teamName(g.team)+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
+function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),...(g.cancelled?["STATUS:CANCELLED"]:[]),"SUMMARY:"+(g.cancelled?cxU(g)+": ":"")+teamName(g.team)+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
 function renderNext(){
   const g=games.filter(x=>dt(x)>=new Date()).sort((a,b)=>dt(a)-dt(b))[0]||games[games.length-1];
   const cls="team"+g.team;
@@ -1096,15 +1098,15 @@ function gameCardHtml(g,past,res,detail=false,label=""){
   const logo=(name,cls)=>/grizzlys/i.test(name)?teamLogoHtml(name,cls):logoHtml(name,cls);
   const wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
   const date=`<div class="g3Date"><span>${esc(wd)}</span><b>${String(d.getDate()).padStart(2,"0")}.</b><span>${esc(mon)}</span><i>${esc(g.time)}</i></div>`;
-  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">${esc(teamName(g.team))}</span>${g.cancelled?'<span class="cxBadge">Abgesagt</span>':""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
+  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">${esc(teamName(g.team))}</span>${g.cancelled?`<span class="cxBadge${g.postponed?" pp":""}">${g.postponed?"Verlegt · Termin offen":"Abgesagt"}</span>`:""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
   const mid=res?`<div class="gzMid"><b class="gzScore">${res.hs}:${res.as}</b><span class="lastPill ${res.o}">${outLabel(res)}</span></div>`
                :lv?`<div class="gzMid gzLive"><b class="gzScore">${esc(String(lv.hs))}:${esc(String(lv.as))}</b><span class="lastPill live${lv.status==="final"?" fin":""}">${lv.status==="final"?"Endstand · vorläufig":`<i class="liveDot"></i>Live`}</span>${lv.status==="final"?"":`<span class="liveClock">${esc(liveLabel(lv))}</span>`}</div>`
-               :`<div class="gzMid">${g.cancelled?'<span class="lastPill cx">Abgesagt</span>':past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
+               :`<div class="gzMid">${g.cancelled?`<span class="lastPill cx${g.postponed?" pp":""}">${cxW(g)}</span>`:past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
   const match=`<div class="gcMatch"><div class="gcSide">${logo(g.home,"opponentLogo")}<span>${esc(shortTeam(g.home))}</span></div>${mid}<div class="gcSide">${logo(g.away,"opponentLogo")}<span>${esc(shortTeam(g.away))}</span></div></div>`;
   const per=res?standPeriodsData(g):(lv&&lv.periods&&lv.periods.length?{p:lv.periods.map(v=>v[0]+":"+v[1]),ot:lv.ot,so:lv.so}:null);
   const thirds=per?`<div class="g3Tile g3Thirds">`+per.p.map((v,i)=>`<div><small>${i+1}. Drittel</small><b>${esc(v)}</b></div>`).join("")+(per.so||per.ot?`<div><small>Ende</small><b>${per.so?"n.P.":"n.V."}</b></div>`:"")+`</div>`:"";
   const tiles=g3TeamTile(g.team,g.home)+g3TeamTile(g.team,g.away);
-  const venue=past?`<div class="g3Tile g3Venue g3VenuePast"><div><span>Gespielt in</span><b>${esc(g.stadium)}</b></div></div>`
+  const venue=past?`<div class="g3Tile g3Venue g3VenuePast"><div><span>${g.postponed?"Spielort":"Gespielt in"}</span><b>${esc(g.stadium)}</b></div></div>`
     :home?`<div class="g3Tile g3Venue"><div><span>Heimspiel</span><b>${esc(g.stadium)}</b></div></div>` /* 1.28.1: bei Heimspielen keine Route */
     :`<div class="g3Tile g3Venue"><div><b>${esc(g.stadium)}</b><span>${esc(address(g))}${(km=>km?" · "+km+" km":"")(distanceForStadium(g.stadium))}</span></div><button class="g3Route route" type="button">${ic("pin")}Route</button></div>`;
   const btn=(c,icon,label)=>`<button class="g3Btn ${c}" type="button">${ic(icon)}${label}</button>`;
@@ -1136,7 +1138,7 @@ function g3HomeCard(id,g,label,defOpen){
   el.innerHTML=gameCardHtml(g,past,res,false,"");
   {const word=OUTW;let sub="",k="";
    if(id.startsWith("g3HomeLast")){k=res?res.o:"none";sub=res?outLabel(res):"Ergebnis folgt"}
-   else if(g.cancelled){k="cx";sub="Abgesagt"}
+   else if(g.cancelled){k="cx";sub=g.postponed?"Verlegt – neuer Termin offen":"Abgesagt"}
    else{const d0=new Date();d0.setHours(0,0,0,0);const d1=dt(g);d1.setHours(0,0,0,0);const n=Math.round((d1-d0)/86400000);sub=n===0?"Heute":n===1?"Morgen":n>1?"in "+n+" Tagen":"";
      /* 1.28.0: Countdown in den letzten 24 Stunden, am Spieltag „Heute“-Band */
      if(id.startsWith("g3HomeNext")&&n===0){k="today";label="Heute";sub=g3Countdown(g)}
@@ -1205,7 +1207,7 @@ function lrRender(list){
       <div class="lrTeams"><span class="lrBadge">${esc(teamName(g.team))}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
         <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?lrScorers(g,r)+msChips(g):""}</div>
-      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx":r.o}">${g.cancelled?"Abgesagt":outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx":"none"}">${g.cancelled?"Abgesagt":"Ergebnis folgt"}</span>`}`}</div>
+      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):r.o}">${g.cancelled?cxW(g):outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):"none"}">${g.cancelled?cxW(g):"Ergebnis folgt"}</span>`}`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");
   el.querySelectorAll(".lrRow").forEach(row=>{const g=list[Number(row.dataset.i)];
@@ -1294,8 +1296,13 @@ function renderList(filter="all"){
   if(!arr.length){list.innerHTML=emptyBox("puck","Keine Spiele","Mit diesen Filtern gibt es keine Spiele. Wähle oben eine Mannschaft oder Heim/Auswärts.");return}
   let month=""; const ng=nextGame(), openKey=g3OpenKey===null?(ng?g3Key(ng):""):g3OpenKey;
   /* Gespielte Spiele stehen zugeklappt über den kommenden („Gespielte Spiele anzeigen“) */
+  /* 1.44.2: verlegte Spiele ohne neuen Termin stehen oben unter „Termin offen“ (nicht bei den gespielten versteckt) */
+  const tbd=arr.filter(g=>g.postponed&&!resInfo(g)), tbdSet=new Set(tbd);
+  if(tbd.length){const mh=document.createElement("div");mh.className="month monthTbd";mh.textContent="Termin offen";list.appendChild(mh);
+    tbd.forEach(g=>{const card=document.createElement("article");card.className="card team"+g.team+" gz2 gz3 isCx isPp";card.dataset.date=g.date;card.dataset.team=g.team;
+      card.innerHTML=gameCardHtml(g,false,null);g3Bind(card,g);g3SetOpen(card,false);hwDecorate(card,g);list.appendChild(card)})}
   const isPast=g=>!!resInfo(g)||dt(g).getTime()+2*3600000<Date.now();
-  const pastN=arr.filter(isPast).length, fold=pastN>0&&pastN<arr.length;
+  const pastN=arr.filter(g=>!tbdSet.has(g)&&isPast(g)).length, fold=pastN>0&&pastN<arr.length-tbd.length;
   let target=list, pastWrap=null;
   if(fold){
     const tb=document.createElement("button");tb.type="button";tb.className="pastToggle"+(schedPastOpen?" open":"");
@@ -1306,6 +1313,7 @@ function renderList(filter="all"){
     pastWrap=document.createElement("div");pastWrap.className="pastWrap";pastWrap.hidden=!schedPastOpen;list.appendChild(pastWrap);target=pastWrap;
   }
   arr.forEach(g=>{
+    if(tbdSet.has(g))return;
     if(fold&&target===pastWrap&&!isPast(g)){target=list;month=""}
     const m=monthLabel(g); if(m!==month){month=m; const mh=document.createElement("div");mh.className="month";mh.textContent=m;mh.dataset.mkey=g.date.slice(0,7);target.appendChild(mh)}
     const card=document.createElement("article"); card.className="card "+("team"+g.team); card.dataset.date=g.date; card.dataset.team=g.team;
@@ -1344,7 +1352,7 @@ function route(g){window.open("https://www.google.com/maps/search/?api=1&query="
 function icsFor(g,alarm=false){
  const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0");
  const stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";
- let a=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:"+(g.cancelled?"ABGESAGT: ":"")+(alarm?"Erinnerung: ":"")+teamName(g.team)+" – "+opponent(g),...(g.cancelled?["STATUS:CANCELLED"]:[]),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\nSpielort: "+address(g)];
+ let a=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN","BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),"SUMMARY:"+(g.cancelled?cxU(g)+": ":"")+(alarm?"Erinnerung: ":"")+teamName(g.team)+" – "+opponent(g),...(g.cancelled?["STATUS:CANCELLED"]:[]),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\nSpielort: "+address(g)];
  if(alarm)a.push("BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY","DESCRIPTION:U15-Spiel der ESV Grizzlys morgen","END:VALARM");
  a.push("END:VEVENT","END:VCALENDAR"); return a.join("\r\n");
 }
@@ -1353,7 +1361,7 @@ function calendar(g){downloadIcs(g,false)} function reminder(g){downloadIcs(g,tr
 async function shareGame(g){const r=resInfo(g), per=r?standPeriodsData(g):null;
   /* 1.40.2: Ergebnis und Spieltag als Bild teilen (Bild-Fenster mit Teilen/Speichern); abgesagte Spiele bleiben Text */
   if(!g.cancelled&&typeof instaOpen==="function"){try{await instaOpen(g,r?"result":"announce",true);return}catch(e){console.warn(e)}}
-  const text=(g.cancelled?"❌ ABGESAGT\n":"")+(r?"🏒 "+teamName(g.team)+" – Endstand\n"+g.home+" "+r.hs+":"+r.as+" "+g.away+(per?"\nDrittel: "+per.p.join(" · ")+(per.so?" · n.P.":per.ot?" · n.V.":""):"")+"\n"+fmtDate(g)+" · "+g.stadium
+  const text=(g.cancelled?(g.postponed?"⏸ VERLEGT – NEUER TERMIN OFFEN\n":"❌ ABGESAGT\n"):"")+(r?"🏒 "+teamName(g.team)+" – Endstand\n"+g.home+" "+r.hs+":"+r.as+" "+g.away+(per?"\nDrittel: "+per.p.join(" · ")+(per.so?" · n.P.":per.ot?" · n.V.":""):"")+"\n"+fmtDate(g)+" · "+g.stadium
     :"🏒 "+teamName(g.team)+"\n"+fmtDate(g)+" · "+g.time+" Uhr\n"+g.home+" gegen "+g.away+"\n📍 "+g.stadium+" – "+address(g));if(navigator.share){try{await navigator.share({title:"ESV Grizzlys "+teamName(g.team),text})}catch(e){}}else alert(text)}
 
 function openMatchDetails(g,toReport=false){
@@ -1982,7 +1990,7 @@ async function instaDraw(g,type){
   // Kopf
   c.textBaseline="alphabetic";c.textAlign="left";c.fillStyle="#fff";instaFont(c,900,27);instaSpace(c,5);c.fillText("ESV GRIZZLYS BERGKAMEN",62,93);
   instaSpace(c,3);const tag=teamName(g.team),tw=c.measureText(tag).width+44;instaRR(c,W-62-tw,56,tw,48,10);c.fillStyle="#ff8a00";c.fill();c.fillStyle="#2b1500";c.textAlign="center";c.fillText(tag,W-62-tw/2+1.5,90);instaSpace(c,0);
-  const head=g.cancelled?["Spiel ","abgesagt"]:moved?["Spiel ","verlegt"]:res?(res.o==="w"?(home?["Heim","sieg!"]:["Auswärts","sieg!"]):["End","stand"]):["Spiel","tag"];
+  const head=g.cancelled?["Spiel ",g.postponed?"verlegt":"abgesagt"]:moved?["Spiel ","verlegt"]:res?(res.o==="w"?(home?["Heim","sieg!"]:["Auswärts","sieg!"]):["End","stand"]):["Spiel","tag"];
   let hs=112;c.textAlign="left";do{instaFont(c,0,hs,true);hs-=6}while(c.measureText(head[0]+head[1]).width>W-124&&hs>60);hs+=6;instaFont(c,0,hs,true);
   c.save();c.shadowColor="rgba(0,0,0,.65)";c.shadowBlur=26;c.shadowOffsetY=6;c.fillStyle="#fff";c.fillText(head[0],62,222);c.fillStyle="#ff8a00";c.fillText(head[1],62+c.measureText(head[0]).width,222);c.restore();
   // Paarung: Heim oben links, Gast unten rechts
@@ -1994,7 +2002,7 @@ async function instaDraw(g,type){
   c.save();c.shadowColor="rgba(0,0,0,.55)";c.shadowBlur=46;c.shadowOffsetY=16;instaRR(c,mx,my,mw,mh,30);c.fillStyle="#fff";c.fill();c.restore();
   c.fillStyle="#071b33";c.textAlign="center";c.textBaseline="middle";c.fillText(mid,W/2,640+(res?6:8));
   /* 1.25.0: abgesagt – roter Stempel über der Mitte */
-  if(g.cancelled){c.save();c.translate(W/2,res?770:760);c.rotate(-0.09);instaFont(c,900,74);instaSpace(c,6);const st="ABGESAGT",sw=c.measureText(st).width+90;
+  if(g.cancelled){c.save();c.translate(W/2,res?770:760);c.rotate(-0.09);instaFont(c,900,74);instaSpace(c,6);const st=cxU(g),sw=c.measureText(st).width+90;
     c.shadowColor="rgba(0,0,0,.5)";c.shadowBlur=30;instaRR(c,-sw/2,-62,sw,124,18);c.fillStyle="#d6453b";c.fill();c.shadowBlur=0;
     c.lineWidth=6;c.strokeStyle="#fff";instaRR(c,-sw/2+12,-50,sw-24,100,12);c.stroke();c.fillStyle="#fff";c.textAlign="center";c.textBaseline="middle";c.fillText(st,3,6);instaSpace(c,0);c.restore();}
   /* 1.27.1: verlegt – oranger Stempel über der Mitte */
@@ -2005,7 +2013,7 @@ async function instaDraw(g,type){
   c.textAlign="left";c.textBaseline="alphabetic";const d=dt(g),day=d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}),full=d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"});
   let parts;
   if(res){const p=standPeriodsShort(g).replace(/<[^>]+>/g,"");parts=p?[["Drittel ","#fff"],[p,"#ff8a00"]]:[[full,"#fff"]];}
-  else if(g.cancelled)parts=[[day+" ","#fff"],["· ","#ff8a00"],["abgesagt","#ff8a00"]];
+  else if(g.cancelled)parts=[[day+" ","#fff"],["· ","#ff8a00"],[g.postponed?"neuer Termin offen":"abgesagt","#ff8a00"]];
   else if(moved)parts=[["Neu: ","#ff8a00"],[day+" ","#fff"],["· ","#ff8a00"],[g.time+" Uhr","#fff"]];
   else parts=[[day+" ","#fff"],["· ","#ff8a00"],[g.time+" Uhr","#fff"]];
   let bs=68;do{instaFont(c,900,bs);bs-=4}while(parts.reduce((n,x)=>n+c.measureText(x[0]).width,0)>W-124&&bs>40);bs+=4;instaFont(c,900,bs);
@@ -2119,7 +2127,7 @@ async function instaOpen(g,type,pub=false){
   try{
     const cv=type==="table"?await instaTable(g.team):type==="year"?await instaYear(g.year):type==="weekend"?await instaWeekend(g):await instaDraw(g,type), blob=await new Promise(r=>cv.toBlob(r,"image/png"));
     if(!blob)throw new Error("Bild konnte nicht erzeugt werden");
-    const name=type==="weekend"?"young-grizzlys-wochenende-"+g.list[0].date+".png":type==="table"?"grizzlys-u15"+g.team.toLowerCase()+"-tabelle-"+new Date().toISOString().slice(0,10)+".png":type==="year"?"grizzlys-u15-jahresrueckblick-"+g.year+".png":"grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(g.cancelled?"abgesagt":type==="result"?"ergebnis":type==="moved"?"verlegung":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
+    const name=type==="weekend"?"young-grizzlys-wochenende-"+g.list[0].date+".png":type==="table"?"grizzlys-u15"+g.team.toLowerCase()+"-tabelle-"+new Date().toISOString().slice(0,10)+".png":type==="year"?"grizzlys-u15-jahresrueckblick-"+g.year+".png":"grizzlys-u15"+g.team.toLowerCase()+"-"+g.date+"-"+(g.cancelled?(g.postponed?"verlegt":"abgesagt"):type==="result"?"ergebnis":type==="moved"?"verlegung":"ankuendigung")+".png", file=new File([blob],name,{type:"image/png"}), url=URL.createObjectURL(blob);
     body.innerHTML="";const img=new Image();img.src=url;img.alt="Vorschau des Bildes";img.className="instaPreview";body.appendChild(img);
     const canShare=!!(navigator.canShare&&navigator.canShare({files:[file]}));
     bS.hidden=!canShare;bS.disabled=false;bD.disabled=false;
@@ -2160,7 +2168,7 @@ function renderAdmSocial(){
   const card=(x,i)=>`<button type="button" class="socCard team${esc(x.g.team)}" data-now="${i}"><span class="socIc">${x.ic}</span><span class="socTx"><b>${x.l} · ${opp(x.g)}</b><small>${sub(x.g)}</small></span><span class="socGo">Erstellen ›</span></button>`;
   /* alle Spiele */
   const list=ALL_GAMES.filter(g=>(!admSoc.t||g.team===admSoc.t)&&(admSoc.f==="next"?dt(g).getTime()>now-3*3600000:dt(g).getTime()<=now)).sort((a,b)=>admSoc.f==="next"?dt(a)-dt(b):dt(b)-dt(a));
-  const row=(g,i)=>{const r=resInfo(g),mv=instaMoved(g);return `<div class="socRow team${esc(g.team)}" data-row="${i}"><div class="socRowTx"><b>${opp(g)}</b><small>${sub(g)}${g.cancelled?" · abgesagt":""}</small></div><div class="socRowB">${admSoc.f==="next"?`<button type="button" class="admBtn" data-k="announce">📣 Spieltag</button>${mv?'<button type="button" class="admBtn" data-k="moved">🔁 Verlegung</button>':""}`:`<button type="button" class="admBtn${r?" pri":""}" data-k="result"${r?"":" disabled"}>${r?"🏆 "+r.hs+":"+r.as:"Ergebnis fehlt"}</button>`}</div></div>`};
+  const row=(g,i)=>{const r=resInfo(g),mv=instaMoved(g);return `<div class="socRow team${esc(g.team)}" data-row="${i}"><div class="socRowTx"><b>${opp(g)}</b><small>${sub(g)}${g.cancelled?" · "+(g.postponed?"verlegt, Termin offen":"abgesagt"):""}</small></div><div class="socRowB">${admSoc.f==="next"?`<button type="button" class="admBtn" data-k="announce">📣 Spieltag</button>${mv?'<button type="button" class="admBtn" data-k="moved">🔁 Verlegung</button>':""}`:`<button type="button" class="admBtn${r?" pri":""}" data-k="result"${r?"":" disabled"}>${r?"🏆 "+r.hs+":"+r.as:"Ergebnis fehlt"}</button>`}</div></div>`};
   const chip=(k,v,l)=>`<button type="button" class="${admSoc[k]===v?"on":""}" data-${k}="${v}">${l}</button>`;
   box.innerHTML=`<div class="socSec"><div class="socH">Jetzt passend <small>sehen Nutzer auch unter Downloads</small></div>${now1.length?`<div class="socCards">${now1.map(card).join("")}</div>`:'<div class="small socEmpty">Gerade steht kein Spieltag und kein frisches Ergebnis an.</div>'}</div>
   <div class="socSec"><div class="socH">Saison</div><div class="socTiles"><button type="button" class="socTile teamA" data-x="tA"><span>📊</span><b>Tabelle</b><small>${esc(teamName("A"))}</small></button><button type="button" class="socTile teamB" data-x="tB"><span>📊</span><b>Tabelle</b><small>${esc(teamName("B"))}</small></button><button type="button" class="socTile teamU13" data-x="tU13"><span>📊</span><b>Tabelle</b><small>${esc(teamName("U13"))}</small></button><button type="button" class="socTile" data-x="w"${weekendGames(ALL_GAMES).length?"":" disabled"}><span>📅</span><b>Wochenende</b><small>${weekendGames(ALL_GAMES).length||"keine"} Spiele</small></button><button type="button" class="socTile" data-x="y"${yN?"":" disabled"}><span>🎆</span><b>Rückblick</b><small>${yy}${yN?"":" · noch leer"}</small></button></div></div>
@@ -2217,6 +2225,7 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.44.2.221",d:"November 2026",items:["Verlegte Spiele ohne neuen Termin werden jetzt als „Verlegt · Termin offen“ angezeigt – statt als abgesagt."]},
   {v:"1.44.0.219",d:"November 2026",items:["Wunschliste: Stimm ab, welche Funktion als Nächstes kommen soll – bis zu 3 Stimmen, anonym (Startseite unten und News).","Mit einem Tipp sagen, ob dir ein Spielbericht oder eine Neuerung gefällt (👍/👎).","Feedback ist jetzt schneller erreichbar: auf der Startseite, in der Info und in den News."]},
   {v:"1.43.0.218",d:"November 2026",items:["Meine Rückennummer: In den Einstellungen die Nummer deines Kindes eintragen – sie wird bei Torschützen, Spielberichten und in der Saisonbilanz hervorgehoben. Auf Wunsch Push bei Tor oder Vorlage dieser Nummer.","Neuer Push „Spielbericht ist online“ – ein Tipp öffnet den Bericht.","Wochenende als Bild: Unter Downloads alle Spiele des Wochenendes als Bild für die WhatsApp-Gruppe.","Wetter am Spielort: Temperatur und Glättegefahr beim nächsten Spiel und in der Erinnerung am Vortag.","Saisonbilanz: Strafminuten, Überzahl- und Unterzahlquote."]},
   {v:"1.42.1.216",d:"November 2026",items:["Meilensteine: erster Saisonsieg, Siegesserien, 50. Saisontor & Co. stehen bei den Ergebnissen, im Spiel und in der Saisonbilanz.","App weiterempfehlen: In der Info zeigt „QR-Code zeigen“ einen Code zum Scannen – so ist die App in Sekunden auf dem Handy.","Schneller zur Statistik: Lange auf das App-Symbol drücken bietet die Saisonbilanz von U13, U15 A und U15 B an (Android)."]},
@@ -2301,7 +2310,7 @@ function newsChanges(){
     if(o.news===false)return; /* im Admin bewusst „nicht in den News“ */
     if(dt(g).getTime()<t)return;
     const b=g._base, diff=[], same=o.news===true?(x,y)=>x===y:chgSame;
-    if(g.cancelled)diff.push("Spiel abgesagt");
+    if(g.cancelled)diff.push(g.postponed?"Spiel verlegt":"Spiel abgesagt");
     if(b.date!==g.date||b.time!==g.time)diff.push("vorher "+new Date(b.date+"T"+b.time).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+b.time+" Uhr");
     if(!same(b.stadium,g.stadium))diff.push("Ort vorher "+b.stadium);
     if(!same(b.home,g.home)||!same(b.away,g.away))diff.push("Paarung geändert");
@@ -2353,7 +2362,7 @@ function newsNoteHtml(n,unread){
 }
 function newsChangeHtml(c,unread){
   const g=c.g, day=dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
-  return `<button class="newsItem newsChange${unread?" unread":""}" data-team="${esc(g.team)}" data-cid="${esc(c.id)}" type="button"><div class="newsItemHead"><span class="teamBadge">${esc(teamName(g.team))}</span><span class="newsDate">${g.cancelled?"Absage":"Spieländerung"}</span></div><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><p>${g.cancelled?`<span class="newsNew">${newsIc("cancel")} Abgesagt: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span>${c.diff.filter(x=>x!=="Spiel abgesagt").length?"<br>"+c.diff.filter(x=>x!=="Spiel abgesagt").map(esc).join(" · "):""}`:`<span class="newsNew">Neu: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span><br>${c.diff.map(esc).join(" · ")}`}</p></button>`;
+  return `<button class="newsItem newsChange${unread?" unread":""}" data-team="${esc(g.team)}" data-cid="${esc(c.id)}" type="button"><div class="newsItemHead"><span class="teamBadge">${esc(teamName(g.team))}</span><span class="newsDate">${g.cancelled?"Absage":"Spieländerung"}</span></div><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><p>${g.cancelled?`<span class="newsNew">${newsIc("cancel")} ${g.postponed?"Verlegt, neuer Termin offen – ursprünglich":"Abgesagt:"} ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span>${c.diff.filter(x=>!/^Spiel (abgesagt|verlegt)$/.test(x)).length?"<br>"+c.diff.filter(x=>!/^Spiel (abgesagt|verlegt)$/.test(x)).map(esc).join(" · "):""}`:`<span class="newsNew">Neu: ${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</span><br>${c.diff.map(esc).join(" · ")}`}</p></button>`;
 }
 function renderNews(){
   const items=newsUnread(), n=items.length, badge=document.getElementById("newsBadge");
@@ -2375,7 +2384,7 @@ function renderNews(){
         const m0=document.getElementById("newsModal"); if(m0&&!m0.hidden)newsFill();
         return;
       }
-      const txt=top.kind==="note"?top.n.title:top.kind==="report"?(top.r.title||"Spielbericht"):top.g.cancelled?"Abgesagt "+teamName(top.g.team)+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+" am "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr"
+      const txt=top.kind==="note"?top.n.title:top.kind==="report"?(top.r.title||"Spielbericht"):top.g.cancelled?(top.g.postponed?"Verlegt, Termin offen ":"Abgesagt ")+teamName(top.g.team)+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+" am "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr"
       :"Spieländerung "+teamName(top.g.team)+": "+shortTeam(top.g.home)+" – "+shortTeam(top.g.away)+", jetzt "+dt(top.g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" "+top.g.time+" Uhr";
       ban.innerHTML=`<button class="newsBannerMain" type="button"><span class="newsBannerIc">${newsIc(top.kind==="note"?"note":top.kind==="report"?"report":top.g&&top.g.cancelled?"cancel":"change")}</span><span class="newsBannerTx"><small>${top.kind==="note"?"Hinweis":top.kind==="report"?"Spielbericht":top.g&&top.g.cancelled?"Absage":"Spieländerung"}</small>${esc(txt)}</span></button><button class="newsBannerX" type="button" aria-label="Hinweis ausblenden">×</button>`;
       ban.querySelector(".newsBannerMain").onclick=()=>{if(top.kind==="report"){newsMarkSeen([top.id]);renderNews();openMatchDetails(top.g,true)}else openNews()};
@@ -2975,7 +2984,7 @@ async function instaWeekend(W0){
       if(lg&&lg.imgs.length)instaContain(c,lg.imgs[0],x,mid,lr*1.55);else{instaFont(c,900,lr*.7);c.fillStyle="#12263f";c.textBaseline="middle";c.fillText(shortTeam(n).slice(0,2).toUpperCase(),x,mid+1);c.textBaseline="alphabetic"}c.restore();
       instaFont(c,800,Math.min(26,rh*.17));c.fillStyle="#e7eef8";let nm=shortTeam(n);while(c.measureText(nm).width>250&&nm.length>6)nm=nm.slice(0,-2);if(nm!==shortTeam(n))nm=nm.replace(/\s*$/,"")+"…";c.fillText(nm,x,y+rh*.88)});
     instaFont(c,900,r?Math.min(56,rh*.36):Math.min(34,rh*.24));c.fillStyle=r?(r.o==="w"?"#5fd18f":"#fff"):"#ff8a00";c.textBaseline="middle";
-    c.fillText(g.cancelled?"ABGESAGT":r?r.hs+":"+r.as:"VS",CX,mid);c.textBaseline="alphabetic";
+    c.fillText(g.cancelled?cxU(g):r?r.hs+":"+r.as:"VS",CX,mid);c.textBaseline="alphabetic";
     instaFont(c,700,18);instaSpace(c,1);c.fillStyle="#9fb3ca";const lbs=home?["HEIMSPIEL"]:["AUSWÄRTS",String(g.stadium).toUpperCase()];lbs.forEach((lb,k)=>{while(c.measureText(lb).width>180&&lb.length>4)lb=lb.slice(0,-1);c.fillText(lb,CX,y+rh*(.72+k*.13))});instaSpace(c,0);
   });
   if(W0.list.length>L.length){instaFont(c,800,26);c.fillStyle="#d5e1ef";c.textAlign="left";c.fillText("+ "+(W0.list.length-L.length)+" weitere Spiele in der App",62,1250)}
