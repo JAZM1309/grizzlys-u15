@@ -8,6 +8,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.44.3.222 | – (nur Test) | 19.11.2026 | Admin: EHV „ohne Termin“ und abgesagte Spiele |
 | 1.44.2.221 | – (nur Test) | 19.11.2026 | Neu: Status „Verlegt – Termin offen“ |
 | 1.44.1.220 | – (nur Test) | 19.11.2026 | Fix: zwei App-Fehler aus der Fehler-Liste |
 | 1.44.0.219 | – (nur Test) | 19.11.2026 | Neue Funktionen (Wunschliste, Ein-Tipp-Feedback, Feedback-Einstiege) |

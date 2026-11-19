@@ -449,7 +449,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.44.2.221",
+      appVersion:"1.44.3.222",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1392,7 +1392,8 @@ function admAll(){
   if(!adm.ehv)return [];
   const diffs=(adm.ehv.diffs||[]).map(d=>({...d}));
   const extra=(adm.ehv.extra||[]).map(x=>({id:"extra_"+x.team+"_"+admNorm(x.home)+"_"+admNorm(x.away),team:x.team,home:x.home,away:x.away,app:{date:"",time:"",stadium:""},ehv:x.ehv,what:["extra"]}));
-  return diffs.concat(extra).map(d=>({...d,key:admKey(d)}));
+  /* 1.44.3: „beim EHV ohne Termin“ nicht melden, wenn das Spiel in der App schon abgesagt oder „verlegt – Termin offen“ ist – setzt der EHV später einen Termin, kommt die Abweichung wieder */
+  return diffs.concat(extra).filter(d=>{if(!(d.what||[]).includes("open"))return true;const g=admGame(d.id);return !(g&&g.cancelled)}).map(d=>({...d,key:admKey(d)}));
 }
 const admOpen=()=>{const s=new Set(adm.dismissed);return admAll().filter(d=>!s.has(d.key))};
 const admRejected=()=>{const s=new Set(adm.dismissed);return admAll().filter(d=>s.has(d.key))};
@@ -1402,6 +1403,7 @@ const admPast=g=>Date.now()>+dt(g)+2.5*36e5;
 function admDays(g){const a=new Date(dt(g)),b=new Date();a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.round((a-b)/864e5)}
 function admStatus(g){
   if(admHasRes(g)){const r=resultFor(g);return ["ok",r.homeScore+":"+r.awayScore+" ✓"]}
+  if(g.cancelled)return ["chg",g.postponed?"Termin offen":"abgesagt"]; /* 1.44.3: kein „Ergebnis fehlt“ für abgesagte/verlegte Spiele */
   if(admPast(g))return ["miss","Ergebnis fehlt"];
   if(Date.now()>=+dt(g))return ["live","läuft"];
   if(admDiffFor(g))return ["chg","EHV ⚠"];
@@ -1423,7 +1425,7 @@ const admTeamOk=g=>adm.teams[g.team]!==false;
 
 function admRenderTodo(){
   const box=document.getElementById("admTodo"); if(!box)return;
-  const miss=ALL_GAMES.filter(g=>admPast(g)&&!admHasRes(g)).sort((a,b)=>dt(a)-dt(b));
+  const miss=ALL_GAMES.filter(g=>admPast(g)&&!admHasRes(g)&&!g.cancelled).sort((a,b)=>dt(a)-dt(b));
   const today=ALL_GAMES.filter(g=>admDays(g)===0&&!admHasRes(g)&&!admPast(g)).sort((a,b)=>dt(a)-dt(b));
   const diffs=admOpen(), items=[];
   if(miss.length)items.push(`<button type="button" class="admTi" data-todo="miss"><i class="r">🏒</i><span>${miss.length===1?"1 Ergebnis fehlt":miss.length+" Ergebnisse fehlen"}</span><em>Eintragen ›</em></button>`);
@@ -1469,7 +1471,7 @@ function admDiffHtml(d,rejected=false){
   return `<div class="admDiff" data-key="${esc(d.key)}"><div class="t">${esc(teamName(d.team))} · ${esc(shortTeam(d.home))} – ${esc(shortTeam(d.away))}</div>
     <div class="admTags">${(d.what||[]).map(w=>`<span>${esc(ADM_WHAT[w]||w)}</span>`).join("")}</div>
     <div class="admCmp">${d.what.includes("extra")?"":`<i>App</i><span>${admLine(d.app)}</span>`}<i>EHV</i><span class="ehv">${d.ehv?admLine(d.ehv):"nicht gefunden"}</span></div>
-    <div class="admBtns">${rejected?`<button type="button" class="admBtn" data-act="undo">↩️ Wieder anzeigen</button>`:`${canAdopt?`<button type="button" class="admBtn ok" data-act="adopt">✓ EHV übernehmen</button>`:""}<button type="button" class="admBtn no" data-act="reject">✕ Ablehnen</button>`}${g&&!adm.sheet?`<button type="button" class="admBtn" data-act="open">Spiel öffnen</button>`:""}</div></div>`;
+    <div class="admBtns">${rejected?`<button type="button" class="admBtn" data-act="undo">↩️ Wieder anzeigen</button>`:`${canAdopt?`<button type="button" class="admBtn ok" data-act="adopt">✓ EHV übernehmen</button>`:""}${g&&d.ehv&&d.ehv.open&&!g.cancelled?`<button type="button" class="admBtn ok" data-act="pp">⏸ Als „Termin offen“ markieren</button>`:""}<button type="button" class="admBtn no" data-act="reject">✕ Ablehnen</button>`}${g&&!adm.sheet?`<button type="button" class="admBtn" data-act="open">Spiel öffnen</button>`:""}</div></div>`;
 }
 function admBindDiffs(root){
   root.querySelectorAll(".admDiff [data-act]").forEach(b=>b.onclick=()=>{
@@ -1479,6 +1481,8 @@ function admBindDiffs(root){
     else if(a==="reject"){if(confirm("Diese Abweichung ablehnen?\n\nDie App bleibt unverändert. Ändert der EHV den Termin später noch einmal, wird das wieder gemeldet."))admSetDismissed([...new Set(adm.dismissed.concat(key))])}
     else if(a==="undo")admSetDismissed(adm.dismissed.filter(k=>k!==key));
     else if(a==="open")admOpenGame(d.id);
+    else if(a==="pp"){const g=admGame(d.id);if(!g||!confirm("Spiel als „Verlegt – Termin offen“ markieren?\n\nEs bleibt am alten Datum im Spielplan, gilt aber nicht mehr als zu spielen. Setzt der EHV später einen Termin, wird das wieder gemeldet."))return;
+      b.disabled=true;admSetCancelled(g,true,true).then(()=>admRenderAll()).catch(err=>{alert("Speichern nicht möglich: "+(err.message||err));b.disabled=false})}
   });
 }
 
@@ -1491,7 +1495,7 @@ function admRenderGames(){
   const list=ALL_GAMES.filter(admTeamOk), asc=(a,b)=>dt(a)-dt(b), desc=(a,b)=>dt(b)-dt(a);
   let h="";
   if(adm.filter==="next"){
-    const miss=list.filter(g=>admPast(g)&&!admHasRes(g)).sort(asc);
+    const miss=list.filter(g=>admPast(g)&&!admHasRes(g)&&!g.cancelled).sort(asc);
     const last=list.filter(g=>admPast(g)&&admHasRes(g)).sort(desc)[0];
     const up=list.filter(g=>!admPast(g)).sort(asc);
     const live=up.filter(g=>Date.now()>=+dt(g)), soon=up.filter(g=>!live.includes(g)), N=5;
