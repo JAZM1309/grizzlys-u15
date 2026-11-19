@@ -10,5 +10,10 @@
     {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
     {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
     {"src":"icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ],
+  "shortcuts": [
+    {"name":"Saisonbilanz U13","short_name":"U13","description":"Statistik der U13","url":"./?go=bilanz-U13","icons":[{"src":"img/shortcut-u13.png","sizes":"192x192","type":"image/png"}]},
+    {"name":"Saisonbilanz U15 A","short_name":"U15 A","description":"Statistik der U15 A","url":"./?go=bilanz-A","icons":[{"src":"img/shortcut-u15a.png","sizes":"192x192","type":"image/png"}]},
+    {"name":"Saisonbilanz U15 B","short_name":"U15 B","description":"Statistik der U15 B","url":"./?go=bilanz-B","icons":[{"src":"img/shortcut-u15b.png","sizes":"192x192","type":"image/png"}]}
   ]
 }
