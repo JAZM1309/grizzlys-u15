@@ -2402,3 +2402,32 @@ html.dark .wishItem{background:#0d1a2c;border-color:#263a55}html.dark .wishItem.
 .admDevMe{font-size:11px;font-weight:850;color:#1f9d55;background:rgba(31,157,85,.12);padding:1px 6px;border-radius:6px}
 .admDevApp{font-weight:850}.admDevApp.test{color:#e07a00}.admDevApp.live{color:#1f6fb8}
 html.dark .admDev{border-color:#263a55}html.dark .admDevApp.live{color:#8fcbff}
+/* 1.44.5: Kopfzeile mit × bleibt beim Scrollen in Fenstern stehen */
+.matchModalBox>.matchModalHead,.bugReportBox>.matchModalHead{position:sticky;top:-18px;z-index:6;background:inherit;margin:-18px -18px 10px;padding:16px 18px 10px;border-radius:inherit}
+.bugReportBox>.matchModalHead{margin-bottom:12px}
+.adminBox>.adminModalHead{position:sticky;top:-16px;z-index:5;background:inherit;margin:-16px -16px 0;padding:14px 18px 10px;border-radius:inherit}
+.adminBox .admTabs{top:calc(var(--admHeadH,0px) - 16px)}
+.admSheet>.admSh{position:sticky;top:-8px;z-index:4;background:inherit;margin:0 -14px;padding:6px 14px 8px}
+/* 1.45.0: Kapitän (C) und Assistenten (A) */
+.capB{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 3px;margin-left:3px;border-radius:5px;font:900 11px/1 system-ui,sans-serif;vertical-align:1px;letter-spacing:0;color:#fff;background:#0d2c52;box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+.capB.a{background:#5b6b80}
+html.dark .capB{background:#e7eef8;color:#071b33}html.dark .capB.a{background:#a9b8cc}
+.capLine{display:flex;flex-wrap:wrap;gap:8px;margin-top:3px;font-size:12.5px;font-weight:850;color:var(--muted)}
+.capLine>span{display:inline-flex;align-items:center;gap:3px}.capLine .capB{margin-left:0}
+.capBil{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.capBil>div{display:flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid var(--border);border-radius:12px}
+.capBil .capB{margin:0;min-width:22px;height:22px;font-size:13px}.capBil b{font-size:14px}.capBil small{color:var(--muted);font-size:12px}
+.scNr .capB{margin-left:2px;min-width:14px;height:14px;font-size:9.5px;vertical-align:1px}
+.capRow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.capTeam{flex:1 1 100%}
+.capRow label{display:inline-flex;align-items:center;gap:5px}.capRow .capB{margin:0;min-width:22px;height:22px;font-size:13px}
+.capRow input{width:58px;font:inherit;font-weight:850;font-size:16px;text-align:center;padding:6px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text)}
+html.dark .capRow input{background:#0d1a2c;border-color:#263a55;color:#e7eef8}
+/* 1.46.0: Admin nach Aufgaben – 4 Reiter, Zähler, Linien-Symbole */
+.admTabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.admTabs button{font-size:11px!important;letter-spacing:-.01em}
+.admTabs .adminBugBadge.warn{background:#e8a317;color:#1b1300}
+.admFi{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:7px;color:var(--accent,#0b5cad)}
+.admFoldHead .t{display:inline-flex;align-items:center}
+.admFoldBox h5{display:flex;align-items:center;flex-wrap:wrap;gap:0}
+.admFold[hidden]{display:none!important}
+html.dark .admFi{color:#8fc1ff}

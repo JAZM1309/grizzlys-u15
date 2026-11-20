@@ -457,7 +457,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.44.4.223",
+      appVersion:"1.46.0.227",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -999,7 +999,7 @@ async function admBackup(){
 document.getElementById("admBackupBtn")?.addEventListener("click",admBackup);
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
-  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); loadSprueche(true).then(()=>adminSpruchEditor()); try{adminWishEditor();adminReactions()}catch(e){console.warn(e)} }
+  if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); loadSprueche(true).then(()=>adminSpruchEditor()); try{adminWishEditor();adminReactions();loadCaptains(true).then(()=>adminCaptainEditor())}catch(e){console.warn(e)} }
   else { login.hidden=false; panel.hidden=true; document.getElementById("adminLogout").hidden=true; status.textContent=user?"Angemeldet, aber keine Admin-Berechtigung":"Nicht angemeldet"; }
 }
 
@@ -1077,6 +1077,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   loadScheduleOverrides();
   loadNews();
   loadSprueche();
+  loadCaptains();
   loadWeather();
   loadReports();
   isSupported().then(ok=>{
@@ -1228,13 +1229,16 @@ function admRepRegen(g,ask){
   return true;
 }
 /* 1.26.2: Kurzinfo für den eingeklappten Spielbericht */
+/* 1.46.0: einheitliche Linien-Symbole statt gemischter Emojis */
+const ADM_IC={"puck": "<ellipse cx=\"12\" cy=\"10\" rx=\"8\" ry=\"3\"/><path d=\"M4 10v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4\"/>", "cal": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 10h18M8 3v4M16 3v4\"/>", "ban": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M5.6 5.6l12.8 12.8\"/>", "news": "<rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\"/><path d=\"M8 9h8M8 13h8M8 16.5h4\"/>", "doc": "<path d=\"M6 3h9l4 4v14H6z\"/><path d=\"M14 3v5h5M9 13h7M9 17h5\"/>"};
+const admIc=k=>'<svg class="admFi" viewBox="0 0 24 24" aria-hidden="true">'+(ADM_IC[k]||"")+'</svg>';
 function admRepSum(g,has){
   if(!has)return "nach dem Spiel";
   const r=window.gameReports[resultKey(g)];
   return r&&r.published?'<span class="admSt ok">veröffentlicht</span>':r&&r.text?'<span class="admSt chg">Entwurf gespeichert</span>':"automatischer Entwurf";
 }
 function admRepBox(g,has){
-  if(!has)return `<div class="admBox"><h5>📝 Spielbericht</h5><div class="admHint">Sobald ein Ergebnis da ist, erstellt die App hier einen Entwurf.</div></div>`;
+  if(!has)return `<div class="admBox"><h5>${admIc("doc")}Spielbericht</h5><div class="admHint">Sobald ein Ergebnis da ist, erstellt die App hier einen Entwurf.</div></div>`;
   const k=resultKey(g), r=window.gameReports[k], F=admRepForm[k];
   const d=F?F:r&&r.text?r:(admRepGen(g,0)||{title:"",text:""});
   /* 1.37.0: Entwürfe der Cloud Function (auto) – erscheinen nach Frist von selbst */
@@ -1243,7 +1247,7 @@ function admRepBox(g,has){
   const auto=F?F.auto:!(r&&r.text);
   adm.fold=adm.fold||{}; const more=!!adm.fold.repMore;
   const btns=r&&r.published?'<button type="button" class="admBtn pri" data-rep="pub">💾 Änderung veröffentlichen</button><button type="button" class="admBtn no" data-rep="off">Zurückziehen</button>':'<button type="button" class="admBtn pri" data-rep="pub">📰 Veröffentlichen</button><button type="button" class="admBtn" data-rep="save">Als Entwurf speichern</button>'+(autoAt?'<button type="button" class="admBtn no" data-rep="hold">⏸ Nicht automatisch veröffentlichen</button>':'');
-  return `<div class="admBox"><h5>📝 Spielbericht ${st}</h5><div class="admForm admRepForm">
+  return `<div class="admBox"><h5>${admIc("doc")}Spielbericht ${st}</h5><div class="admForm admRepForm">
     <label class="full">Überschrift<input id="admRepTitle" maxlength="120" value="${esc(d.title)}"></label>
     <div class="full admRepTxtHead"><span>Text</span><button type="button" class="admTxtBtn" data-rep="new" title="Neuen Entwurf erzeugen">↻ Neu</button><button type="button" class="admTxtBtn" data-rep="copy" title="Text kopieren">📋 Kopieren</button></div>
     <label class="full admRepTxt"><textarea id="admRepText" aria-label="Text" rows="8" maxlength="2000"${auto?' data-auto="1"':""} data-v="${F?F.v||0:0}">${esc(d.text)}</textarea></label></div>
@@ -1326,7 +1330,7 @@ function admChgList(){
   }).filter(x=>x.raw.length);
 }
 function admChgSection(e){
-  const L=admChgList(); if(!L.length)return `<div class="admSec">📅 Spieländerungen</div><div class="small">Keine kommenden Spieländerungen.</div>`;
+  const L=admChgList(); if(!L.length)return `<div class="admSec">Spieländerungen</div><div class="small">Keine kommenden Spieländerungen.</div>`;
   const lbl={date:"Datum",time:"Uhrzeit",stadium:"Spielort",home:"Heimteam",away:"Gastteam"};
   const row=x=>{const g=x.g,b=g._base,day=dt(g).toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
     const was=x.raw.map(k=>k==="date"||k==="time"?null:`${lbl[k]}: ${e(b[k])} → ${e(g[k])}`).filter(Boolean);
@@ -1336,7 +1340,7 @@ function admChgSection(e){
       <label class="admSw" title="In den News für alle anzeigen"><input type="checkbox" data-chg="${e(x.id)}"${x.on?" checked":""}><span></span></label></div>
       <div class="small admChgWas">${was.join("<br>")}</div>
       <div class="admChgSt"><b>${x.on?"📰 In den News für alle":"🙈 Nicht in den News"}</b> · ${why}${x.auto?"":` · <button type="button" class="admChgAuto" data-auto="${e(x.id)}">automatisch</button>`}</div></div>`};
-  return `<div class="admSec">📅 Spieländerungen</div><div class="small" style="margin:-2px 2px 8px">Schalter an = alle Nutzer sehen die Änderung in den News.</div>${L.map(row).join("")}`;
+  return `<div class="admSec">Spieländerungen</div><div class="small" style="margin:-2px 2px 8px">Schalter an = alle Nutzer sehen die Änderung in den News.</div>${L.map(row).join("")}`;
 }
 async function admChgSet(id,val){
   const o=scheduleOverrides[id]; if(!o)return;
@@ -1391,7 +1395,7 @@ function adminNewsEditor(){
   });
 }
 /* ===== Admin-Bereich 2.0: „Zu tun“, Reiter, eine Spielliste, Spiel-Fenster, EHV bestätigen/ablehnen ===== */
-const adm={tab:"games",filter:"next",teams:{A:true,B:true,U13:true},ehv:null,ehvAt:0,ehvBusy:false,ehvErr:"",dismissed:[],showDismissed:false,bugs:0,sheet:null,edit:false};
+const adm={tab:"games",filter:"todo",teams:{A:true,B:true,U13:true},ehv:null,ehvAt:0,ehvBusy:false,ehvErr:"",dismissed:[],showDismissed:false,bugs:0,sheet:null,edit:false};
 const admNorm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9äöüß]/g,"");
 const admKey=d=>{const e=d.ehv||{};return [d.id,(d.what||[]).join("+"),e.date||"",e.time||"",e.stadium||""].join("|")};
 const ADM_WHAT={date:"Datum",time:"Uhrzeit",stadium:"Spielort",open:"beim EHV ohne Termin",missing:"beim EHV nicht gefunden",extra:"fehlt in der App"};
@@ -1432,6 +1436,18 @@ const admGame=id=>ALL_GAMES.find(x=>scheduleGameId(x)===id);
 function admOvChanged(g){const o=scheduleOverrides[scheduleGameId(g)],b=g._base||g;return !!o&&["date","time","home","away","stadium"].some(k=>o[k]&&o[k]!==b[k]);}
 const admTeamOk=g=>adm.teams[g.team]!==false;
 
+/* 1.46.0: offene Spieltag-Aufgaben – für Zähler am Reiter und Filter „Zu tun“ */
+function admRepOpen(g){const r=window.gameReports&&window.gameReports[resultKey(g)];return admPast(g)&&admHasRes(g)&&!g.cancelled&&!(r&&r.published)&&Date.now()-dt(g)<10*864e5}
+function admTodoGames(){
+  const diffIds=new Set(admOpen().map(d=>d.id).filter(Boolean)), out=[];
+  ALL_GAMES.forEach(g=>{const id=scheduleGameId(g),why=[];
+    if(admPast(g)&&!admHasRes(g)&&!g.cancelled)why.push("miss");
+    if(diffIds.has(id))why.push("ehv");
+    if(admRepOpen(g))why.push("rep");
+    if(why.length)out.push({g,why})});
+  return out;
+}
+function admSetBadge(id,n,txt){const el=document.getElementById(id);if(!el)return;el.hidden=!n;el.textContent=txt||String(n)}
 function admRenderTodo(){
   const box=document.getElementById("admTodo"); if(!box)return;
   const miss=ALL_GAMES.filter(g=>admPast(g)&&!admHasRes(g)&&!g.cancelled).sort((a,b)=>dt(a)-dt(b));
@@ -1445,13 +1461,14 @@ function admRenderTodo(){
   if(window.admPushVerdict==="bad")items.push(`<button type="button" class="admTi" data-todo="push"><i class="r">🔔</i><span>Dieses Gerät bekommt keinen Admin-Push</span><em>Prüfen ›</em></button>`);
   if(!items.length)items.push(`<div class="admTi ok"><i class="g">✓</i><span>Alles erledigt – nichts zu tun</span></div>`);
   box.innerHTML=`<h4>Zu tun</h4>${items.join("")}`;
+  try{const t=admTodoGames();admSetBadge("admTabCnt_games",t.length+diffs.filter(d=>!d.id||!admGame(d.id)).length);admSetBadge("admTabCnt_stats",window.admPushVerdict==="bad"?1:0,"!")}catch(e){console.warn(e)}
   box.querySelectorAll("[data-todo]").forEach(b=>b.onclick=()=>{
     const k=b.dataset.todo;
     if(k==="bugs")return admSetTab("bugs");
     if(k==="push")return admSetTab("stats");
     if(k==="game")return admOpenGame(b.dataset.gid);
     admSetTab("games");
-    if(k==="miss"){ if(miss.length===1)return admOpenGame(scheduleGameId(miss[0])); adm.filter="next";adm.teams={A:true,B:true,U13:true};admRenderGames(); }
+    if(k==="miss"){ if(miss.length===1)return admOpenGame(scheduleGameId(miss[0])); adm.filter="todo";adm.teams={A:true,B:true,U13:true};admRenderGames(); }
     document.getElementById(k==="ehv"?"admEhv":"admGameList")?.scrollIntoView({behavior:"smooth",block:"start"});
   });
 }
@@ -1498,12 +1515,17 @@ function admBindDiffs(root){
 function admRenderGames(){
   const fl=document.getElementById("admFilters"), box=document.getElementById("admGameList"); if(!fl||!box)return;
   const f=(k,t)=>`<button type="button" data-f="${k}" class="${adm.filter===k?"on":""}">${t}</button>`, tm=t=>`<button type="button" data-t="${t}" class="${adm.teams[t]?"on":""}" aria-label="${teamName(t)}">${t}</button>`;
-  fl.innerHTML=f("next","Kommende")+f("played","Gespielt")+f("all","Alle")+'<span class="sep"></span>'+window.TEAM_KEYS.map(tm).join("");
+  fl.innerHTML=f("todo","Zu tun")+f("next","Kommende")+f("played","Gespielt")+f("all","Alle")+'<span class="sep"></span>'+window.TEAM_KEYS.map(tm).join("");
   fl.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{adm.filter=b.dataset.f;admRenderGames()});
   fl.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{const t=b.dataset.t;adm.teams[t]=!adm.teams[t];if(!window.TEAM_KEYS.some(k=>adm.teams[k]))adm.teams[t]=true;admRenderGames()});
   const list=ALL_GAMES.filter(admTeamOk), asc=(a,b)=>dt(a)-dt(b), desc=(a,b)=>dt(b)-dt(a);
   let h="";
-  if(adm.filter==="next"){
+  if(adm.filter==="todo"){
+    const t=admTodoGames().filter(x=>admTeamOk(x.g)), sec=(k,title)=>{const l=t.filter(x=>x.why.includes(k)).map(x=>x.g).sort(asc);return l.length?`<div class="admSec">${title}</div>`+l.map(admRow).join(""):""};
+    const now=list.filter(g=>!admPast(g)&&(admDays(g)===0||Date.now()>=+dt(g))).sort(asc);
+    h=sec("miss","Ergebnis fehlt")+sec("ehv","EHV-Abweichung")+sec("rep","Bericht wartet auf Freigabe")+(now.length?`<div class="admSec">Heute</div>`+now.map(admRow).join(""):"");
+    if(!h){const up=list.filter(g=>!admPast(g)).sort(asc).slice(0,3);h=`<div class="admEmpty">✓ Nichts zu tun – alles eingetragen.</div>`+(up.length?`<div class="admSec">Als Nächstes</div>`+up.map(admRow).join(""):"")}
+  }else if(adm.filter==="next"){
     const miss=list.filter(g=>admPast(g)&&!admHasRes(g)&&!g.cancelled).sort(asc);
     const last=list.filter(g=>admPast(g)&&admHasRes(g)).sort(desc)[0];
     const up=list.filter(g=>!admPast(g)).sort(asc);
@@ -1545,10 +1567,10 @@ function admRenderSheet(){
   const cmp=d?admDiffHtml(d):"";
   box.innerHTML=`<div class="admGrab"></div>
    <div class="admSh team${esc(g.team)}">${admDate(g)}<div class="admM"><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><small>${esc(teamName(g.team))} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</small></div><button type="button" class="admX" data-x aria-label="Schließen">×</button></div>
-   ${admFold("res",`<div class="admBox"><h5>🏒 Ergebnis</h5>
+   ${admFold("res",`<div class="admBox"><h5>${admIc("puck")}Ergebnis</h5>
      <div class="admScore"><div><input id="admHs" type="number" inputmode="numeric" min="0" max="99" value="${has?esc(r.homeScore):""}" aria-label="Tore Heim"><div class="lbl">Heim</div></div><b>:</b><div><input id="admAs" type="number" inputmode="numeric" min="0" max="99" value="${has?esc(r.awayScore):""}" aria-label="Tore Gast"><div class="lbl">Gast</div></div><label class="admSo"><input id="admSo" type="checkbox"${has&&r.so===true?" checked":""}><span>n.P.</span></label>
      <div class="admBtns"><button type="button" class="admBtn pri" data-res="save">Speichern</button>${has?'<button type="button" class="admBtn del" data-res="del">Löschen</button>':""}</div></div>${has?'<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-img="result">📸 Ergebnis-Bild</button></div>':""}<div class="admHint">Kein Unentschieden: Bei Penaltyschießen den Endstand mit Siegtreffer eintragen (z. B. 4:3) und „n.P.“ anhaken.</div>${hint}</div>`,!has||!admPast(g)?true:false,has?`<span class="admSt ok">${esc(r.homeScore+":"+r.awayScore)} ✓</span>`:admPast(g)?'<span class="admSt miss">fehlt</span>':"noch nicht gespielt")}
-   ${admFold("sch",`<div class="admBox"><h5>📅 Termin &amp; Ort ${d?'<span class="admSt chg">EHV weicht ab</span>':adm.ehv&&!adm.ehvErr?'<span class="admSt ok">stimmt mit EHV</span>':""}</h5>${cmp}
+   ${admFold("sch",`<div class="admBox"><h5>${admIc("cal")}Termin &amp; Ort ${d?'<span class="admSt chg">EHV weicht ab</span>':adm.ehv&&!adm.ehvErr?'<span class="admSt ok">stimmt mit EHV</span>':""}</h5>${cmp}
      <div class="admKv"><div><small>Datum</small>${esc(fmtDate(g))}</div><div><small>Uhrzeit</small>${esc(g.time)} Uhr</div><div style="grid-column:span 2"><small>Spielort</small>${esc(g.stadium)}</div></div>
      ${mod?`<div class="admHint">Geändert – ursprünglich ${esc(admFd(base.date))} · ${esc(base.time)} Uhr · ${esc(base.stadium)}<br>${admNewsState(g)}</div>`:""}
      ${adm.edit?`<div class="admForm"><label>Datum<input id="admFDate" type="date" value="${esc(g.date)}"></label><label>Uhrzeit<input id="admFTime" type="time" value="${esc(g.time)}"></label><label class="full">Heimteam<input id="admFHome" value="${esc(g.home)}"></label><label class="full">Gastteam<input id="admFAway" value="${esc(g.away)}"></label><label class="full">Spielort<input id="admFStad" value="${esc(g.stadium)}"></label><label class="full admNewsChk"><span><input id="admFNews" type="checkbox"${scheduleOverrides[id]&&typeof scheduleOverrides[id].news==="boolean"?(scheduleOverrides[id].news?" checked":"")+' data-man="1"':""}> In den News als Spieländerung melden</span><small id="admFNewsHint"></small></label><label class="full admNewsChk admPushChk"><span><input id="admFPush" type="checkbox"> 📲 Push an alle senden</span><small id="admFPushHint"></small></label></div>
@@ -1556,8 +1578,8 @@ function admRenderSheet(){
       :`<div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn" data-sch="edit">✏️ Termin ändern</button>${mod?'<button type="button" class="admBtn no" data-sch="reset">↩️ Original</button>':""}</div>`}
    </div>`,!!(adm.edit||d),(d?'<span class="admSt chg">EHV weicht ab</span> ':mod?'<span class="admSt chg">geändert</span> ':"")+esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})+" · "+g.time+" · "+g.stadium))}
    ${admFold("rep",admRepBox(g,has),has&&!(window.gameReports&&window.gameReports[rkey(g)]&&window.gameReports[rkey(g)].published),admRepSum(g,has))}
-   ${admFold("cx",`<div class="admBox admCxBox${g.cancelled?" on":""}"><h5>🚫 Absage / Termin offen</h5>${g.cancelled?(g.postponed?`<div class="admHint">Dieses Spiel ist als <b>verlegt – neuer Termin offen</b> markiert. Steht der neue Termin fest, einfach oben unter „Termin &amp; Ort“ ändern – dann gilt das Spiel automatisch wieder.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Zurücknehmen</button><button type="button" class="admBtn no" data-cx="on">🚫 Doch abgesagt</button></div>`:`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button><button type="button" class="admBtn" data-cx="pp">⏸ Nur verlegt – Termin offen</button></div>`):`<div class="small" style="margin-bottom:8px">Nur Anzeige: „Abgesagt“ oder „Verlegt – Termin offen“ steht dann überall (Spielkarten, Kalender, News, Social-Media-Bilder). Das Spiel ist kein nächstes Spiel mehr und bekommt keine Erinnerung. Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“ bzw. „… ist verlegt – neuer Termin folgt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button><button type="button" class="admBtn" data-cx="pp">⏸ Verlegt – Termin offen</button></div>`}</div>`,!!g.cancelled,g.cancelled?'<span class="admSt miss">'+(g.postponed?'verlegt, Termin offen':'abgesagt')+'</span>':"nicht abgesagt")}
-   ${admFold("news",`<div class="admBox"><h5>📰 Hinweis zu diesem Spiel</h5><button type="button" class="admBtn" style="width:100%" data-news>＋ News schreiben (z. B. Hallenwechsel)</button></div>`,false,"News schreiben")}`;
+   ${admFold("cx",`<div class="admBox admCxBox${g.cancelled?" on":""}"><h5>${admIc("ban")}Absage / Termin offen</h5>${g.cancelled?(g.postponed?`<div class="admHint">Dieses Spiel ist als <b>verlegt – neuer Termin offen</b> markiert. Steht der neue Termin fest, einfach oben unter „Termin &amp; Ort“ ändern – dann gilt das Spiel automatisch wieder.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Zurücknehmen</button><button type="button" class="admBtn no" data-cx="on">🚫 Doch abgesagt</button></div>`:`<div class="admHint">Dieses Spiel ist als <b>abgesagt</b> markiert. Ergebnisse vom EHV werden trotzdem übernommen.</div><div class="admBtns"><button type="button" class="admBtn" data-cx="off">↩️ Absage zurücknehmen</button><button type="button" class="admBtn" data-cx="pp">⏸ Nur verlegt – Termin offen</button></div>`):`<div class="small" style="margin-bottom:8px">Nur Anzeige: „Abgesagt“ oder „Verlegt – Termin offen“ steht dann überall (Spielkarten, Kalender, News, Social-Media-Bilder). Das Spiel ist kein nächstes Spiel mehr und bekommt keine Erinnerung. Ergebnisse vom EHV werden weiter übernommen.</div><label class="full admNewsChk admPushChk"><span><input id="admCxPush" type="checkbox"> 📲 Push an alle senden</span><small>„Spiel gegen ${esc(shortTeam(/grizzlys/i.test(g.home)?g.away:g.home))} am ${esc(new Date(g.date+"T12:00:00").toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"}))} ist abgesagt.“ bzw. „… ist verlegt – neuer Termin folgt.“</small></label><div class="admBtns" style="margin-top:8px"><button type="button" class="admBtn no" data-cx="on">🚫 Spiel absagen</button><button type="button" class="admBtn" data-cx="pp">⏸ Verlegt – Termin offen</button></div>`}</div>`,!!g.cancelled,g.cancelled?'<span class="admSt miss">'+(g.postponed?'verlegt, Termin offen':'abgesagt')+'</span>':"nicht abgesagt")}
+   ${admFold("news",`<div class="admBox"><h5>${admIc("news")}Hinweis zu diesem Spiel</h5><button type="button" class="admBtn" style="width:100%" data-news>＋ News schreiben (z. B. Hallenwechsel)</button></div>`,false,"News schreiben")}`;
   box.querySelectorAll("details[data-fold]").forEach(x=>x.addEventListener("toggle",()=>{adm.fold=adm.fold||{};adm.fold[x.dataset.fold]=x.open}));
   box.querySelector(".admRepMore")?.addEventListener("toggle",e=>{adm.fold=adm.fold||{};adm.fold.repMore=e.currentTarget.open});
   w.hidden=false;
@@ -1703,11 +1725,14 @@ async function admLoadEhv(){
   adm.ehvBusy=false; admRenderAll();
 }
 function admSetTab(t){
+  if(t==="social"){t="news";setTimeout(()=>admOpenFold("admSocBox"),0)}
   adm.tab=t;
   document.querySelectorAll("[data-adm-tab]").forEach(b=>{const on=b.dataset.admTab===t;b.classList.toggle("on",on);b.setAttribute("aria-selected",on?"true":"false")});
   document.querySelectorAll("[data-adm-pane]").forEach(p=>p.hidden=p.dataset.admPane!==t);
-  if(t==="social")try{window.renderAdmSocial&&window.renderAdmSocial()}catch(e){console.warn(e)}
-  if(t==="stats"){const sg=document.getElementById("admSeasonGrp");if(sg){const d=new Date(),m=d.getMonth(),dd=d.getDate();sg.hidden=!((m===10&&dd>=20)||m===11||(m===0&&dd<=15))}}
+  if(t==="stats"){/* 1.46.0: Saisonsachen nur zur passenden Zeit – Adventskalender 20.11.–15.1., Saisonende-Sicherung März–August */
+    const d=new Date(),m=d.getMonth(),dd=d.getDate(), adv=(m===10&&dd>=20)||m===11||(m===0&&dd<=15), bak=m>=2&&m<=7;
+    const a=document.getElementById("admAdvBox"),b=document.getElementById("admBackupBox"),sg=document.getElementById("admSeasonGrp");
+    if(a)a.hidden=!adv; if(b)b.hidden=!bak; if(sg)sg.hidden=!(adv||bak);}
   /* Beim Reiterwechsel Inhalt oben beginnen lassen – Kopf und Reiter bleiben, das Fenster behält seine Größe */
   const box=document.querySelector(".adminBox"), tabs=document.querySelector(".admTabs"), pane=document.querySelector('[data-adm-pane="'+t+'"]');
   if(box&&tabs&&pane){const target=box.scrollTop+pane.getBoundingClientRect().top-(box.getBoundingClientRect().top+tabs.offsetHeight+10); if(box.scrollTop>target)box.scrollTop=Math.max(0,target);}
@@ -1719,9 +1744,21 @@ function admRenderAll(){
 window.admBugsChanged=n=>{adm.bugs=n;try{admRenderTodo()}catch(e){}};
 window.admRenderAll=admRenderAll;
 document.querySelectorAll("[data-adm-tab]").forEach(b=>b.onclick=()=>admSetTab(b.dataset.admTab));
-document.querySelectorAll(".admFold").forEach(f=>{const h=f.querySelector(".admFoldHead"),b=f.querySelector(".admFoldBody");if(!h||!b)return; /* 1.44.1: Link-Kästen (App-Statistik, Tipp-Fenster) haben keinen Inhalt zum Aufklappen */h.onclick=()=>{const o=b.hidden;b.hidden=!o;f.classList.toggle("open",o);h.setAttribute("aria-expanded",o?"true":"false")}});
+/* 1.46.0: aufgeklappte Bereiche merken (pro Gerät) */
+const ADM_FOLD_KEY="grizzlysAdmFolds";
+function admFoldMem(){try{return JSON.parse(localStorage.getItem(ADM_FOLD_KEY)||"[]")}catch(e){return[]}}
+function admFoldSet(f,o){const h=f.querySelector(".admFoldHead"),b=f.querySelector(".admFoldBody");if(!h||!b)return;b.hidden=!o;f.classList.toggle("open",o);h.setAttribute("aria-expanded",o?"true":"false");
+  if(o&&f.id==="admSocBox")try{window.renderAdmSocial&&window.renderAdmSocial()}catch(e){console.warn(e)}}
+function admOpenFold(id){const f=document.getElementById(id);if(!f)return;admFoldSet(f,true);try{const m=admFoldMem();if(!m.includes(id)){m.push(id);localStorage.setItem(ADM_FOLD_KEY,JSON.stringify(m))}}catch(e){}f.scrollIntoView({behavior:"smooth",block:"start"})}
+{const mem=admFoldMem();
+document.querySelectorAll(".admFold").forEach(f=>{const h=f.querySelector(".admFoldHead"),b=f.querySelector(".admFoldBody");if(!h||!b)return; /* 1.44.1: Link-Kästen (App-Statistik, Tipp-Fenster) haben keinen Inhalt zum Aufklappen */
+  if(f.id&&mem.includes(f.id))admFoldSet(f,true);
+  h.addEventListener("click",()=>{const o=b.hidden;admFoldSet(f,o);if(!f.id)return;try{const m=admFoldMem().filter(x=>x!==f.id);if(o)m.push(f.id);localStorage.setItem(ADM_FOLD_KEY,JSON.stringify(m))}catch(e){}})});}
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);admRenderAll()};}
-function admStart(){admSetTab(adm.tab);admRenderAll();if(!adm.ehv||Date.now()-adm.ehvAt>10*60000)admLoadEhv()}
+function admStart(){admSetTab(adm.tab);admRenderAll();if(!adm.ehv||Date.now()-adm.ehvAt>10*60000)admLoadEhv();
+  /* 1.46.0: gemerkte offene Bereiche brauchen ihre Daten auch ohne Antippen */
+  const L={admPubBox:()=>{pubPollUntil=Date.now()+20*60000;pubLoad()},admAdvBox:loadAdventStats,admErrBox:loadAppErrors,admSocBox:()=>window.renderAdmSocial&&window.renderAdmSocial()};
+  Object.keys(L).forEach(id=>{const f=document.getElementById(id),b=f&&f.querySelector(".admFoldBody");if(b&&!b.hidden&&!f.hidden)try{L[id]()}catch(e){console.warn(e)}});}
 
 /* ===== 1.40.0: anonyme Fehlerzählung (Sammlung appErrors) + Admin-Karte „App-Fehler“ ===== */
 const APPERR_IGNORE=/Failed to fetch|NetworkError|Load failed|ResizeObserver|Script error|AbortError|offline|Importing a module script failed|extension:/i;
@@ -1756,7 +1793,7 @@ async function clearAppErrors(){
     alert(n+" alte Meldungen gelöscht.");}catch(e){alert("Löschen nicht möglich: "+(e.message||e))}
   loadAppErrors();
 }
-document.querySelector("#admErrBox .admFoldHead")?.addEventListener("click",()=>{ if(document.getElementById("admErrBody")?.hidden) loadAppErrors(); });
+document.querySelector("#admErrBox .admFoldHead")?.addEventListener("click",()=>setTimeout(()=>{ if(!document.getElementById("admErrBody")?.hidden) loadAppErrors(); },0));
 document.getElementById("admErrRefresh")?.addEventListener("click",loadAppErrors);
 document.getElementById("admErrClear")?.addEventListener("click",clearAppErrors);
 
@@ -1922,3 +1959,36 @@ function admDevBind(box){
   box.querySelector("[data-devold]")?.addEventListener("click",async ev=>{const b=ev.currentTarget,ids=[...box.querySelectorAll(".admDev.old [data-devdel]")].map(x=>x.dataset.devdel);
     if(!ids.length||!confirm(ids.length+" alte Push-Anmeldung(en) entfernen?"))return;b.disabled=true;const n=await del(ids);if(n>=0)alert(n+" entfernt.");refreshAdminPushStatus()});
 }
+
+/* ===== 1.45.0: Kapitän (C) und Assistenten (A) je Mannschaft – nur Rückennummern, Firestore appConfig/kapitaene =====
+   Format: { on:true, list:[{team:"A", c:"17", a:["9","23"]}, …] } – Nutzer lesen höchstens alle 6 Stunden neu. */
+async function loadCaptains(force){
+  try{
+    let c=null; try{c=JSON.parse(localStorage.getItem("grizzlysCaptains")||"null")}catch(e){}
+    if(c&&c.data){window.setCaptains?.(c.data,false)}
+    if(!force&&c&&c.ts&&Date.now()-c.ts<6*3600000)return;
+    const s=await getDoc(doc(db,"appConfig","kapitaene")); const x=s.exists()?(s.data()||{}):{};
+    const data={on:x.on!==false,list:Array.isArray(x.list)?x.list:[]};
+    try{localStorage.setItem("grizzlysCaptains",JSON.stringify({ts:Date.now(),data}))}catch(e){}
+    window.setCaptains?.(data,true);
+  }catch(err){console.warn("Kapitäne konnten nicht geladen werden",err)}
+}
+function adminCaptainEditor(){
+  const box=document.getElementById("adminCaptains"); if(!box||!window.capInfo)return;
+  const cur=window.capInfo.get(), e=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const sum=document.getElementById("admCapSum"); if(sum)sum.textContent=window.TEAM_KEYS.filter(t=>cur.map[t]&&(cur.map[t].c||cur.map[t].a.length)).length+" von "+window.TEAM_KEYS.length+" Mannschaften";
+  box.innerHTML=`<div class="small" style="margin:0 2px 10px">Nur Rückennummern, keine Namen. „C“ und „A“ erscheinen auf den Mannschafts-Kacheln, in der Saisonbilanz und neben den Rückennummern der Torschützen.</div>
+    ${window.TEAM_KEYS.map(t=>{const m=cur.map[t]||{c:"",a:[]};return `<div class="adminGame newsAdminItem capRow" data-team="${e(t)}"><b class="capTeam">${e(teamName(t))}</b><label><span class="capB c">C</span><input inputmode="numeric" maxlength="2" data-k="c" value="${e(m.c)}" placeholder="Nr."></label><label><span class="capB a">A</span><input inputmode="numeric" maxlength="2" data-k="a0" value="${e(m.a[0]||"")}" placeholder="Nr."></label><label><span class="capB a">A</span><input inputmode="numeric" maxlength="2" data-k="a1" value="${e(m.a[1]||"")}" placeholder="Nr."></label></div>`}).join("")}
+    <div class="adminGame newsAdminItem"><div class="adminGameHead"><div><b>In der App anzeigen</b><div class="small">${cur.on?"Sichtbar für alle":"Ausgeblendet"}</div></div><label class="admSw"><input type="checkbox" id="capOn"${cur.on?" checked":""}><span></span></label></div></div>
+    <div class="admSprBar"><button type="button" class="action admSprSave" id="capSave">Speichern</button></div>`;
+  box.querySelector("#capSave").onclick=async ev=>{const b=ev.currentTarget;b.disabled=true;
+    const nr=v=>{v=String(v||"").replace(/\D/g,"");return v?String(Number(v)):""};
+    const list=[...box.querySelectorAll(".capRow")].map(r=>{const g=k=>nr(r.querySelector(`[data-k="${k}"]`).value);return {team:r.dataset.team,c:g("c"),a:[g("a0"),g("a1")].filter(Boolean)}}).filter(x=>x.c||x.a.length);
+    const dup=list.find(x=>[x.c,...x.a].filter(Boolean).length!==new Set([x.c,...x.a].filter(Boolean)).size); if(dup){alert(teamName(dup.team)+": eine Nummer ist doppelt vergeben.");b.disabled=false;return}
+    const data={on:box.querySelector("#capOn").checked,list};
+    try{await setDoc(doc(db,"appConfig","kapitaene"),{...data,updatedAt:serverTimestamp()});alert("Kapitäne gespeichert.")}
+    catch(err){if(!String(err.message||err).startsWith("Testversion")){alert("Speichern nicht möglich: "+(err.message||err));b.disabled=false;return}alert("Testversion: nur auf diesem Gerät übernommen.")}
+    try{localStorage.setItem("grizzlysCaptains",JSON.stringify({ts:Date.now(),data}))}catch(e){}
+    window.setCaptains?.(data,true); adminCaptainEditor();};
+}
+window.adminCaptainEditor=adminCaptainEditor;

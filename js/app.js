@@ -644,7 +644,7 @@ function renderTeamTiles(){
     const stats=res.length?`<div class="tcStats"><div><b>${w}</b><span>Siege</span></div><div><b>${d}</b><span>Unent.</span></div><div><b>${l}</b><span>Niederl.</span></div><div><b>${gf}:${ga}</b><span>Tore</span></div></div>`:"";
     const nextRow=nx?`<div class="tcNext">${isHome(nx)?teamLogoHtml(nx.home,"tcLogo")+"":logoHtml(opponent(nx),"tcLogo")}<div class="tcNextTxt"><small>Nächstes Spiel · ${isHome(nx)?"Heim":"Auswärts"}</small><b>${esc(opponent(nx))}</b><small>${fmtDate(nx)} · ${nx.time} Uhr</small></div>${ic("chev")}</div>`:`<div class="tcNext"><div class="tcNextTxt"><b>Saison abgeschlossen</b></div></div>`;
     sbData[team]={w,d,l,gf,ga,n:res.length};
-    el.innerHTML=`<div class="tcTop"><div class="teamLetter">${(APP_CFG.teams[team]&&APP_CFG.teams[team].letter)||team}</div><div><div class="teamTitle">${teamName(team)}</div>${res.length?"":window.resultsLoading?'<div class="tcSub sk"></div>':'<div class="tcSub">Noch keine Ergebnisse</div>'}</div>${sr&&sr.r?`<span class="tcRank">Platz ${sr.r}</span>`:""}${dots?`<div class="tcForm" title="Letzte Spiele">${dots}</div>`:""}</div>${stats}<div class="tcProg"><i style="width:${pct}%"></i></div><div class="tcProgTxt">${played} von ${all.length} Spielen gespielt</div>${nextRow}`;
+    el.innerHTML=`<div class="tcTop"><div class="teamLetter">${(APP_CFG.teams[team]&&APP_CFG.teams[team].letter)||team}</div><div><div class="teamTitle">${teamName(team)}</div>${capLine(team)}${res.length?"":window.resultsLoading?'<div class="tcSub sk"></div>':'<div class="tcSub">Noch keine Ergebnisse</div>'}</div>${sr&&sr.r?`<span class="tcRank">Platz ${sr.r}</span>`:""}${dots?`<div class="tcForm" title="Letzte Spiele">${dots}</div>`:""}</div>${stats}<div class="tcProg"><i style="width:${pct}%"></i></div><div class="tcProgTxt">${played} von ${all.length} Spielen gespielt</div>${nextRow}`;
   });
   try{renderSbCard()}catch(e){console.warn(e)}
 }
@@ -703,13 +703,13 @@ function rankChart(team){
 function scorerHtml(team){
   const sc=standings[team]&&standings[team].scorers; if(!sc||!sc.list||!sc.list.length)return "";
   const L=sc.list, max=Math.max(1,...L.map(x=>x.g+x.a)), med=["🥇","🥈","🥉"];
-  const row=(x,i)=>`<div class="scR"><span class="scNr" aria-label="Rückennummer ${esc(x.nr)}">${esc(x.nr)}</span><span class="scBar"><i class="g" style="width:${(x.g/max*100).toFixed(1)}%"></i><i class="a" style="width:${(x.a/max*100).toFixed(1)}%"></i></span><span>${x.g}</span><span>${x.a}</span><b>${x.g+x.a}${i<3&&x.g+x.a>0?" "+med[i]:""}</b></div>`;
+  const row=(x,i)=>`<div class="scR"><span class="scNr" aria-label="Rückennummer ${esc(x.nr)}">${esc(x.nr)}${capBadge(team,x.nr)}</span><span class="scBar"><i class="g" style="width:${(x.g/max*100).toFixed(1)}%"></i><i class="a" style="width:${(x.a/max*100).toFixed(1)}%"></i></span><span>${x.g}</span><span>${x.a}</span><b>${x.g+x.a}${i<3&&x.g+x.a>0?" "+med[i]:""}</b></div>`;
   const top=L.slice(0,8).map(row).join(""), more=L.length>8?`<details class="scMore"><summary>Alle ${L.length} Rückennummern</summary>${L.slice(8).map((x,i)=>row(x,i+8)).join("")}</details>`:"";
   return `<div class="sbSec"><h4>Tore nach Rückennummer <small>(${sc.games} EHV-Spielberichte)</small></h4><div class="scTab"><div class="scH"><span>Nr.</span><span></span><span>Tore</span><span>Vorl.</span><span>Pkt.</span></div>${top}${more}</div><div class="scLeg"><i class="g"></i>Tore <i class="a"></i>Vorlagen · ohne Namen, nur Rückennummern</div></div>`;
 }
 function bilanzHtml(team){
   const S=seasonStats(team), t=S.tot, word=OUTW;
-  if(!t.gp)return `<div class="sbEmpty">${emptyBox("puck","Noch keine Ergebnisse","Sobald ${esc(teamName(team))} gespielt hat, erscheint hier die Bilanz.")}</div>`;
+  if(!t.gp)return `<div class="sbEmpty">${emptyBox("puck","Noch keine Ergebnisse","Sobald die "+teamName(team)+" gespielt hat, erscheint hier die Bilanz.")}</div>`;
   const tile=(v,l,c="")=>`<div class="sbTile ${c}"><b>${v}</b><span>${l}</span></div>`;
   const avg=v=>(v/t.gp).toLocaleString("de-DE",{maximumFractionDigits:1});
   const row=S.row&&S.row.r?`<div class="sbRank"><b>Platz ${esc(String(S.row.r))}</b><span>${S.row.p!==undefined?esc(String(S.row.p))+" Punkte · ":""}${esc(APP_CFG.teams[team]?APP_CFG.teams[team].league:"")}</span></div>`:"";
@@ -719,7 +719,7 @@ function bilanzHtml(team){
     per=`<div class="sbSec"><h4>Tore je Drittel <small>(${S.perN} ${S.perN===1?"Spiel":"Spiele"} mit Dritteln)</small></h4><div class="sbPer">${S.per.map((v,i)=>`<div class="${i===best?"best":""}"><span>${i+1}. Drittel</span><b>${v[0]}:${v[1]}</b>${i===best?"<em>stärkstes</em>":""}</div>`).join("")}</div></div>`}
   const form=S.P.slice(-5).map(x=>`<i class="fd ${x.r.o}" title="${esc(outLabel(x.r))}"></i>`).join("");
   const reps=S.reports.length?`<div class="sbSec"><h4>Spielberichte <small>(${S.reports.length})</small></h4><div class="sbReps">${S.reports.map((x,i)=>`<button type="button" class="sbRep" data-rep="${i}"><span class="sbRepTop"><b>${x.r.gs}:${x.r.os}</b> ${vs(x)}</span><span class="sbRepTitle">${esc(x.rep.title||"Spielbericht")}</span></button>`).join("")}</div><button type="button" class="action sbPrint" data-print>🖨 Alle Berichte als PDF (Saisonrückblick)</button></div>`:"";
-  return `${row}<div class="sbGrid">${tile(t.gp,"Spiele")}${tile(t.w,"Siege","w")}${tile(t.l,"Niederl.","l")}${tile(t.so,"davon n.P.","d")}</div>
+  return `${row}${capBilanz(team)}<div class="sbGrid">${tile(t.gp,"Spiele")}${tile(t.w,"Siege","w")}${tile(t.l,"Niederl.","l")}${tile(t.so,"davon n.P.","d")}</div>
     <div class="sbGrid sbGrid3">${tile(t.gf+":"+t.ga,"Tore")}${tile((t.gf-t.ga>0?"+":"")+(t.gf-t.ga),"Differenz")}${tile(avg(t.gf),"Tore/Spiel")}</div>
     ${sbChart(S)}${rankChart(team)}
     <div class="sbSec"><h4>Heim und auswärts</h4><div class="sbHA"><div><span>🏠 Heim</span><b>${sbRec(S.home)}</b><small>${S.home.gf}:${S.home.ga} Tore</small></div><div><span>🚌 Auswärts</span><b>${sbRec(S.away)}</b><small>${S.away.gf}:${S.away.ga} Tore</small></div></div></div>
@@ -2182,7 +2182,7 @@ function renderAdmSocial(){
   box.querySelector(".socMore")?.addEventListener("click",()=>{admSoc.n=999;renderAdmSocial()});
 }
 window.renderAdmSocial=renderAdmSocial;
-{const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{const p=document.querySelector('[data-adm-pane="social"]');if(p&&!p.hidden)renderAdmSocial()}catch(e){console.warn(e)}};}
+{const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{const p=document.getElementById("admSocBody");if(p&&!p.hidden)renderAdmSocial()}catch(e){console.warn(e)}};}
 
 /* Instagram-Bilder für alle: Spieltag ab 5 Tage vorher bis Spielende, Ergebnis bis 5 Tage nach dem Spiel */
 const INSTA_DAYS=5;
@@ -3079,4 +3079,83 @@ document.addEventListener("click",e=>{
   const info=document.querySelector("#infoView .inShareRow");
   if(info&&!document.getElementById("fbInfo")){const d=document.createElement("div");d.id="fbInfo";d.innerHTML=fbLinkHtml("info");info.after(d)}
   setTimeout(()=>{wishRefresh().then(d=>{if(!d.on){document.querySelectorAll("[data-wish-open]").forEach(b=>{if(!b.closest(".fbHome"))b.remove()});const hb=document.querySelector(".fbHome [data-wish-open]");if(hb)hb.remove()}})},(window.__introMs||0)+2500);
+})();
+
+/* ===== 1.44.5: Zurück-Taste des Handys schließt Fenster (statt die App) =====
+   Öffnet sich ein Fenster (Spieldetails, Saisonbilanz, News, Admin, Formulare …), legt die App einen Eintrag im
+   Browser-Verlauf an. Die Zurück-Taste schließt dann das oberste Fenster. Wird ein Fenster per × geschlossen,
+   wird der Eintrag wieder entfernt – so bleibt der Verlauf sauber. */
+(function(){
+  const SEL=".matchModal,.adminModal,.bugReportModal,.thanksModal,.admSheetWrap";
+  const CLOSE=".admX,.matchModalClose,.adminModalClose,#thanksClose,[aria-label*='chließen']";
+  const stack=[]; let ignore=0, pending=0, timer=0;
+  const isOpen=el=>el.isConnected&&!el.hidden&&getComputedStyle(el).display!=="none";
+  function onOpen(el){
+    if(stack.includes(el))return; stack.push(el);
+    if(pending>0){pending--;try{history.replaceState({gzm:stack.length},"")}catch(e){}}
+    else{try{history.pushState({gzm:stack.length},"")}catch(e){}}
+  }
+  function onClose(el){
+    const i=stack.indexOf(el); if(i<0)return; stack.splice(i,1);
+    if(el._gzPop){el._gzPop=false;return} /* durch die Zurück-Taste geschlossen – Eintrag ist schon weg */
+    pending++; clearTimeout(timer);
+    timer=setTimeout(()=>{if(pending>0){const n=pending;pending=0;ignore++;try{history.go(-n)}catch(e){ignore--}}},60);
+  }
+  function closeEl(el){
+    el._gzPop=true;
+    const box=el.querySelector('[role="dialog"]')||el, btn=[...box.querySelectorAll(CLOSE)].find(b=>b.closest(SEL)===el);
+    if(btn)btn.click();
+    if(isOpen(el)){el.hidden=true;el.setAttribute("aria-hidden","true");if(!stack.some(isOpen))document.body.style.overflow=""}
+    if(stack.includes(el))onClose(el);
+  }
+  window.addEventListener("popstate",()=>{
+    if(ignore>0){ignore--;return}
+    const top=[...stack].reverse().find(isOpen);
+    if(top)closeEl(top);
+  });
+  new MutationObserver(ms=>{ms.forEach(m=>{
+    if(m.type==="attributes"){const el=m.target;if(el.matches&&el.matches(SEL)){if(isOpen(el))onOpen(el);else onClose(el)}}
+    else m.removedNodes.forEach(n=>{if(n.nodeType===1&&stack.includes(n))onClose(n)});
+  })}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["hidden"],childList:true});
+  document.querySelectorAll(SEL).forEach(el=>{if(isOpen(el))onOpen(el)});
+})();
+/* 1.44.5: Admin-Reiter direkt unter der stehenden Admin-Kopfzeile */
+(function(){const h=document.querySelector(".adminBox>.adminModalHead");if(!h||!window.ResizeObserver)return;
+  new ResizeObserver(()=>{document.documentElement.style.setProperty("--admHeadH",h.offsetHeight+"px")}).observe(h)})();
+
+/* ===== 1.45.0: Kapitän (C) und Assistenten (A) – nur Rückennummern; gepflegt im Admin-Bereich (Spiele › Kapitäne) ===== */
+var capData={on:true,list:[]};
+function capGet(){const cd=capData||{on:true,list:[]}, map={};(cd.list||[]).forEach(x=>{if(x&&x.team)map[x.team]={c:String(x.c||""),a:(Array.isArray(x.a)?x.a:[]).map(String).filter(Boolean)}});return {on:cd.on!==false,map}} /* capData kann beim ersten Zeichnen noch fehlen (var weiter unten) */
+window.capInfo={get:capGet};
+function capRole(team,nr){const m=capGet();if(!m.on)return "";const t=m.map[team];if(!t)return "";nr=String(Number(String(nr).replace(/\D/g,""))||"");if(!nr)return "";return t.c===nr?"C":t.a.includes(nr)?"A":""}
+function capBadge(team,nr){const r=capRole(team,nr);return r?`<span class="capB ${r==="C"?"c":"a"}" title="${r==="C"?"Kapitän":"Assistent"}">${r}</span>`:""}
+function capLine(team){const m=capGet();const t=m.on&&m.map[team];if(!t||(!t.c&&!t.a.length))return "";
+  return `<div class="capLine">${t.c?`<span><span class="capB c">C</span>${esc(t.c)}</span>`:""}${t.a.map(n=>`<span><span class="capB a">A</span>${esc(n)}</span>`).join("")}</div>`}
+function capBilanz(team){const m=capGet();const t=m.on&&m.map[team];if(!t||(!t.c&&!t.a.length))return "";
+  return `<div class="capBil">${t.c?`<div><span class="capB c">C</span><b>Nr. ${esc(t.c)}</b><small>Kapitän</small></div>`:""}${t.a.map(n=>`<div><span class="capB a">A</span><b>Nr. ${esc(n)}</b><small>Assistent</small></div>`).join("")}</div>`}
+/* „C“/„A“ neben „Nr. 17“ bei Torschützen und Live-Toren (nicht im Fließtext des Spielberichts, nie beim Gegner) */
+function capApply(root){
+  const m=capGet(); if(!m.on||!Object.keys(m.map).length||!root||!root.querySelectorAll)return;
+  const skip=n=>n.closest("textarea,input,script,style,.adminModal,#adminModal,.opp,.instaModal,.mdReport,.repText,.capB,.capBil,.capLine,.newsModal,#newsModal");
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:t=>/Nr\.\s?\d/.test(t.nodeValue)&&t.parentElement&&!skip(t.parentElement)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});
+  const list=[];while(walker.nextNode())list.push(walker.currentNode);
+  list.forEach(t=>{const team=myNrTeamOf(t.parentElement); if(!m.map[team])return;
+    const host=t.parentElement.matches("mark.myNr")?t.parentElement:null;
+    const re=/Nr\.\s?(\d{1,2})(?!\d)/g, v=t.nodeValue; let x, cuts=[];
+    while((x=re.exec(v))){const r=capRole(team,x[1]);if(r)cuts.push({end:x.index+x[0].length,r})}
+    if(!cuts.length)return;
+    if(host){const nx=host.nextSibling;if(nx&&nx.nodeType===1&&nx.classList.contains("capB"))return;const sp=document.createElement("span");sp.className="capB "+(cuts[0].r==="C"?"c":"a");sp.textContent=cuts[0].r;host.after(sp);return}
+    const frag=document.createDocumentFragment(); let last=0, changed=false;
+    cuts.forEach(c=>{const after=v.slice(c.end), nx=t.nextSibling; if(c.end===v.length&&nx&&nx.nodeType===1&&nx.classList.contains("capB"))return;
+      if(/^\s*\(?[CA]\)?\b/.test(after))return;
+      frag.appendChild(document.createTextNode(v.slice(last,c.end)));const sp=document.createElement("span");sp.className="capB "+(c.r==="C"?"c":"a");sp.textContent=c.r;frag.appendChild(sp);last=c.end;changed=true});
+    if(!changed)return; frag.appendChild(document.createTextNode(v.slice(last))); t.replaceWith(frag)});
+}
+window.setCaptains=function(d,rerender){capData={on:!d||d.on!==false,list:d&&Array.isArray(d.list)?d.list:[]};
+  if(rerender){try{renderTeamTiles()}catch(e){}try{renderLast()}catch(e){}const bz=document.getElementById("bilanzModal");if(bz&&!bz.hidden&&bz.querySelector("#bilanzModalContent")?.dataset.team)openBilanz(bz.querySelector("#bilanzModalContent").dataset.team)}
+  capApply(document.body)};
+(function(){let q=new Set(),raf=0;
+  new MutationObserver(ms=>{const m=capGet();if(!m.on||!Object.keys(m.map).length)return;ms.forEach(x=>x.addedNodes.forEach(n=>{if(n.nodeType===1&&!n.classList.contains("capB"))q.add(n);else if(n.nodeType===3&&n.parentElement)q.add(n.parentElement)}));
+    if(q.size&&!raf)raf=requestAnimationFrame(()=>{raf=0;const L=[...q];q.clear();L.forEach(n=>{if(n.isConnected)capApply(n)})})}).observe(document.body,{childList:true,subtree:true});
+  try{const c=JSON.parse(localStorage.getItem("grizzlysCaptains")||"null");if(c&&c.data)window.setCaptains(c.data,true)}catch(e){}
 })();

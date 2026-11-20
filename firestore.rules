@@ -58,10 +58,10 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Spruch des Tages (1.41.0) und Wunschliste (1.44.0): für alle lesbar, nur der Admin schreibt
+    // Spruch des Tages (1.41.0), Wunschliste (1.44.0) und Kapitäne (1.45.0): für alle lesbar, nur der Admin schreibt
     match /appConfig/{docId} {
       allow read: if true;
-      allow write: if isAdmin() && docId in ["sprueche","wuensche"]
+      allow write: if isAdmin() && docId in ["sprueche","wuensche","kapitaene"]
         && request.resource.data.keys().hasOnly(["on","list","updatedAt"])
         && request.resource.data.on is bool
         && request.resource.data["list"] is list
