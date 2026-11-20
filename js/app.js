@@ -64,11 +64,13 @@ function standClean(part){
   const rows=part.rows.map(x=>({n:String(x.n||"").slice(0,120),r:Number(x.r)||0,gp:Number(x.gp)||0,p:Number(x.p)||0,gd:Number(x.gd)||0})).filter(x=>x.n&&x.r).slice(0,40);
   if(!rows.length)return null;
   const out={rows,upd:String(part.upd||"").slice(0,40)};
-  if(part.scorers&&Array.isArray(part.scorers.list))out.scorers={games:Number(part.scorers.games)||0,list:part.scorers.list.filter(x=>x&&/^[0-9]{1,3}$/.test(String(x.nr))).slice(0,60).map(x=>({nr:String(x.nr),g:Number(x.g)||0,a:Number(x.a)||0,pp:Number(x.pp)||0}))};
+  if(part.scorers&&Array.isArray(part.scorers.list))out.scorers={games:Number(part.scorers.games)||0,list:part.scorers.list.filter(x=>x&&/^[0-9]{1,3}$/.test(String(x.nr))).slice(0,60).map(x=>({nr:String(x.nr),g:Number(x.g)||0,a:Number(x.a)||0,pp:Number(x.pp)||0,gw:Number(x.gw)||0}))};
   /* 1.46.1: Strafen & Special Teams wurden hier bisher herausgefiltert – Kasten in der Saisonbilanz blieb leer */
-  if(out.scorers&&part.scorers.special&&typeof part.scorers.special==="object"){const S=part.scorers.special,n=k=>Math.max(0,Math.min(9999,Number(S[k])||0));out.scorers.special={games:n("games"),pim:n("pim"),oppPim:n("oppPim"),ppOpp:n("ppOpp"),ppG:n("ppG"),pkSit:n("pkSit"),ppGA:n("ppGA")}}
+  if(out.scorers&&part.scorers.special&&typeof part.scorers.special==="object"){const S=part.scorers.special,n=k=>Math.max(0,Math.min(9999,Number(S[k])||0));out.scorers.special={games:n("games"),pim:n("pim"),oppPim:n("oppPim"),ppOpp:n("ppOpp"),ppG:n("ppG"),pkSit:n("pkSit"),ppGA:n("ppGA"),shG:n("shG"),shGA:n("shGA"),lead:Math.max(0,Number(S.lead)||0),tied:Math.max(0,Number(S.tied)||0),trail:Math.max(0,Number(S.trail)||0)};
+    /* 1.47.0: Tore nach Spielminute (6 × 10 Min. + Verlängerung) */
+    const arr=v=>Array.isArray(v)&&v.length>=6?v.slice(0,7).map(q=>Math.max(0,Math.min(999,Number(q)||0))):null; const tf=arr(S.tf),ta=arr(S.ta); if(tf&&ta){out.scorers.special.tf=tf;out.scorers.special.ta=ta}}
   if(Array.isArray(part.games)){
-    out.games=part.games.filter(x=>x&&/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(x.d)&&x.h&&x.a).slice(-400).map(x=>({d:x.d,t:Number(x.t)||0,h:String(x.h).slice(0,120),a:String(x.a).slice(0,120),hs:Number(x.hs)||0,as:Number(x.as)||0,ot:x.ot===true,so:x.so===true,p:(Array.isArray(x.p)?x.p:[]).filter(v=>/^[0-9]{1,2}:[0-9]{1,2}$/.test(v)).slice(0,3),sc:(Array.isArray(x.sc)?x.sc:[]).map(String).filter(v=>/^[0-9]{1,3}$/.test(v)).slice(0,30),pp:Number(x.pp)||0}));
+    out.games=part.games.filter(x=>x&&/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(x.d)&&x.h&&x.a).slice(-400).map(x=>({d:x.d,t:Number(x.t)||0,h:String(x.h).slice(0,120),a:String(x.a).slice(0,120),hs:Number(x.hs)||0,as:Number(x.as)||0,ot:x.ot===true,so:x.so===true,p:(Array.isArray(x.p)?x.p:[]).filter(v=>/^[0-9]{1,2}:[0-9]{1,2}$/.test(v)).slice(0,3),sc:(Array.isArray(x.sc)?x.sc:[]).map(String).filter(v=>/^[0-9]{1,3}$/.test(v)).slice(0,30),pp:Number(x.pp)||0,...(Array.isArray(x.av)?{av:x.av.map(String).filter(v=>/^[0-9]{1,3}$/.test(v)).slice(0,60)}:{})}));
   }
   return out;
 }
@@ -716,16 +718,13 @@ function bilanzHtml(team){
   const avg=v=>(v/t.gp).toLocaleString("de-DE",{maximumFractionDigits:1});
   const row=S.row&&S.row.r?`<div class="sbRank"><b>Platz ${esc(String(S.row.r))}</b><span>${S.row.p!==undefined?esc(String(S.row.p))+" Punkte · ":""}${esc(APP_CFG.teams[team]?APP_CFG.teams[team].league:"")}</span></div>`:"";
   const vs=x=>`${esc(shortTeam(opponent(x.g)))} <small>${isHome(x.g)?"H":"A"} · ${esc(x.g.date.slice(8,10)+"."+x.g.date.slice(5,7)+".")}</small>`;
-  let per="";
-  if(S.perN){const best=[0,1,2].sort((a,b)=>(S.per[b][0]-S.per[b][1])-(S.per[a][0]-S.per[a][1]))[0];
-    per=`<div class="sbSec"><h4>Tore je Drittel <small>(${S.perN} ${S.perN===1?"Spiel":"Spiele"} mit Dritteln)</small></h4><div class="sbPer">${S.per.map((v,i)=>`<div class="${i===best?"best":""}"><span>${i+1}. Drittel</span><b>${v[0]}:${v[1]}</b>${i===best?"<em>stärkstes</em>":""}</div>`).join("")}</div></div>`}
   const form=S.P.slice(-5).map(x=>`<i class="fd ${x.r.o}" title="${esc(outLabel(x.r))}"></i>`).join("");
   const reps=S.reports.length?`<div class="sbSec"><h4>Spielberichte <small>(${S.reports.length})</small></h4><div class="sbReps">${S.reports.map((x,i)=>`<button type="button" class="sbRep" data-rep="${i}"><span class="sbRepTop"><b>${x.r.gs}:${x.r.os}</b> ${vs(x)}</span><span class="sbRepTitle">${esc(x.rep.title||"Spielbericht")}</span></button>`).join("")}</div><button type="button" class="action sbPrint" data-print>🖨 Alle Berichte als PDF (Saisonrückblick)</button></div>`:"";
-  return `${row}${capBilanz(team)}<div class="sbGrid">${tile(t.gp,"Spiele")}${tile(t.w,"Siege","w")}${tile(t.l,"Niederl.","l")}${tile(t.so,"davon n.P.","d")}</div>
+  /* 1.47.0: in vier Reiter aufgeteilt, damit die Seite übersichtlich bleibt */
+  const ov=`${row}${capBilanz(team)}<div class="sbGrid">${tile(t.gp,"Spiele")}${tile(t.w,"Siege","w")}${tile(t.l,"Niederl.","l")}${tile(t.so,"davon n.P.","d")}</div>
     <div class="sbGrid sbGrid3">${tile(t.gf+":"+t.ga,"Tore")}${tile((t.gf-t.ga>0?"+":"")+(t.gf-t.ga),"Differenz")}${tile(avg(t.gf),"Tore/Spiel")}</div>
-    ${sbChart(S)}${rankChart(team)}
+    ${sbChart(S)}
     <div class="sbSec"><h4>Heim und auswärts</h4><div class="sbHA"><div><span>🏠 Heim</span><b>${sbRec(S.home)}</b><small>${S.home.gf}:${S.home.ga} Tore</small></div><div><span>🚌 Auswärts</span><b>${sbRec(S.away)}</b><small>${S.away.gf}:${S.away.ga} Tore</small></div></div></div>
-    ${per}
     <div class="sbSec"><h4>Auffälliges</h4><ul class="sbFacts">
       ${form?`<li><span>Form (letzte ${Math.min(5,S.P.length)})</span><b class="sbForm">${form}</b></li>`:""}
       ${S.streak&&S.streak.n>=2?`<li><span>Serie</span><b>${S.streak.n} ${S.streak.o==="w"?"Siege":S.streak.o==="l"?"Niederlagen":"Penaltyschießen"} in Folge</b></li>`:""}
@@ -733,19 +732,24 @@ function bilanzHtml(team){
       ${S.worst?`<li><span>Höchste Niederlage</span><b>${S.worst.r.gs}:${S.worst.r.os} · ${vs(S.worst)}</b></li>`:""}
       ${S.shut?`<li><span>Zu null gespielt</span><b>${S.shut}×</b></li>`:""}
       <li><span>Gegentore je Spiel</span><b>${avg(t.ga)}</b></li>
-    </ul></div>${specialHtml(team)}${msList(team)}${scorerHtml(team)}${reps}
-    ${S.row&&S.row.r?`<button type="button" class="action sbTabImg" data-tabimg="${team}">📸 Tabelle als Bild teilen</button>`:""}
-    <div class="sbNote">Berechnet aus den eingetragenen Ergebnissen${S.perN?", Drittel aus den EHV-Daten":""}. Spieler werden nicht genannt.</div>`;
+    </ul></div>${msList(team)}${reps}
+    ${S.row&&S.row.r?`<button type="button" class="action sbTabImg" data-tabimg="${team}">📸 Tabelle als Bild teilen</button>`:""}`;
+  const flow=sbLeadTime(team)+sbComeback(S)+sbClose(S)+sbPeriods(S)+sbMinutes(team)+specialHtml(team);
+  const liga=rankChart(team)+sbLeagueCmp(team)+sbHalves(team,S)+sbRest(team,S);
+  const nr=scorerHtml(team)+sbSpecialGoals(team)+sbMulti(team)+sbStreaks(team);
+  return sbTabsHtml({ov,flow,liga,nr})+`<div class="sbNote">Berechnet aus den eingetragenen Ergebnissen und den EHV-Daten. Spieler werden nicht genannt, nur Rückennummern.</div>`;
 }
 function openBilanz(team){
   const m=document.getElementById("bilanzModal"), c=document.getElementById("bilanzModalContent"); if(!m||!c)return;
   document.getElementById("bilanzModalTitle").textContent="Saisonbilanz "+teamName(team);
+  if(c.dataset.team!==team)sbTabLast="ov";
   c.innerHTML=bilanzHtml(team); c.dataset.team=team;
   const S=seasonStats(team);
   c.querySelectorAll("[data-rep]").forEach(b=>b.onclick=()=>{const x=S.reports[Number(b.dataset.rep)];closeBilanz();openMatchDetails(x.g,true)});
   c.querySelector("[data-print]")?.addEventListener("click",()=>printReports(team));
   c.querySelector("[data-tabimg]")?.addEventListener("click",()=>{closeBilanz();instaOpen({team},"table",true)});
   m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  try{sbBindTabs(c);const bx=m.querySelector(".matchModalBox");if(bx)bx.scrollTop=0}catch(e){console.warn(e)}
   trackAnalyticsEvent("saisonbilanz_opened",{team:teamName(team)});
 }
 function closeBilanz(){const m=document.getElementById("bilanzModal");if(!m)return;m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow=""}
@@ -2227,6 +2231,7 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.47.0.229",d:"November 2026",items:["Saisonbilanz neu sortiert: Überblick, Verlauf, Liga und Nummern als Reiter – mit Grafiken.","Neu im Verlauf: Zeit in Führung, Comebacks, knappe Spiele, Tore nach Spielminute und Überzahl/Unterzahl (die fehlten bisher).","Neu bei Liga und Nummern: Angriff und Abwehr im Ligavergleich, Bilanz gegen obere und untere Tabellenhälfte, Restprogramm, Hattricks, Siegtore und Scorer-Serien – weiter nur mit Rückennummern."]},
   {v:"1.44.2.221",d:"November 2026",items:["Verlegte Spiele ohne neuen Termin werden jetzt als „Verlegt · Termin offen“ angezeigt – statt als abgesagt."]},
   {v:"1.44.0.219",d:"November 2026",items:["Wunschliste: Stimm ab, welche Funktion als Nächstes kommen soll – bis zu 3 Stimmen, anonym (Startseite unten und News).","Mit einem Tipp sagen, ob dir ein Spielbericht oder eine Neuerung gefällt (👍/👎).","Feedback ist jetzt schneller erreichbar: auf der Startseite, in der Info und in den News."]},
   {v:"1.43.0.218",d:"November 2026",items:["Meine Rückennummer: In den Einstellungen die Nummer deines Kindes eintragen – sie wird bei Torschützen, Spielberichten und in der Saisonbilanz hervorgehoben. Auf Wunsch Push bei Tor oder Vorlage dieser Nummer.","Neuer Push „Spielbericht ist online“ – ein Tipp öffnet den Bericht.","Wochenende als Bild: Unter Downloads alle Spiele des Wochenendes als Bild für die WhatsApp-Gruppe.","Wetter am Spielort: Temperatur und Glättegefahr beim nächsten Spiel und in der Erinnerung am Vortag.","Saisonbilanz: Strafminuten, Überzahl- und Unterzahlquote."]},
@@ -3161,3 +3166,128 @@ window.setCaptains=function(d,rerender){capData={on:!d||d.on!==false,list:d&&Arr
     if(q.size&&!raf)raf=requestAnimationFrame(()=>{raf=0;const L=[...q];q.clear();L.forEach(n=>{if(n.isConnected)capApply(n)})})}).observe(document.body,{childList:true,subtree:true});
   try{const c=JSON.parse(localStorage.getItem("grizzlysCaptains")||"null");if(c&&c.data)window.setCaptains(c.data,true)}catch(e){}
 })();
+
+/* ===== 1.47.0: Saisonbilanz mit Reitern (Überblick · Verlauf · Liga · Nummern) und weiteren Statistiken.
+   Alles je Mannschaft, nur Rückennummern, keine Namen. Quelle: eingetragene Ergebnisse + EHV-Daten (functions/standings.js). ===== */
+const SB_TABS=[["ov","Überblick"],["flow","Verlauf"],["liga","Liga"],["nr","Nummern"]];
+let sbTabLast="ov";
+function sbSec(title,small,body,cls){return body?`<div class="sbSec${cls?" "+cls:""}"><h4>${title}${small?` <small>(${small})</small>`:""}</h4>${body}</div>`:""}
+function sbSpecial(team){const sc=standings[team]&&standings[team].scorers;return sc&&sc.special&&sc.special.games?sc.special:null}
+const sbPct=(a,b)=>b?Math.round(a/b*100):0;
+const sbNum=v=>(Math.round(v*10)/10).toLocaleString("de-DE",{maximumFractionDigits:1});
+function sbOwnLeague(team){const st=standings[team],own=standRow(team,sbOwn(team));if(!st||!own||!Array.isArray(st.games))return null;
+  return st.games.filter(x=>x.h===own.n||x.a===own.n).sort((a,b)=>a.d.localeCompare(b.d)||a.t-b.t)}
+
+/* --- Verlauf --- */
+function sbLeadTime(team){const sp=sbSpecial(team);if(!sp)return "";const T=(sp.lead||0)+(sp.tied||0)+(sp.trail||0);if(!T)return "";
+  const L=sbPct(sp.lead,T),R=sbPct(sp.trail,T),D=Math.max(0,100-L-R),m=v=>Math.round(v/60/sp.games);
+  return sbSec("Zeit in Führung","je Spiel, "+sp.games+" EHV-Spielberichte",
+    `<div class="sbStack" role="img" aria-label="Führung ${L} Prozent, Gleichstand ${D} Prozent, Rückstand ${R} Prozent"><i class="w" style="width:${L}%"></i><i class="d" style="width:${D}%"></i><i class="l" style="width:${R}%"></i></div>
+    <div class="sbStackLeg"><span><i class="w"></i>Führung<b>${L} %</b><small>Ø ${m(sp.lead)} Min.</small></span><span><i class="d"></i>Gleichstand<b>${D} %</b><small>Ø ${m(sp.tied)} Min.</small></span><span><i class="l"></i>Rückstand<b>${R} %</b><small>Ø ${m(sp.trail)} Min.</small></span></div>`)}
+function sbComeback(S){
+  const C={w1:[0,0],t1:[0,0],l1:[0,0],w2:[0,0],t2:[0,0],l2:[0,0]};let n=0;
+  S.P.forEach(x=>{const p=sbPer(x.g);if(!p)return;n++;const d1=p[0][0]-p[0][1],d2=d1+p[1][0]-p[1][1],won=x.r.o==="w"?1:0,k=(d,s)=>(d>0?"w":d<0?"l":"t")+s;
+    C[k(d1,1)][0]++;C[k(d1,1)][1]+=won;C[k(d2,2)][0]++;C[k(d2,2)][1]+=won});
+  if(!n)return "";
+  const ring=(c,cls)=>{const p=c[0]?c[1]/c[0]:0,R=19,U=2*Math.PI*R;return `<svg viewBox="0 0 48 48" class="cbRing ${cls}" aria-hidden="true"><circle cx="24" cy="24" r="${R}" class="bg"/><circle cx="24" cy="24" r="${R}" class="fg" stroke-dasharray="${(p*U).toFixed(1)} ${U.toFixed(1)}" transform="rotate(-90 24 24)"/><text x="24" y="28">${c[0]?Math.round(p*100)+"%":"–"}</text></svg>`};
+  const card=(lbl,c,cls,txt)=>`<div class="cbT">${ring(c,cls)}<div><small>${lbl}</small><b>${c[0]?c[1]+" von "+c[0]:"noch nie"}</b><span>${txt}</span></div></div>`;
+  const one=(c,w)=>c[0]?`${c[1]} von ${c[0]} ${w}`:"–";
+  return sbSec("Comebacks und Führungen","nach 2 Dritteln · "+n+" Spiele mit Dritteln",`<div class="cbGrid">
+    ${card("Vorn",C.w2,"w","Führung gehalten")}${card("Gleichstand",C.t2,"d","danach gewonnen")}${card("Hinten",C.l2,"l",C.l2[1]?"noch gedreht":"noch kein Comeback")}</div>
+    <div class="cbSub">Nach dem 1. Drittel: vorn ${one(C.w1,"gewonnen")} · hinten ${one(C.l1,"gedreht")}</div>`)}
+function sbClose(S){
+  const close=x=>Math.abs(x.r.gs-x.r.os)<=1||x.r.x==="so"||x.r.x==="ot"||x.r.o==="d";
+  const L=S.P.filter(close),O=S.P.filter(x=>!close(x)); if(!L.length&&!O.length)return "";
+  const rec=A=>({w:A.filter(x=>x.r.o==="w").length,l:A.filter(x=>x.r.o==="l").length});
+  const bar=(lbl,A)=>{const r=rec(A);return `<div class="clRow"><span>${lbl}<small>${A.length} ${A.length===1?"Spiel":"Spiele"}</small></span><div class="clBar">${A.length?`${r.w?`<i class="w" style="flex:${r.w}">${r.w} S</i>`:""}${r.l?`<i class="l" style="flex:${r.l}">${r.l} N</i>`:""}`:'<em>keine</em>'}</div></div>`};
+  const chips=L.slice(-8).map(x=>`<span class="clChip ${x.r.o}">${x.r.gs}:${x.r.os}${x.r.x==="so"?" n.P.":""} <small>${esc(shortTeam(opponent(x.g)))}</small></span>`).join("");
+  return sbSec("Knappe und deutliche Spiele","",`${bar("Knapp <em>1 Tor oder n.P.</em>",L)}${bar("Deutlich <em>2+ Tore</em>",O)}${chips?`<div class="clChips">${chips}</div>`:""}`)}
+function sbPeriods(S){
+  if(!S.perN)return "";
+  const L=S.P.map(x=>sbPer(x.g)).filter(Boolean),last=L.slice(-5),lp=[0,1,2].map(i=>last.reduce((a,p)=>[a[0]+p[i][0],a[1]+p[i][1]],[0,0]));
+  const best=[0,1,2].sort((a,b)=>(S.per[b][0]-S.per[b][1])-(S.per[a][0]-S.per[a][1]))[0], max=Math.max(1,...S.per.flat());
+  return sbSec("Tore je Drittel",S.perN+" "+(S.perN===1?"Spiel":"Spiele")+" mit Dritteln",`<div class="sbPer">${S.per.map((v,i)=>{const d=v[0]-v[1],ld=lp[i][0]-lp[i][1];
+    return `<div class="${i===best?"best":""}"><span>${i+1}. Drittel</span><b>${v[0]}:${v[1]}</b><div class="perBars"><i class="f" style="width:${(v[0]/max*100).toFixed(0)}%"></i><i class="x" style="width:${(v[1]/max*100).toFixed(0)}%"></i></div>${i===best?"<em>stärkstes</em>":""}${last.length>=3&&L.length>last.length?`<small class="perTr ${ld>0?"up":ld<0?"dn":""}">letzte ${last.length}: ${lp[i][0]}:${lp[i][1]}</small>`:""}</div>`}).join("")}</div>`)}
+function sbMinutes(team){
+  const sp=sbSpecial(team); if(!sp||!sp.tf||!sp.ta)return "";
+  const N=sp.tf[6]+sp.ta[6]>0?7:6, tf=sp.tf.slice(0,N), ta=sp.ta.slice(0,N); if(!tf.some(Boolean)&&!ta.some(Boolean))return "";
+  const W=330,H=170,mid=84,cw=W/N,bw=Math.min(30,cw*.58),max=Math.max(1,...tf,...ta),h=v=>v/max*(mid-22);
+  const lab=i=>i===6?"n.V.":`${i*10+1}.–${i*10+10}.`;
+  const g=tf.map((v,i)=>{const cx=(i+.5)*cw;return `<g><title>${lab(i)} Minute: ${v} Tore, ${ta[i]} Gegentore</title>
+    <rect x="${(cx-bw/2).toFixed(1)}" y="${(mid-1-h(v)).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(v?2:0,h(v)).toFixed(1)}" rx="3" class="mnF"/>
+    <rect x="${(cx-bw/2).toFixed(1)}" y="${(mid+1).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(ta[i]?2:0,h(ta[i])).toFixed(1)}" rx="3" class="mnA"/>
+    ${v?`<text x="${cx.toFixed(1)}" y="${(mid-5-h(v)).toFixed(1)}" class="mnV">${v}</text>`:""}${ta[i]?`<text x="${cx.toFixed(1)}" y="${(mid+13+h(ta[i])).toFixed(1)}" class="mnV a">${ta[i]}</text>`:""}
+    <text x="${cx.toFixed(1)}" y="${H-3}" class="mnL">${i===6?"n.V.":i*10+"–"+(i*10+10)}</text></g>`}).join("");
+  const d=tf.map((v,i)=>v-ta[i]),bi=d.indexOf(Math.max(...d)),wi=d.indexOf(Math.min(...d));
+  return sbSec("Tore nach Spielminute",sp.games+" EHV-Spielberichte",`<div class="mnWrap"><svg class="mnChart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tore und Gegentore je 10 Spielminuten"><line x1="0" x2="${W}" y1="${mid}" y2="${mid}" class="sbAxis"/>${g}</svg></div>
+    <div class="scLeg mnLeg"><i class="f"></i>Tore <i class="x"></i>Gegentore · Spielminuten</div>
+    <div class="cbSub">Stärkste Phase: <b>${lab(bi)} Min.</b> (${d[bi]>0?"+":""}${d[bi]})${d[wi]<0&&wi!==bi?` · schwächste: <b>${lab(wi)} Min.</b> (${d[wi]})`:""}</div>`)}
+
+/* --- Liga --- */
+function sbLeagueStats(team){
+  const st=standings[team],own=standRow(team,sbOwn(team)); if(!st||!own||!Array.isArray(st.games)||!Array.isArray(st.rows))return null;
+  const T={};st.rows.forEach(r=>T[r.n]={n:r.n,r:r.r,gp:0,gf:0,ga:0});
+  st.games.forEach(x=>{const H=T[x.h],A=T[x.a];if(H){H.gp++;H.gf+=x.hs;H.ga+=x.as}if(A){A.gp++;A.gf+=x.as;A.ga+=x.hs}});
+  const L=Object.values(T).filter(t=>t.gp).map(t=>({...t,f:t.gf/t.gp,a:t.ga/t.gp})), me=L.find(t=>t.n===own.n);
+  return me&&L.length>1?{L,me,own,n:st.rows.length}:null}
+function sbStrip(L,me,key,better,label){
+  const vals=L.map(t=>t[key]),mn=Math.min(...vals),mx=Math.max(...vals),W=320,px=14,H=52,y=24;
+  const pos=v=>{const q=mx===mn?.5:(v-mn)/(mx-mn);return px+(better==="low"?1-q:q)*(W-2*px)};
+  const rank=1+L.filter(t=>better==="low"?t[key]<me[key]:t[key]>me[key]).length, avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const dots=L.filter(t=>t!==me).map(t=>`<circle cx="${pos(t[key]).toFixed(1)}" cy="${y}" r="5" class="stO"><title>${esc(shortTeam(t.n))}: ${sbNum(t[key])}</title></circle>`).join("");
+  return `<div class="stRow"><div class="stHead"><span>${label}</span><b>${rank}. ${better==="low"?"beste":"bester"} von ${L.length}</b></div>
+    <svg class="stChart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}: ${sbNum(me[key])} je Spiel, Platz ${rank} von ${L.length}"><line x1="${px}" x2="${W-px}" y1="${y}" y2="${y}" class="stAx"/><line x1="${pos(avg).toFixed(1)}" x2="${pos(avg).toFixed(1)}" y1="${y-10}" y2="${y+10}" class="stAvg"/>${dots}
+    <circle cx="${pos(me[key]).toFixed(1)}" cy="${y}" r="9" class="stMe"/><text x="${pos(me[key]).toFixed(1)}" y="${y-14}" class="stMeT">${sbNum(me[key])}</text>
+    <text x="${px}" y="${H-2}" class="stEnd">schwächer</text><text x="${W-px}" y="${H-2}" class="stEnd r">besser</text></svg>
+    <div class="stFoot">${sbNum(me[key])} je Spiel · Liga-Schnitt ${sbNum(avg)}</div></div>`}
+function sbLeagueCmp(team){const X=sbLeagueStats(team);if(!X)return "";
+  return sbSec("Im Ligavergleich","Tore und Gegentore je Spiel, alle Teams",sbStrip(X.L,X.me,"f","high","Angriff")+sbStrip(X.L,X.me,"a","low","Abwehr")+'<div class="stLeg"><i class="me"></i>wir <i class="o"></i>andere Teams <i class="avg"></i>Schnitt</div>')}
+function sbHalves(team,S){
+  const st=standings[team]; if(!st||!Array.isArray(st.rows)||st.rows.length<4)return "";
+  const N=st.rows.length,cut=Math.ceil(N/2),z=()=>({w:0,l:0,gf:0,ga:0,n:0}),A=z(),B=z();
+  S.P.forEach(x=>{const r=standRow(team,opponent(x.g));if(!r||!r.r)return;const o=r.r<=cut?A:B;o.n++;if(x.r.o==="w")o.w++;else if(x.r.o==="l")o.l++;o.gf+=x.r.gs;o.ga+=x.r.os});
+  if(!A.n&&!B.n)return "";
+  const box=(lbl,sub,o)=>`<div><span>${lbl}<small>${sub}</small></span><b>${o.n?`${o.w} S · ${o.l} N`:"–"}</b><small>${o.n?`${o.gf}:${o.ga} Tore`:"noch kein Spiel"}</small>${o.n?`<span class="hvBar"><i class="w" style="flex:${o.w||0}"></i><i class="l" style="flex:${o.l||0}"></i></span>`:""}</div>`;
+  return sbSec("Gegen oben und unten","nach aktuellem Tabellenplatz des Gegners",`<div class="sbHA hv">${box("Obere Hälfte","Platz 1–"+cut,A)}${box("Untere Hälfte","Platz "+(cut+1)+"–"+N,B)}</div>`)}
+function sbRest(team,S){
+  const st=standings[team],now=new Date(); const R=S.all.filter(g=>!g.cancelled&&!resInfo(g)&&dt(g)>=now); if(!R.length)return "";
+  const N=st&&Array.isArray(st.rows)?st.rows.length:0, rk=g=>{const r=N?standRow(team,opponent(g)):null;return r&&r.r?r.r:0};
+  const tier=r=>!r||!N?"":r<=Math.ceil(N/3)?"hi":r>N-Math.ceil(N/3)?"lo":"mid";
+  const rs=R.map(rk).filter(Boolean),ps=S.P.map(x=>rk(x.g)).filter(Boolean),av=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+  const rows=R.slice(0,8).map(g=>{const r=rk(g);return `<div class="rpR"><span class="rpD">${esc(g.date.slice(8,10)+"."+g.date.slice(5,7)+".")}</span><span class="rpHA">${isHome(g)?"H":"A"}</span><span class="rpN">${esc(shortTeam(opponent(g)))}</span>${r?`<span class="rpK ${tier(r)}">${r}.</span>`:'<span class="rpK">–</span>'}</div>`}).join("");
+  const sum=rs.length?`Ø Gegnerplatz <b>${sbNum(av(rs))}</b>${ps.length?` · bisher ${sbNum(av(ps))}`:""} – ${ps.length&&av(rs)<av(ps)-.4?"es wird schwerer":ps.length&&av(rs)>av(ps)+.4?"es wird leichter":"ähnlich schwer"}`:"";
+  return sbSec("Restprogramm",R.length+" "+(R.length===1?"Spiel":"Spiele"),`${sum?`<div class="cbSub" style="margin:0 0 8px">${sum}</div>`:""}<div class="rpList">${rows}</div>${R.length>8?`<div class="cbSub">… und ${R.length-8} weitere</div>`:""}${N?'<div class="stLeg"><i class="hi"></i>oberes Drittel <i class="mid"></i>Mitte <i class="lo"></i>unteres Drittel</div>':""}`)}
+
+/* --- Nummern --- */
+function sbNrChips(L){return `<div class="nrChips">${L.map(([nr,v,t])=>`<span class="nrChip"><b>${esc(nr)}</b>${t||v+"×"}</span>`).join("")}</div>`}
+function sbSpecialGoals(team){const sc=standings[team]&&standings[team].scorers;if(!sc||!sc.list)return "";
+  const pp=sc.list.filter(x=>x.pp).sort((a,b)=>b.pp-a.pp).map(x=>[x.nr,x.pp]),gw=sc.list.filter(x=>x.gw).sort((a,b)=>b.gw-a.gw).map(x=>[x.nr,x.gw]);
+  if(!pp.length&&!gw.length)return "";
+  return sbSec("Besondere Tore","",`${pp.length?`<div class="nrLbl">Überzahltore</div>${sbNrChips(pp)}`:""}${gw.length?`<div class="nrLbl">Siegtore</div>${sbNrChips(gw)}`:""}`)}
+function sbMulti(team){const G=sbOwnLeague(team);if(!G)return "";const H={},D={};
+  G.forEach(x=>{if(!x.sc||!x.sc.length)return;const c={};x.sc.forEach(n=>c[n]=(c[n]||0)+1);Object.keys(c).forEach(n=>{if(c[n]>=3)H[n]=(H[n]||0)+1;else if(c[n]===2)D[n]=(D[n]||0)+1})});
+  const srt=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]||Number(a[0])-Number(b[0]));
+  const h=srt(H),d=srt(D); if(!h.length&&!d.length)return "";
+  return sbSec("Mehrere Tore in einem Spiel","",`${h.length?`<div class="nrLbl">Hattricks <small>(3+ Tore)</small></div>${sbNrChips(h)}`:""}${d.length?`<div class="nrLbl">Doppelpacks</div>${sbNrChips(d)}`:""}`)}
+function sbStreaks(team){const G=sbOwnLeague(team);if(!G||G.length<2)return "";
+  const withAs=G.some(x=>Array.isArray(x.av)), pts=x=>new Set([...(x.sc||[]),...(withAs?(x.av||[]):[])]);
+  const all=new Set();G.forEach(x=>pts(x).forEach(n=>all.add(n)));
+  const L=[...all].map(nr=>{let n=0;for(let i=G.length-1;i>=0&&pts(G[i]).has(nr);i--)n++;return [nr,n]}).filter(x=>x[1]>=2).sort((a,b)=>b[1]-a[1]||Number(a[0])-Number(b[0])).slice(0,8);
+  const word=withAs?"mit Scorerpunkt":"mit Tor";
+  return sbSec(withAs?"Scorer-Serien":"Tor-Serien","aktuell, Spiele in Folge "+word,L.length?sbNrChips(L.map(([nr,n])=>[nr,n,n+" Spiele"])):`<div class="cbSub" style="margin:0">Gerade hat keine Nummer mehrere Spiele in Folge ${word}.</div>`)}
+
+/* --- Reiter --- */
+function sbTabsHtml(panes){
+  const has=SB_TABS.filter(([k])=>panes[k]&&panes[k].trim());
+  if(!has.some(([k])=>k===sbTabLast))sbTabLast="ov";
+  return `<div class="sbTabs" role="tablist">${has.map(([k,l])=>`<button type="button" role="tab" data-sbtab="${k}" class="${k===sbTabLast?"on":""}" aria-selected="${k===sbTabLast}">${l}</button>`).join("")}</div>`+
+    has.map(([k])=>`<div class="sbPane" data-sbpane="${k}"${k===sbTabLast?"":" hidden"}>${panes[k]}</div>`).join("")}
+function sbBindTabs(c){
+  const tabs=c.querySelector(".sbTabs"); if(!tabs)return;
+  const head=c.closest(".matchModalBox")?.querySelector(".matchModalHead"); if(head)tabs.style.top=Math.max(0,head.offsetHeight-18)+"px";
+  tabs.querySelectorAll("[data-sbtab]").forEach(b=>b.onclick=()=>{sbTabLast=b.dataset.sbtab;
+    tabs.querySelectorAll("[data-sbtab]").forEach(x=>{const on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});
+    c.querySelectorAll("[data-sbpane]").forEach(p=>p.hidden=p.dataset.sbpane!==sbTabLast);
+    const box=c.closest(".matchModalBox"); if(box){const t=box.scrollTop+tabs.getBoundingClientRect().top-box.getBoundingClientRect().top-(head?head.offsetHeight-18:0); if(box.scrollTop>t)box.scrollTop=t}
+    try{trackAnalyticsEvent("saisonbilanz_tab",{tab:sbTabLast})}catch(e){}});
+}

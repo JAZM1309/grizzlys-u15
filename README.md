@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.47.0.229 | – (nur Test) | 20.11.2026 | Neue Funktion: Saisonbilanz mit Reitern und neuen Statistiken |
 | 1.46.1.228 | – (nur Test) | 20.11.2026 | Fix: Strafen & Special Teams in der Saisonbilanz |
 | 1.46.0.227 | – (nur Test) | 20.11.2026 | Admin-Bereich nach Aufgaben geordnet |
 | 1.45.0.226 | – (nur Test) | 20.11.2026 | Neue Funktion: Kapitän (C) und Assistenten (A) – ohne Eintrag in „Neu in der App“ |
@@ -91,6 +92,15 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.47.0
+
+- **Saisonbilanz mit Reitern:** **Überblick** (Platz, Kacheln, Tordifferenz je Spiel, Heim/auswärts, Auffälliges, Meilensteine, Spielberichte, Tabelle als Bild) · **Verlauf** · **Liga** · **Nummern**. Die Reiterleiste bleibt beim Scrollen unter der Kopfzeile stehen; leere Reiter werden ausgeblendet. Alles je Mannschaft, nichts mannschaftsübergreifend, weiter nur Rückennummern.
+- **Verlauf:** Zeit in Führung/Gleichstand/Rückstand (Balken, Ø Minuten je Spiel, aus `timeValues` der EHV-Spielberichte) · Comebacks und Führungen nach 2 Dritteln (Ringe: Führung gehalten / aus Gleichstand gewonnen / Rückstand gedreht) plus Zeile nach dem 1. Drittel (aus den Drittelergebnissen) · Knappe (1 Tor oder n.P.) und deutliche Spiele als Balken mit den letzten knappen Ergebnissen · Tore je Drittel mit Balken und „letzte 5“-Trend · Tore nach Spielminute (10-Minuten-Abschnitte, Tore oben/Gegentore unten, stärkste und schwächste Phase) · Strafen & Special Teams.
+- **Liga:** Tabellenverlauf · Ligavergleich Angriff und Abwehr (Punktleiste aller Teams, Rang, Liga-Schnitt; aus allen EHV-Ligaergebnissen) · Bilanz gegen obere und untere Tabellenhälfte (aktueller Platz des Gegners) · Restprogramm mit Gegnerplatz (farbig nach Drittel der Tabelle) und Ø Gegnerplatz im Vergleich zu bisher.
+- **Nummern:** Tore nach Rückennummer · Besondere Tore (Überzahltore, Siegtore je Nummer) · Hattricks und Doppelpacks · aktuelle Scorer-Serien (Spiele in Folge mit Tor oder Vorlage).
+- **Cloud Function `standings` erweitert** (wird mit „Live gehen“ veröffentlicht): je Spielbericht zusätzlich `shG`/`shGA` (Unterzahltore), `lead`/`tied`/`trail` (Sekunden), `tf`/`ta` (Tore/Gegentore je 10 Minuten, Index 6 = Verlängerung) in `scorers.special`; `gw` (Siegtore) je Nummer in `scorers.list`; `av` (Vorlagen-Nummern) je eigenem Spiel in `games`. Bis die Function neu läuft, fehlen in der App nur Zeit in Führung, Tore nach Spielminute, Siegtore und Vorlagen in den Serien (dann „Tor-Serien“). Torschüsse und Paraden werden vom EHV nicht erfasst (immer 0) und sind deshalb nicht dabei.
+- Eintrag in „Neu in der App“.
 
 ## Version 1.46.1
 

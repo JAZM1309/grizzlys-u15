@@ -88,6 +88,7 @@ async function fetchOwnGoals(gameId) {
   const goals = (side && Array.isArray(r[side + "Goals"]) ? r[side + "Goals"] : []).map((x) => ({
     s: jersey(x.scoredBy), a1: jersey(x.assistBy), a2: jersey(x.assist2By),
     pp: /^PP/i.test(String(x.gameStrength || "")), ps: x.isPenaltyShot === true,
+    sh: /^SH/i.test(String(x.gameStrength || "")), gw: x.isGameWinningGoal === true, t: num(x.gameTime), // 1.47.0
   }));
   // 1.43.0: Strafen und Special Teams der Grizzlys in diesem Spiel (für die Saisonbilanz)
   let st = null;
@@ -95,10 +96,18 @@ async function fetchOwnGoals(gameId) {
     const other = side === "home" ? "away" : "home";
     const S = r[side + "TeamStats"] || {}, O = r[other + "TeamStats"] || {};
     const oppGoals = Array.isArray(r[other + "Goals"]) ? r[other + "Goals"] : [];
+    // 1.47.0: Tore nach Spielminute (6 × 10 Minuten + Verlängerung), Unterzahltore, Zeit in Führung/Gleichstand/Rückstand
+    const bucket = (t) => Math.min(6, Math.max(0, Math.floor(num(t) / 600)));
+    const tf = [0, 0, 0, 0, 0, 0, 0], ta = [0, 0, 0, 0, 0, 0, 0];
+    goals.forEach((q) => { tf[bucket(q.t)]++; });
+    oppGoals.forEach((x) => { ta[bucket(x.gameTime)]++; });
+    const tv = S.timeValues || {};
     st = {
       pim: num(S.penaltyMinutes), oppPim: num(O.penaltyMinutes),
       ppOpp: num(S.powerplayOpportunities), ppG: goals.filter((q) => q.pp).length,
       pkSit: num(S.penaltykillSituations), ppGA: oppGoals.filter((x) => /^PP/i.test(String(x.gameStrength || ""))).length,
+      shG: goals.filter((q) => q.sh).length, shGA: oppGoals.filter((x) => /^SH/i.test(String(x.gameStrength || ""))).length,
+      lead: num(tv.leading), tied: num(tv.tied), trail: num(tv.trailing), tf, ta,
     };
   }
   const out = { goals, st };
@@ -110,18 +119,18 @@ async function fetchScorers(schedule) {
   const own = schedule.data.rows.filter((x) => isFinished(x) && x.id &&
     (OWN.test(String(x.homeTeamLongName || "")) || OWN.test(String(x.awayTeamLongName || ""))));
   const by = new Map(), perGame = {}; let games = 0;
-  const add = (nr, k) => { if (!nr) return; const o = by.get(nr) || { nr, g: 0, a: 0, pp: 0 }; o[k]++; by.set(nr, o); };
+  const add = (nr, k) => { if (!nr) return; const o = by.get(nr) || { nr, g: 0, a: 0, pp: 0, gw: 0 }; o[k]++; by.set(nr, o); };
   const res = await Promise.allSettled(own.slice(-40).map((x) => fetchOwnGoals(String(x.id))));
   const ids = own.slice(-40).map((x) => String(x.id));
-  const sp = { games: 0, pim: 0, oppPim: 0, ppOpp: 0, ppG: 0, pkSit: 0, ppGA: 0 };
+  const sp = { games: 0, pim: 0, oppPim: 0, ppOpp: 0, ppG: 0, pkSit: 0, ppGA: 0, shG: 0, shGA: 0, lead: 0, tied: 0, trail: 0, tf: [0, 0, 0, 0, 0, 0, 0], ta: [0, 0, 0, 0, 0, 0, 0] };
   res.forEach((r, i) => {
     if (r.status !== "fulfilled") return;
     games++;
     const goals = r.value.goals || [];
     perGame[ids[i]] = goals; // 1.36.5: Tore je Spiel (nur Rückennummern) für „Letzte Ergebnisse“
-    goals.forEach((x) => { add(x.s, "g"); if (x.pp) add(x.s, "pp"); add(x.a1, "a"); add(x.a2, "a"); });
+    goals.forEach((x) => { add(x.s, "g"); if (x.pp) add(x.s, "pp"); if (x.gw) add(x.s, "gw"); add(x.a1, "a"); add(x.a2, "a"); });
     const st = r.value.st; // 1.43.0: Strafen / Überzahl / Unterzahl über die Saison
-    if (st) { sp.games++; Object.keys(st).forEach((k) => { sp[k] += st[k]; }); }
+    if (st) { sp.games++; Object.keys(st).forEach((k) => { if (Array.isArray(st[k])) st[k].forEach((v, j) => { sp[k][j] = (sp[k][j] || 0) + num(v); }); else sp[k] += num(st[k]); }); }
   });
   if (!games) throw new Error("Keine Spielberichte");
   return { perGame, games, special: sp.games ? sp : null, list: [...by.values()].sort((a, b) => b.g + b.a - (a.g + a.a) || b.g - a.g || num(a.nr) - num(b.nr)).slice(0, 60) };
@@ -162,7 +171,8 @@ async function loadAll() {
         // 1.36.5: eigene Spiele bekommen die Torschützen als Rückennummern (sc), z. B. ["27","27","7"]; pp = Überzahltore
         part.games = games.value.map(({ _id, ...g }) => {
           const goals = _id && perGame[_id];
-          if (goals && goals.length) { g.sc = goals.map((q) => q.s).filter(Boolean).slice(0, 30); g.pp = goals.filter((q) => q.pp).length; }
+          if (goals && goals.length) { g.sc = goals.map((q) => q.s).filter(Boolean).slice(0, 30); g.pp = goals.filter((q) => q.pp).length;
+            g.av = goals.flatMap((q) => [q.a1, q.a2]).filter(Boolean).slice(0, 60); } // 1.47.0: Vorlagen je Spiel (für Scorer-Serien)
           return g;
         });
       }
