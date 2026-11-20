@@ -65,6 +65,8 @@ function standClean(part){
   if(!rows.length)return null;
   const out={rows,upd:String(part.upd||"").slice(0,40)};
   if(part.scorers&&Array.isArray(part.scorers.list))out.scorers={games:Number(part.scorers.games)||0,list:part.scorers.list.filter(x=>x&&/^[0-9]{1,3}$/.test(String(x.nr))).slice(0,60).map(x=>({nr:String(x.nr),g:Number(x.g)||0,a:Number(x.a)||0,pp:Number(x.pp)||0}))};
+  /* 1.46.1: Strafen & Special Teams wurden hier bisher herausgefiltert – Kasten in der Saisonbilanz blieb leer */
+  if(out.scorers&&part.scorers.special&&typeof part.scorers.special==="object"){const S=part.scorers.special,n=k=>Math.max(0,Math.min(9999,Number(S[k])||0));out.scorers.special={games:n("games"),pim:n("pim"),oppPim:n("oppPim"),ppOpp:n("ppOpp"),ppG:n("ppG"),pkSit:n("pkSit"),ppGA:n("ppGA")}}
   if(Array.isArray(part.games)){
     out.games=part.games.filter(x=>x&&/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(x.d)&&x.h&&x.a).slice(-400).map(x=>({d:x.d,t:Number(x.t)||0,h:String(x.h).slice(0,120),a:String(x.a).slice(0,120),hs:Number(x.hs)||0,as:Number(x.as)||0,ot:x.ot===true,so:x.so===true,p:(Array.isArray(x.p)?x.p:[]).filter(v=>/^[0-9]{1,2}:[0-9]{1,2}$/.test(v)).slice(0,3),sc:(Array.isArray(x.sc)?x.sc:[]).map(String).filter(v=>/^[0-9]{1,3}$/.test(v)).slice(0,30),pp:Number(x.pp)||0}));
   }
