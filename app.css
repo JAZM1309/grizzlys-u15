@@ -2488,3 +2488,30 @@ html.dark .sbTabs{--sbBg:#121f33}
 .sbHA.hv .hvBar{display:flex;padding:0;border:0}
 .cbRing text{font-size:10.5px}
 .stFoot{margin-top:2px}
+/* 1.48.0: Hintergrundbilder fürs Handy */
+.wpCard{margin-top:14px}
+.wpGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+.wpTile{border:1px solid var(--border);background:transparent;border-radius:16px;padding:7px 7px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;color:inherit;cursor:pointer;text-align:center}
+.wpTile b{font-size:12.5px;font-weight:900;line-height:1.2;margin-top:4px}.wpTile small{font-size:10.5px;color:var(--muted);font-weight:700;line-height:1.25}
+.wpThumb{display:block;width:100%;aspect-ratio:300/650;border-radius:12px;overflow:hidden;background:#0a2547;box-shadow:0 4px 12px rgba(4,16,31,.25)}
+.wpThumb canvas{width:100%;height:100%;display:block}
+.wpBody{display:flex;flex-direction:column;align-items:center;gap:12px}
+.wpPhone{position:relative;height:min(56vh,520px);aspect-ratio:9/19.5;border-radius:30px;overflow:hidden;background:#0a2547;border:6px solid #0b1626;box-shadow:0 10px 30px rgba(4,16,31,.35)}
+.wpPhone img{width:100%;height:100%;object-fit:cover;display:block}
+.wpClock{position:absolute;left:0;right:0;top:9%;text-align:center;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.45);pointer-events:none}
+.wpClock span{display:block;font-size:11px;font-weight:700;opacity:.9}.wpClock b{display:block;font-size:44px;font-weight:600;line-height:1;letter-spacing:-.02em}
+.wpWait{position:absolute;inset:0;display:grid;place-items:center;color:#d5e1ef;font-weight:800;font-size:13px;background:rgba(4,16,31,.55)}.wpWait[hidden]{display:none}
+.wpOpts{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}.wpOpts[hidden]{display:none}
+.wpChips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.wpChips button{border:1px solid var(--border);background:transparent;border-radius:99px;padding:7px 13px;font:inherit;font-size:13px;font-weight:850;color:inherit;cursor:pointer}
+.wpChips button.on{background:#0b2a52;border-color:#0b2a52;color:#fff}html.dark .wpChips button.on{background:#1f6fb8;border-color:#1f6fb8}
+.wpNr{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:850}.wpNr input{width:74px;font:inherit;font-size:18px;font-weight:900;text-align:center;padding:7px;border:1px solid var(--border);border-radius:12px;background:transparent;color:inherit}
+.wpBtns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.wpBtns .action[hidden]{display:none}
+.wpHint{text-align:center;max-width:340px}
+/* 1.49.0: Downloads in Reitern */
+.dlTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;background:#e6edf5;border-radius:14px;padding:3px;margin:0 0 12px}
+.dlTabs button{border:0;background:transparent;border-radius:11px;padding:9px 4px;font:inherit;font-size:13px;font-weight:900;color:#3c5674;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.dlTabs button.on{background:#fff;color:#0b2a52;box-shadow:0 2px 6px rgba(11,42,82,.12)}
+.dlTabCnt{min-width:18px;height:18px;border-radius:9px;background:#ff8a00;color:#2b1500;font-size:11px;font-weight:950;display:inline-grid;place-items:center;padding:0 5px}.dlTabCnt[hidden]{display:none}
+html.dark .dlTabs{background:#0f1c2f}html.dark .dlTabs button{color:#93a7bd}html.dark .dlTabs button.on{background:#1b2d47;color:#e7eef8}
+.dlPane[hidden]{display:none!important}.dlPane>.infoCard:first-child{margin-top:0}.wpCard{margin-top:0}

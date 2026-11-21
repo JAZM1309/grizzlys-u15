@@ -8,6 +8,9 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.49.0.232 | – (nur Test) | 21.11.2026 | Downloads in Reitern |
+| 1.48.1.231 | – (nur Test) | 21.11.2026 | Trikot-Hintergrund wie das Original |
+| 1.48.0.230 | – (nur Test) | 21.11.2026 | Neue Funktion: Hintergrundbilder fürs Handy |
 | 1.47.0.229 | – (nur Test) | 20.11.2026 | Neue Funktion: Saisonbilanz mit Reitern und neuen Statistiken |
 | 1.46.1.228 | – (nur Test) | 20.11.2026 | Fix: Strafen & Special Teams in der Saisonbilanz |
 | 1.46.0.227 | – (nur Test) | 20.11.2026 | Admin-Bereich nach Aufgaben geordnet |

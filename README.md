@@ -50,6 +50,9 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.49.0.232 | – (nur Test) | 21.11.2026 | Downloads in Reitern |
+| 1.48.1.231 | – (nur Test) | 21.11.2026 | Trikot-Hintergrund wie das Original |
+| 1.48.0.230 | – (nur Test) | 21.11.2026 | Neue Funktion: Hintergrundbilder fürs Handy |
 | 1.47.0.229 | – (nur Test) | 20.11.2026 | Neue Funktion: Saisonbilanz mit Reitern und neuen Statistiken |
 | 1.46.1.228 | – (nur Test) | 20.11.2026 | Fix: Strafen & Special Teams in der Saisonbilanz |
 | 1.46.0.227 | – (nur Test) | 20.11.2026 | Admin-Bereich nach Aufgaben geordnet |
@@ -92,6 +95,30 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.49.0
+
+- **Downloads in drei Reitern:** **Spielplan** (Kalender herunterladen, Spielplan als PDF, Kampfgericht-Anleitung) · **Social Media** (Spieltags-, Ergebnis-, Verlegungs-, Wochenend-, Tabellen- und Jahresbilder) · **Hintergründe** (Handy-Hintergrundbilder).
+- Zahl am Reiter „Social Media“ = aktuelle Spieltags-, Ergebnis- und Verlegungsbilder (`window.dlInstaFresh`, gesetzt in `renderInstaDownloads`).
+- Der zuletzt gewählte Reiter wird pro Gerät gemerkt (`localStorage` `grizzlysDlTab`); ohne gemerkten Reiter startet „Social Media“, wenn dort aktuelle Bilder liegen, sonst „Spielplan“.
+- Die Vorschaubilder der Hintergründe werden erst beim ersten Öffnen ihres Reiters erzeugt (spart Rechenzeit).
+- Analytics: `downloads_tab` (Reiter). Eintrag in „Neu in der App“.
+
+## Version 1.48.1
+
+- **Trikot-Hintergrundbild dem Original nachempfunden:** hellblau mit schwarzem Kragen, schwarzer Bruchlinie vom Kragen zum rechten Ärmel, geschwungenen schwarz-weißen Streifen unten, „Bergkamen“ in Weiß mit schwarzem Rand auf beiden Ärmeln und gestreiften Bündchen; Nummer schwarz mit weißem Rand. Varianten „Blau“ (Original) und „Weiß“ (gleiches Muster, helle Grundfarbe). Statt Spielername steht „GRIZZLYS“ im Bogen; Sponsoren- und Herstellerlogos sind nicht dabei.
+
+## Version 1.48.0
+
+- **Hintergrundbilder fürs Handy** (Downloads, neue Karte unter „Bilder für Social Media“): Motive als Kacheln mit Vorschau; Antippen öffnet ein Fenster mit Handy-Vorschau samt Beispiel-Uhr, Optionen und „In Fotos sichern / Teilen“ (Web Share mit Datei, wo verfügbar) sowie „Herunterladen“.
+  - **Vereinsdesign** in vier Stilen: Eishalle (Hallenfoto), Nacht, Spielfeld (Eisflächen-Linien), Streifen (diagonaler Orange-Strich wie bei den Social-Media-Bildern).
+  - **Trikot mit Rückennummer:** Trikot-Rückenansicht mit „GRIZZLYS“ und Nummer, dunkel oder hell; Nummer vorbelegt aus „Meine Rückennummer“ (je Mannschaft), sonst frei eintragbar (1–2 Ziffern). Keine Namen.
+  - **Nächstes Spiel:** Datum, Uhrzeit, beide Logos, Heim/Auswärts und Halle, „Stand“-Datum; bei mehreren Mannschaften auswählbar.
+  - **Spiele des Monats:** bis zu 7 Spiele der nächsten 5 Wochen, alle oder je Mannschaft.
+  - **Advent & Weihnachten:** Weihnachtslogo, Sterne, Schnee – nur vom 20.11. bis 6.1. sichtbar.
+- Größe = Bildschirm × Pixeldichte (max. 1440 px breit; Desktop/ungewöhnliche Formate: 1179 × 2556). Layout sperrbildschirmtauglich: oben ca. 30 % frei für die Uhr, unten ca. 13 % frei. Alles wird auf dem Gerät erzeugt (Canvas), kein Server.
+- Analytics: `wallpaper_opened` und `wallpaper_saved` (Motiv, ggf. Stil) – ohne Nummer.
+- Eintrag in „Neu in der App“.
 
 ## Version 1.47.0
 
