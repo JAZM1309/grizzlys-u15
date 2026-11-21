@@ -3,6 +3,7 @@
 
 Entfernt Test-Balken, Test-Titel, Test-Sperren (nichts speichern / kein Push) und schaltet
 Google Analytics wieder ein. Die Cache-Nummer wird von "grizzlys-u15-test-vNN" zu "grizzlys-u15-vNN".
+Ab 1.49.1 werden die Einträge in „Neu in der App“ seit der letzten Live-Version zu einem Eintrag zusammengefasst.
 
 Ab 1.39.0 liegt der App-Code in eigenen Dateien (app.css, js/app.js, js/app-daten.js). Die Test-Sperren
 können darum in index.html ODER in diesen Dateien stehen – jede Stelle muss insgesamt genau einmal
@@ -64,6 +65,52 @@ for f in files:
     files[f] = files[f].replace('deleteToken as _deleteToken', 'deleteToken')
 ersetze('getToken as _getToken,', 'getToken,', "Push-Sperre (Import)")
 ersetze_re(r'\n/\* TESTVERSION:[^\n]*\nconst _testBlock=[^\n]*\nconst setDoc=_testBlock[^\n]*\n', '', "Block der Test-Sperren")
+# 1.49.1: „Neu in der App“ – alle Einträge seit der letzten Live-Version beim Live-Gang zu EINEM Eintrag zusammenfassen
+# (Version und Monat vom neuesten Eintrag, Punkte aller Einträge, neueste zuerst). Fehlt die Live-Version, bleibt alles wie es ist.
+def _ver(s):
+    return tuple(int(x) for x in re.findall(r"\d+", s))
+
+
+def _live_version():
+    try:
+        import subprocess
+        t = subprocess.run(["git", "show", "HEAD:js/app-daten.js"], cwd=DST_DIR, capture_output=True, text=True, timeout=20).stdout
+        m = re.search(r'appVersion:"([0-9.]+)"', t)
+        return m.group(1) if m else None
+    except Exception:
+        return None
+
+
+def news_zusammenfassen():
+    if "js/app.js" not in files:
+        return
+    L = _live_version()
+    if not L:
+        print("Hinweis: Live-Version unbekannt – Neuigkeiten nicht zusammengefasst.", file=sys.stderr)
+        return
+    t = files["js/app.js"]
+    start = t.find("const APP_NEWS=[\n")
+    if start < 0:
+        return
+    pos = start + len("const APP_NEWS=[\n")
+    zeile = re.compile(r'  \{v:"([0-9.]+)",d:"([^"]*)",items:\[(.*)\]\},\n')
+    neu, p = [], pos
+    while True:
+        m = zeile.match(t, p)
+        if not m or _ver(m.group(1)) <= _ver(L):
+            break
+        neu.append(m)
+        p = m.end()
+    if len(neu) < 2:
+        return
+    items = ",".join(m.group(3) for m in neu)
+    merged = '  {v:"%s",d:"%s",items:[%s]},\n' % (neu[0].group(1), neu[0].group(2), items)
+    files["js/app.js"] = t[:pos] + merged + t[p:]
+    print(f"Neu in der App: {len(neu)} Einträge seit {L} zu einem zusammengefasst.", file=sys.stderr)
+
+
+news_zusammenfassen()
+
 for f, t in files.items():
     for rest in ('class="testRibbon"', 'window.GRIZZLYS_TEST=true', 'const _testBlock'):
         if rest in t:
