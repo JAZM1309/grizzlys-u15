@@ -3478,7 +3478,7 @@ async function wpOpen(k){
   const chips=(key,list)=>`<div class="wpChips" data-key="${key}">${list.map(([v,l])=>`<button type="button" data-v="${esc(v)}" class="${String(o[key])===String(v)?"on":""}">${esc(l)}</button>`).join("")}</div>`;
   const T=window.MY_TEAMS||["A"];let h=chips("tone",[["dark","Dunkel"],["light","Hell"]]);
   if(k==="design")h+=chips("style",WP_STYLES);
-  if(k==="trikot")h+=`<label class="wpNr">Rückennummer <input id="wpNrIn" type="text" inputmode="numeric" maxlength="2" value="${esc(o.nr)}" placeholder="z. B. 17"></label>`+chips("kit",[["home","Blau"],["away","Weiß"]])+(T.length>1?chips("team",T.map(t=>[t,teamName(t)])):"");
+  if(k==="trikot")h+=`<label class="wpNr">Rückennummer <input id="wpNrIn" type="text" inputmode="numeric" maxlength="2" value="${esc(o.nr)}" placeholder="z. B. 17"></label>`+chips("kit",[["home","Blau"],["away","Weiß"]]);/* 1.50.2: alle Mannschaften haben dasselbe Trikot – keine Mannschaftsauswahl */
   if(k==="next"&&T.length>1)h+=chips("team",T.map(t=>[t,teamName(t)]));
   if(k==="month"&&T.length>1)h+=chips("team",[["","Alle"],...T.map(t=>[t,teamName(t)])]);
   opts.innerHTML=h;opts.hidden=!h;

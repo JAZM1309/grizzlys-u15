@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.50.2.235 | – (nur Test) | 22.11.2026 | Trikot-Hintergrund ohne Mannschaftsauswahl |
 | 1.50.1.234 | – (nur Test) | 21.11.2026 | Hintergrund „Eishalle“ hell mit Hallenbild |
 | 1.50.0.233 | – (nur Test) | 21.11.2026 | Hintergrundbilder auch hell |
 | 1.49.0.232 | – (nur Test) | 21.11.2026 | Downloads in Reitern |
@@ -97,6 +98,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.50.2
+
+- **Trikot-Hintergrund ohne Mannschaftsauswahl:** alle Mannschaften tragen dasselbe Trikot. Auswahl: Hell/Dunkel (Hintergrund), Blau/Weiß (Trikot) und Rückennummer (vorbelegt aus „Meine Rückennummer“, erste eingetragene).
 
 ## Version 1.50.1
 
