@@ -50,6 +50,8 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.50.1.234 | – (nur Test) | 21.11.2026 | Hintergrund „Eishalle“ hell mit Hallenbild |
+| 1.50.0.233 | – (nur Test) | 21.11.2026 | Hintergrundbilder auch hell |
 | 1.49.0.232 | – (nur Test) | 21.11.2026 | Downloads in Reitern |
 | 1.48.1.231 | – (nur Test) | 21.11.2026 | Trikot-Hintergrund wie das Original |
 | 1.48.0.230 | – (nur Test) | 21.11.2026 | Neue Funktion: Hintergrundbilder fürs Handy |
@@ -96,6 +98,15 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
 
+## Version 1.50.1
+
+- **Hintergrund „Eishalle“ in Hell mit Hallenbild:** nutzt jetzt `img/header-hell.webp` wie der Kopfbereich der hellen App (Scheinwerfer und weißes Eis). Das Bild ist so breit gesetzt, dass die Scheinwerfer links und rechts sichtbar bleiben; oben bleibt es dunkel (Platz für die Uhr), nach unten wird das Eis hell weitergeführt. Schrift dunkelblau.
+
+## Version 1.50.0
+
+- **Hintergrundbilder auch hell:** In der Vorschau jedes Motivs gibt es jetzt „Dunkel“ und „Hell“. Hell = heller Blauverlauf mit feinen Streifen (statt Hallenfoto), Schrift dunkelblau, Karten weiß; Spielfeld als weiße Eisfläche mit Linien; Advent mit hellem Winterhimmel. Die Wahl wird pro Gerät gemerkt (`localStorage` `grizzlysWpTone`) und gilt auch für die Vorschau-Kacheln. Dateiname bekommt „-hell“.
+- Eintrag in „Neu in der App“.
+
 ## Version 1.49.0
 
 - **Downloads in drei Reitern:** **Spielplan** (Kalender herunterladen, Spielplan als PDF, Kampfgericht-Anleitung) · **Social Media** (Spieltags-, Ergebnis-, Verlegungs-, Wochenend-, Tabellen- und Jahresbilder) · **Hintergründe** (Handy-Hintergrundbilder).
@@ -103,6 +114,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 - Der zuletzt gewählte Reiter wird pro Gerät gemerkt (`localStorage` `grizzlysDlTab`); ohne gemerkten Reiter startet „Social Media“, wenn dort aktuelle Bilder liegen, sonst „Spielplan“.
 - Die Vorschaubilder der Hintergründe werden erst beim ersten Öffnen ihres Reiters erzeugt (spart Rechenzeit).
 - Analytics: `downloads_tab` (Reiter). Eintrag in „Neu in der App“.
+- **Live gehen fasst „Neu in der App“ zusammen** (`.github/werkzeug/tolive.py` im Live-Repo, manuell hochgeladen): Alle Einträge, die neuer als die bisherige Live-Version sind, werden beim Umwandeln zu einem Eintrag mit der neuen Versionsnummer zusammengefasst (Punkte aller Einträge, neueste zuerst). In der Test-App bleiben die Einzeleinträge stehen. Ist die bisherige Live-Version nicht lesbar, bleibt alles unverändert.
 
 ## Version 1.48.1
 

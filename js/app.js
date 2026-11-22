@@ -2232,7 +2232,9 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
-  {v:"1.49.0.232",d:"November 2026",items:["Downloads aufgeräumt: drei Reiter – Spielplan, Social Media und Hintergründe. Eine Zahl zeigt, wenn neue Spieltags- oder Ergebnisbilder da sind.","Hintergrundbilder fürs Handy unter Downloads: Vereinsdesign in vier Stilen, Trikot mit deiner Rückennummer, Nächstes Spiel und Spiele des Monats für den Sperrbildschirm – jetzt auch Advent & Weihnachten. Passend zu deinem Bildschirm, oben bleibt Platz für die Uhr."]},
+  {v:"1.50.0.233",d:"November 2026",items:["Alle Hintergrundbilder gibt es jetzt auch hell – einfach in der Vorschau „Hell“ wählen."]},
+  {v:"1.49.0.232",d:"November 2026",items:["Downloads aufgeräumt: drei Reiter – Spielplan, Social Media und Hintergründe. Eine Zahl zeigt, wenn neue Spieltags- oder Ergebnisbilder da sind."]},
+  {v:"1.48.0.230",d:"November 2026",items:["Hintergrundbilder fürs Handy unter Downloads: Vereinsdesign in vier Stilen, Trikot mit deiner Rückennummer, Nächstes Spiel und Spiele des Monats für den Sperrbildschirm – jetzt auch Advent & Weihnachten. Passend zu deinem Bildschirm, oben bleibt Platz für die Uhr."]},
   {v:"1.47.0.229",d:"November 2026",items:["Saisonbilanz neu sortiert: Überblick, Verlauf, Liga und Nummern als Reiter – mit Grafiken.","Neu im Verlauf: Zeit in Führung, Comebacks, knappe Spiele, Tore nach Spielminute und Überzahl/Unterzahl (die fehlten bisher).","Neu bei Liga und Nummern: Angriff und Abwehr im Ligavergleich, Bilanz gegen obere und untere Tabellenhälfte, Restprogramm, Hattricks, Siegtore und Scorer-Serien – weiter nur mit Rückennummern."]},
   {v:"1.44.2.221",d:"November 2026",items:["Verlegte Spiele ohne neuen Termin werden jetzt als „Verlegt · Termin offen“ angezeigt – statt als abgesagt."]},
   {v:"1.44.0.219",d:"November 2026",items:["Wunschliste: Stimm ab, welche Funktion als Nächstes kommen soll – bis zu 3 Stimmen, anonym (Startseite unten und News).","Mit einem Tipp sagen, ob dir ein Spielbericht oder eine Neuerung gefällt (👍/👎).","Feedback ist jetzt schneller erreichbar: auf der Startseite, in der Info und in den News."]},
@@ -3303,37 +3305,48 @@ function wpSize(){const dpr=Math.min(3,window.devicePixelRatio||2),sw=Math.min(s
 function wpAdventOn(d=new Date()){const m=d.getMonth(),dd=d.getDate();return (m===10&&dd>=20)||m===11||(m===0&&dd<=6)}
 function wpRand(seed){let s=seed;return()=>{s=(s*9301+49297)%233280;return s/233280}}
 function wpLogo(c,img,cx,cy,w,glow){if(!img)return;const h=w*img.naturalHeight/img.naturalWidth;c.save();c.shadowColor=glow||"rgba(22,140,255,.55)";c.shadowBlur=w*.12;c.drawImage(img,cx-w/2,cy-h/2,w,h);c.restore();return h}
-function wpPhoto(c,W,H,rink,bright){c.fillStyle="#04101f";c.fillRect(0,0,W,H);
+/* 1.50.0: helle Variante – heller Verlauf mit feinen Eis-Linien statt Hallenfoto */
+function wpLightBg(c,W,H){const u=W/1080;let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#f8fbff");g.addColorStop(.55,"#e6f0fa");g.addColorStop(1,"#cfe1f4");c.fillStyle=g;c.fillRect(0,0,W,H);
+  g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,W*.8);g.addColorStop(0,"rgba(22,140,255,.10)");g.addColorStop(1,"rgba(22,140,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.save();c.globalAlpha=.05;c.strokeStyle="#0b2a52";c.lineWidth=2*u;for(let x=-H;x<W;x+=46*u){c.beginPath();c.moveTo(x,H);c.lineTo(x+H,0);c.stroke()}c.restore()}
+function wpPhoto(c,W,H,rink,bright,L){if(L){wpLightBg(c,W,H);return}c.fillStyle="#04101f";c.fillRect(0,0,W,H);
   if(rink){const s=Math.max(W/rink.naturalWidth,H/rink.naturalHeight)*1.02,w=rink.naturalWidth*s,h=rink.naturalHeight*s;c.save();c.filter=`saturate(1.15) brightness(${bright||.75})`;c.drawImage(rink,(W-w)/2,(H-h)/2,w,h);c.restore()}
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"rgba(4,16,31,.55)");g.addColorStop(.45,"rgba(4,16,31,.35)");g.addColorStop(1,"rgba(4,16,31,.94)");c.fillStyle=g;c.fillRect(0,0,W,H)}
-function wpBrand(c,W,y,u,col){instaFont(c,0,100*u,true);c.textAlign="center";c.textBaseline="alphabetic";
-  c.save();c.shadowColor="rgba(0,0,0,.6)";c.shadowBlur=24*u;const a="YOUNG ",b="GRIZZLYS",wa=c.measureText(a).width,wb=c.measureText(b).width,x0=W/2-(wa+wb)/2;
-  c.textAlign="left";c.fillStyle="#fff";c.fillText(a,x0,y);c.fillStyle=col||"#ff8a00";c.fillText(b,x0+wa,y);c.restore();
-  instaFont(c,800,30*u);instaSpace(c,12*u);c.textAlign="center";c.fillStyle="rgba(213,225,239,.85)";c.fillText("ESV GRIZZLYS BERGKAMEN",W/2+6*u,y+62*u);instaSpace(c,0)}
+function wpBrand(c,W,y,u,col,L){instaFont(c,0,100*u,true);c.textAlign="center";c.textBaseline="alphabetic";
+  c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=24*u;const a="YOUNG ",b="GRIZZLYS",wa=c.measureText(a).width,wb=c.measureText(b).width,x0=W/2-(wa+wb)/2;
+  c.textAlign="left";c.fillStyle=L?"#0b2a52":"#fff";c.fillText(a,x0,y);c.fillStyle=col||"#ff8a00";c.fillText(b,x0+wa,y);c.restore();
+  instaFont(c,800,30*u);instaSpace(c,12*u);c.textAlign="center";c.fillStyle=L?"rgba(11,42,82,.7)":"rgba(213,225,239,.85)";c.fillText("ESV GRIZZLYS BERGKAMEN",W/2+6*u,y+62*u);instaSpace(c,0)}
 
 /* 1) Vereinsdesigns */
 async function wpDesign(c,W,H,o){
-  const u=W/1080,[logo,rink]=await Promise.all([instaImg(grizzlysLogo),o.style==="eis"?instaImg(instaRinkSrc()):null]);const st=o.style||"eis";
-  if(st==="eis"){wpPhoto(c,W,H,rink,.7);const lh=wpLogo(c,logo,W/2,H*.53,W*.62)||W*.6;wpBrand(c,W,H*.53+lh/2+150*u,u);return}
-  if(st==="nacht"){let g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,H*.7);g.addColorStop(0,"#123f75");g.addColorStop(.45,"#0a2547");g.addColorStop(1,"#030b17");c.fillStyle=g;c.fillRect(0,0,W,H);
-    c.save();c.globalAlpha=.06;c.strokeStyle="#fff";c.lineWidth=2*u;for(let x=-H;x<W;x+=46*u){c.beginPath();c.moveTo(x,H);c.lineTo(x+H,0);c.stroke()}c.restore();
-    const lh=wpLogo(c,logo,W/2,H*.52,W*.58,"rgba(70,160,255,.7)")||W*.55;
+  const L=o.tone==="light",u=W/1080,[logo,rink]=await Promise.all([instaImg(grizzlysLogo),o.style==="eis"?instaImg(L?"img/header-hell.webp":instaRinkSrc()):null]);const st=o.style||"eis",ink=L?"#0b2a52":"#fff";
+  if(st==="eis"&&L&&rink){/* 1.50.1: helles Hallenbild wie im Kopfbereich der hellen App */
+    /* Bild so breit, dass die Scheinwerfer links und rechts sichtbar bleiben; oben dunkel, unten Eis weiterführen */
+    const w=W*1.4,h=w*rink.naturalHeight/rink.naturalWidth,iy=H*.31-h*.17;
+    let g=c.createLinearGradient(0,0,0,iy+2);g.addColorStop(0,"#010409");g.addColorStop(1,"#000000");c.fillStyle=g;c.fillRect(0,0,W,iy+2);
+    c.fillStyle="#fefefe";c.fillRect(0,iy+h-2,W,H-iy-h+2);c.drawImage(rink,(W-w)/2,iy,w,h);
+    g=c.createLinearGradient(0,iy+h*.8,0,H);g.addColorStop(0,"rgba(254,254,254,0)");g.addColorStop(.35,"#f7fafd");g.addColorStop(1,"#dde9f5");c.fillStyle=g;c.fillRect(0,iy+h*.8,W,H);
+    const lh=wpLogo(c,logo,W/2,H*.53,W*.62,"rgba(10,30,60,.45)")||W*.6;wpBrand(c,W,H*.53+lh/2+150*u,u,null,true);return}
+  if(st==="eis"){wpPhoto(c,W,H,rink,.7,L);const lh=wpLogo(c,logo,W/2,H*.53,W*.62,L?"rgba(11,42,82,.25)":null)||W*.6;wpBrand(c,W,H*.53+lh/2+150*u,u,null,L);return}
+  if(st==="nacht"){let g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,H*.7);g.addColorStop(0,L?"#ffffff":"#123f75");g.addColorStop(.45,L?"#e3eef9":"#0a2547");g.addColorStop(1,L?"#bcd5ee":"#030b17");c.fillStyle=g;c.fillRect(0,0,W,H);
+    c.save();c.globalAlpha=L?.05:.06;c.strokeStyle=L?"#0b2a52":"#fff";c.lineWidth=2*u;for(let x=-H;x<W;x+=46*u){c.beginPath();c.moveTo(x,H);c.lineTo(x+H,0);c.stroke()}c.restore();
+    const lh=wpLogo(c,logo,W/2,H*.52,W*.58,L?"rgba(11,42,82,.3)":"rgba(70,160,255,.7)")||W*.55;
     const y=H*.52+lh/2+90*u;c.fillStyle="#ff8a00";instaRR(c,W/2-70*u,y,140*u,8*u,4*u);c.fill();
-    instaFont(c,900,40*u);instaSpace(c,14*u);c.textAlign="center";c.fillStyle="#fff";c.fillText("YOUNG GRIZZLYS",W/2+7*u,y+80*u);instaSpace(c,0);return}
-  if(st==="feld"){c.fillStyle="#0a2547";c.fillRect(0,0,W,H);let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"rgba(255,255,255,.07)");g.addColorStop(1,"rgba(0,0,0,.35)");c.fillStyle=g;c.fillRect(0,0,W,H);
+    instaFont(c,900,40*u);instaSpace(c,14*u);c.textAlign="center";c.fillStyle=ink;c.fillText("YOUNG GRIZZLYS",W/2+7*u,y+80*u);instaSpace(c,0);return}
+  if(st==="feld"){c.fillStyle=L?"#f2f7fc":"#0a2547";c.fillRect(0,0,W,H);let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,L?"rgba(255,255,255,.6)":"rgba(255,255,255,.07)");g.addColorStop(1,L?"rgba(160,195,230,.35)":"rgba(0,0,0,.35)");c.fillStyle=g;c.fillRect(0,0,W,H);
     const cy=H*.52,R=W*.36,ln=(y,col,w)=>{c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.strokeStyle=col;c.lineWidth=w;c.stroke()};
     ln(cy,"rgba(214,69,59,.55)",14*u);ln(cy-H*.2,"rgba(22,140,255,.55)",18*u);ln(cy+H*.2,"rgba(22,140,255,.55)",18*u);
-    c.strokeStyle="rgba(255,255,255,.22)";c.lineWidth=5*u;c.beginPath();c.arc(W/2,cy,R,0,Math.PI*2);c.stroke();
+    c.strokeStyle=L?"rgba(22,140,255,.45)":"rgba(255,255,255,.22)";c.lineWidth=5*u;c.beginPath();c.arc(W/2,cy,R,0,Math.PI*2);c.stroke();
     [[.22,-.34],[.78,-.34],[.22,.34],[.78,.34]].forEach(([fx,fy])=>{const x=W*fx,y=cy+H*fy;c.beginPath();c.arc(x,y,W*.17,0,Math.PI*2);c.strokeStyle="rgba(214,69,59,.35)";c.lineWidth=5*u;c.stroke();c.beginPath();c.arc(x,y,12*u,0,Math.PI*2);c.fillStyle="rgba(214,69,59,.55)";c.fill()});
-    c.beginPath();c.arc(W/2,cy,R*.96,0,Math.PI*2);c.fillStyle="rgba(4,16,31,.55)";c.fill();
-    wpLogo(c,logo,W/2,cy,R*1.5,"rgba(0,0,0,.6)");
-    instaFont(c,0,90*u,true);c.textAlign="center";c.fillStyle="#fff";c.save();c.shadowColor="rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillText("YOUNG GRIZZLYS",W/2,cy+H*.2+150*u);c.restore();return}
+    c.beginPath();c.arc(W/2,cy,R*.96,0,Math.PI*2);c.fillStyle=L?"rgba(255,255,255,.75)":"rgba(4,16,31,.55)";c.fill();
+    wpLogo(c,logo,W/2,cy,R*1.5,L?"rgba(11,42,82,.3)":"rgba(0,0,0,.6)");
+    instaFont(c,0,90*u,true);c.textAlign="center";c.fillStyle=ink;c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillText("YOUNG GRIZZLYS",W/2,cy+H*.2+150*u);c.restore();return}
   /* streifen */
-  c.fillStyle="#04101f";c.fillRect(0,0,W,H);
-  c.beginPath();c.moveTo(0,H*.62);c.lineTo(W,H*.48);c.lineTo(W,H);c.lineTo(0,H);c.closePath();let g=c.createLinearGradient(0,H*.5,0,H);g.addColorStop(0,"rgba(22,140,255,.45)");g.addColorStop(1,"rgba(22,140,255,.05)");c.fillStyle=g;c.fill();
-  c.save();c.shadowColor="rgba(255,138,0,.85)";c.shadowBlur=40*u;c.strokeStyle="#ff8a00";c.lineWidth=14*u;c.beginPath();c.moveTo(-20,H*.62+3*u);c.lineTo(W+20,H*.48-3*u);c.stroke();c.restore();
-  wpLogo(c,logo,W/2,H*.43,W*.56,"rgba(22,140,255,.55)");
-  instaFont(c,0,104*u,true);c.textAlign="center";c.save();c.shadowColor="rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillStyle="#fff";c.fillText("YOUNG",W/2,H*.68);c.fillStyle="#ff8a00";c.fillText("GRIZZLYS",W/2,H*.68+110*u);c.restore()}
+  if(L)wpLightBg(c,W,H);else{c.fillStyle="#04101f";c.fillRect(0,0,W,H)}
+  c.beginPath();c.moveTo(0,H*.62);c.lineTo(W,H*.48);c.lineTo(W,H);c.lineTo(0,H);c.closePath();let g=c.createLinearGradient(0,H*.5,0,H);g.addColorStop(0,L?"rgba(22,140,255,.30)":"rgba(22,140,255,.45)");g.addColorStop(1,L?"rgba(22,140,255,.08)":"rgba(22,140,255,.05)");c.fillStyle=g;c.fill();
+  c.save();c.shadowColor=L?"rgba(255,138,0,.5)":"rgba(255,138,0,.85)";c.shadowBlur=40*u;c.strokeStyle="#ff8a00";c.lineWidth=14*u;c.beginPath();c.moveTo(-20,H*.62+3*u);c.lineTo(W+20,H*.48-3*u);c.stroke();c.restore();
+  wpLogo(c,logo,W/2,H*.43,W*.56,L?"rgba(11,42,82,.3)":"rgba(22,140,255,.55)");
+  instaFont(c,0,104*u,true);c.textAlign="center";c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillStyle=ink;c.fillText("YOUNG",W/2,H*.68);c.fillStyle="#ff8a00";c.fillText("GRIZZLYS",W/2,H*.68+110*u);c.restore()}
 
 /* 3) Trikot mit Rückennummer */
 /* 1.48.1: Trikot dem Original nachempfunden (hellblau, schwarzer Kragen, schwarze Bruchlinie, geschwungene Streifen unten,
@@ -3365,9 +3378,9 @@ function wpJersey(c,cx,y0,J,white){
   c.save();c.beginPath();c.moveTo(...P(-.155,-.005));c.quadraticCurveTo(...P(0,.115),...P(.155,-.005));c.strokeStyle=ink;c.lineWidth=J*.045;c.lineCap="round";c.stroke();c.restore();
   return {body,ink,light}}
 async function wpTrikot(c,W,H,o){
-  const u=W/1080,logo=await instaImg(grizzlysLogo);
-  let g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,H*.75);g.addColorStop(0,"#163a63");g.addColorStop(1,"#03080f");c.fillStyle=g;c.fillRect(0,0,W,H);
-  g=c.createRadialGradient(W/2,H*.28,0,W/2,H*.28,W*.7);g.addColorStop(0,"rgba(255,255,255,.16)");g.addColorStop(1,"rgba(255,255,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  const u=W/1080,logo=await instaImg(grizzlysLogo),LT=o.tone==="light";
+  let g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,H*.75);g.addColorStop(0,LT?"#ffffff":"#163a63");g.addColorStop(1,LT?"#b9d2ec":"#03080f");c.fillStyle=g;c.fillRect(0,0,W,H);
+  g=c.createRadialGradient(W/2,H*.28,0,W/2,H*.28,W*.7);g.addColorStop(0,LT?"rgba(255,255,255,.6)":"rgba(255,255,255,.16)");g.addColorStop(1,"rgba(255,255,255,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
   const J=W*.72,y0=H*.335,col=wpJersey(c,W/2,y0,J,o.kit==="away"),nr=String(o.nr||"").replace(/\D/g,"").slice(0,2);
   /* statt Spielername: „GRIZZLYS“ im Bogen wie die Namenszeile */
   {const txt="GRIZZLYS",R=J*1.6,cy=y0+J*.235+R;c.save();c.font=`900 ${J*.085}px Impact,"Arial Narrow",${INSTA_FONT}`;c.textAlign="center";c.textBaseline="alphabetic";c.lineJoin="round";
@@ -3377,57 +3390,59 @@ async function wpTrikot(c,W,H,o){
     c.lineWidth=J*.03;c.strokeStyle=col.light;c.strokeText(nr,W/2,y0+J*.5);c.fillStyle=col.ink;c.fillText(nr,W/2,y0+J*.5)}
   else{instaFont(c,800,J*.06);c.textAlign="center";c.textBaseline="middle";c.fillStyle=col.ink;c.globalAlpha=.6;c.fillText("Nummer eintragen",W/2,y0+J*.5);c.globalAlpha=1}
   c.textBaseline="alphabetic";
-  const ly=y0+J*1.06+170*u; wpLogo(c,logo,W/2-150*u,ly,110*u,"rgba(0,0,0,.4)");
-  instaFont(c,0,64*u,true);c.textAlign="left";c.fillStyle="#fff";c.fillText("YOUNG",W/2-80*u,ly-4*u);c.fillStyle="#ff8a00";c.fillText("GRIZZLYS",W/2-80*u,ly+56*u)}
+  const ly=y0+J*1.06+170*u; wpLogo(c,logo,W/2-150*u,ly,110*u,LT?"rgba(11,42,82,.25)":"rgba(0,0,0,.4)");
+  instaFont(c,0,64*u,true);c.textAlign="left";c.fillStyle=LT?"#0b2a52":"#fff";c.fillText("YOUNG",W/2-80*u,ly-4*u);c.fillStyle="#ff8a00";c.fillText("GRIZZLYS",W/2-80*u,ly+56*u)}
 
 /* 4) Nächstes Spiel */
 function wpNextGame(team){const now=Date.now();return games.filter(g=>(!team||g.team===team)&&window.myTeam(g.team)&&!g.cancelled&&!resInfo(g)&&dt(g).getTime()+2*3600000>now).sort((a,b)=>dt(a)-dt(b))[0]||null}
 async function wpNext(c,W,H,o){
-  const u=W/1080,g=wpNextGame(o.team),rink=await instaImg(instaRinkSrc());wpPhoto(c,W,H,rink,.65);
-  if(!g){instaFont(c,800,48*u);c.textAlign="center";c.fillStyle="#fff";c.fillText("Gerade kein Spiel geplant",W/2,H*.5);return}
+  const u=W/1080,LT=o.tone==="light",g=wpNextGame(o.team),rink=LT?null:await instaImg(instaRinkSrc());wpPhoto(c,W,H,rink,.65,LT);
+  const T1=LT?"#0b2a52":"#fff",T2=LT?"#1d3b5e":"#e7eef8",T3=LT?"#4a6380":"#9fb3ca",T4=LT?"rgba(11,42,82,.6)":"rgba(213,225,239,.7)";
+  if(!g){instaFont(c,800,48*u);c.textAlign="center";c.fillStyle=T1;c.fillText("Gerade kein Spiel geplant",W/2,H*.5);return}
   const [lh,la]=await Promise.all([instaLogos(g.home),instaLogos(g.away)]),d=dt(g),col=WP_TEAMCOL[g.team]||"#168cff",x0=60*u,cw=W-120*u,y0=H*.33,ch=H*.5;
-  c.save();c.shadowColor="rgba(0,0,0,.5)";c.shadowBlur=50*u;instaRR(c,x0,y0,cw,ch,48*u);c.fillStyle="rgba(7,27,51,.78)";c.fill();c.restore();
-  instaRR(c,x0,y0,cw,ch,48*u);c.lineWidth=3*u;c.strokeStyle="rgba(255,255,255,.16)";c.stroke();
+  c.save();c.shadowColor=LT?"rgba(11,42,82,.18)":"rgba(0,0,0,.5)";c.shadowBlur=50*u;instaRR(c,x0,y0,cw,ch,48*u);c.fillStyle=LT?"rgba(255,255,255,.9)":"rgba(7,27,51,.78)";c.fill();c.restore();
+  instaRR(c,x0,y0,cw,ch,48*u);c.lineWidth=3*u;c.strokeStyle=LT?"rgba(11,42,82,.10)":"rgba(255,255,255,.16)";c.stroke();
   c.textAlign="center";c.textBaseline="alphabetic";
   instaFont(c,900,30*u);instaSpace(c,6*u);const tag=("NÄCHSTES SPIEL · "+teamName(g.team)).toUpperCase(),tw=c.measureText(tag).width+60*u;instaRR(c,W/2-tw/2,y0+50*u,tw,64*u,32*u);c.fillStyle=col;c.fill();c.fillStyle=g.team==="A"?"#fff":"#2b1500";c.fillText(tag,W/2+3*u,y0+93*u);instaSpace(c,0);
-  instaFont(c,0,150*u,true);c.fillStyle="#fff";c.fillText(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" "+d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}),W/2,y0+300*u);
+  instaFont(c,0,150*u,true);c.fillStyle=T1;c.fillText(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" "+d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}),W/2,y0+300*u);
   instaFont(c,900,70*u);c.fillStyle="#ff8a00";c.fillText(g.time+" Uhr",W/2,y0+395*u);
   const ly=y0+ch*.62,r=Math.min(130*u,cw*.16);instaCircle(c,lh,g.home,W/2-cw*.28,ly,r);instaCircle(c,la,g.away,W/2+cw*.28,ly,r);
-  instaFont(c,900,60*u);c.fillStyle="#fff";c.textBaseline="middle";c.fillText("VS",W/2,ly);c.textBaseline="alphabetic";
-  instaFont(c,800,34*u);c.fillStyle="#e7eef8";[[g.home,-1],[g.away,1]].forEach(([n,s])=>{let nm=shortTeam(n);while(c.measureText(nm).width>cw*.42&&nm.length>6)nm=nm.slice(0,-2);c.fillText(nm,W/2+s*cw*.28,ly+r+60*u)});
-  instaFont(c,700,32*u);c.fillStyle="#9fb3ca";c.fillText((isHome(g)?"Heimspiel · ":"Auswärts · ")+g.stadium,W/2,y0+ch-60*u);
-  instaFont(c,700,26*u);c.fillStyle="rgba(213,225,239,.7)";c.fillText("Young Grizzlys App · Stand "+new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}),W/2,y0+ch+70*u)}
+  instaFont(c,900,60*u);c.fillStyle=T1;c.textBaseline="middle";c.fillText("VS",W/2,ly);c.textBaseline="alphabetic";
+  instaFont(c,800,34*u);c.fillStyle=T2;[[g.home,-1],[g.away,1]].forEach(([n,s])=>{let nm=shortTeam(n);while(c.measureText(nm).width>cw*.42&&nm.length>6)nm=nm.slice(0,-2);c.fillText(nm,W/2+s*cw*.28,ly+r+60*u)});
+  instaFont(c,700,32*u);c.fillStyle=T3;c.fillText((isHome(g)?"Heimspiel · ":"Auswärts · ")+g.stadium,W/2,y0+ch-60*u);
+  instaFont(c,700,26*u);c.fillStyle=T4;c.fillText("Young Grizzlys App · Stand "+new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}),W/2,y0+ch+70*u)}
 
 /* 5) Spiele des Monats */
 function wpMonthGames(team){const now=Date.now();return games.filter(g=>(!team||g.team===team)&&window.myTeam(g.team)&&!g.cancelled&&!resInfo(g)&&dt(g).getTime()+2*3600000>now&&dt(g).getTime()<now+35*864e5).sort((a,b)=>dt(a)-dt(b)).slice(0,7)}
 async function wpMonth(c,W,H,o){
-  const u=W/1080,L=wpMonthGames(o.team),rink=await instaImg(instaRinkSrc());wpPhoto(c,W,H,rink,.5);
+  const u=W/1080,LT=o.tone==="light",L=wpMonthGames(o.team),rink=LT?null:await instaImg(instaRinkSrc());wpPhoto(c,W,H,rink,.5,LT);
+  const T1=LT?"#0b2a52":"#fff",T3=LT?"#4a6380":"#9fb3ca";
   const y0=H*.31; instaFont(c,0,120*u,true);c.textAlign="left";c.textBaseline="alphabetic";
   const mons=[...new Set(L.map(g=>dt(g).getMonth()))],title=mons.length===1?dt(L[0]).toLocaleDateString("de-DE",{month:"long"}):"Nächste Spiele";
-  c.save();c.shadowColor="rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillStyle="#fff";c.fillText(title,70*u,y0+90*u);c.restore();
+  c.save();c.shadowColor=LT?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillStyle=T1;c.fillText(title,70*u,y0+90*u);c.restore();
   instaFont(c,800,30*u);c.fillStyle="#ff8a00";c.fillText((o.team?teamName(o.team):"Young Grizzlys")+" · "+L.length+(L.length===1?" Spiel":" Spiele"),74*u,y0+145*u);
-  if(!L.length){instaFont(c,700,40*u);c.fillStyle="#d5e1ef";c.fillText("In den nächsten Wochen keine Spiele.",74*u,y0+260*u);return}
+  if(!L.length){instaFont(c,700,40*u);c.fillStyle=T3;c.fillText("In den nächsten Wochen keine Spiele.",74*u,y0+260*u);return}
   const top=y0+195*u,bottom=H*.86,gap=18*u,rh=Math.min(170*u,(bottom-top-gap*(L.length-1))/L.length);
   L.forEach((g,i)=>{const y=top+i*(rh+gap),d=dt(g),col=WP_TEAMCOL[g.team]||"#168cff",x=60*u,w=W-120*u;
-    instaRR(c,x,y,w,rh,26*u);c.fillStyle="rgba(7,27,51,.80)";c.fill();c.lineWidth=2*u;c.strokeStyle="rgba(255,255,255,.14)";c.stroke();instaRR(c,x,y,12*u,rh,6*u);c.fillStyle=col;c.fill();
-    c.textAlign="center";instaFont(c,800,26*u);c.fillStyle="#9fb3ca";c.fillText(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","").toUpperCase(),x+105*u,y+rh*.38);
-    instaFont(c,900,Math.min(46*u,rh*.32));c.fillStyle="#fff";c.fillText(d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}),x+105*u,y+rh*.72);
-    c.textAlign="left";instaFont(c,800,Math.min(40*u,rh*.27));c.fillStyle="#fff";let nm=(isHome(g)?"vs. ":"@ ")+shortTeam(opponent(g));const nm0=nm;while(c.measureText(nm+"…").width>w-420*u&&nm.length>8)nm=nm.slice(0,-1);if(nm!==nm0)nm=nm.trim()+"…";c.fillText(nm,x+200*u,y+rh*.46);
-    instaFont(c,700,Math.min(28*u,rh*.2));c.fillStyle="#9fb3ca";c.fillText((window.MY_TEAMS.length>1&&!o.team?teamName(g.team)+" · ":"")+(isHome(g)?"Heim":g.stadium),x+200*u,y+rh*.78);
+    instaRR(c,x,y,w,rh,26*u);c.fillStyle=LT?"rgba(255,255,255,.9)":"rgba(7,27,51,.80)";c.fill();c.lineWidth=2*u;c.strokeStyle=LT?"rgba(11,42,82,.10)":"rgba(255,255,255,.14)";c.stroke();instaRR(c,x,y,12*u,rh,6*u);c.fillStyle=col;c.fill();
+    c.textAlign="center";instaFont(c,800,26*u);c.fillStyle=T3;c.fillText(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","").toUpperCase(),x+105*u,y+rh*.38);
+    instaFont(c,900,Math.min(46*u,rh*.32));c.fillStyle=T1;c.fillText(d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"}),x+105*u,y+rh*.72);
+    c.textAlign="left";instaFont(c,800,Math.min(40*u,rh*.27));c.fillStyle=T1;let nm=(isHome(g)?"vs. ":"@ ")+shortTeam(opponent(g));const nm0=nm;while(c.measureText(nm+"…").width>w-420*u&&nm.length>8)nm=nm.slice(0,-1);if(nm!==nm0)nm=nm.trim()+"…";c.fillText(nm,x+200*u,y+rh*.46);
+    instaFont(c,700,Math.min(28*u,rh*.2));c.fillStyle=T3;c.fillText((window.MY_TEAMS.length>1&&!o.team?teamName(g.team)+" · ":"")+(isHome(g)?"Heim":g.stadium),x+200*u,y+rh*.78);
     c.textAlign="right";instaFont(c,900,Math.min(44*u,rh*.3));c.fillStyle="#ff8a00";c.fillText(g.time,x+w-34*u,y+rh*.6)});
-  c.textAlign="center";instaFont(c,700,26*u);c.fillStyle="rgba(213,225,239,.7)";c.fillText("Stand "+new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+" · Änderungen in der App",W/2,H*.885)}
+  c.textAlign="center";instaFont(c,700,26*u);c.fillStyle=LT?"rgba(11,42,82,.6)":"rgba(213,225,239,.7)";c.fillText("Stand "+new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+" · Änderungen in der App",W/2,H*.885)}
 
 /* 7) Advent und Weihnachten */
 async function wpAdvent(c,W,H,o){
-  const u=W/1080,logo=await instaImg("christmas-logo-gross.png")||await instaImg(grizzlysLogo),rnd=wpRand(17);
-  let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#020814");g.addColorStop(.55,"#0b2a52");g.addColorStop(1,"#163f6e");c.fillStyle=g;c.fillRect(0,0,W,H);
-  for(let i=0;i<160;i++){const x=rnd()*W,y=rnd()*H*.7,r=(rnd()*2+.6)*u;c.globalAlpha=.35+rnd()*.6;c.fillStyle="#fff";c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.globalAlpha=1;
-  g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,W*.75);g.addColorStop(0,"rgba(255,214,120,.28)");g.addColorStop(1,"rgba(255,214,120,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
-  c.fillStyle="#eef5ff";c.beginPath();c.moveTo(0,H*.9);for(let x=0;x<=W;x+=W/8)c.quadraticCurveTo(x+W/16,H*(.87+rnd()*.03),x+W/8,H*.9);c.lineTo(W,H);c.lineTo(0,H);c.closePath();c.fill();
-  for(let i=0;i<90;i++){const x=rnd()*W,y=rnd()*H*.95,r=(rnd()*5+2)*u;c.globalAlpha=.25+rnd()*.55;c.fillStyle="#fff";c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.globalAlpha=1;
+  const u=W/1080,logo=await instaImg("christmas-logo-gross.png")||await instaImg(grizzlysLogo),rnd=wpRand(17),LT=o.tone==="light";
+  let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,LT?"#bcd7f1":"#020814");g.addColorStop(.55,LT?"#e3effa":"#0b2a52");g.addColorStop(1,LT?"#f6faff":"#163f6e");c.fillStyle=g;c.fillRect(0,0,W,H);
+  if(!LT)for(let i=0;i<160;i++){const x=rnd()*W,y=rnd()*H*.7,r=(rnd()*2+.6)*u;c.globalAlpha=.35+rnd()*.6;c.fillStyle="#fff";c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.globalAlpha=1;
+  g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,W*.75);g.addColorStop(0,LT?"rgba(255,214,120,.35)":"rgba(255,214,120,.28)");g.addColorStop(1,"rgba(255,214,120,0)");c.fillStyle=g;c.fillRect(0,0,W,H);
+  c.fillStyle="#ffffff";if(LT){c.save();c.shadowColor="rgba(11,42,82,.15)";c.shadowBlur=30*u}c.beginPath();c.moveTo(0,H*.9);for(let x=0;x<=W;x+=W/8)c.quadraticCurveTo(x+W/16,H*(.87+rnd()*.03),x+W/8,H*.9);c.lineTo(W,H);c.lineTo(0,H);c.closePath();c.fill();if(LT)c.restore();
+  for(let i=0;i<90;i++){const x=rnd()*W,y=rnd()*H*.95,r=(rnd()*5+2)*u;c.globalAlpha=.25+rnd()*.55;c.fillStyle=LT&&y<H*.88?"#7fb0de":"#fff";c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.globalAlpha=1;
   const lh=wpLogo(c,logo,W/2,H*.5,W*.62,"rgba(255,214,120,.6)")||W*.6;
-  instaFont(c,0,120*u,true);c.textAlign="center";c.save();c.shadowColor="rgba(0,0,0,.55)";c.shadowBlur=20*u;c.fillStyle="#fff";c.fillText("Frohe",W/2,H*.5+lh/2+130*u);c.fillStyle="#ff8a00";c.fillText("Weihnachten",W/2,H*.5+lh/2+250*u);c.restore();
-  instaFont(c,800,30*u);instaSpace(c,10*u);c.fillStyle="rgba(213,225,239,.9)";c.fillText("YOUNG GRIZZLYS",W/2+5*u,H*.5+lh/2+320*u);instaSpace(c,0)}
+  instaFont(c,0,120*u,true);c.textAlign="center";c.save();c.shadowColor=LT?"rgba(255,255,255,.8)":"rgba(0,0,0,.55)";c.shadowBlur=20*u;c.fillStyle=LT?"#0b2a52":"#fff";c.fillText("Frohe",W/2,H*.5+lh/2+130*u);c.fillStyle="#ff8a00";c.fillText("Weihnachten",W/2,H*.5+lh/2+250*u);c.restore();
+  instaFont(c,800,30*u);instaSpace(c,10*u);c.fillStyle=LT?"rgba(11,42,82,.7)":"rgba(213,225,239,.9)";c.fillText("YOUNG GRIZZLYS",W/2+5*u,H*.5+lh/2+320*u);instaSpace(c,0)}
 
 /* --- Liste und Fenster --- */
 const WP_MOTIFS=[
@@ -3438,7 +3453,8 @@ const WP_MOTIFS=[
   {k:"advent",t:"Advent & Weihnachten",s:"bis 6. Januar",fn:wpAdvent,season:wpAdventOn}];
 const WP_STYLES=[["eis","Eishalle"],["nacht","Nacht"],["feld","Spielfeld"],["streifen","Streifen"]];
 function wpDefaults(k){const T=window.MY_TEAMS||["A"],nrs=myNrAll(),t0=T.find(t=>(nrs[t]||[]).length)||T[0];
-  return {style:"eis",kit:"home",team:k==="month"&&T.length>1?"":k==="trikot"?t0:(wpNextGame()||{}).team||T[0],nr:k==="trikot"?((nrs[t0]||[])[0]||""):""}}
+  let tone="dark";try{tone=localStorage.getItem("grizzlysWpTone")||"dark"}catch(e){}
+  return {tone,style:"eis",kit:"home",team:k==="month"&&T.length>1?"":k==="trikot"?t0:(wpNextGame()||{}).team||T[0],nr:k==="trikot"?((nrs[t0]||[])[0]||""):""}}
 async function wpRender(m,o,W,H){
   const cv=document.createElement("canvas");cv.width=W;cv.height=H;const c=cv.getContext("2d");
   try{await Promise.all([document.fonts.load('100px "GrizzlyBrush"'),document.fonts.ready])}catch(e){}
@@ -3460,20 +3476,20 @@ async function wpOpen(k){
   const o=wpDefaults(k),img=m.querySelector("#wpImg"),wait=m.querySelector("#wpWait"),opts=m.querySelector("#wpOpts"),bS=m.querySelector("#wpShare"),bD=m.querySelector("#wpSave"),hint=m.querySelector("#wpHint");
   m.querySelector("#wpTitle").textContent=M.t;m.querySelector("#wpClockD").textContent=new Date().toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long"});
   const chips=(key,list)=>`<div class="wpChips" data-key="${key}">${list.map(([v,l])=>`<button type="button" data-v="${esc(v)}" class="${String(o[key])===String(v)?"on":""}">${esc(l)}</button>`).join("")}</div>`;
-  const T=window.MY_TEAMS||["A"];let h="";
-  if(k==="design")h=chips("style",WP_STYLES);
-  if(k==="trikot")h=`<label class="wpNr">Rückennummer <input id="wpNrIn" type="text" inputmode="numeric" maxlength="2" value="${esc(o.nr)}" placeholder="z. B. 17"></label>`+chips("kit",[["home","Blau"],["away","Weiß"]])+(T.length>1?chips("team",T.map(t=>[t,teamName(t)])):"");
-  if(k==="next"&&T.length>1)h=chips("team",T.map(t=>[t,teamName(t)]));
-  if(k==="month"&&T.length>1)h=chips("team",[["","Alle"],...T.map(t=>[t,teamName(t)])]);
+  const T=window.MY_TEAMS||["A"];let h=chips("tone",[["dark","Dunkel"],["light","Hell"]]);
+  if(k==="design")h+=chips("style",WP_STYLES);
+  if(k==="trikot")h+=`<label class="wpNr">Rückennummer <input id="wpNrIn" type="text" inputmode="numeric" maxlength="2" value="${esc(o.nr)}" placeholder="z. B. 17"></label>`+chips("kit",[["home","Blau"],["away","Weiß"]])+(T.length>1?chips("team",T.map(t=>[t,teamName(t)])):"");
+  if(k==="next"&&T.length>1)h+=chips("team",T.map(t=>[t,teamName(t)]));
+  if(k==="month"&&T.length>1)h+=chips("team",[["","Alle"],...T.map(t=>[t,teamName(t)])]);
   opts.innerHTML=h;opts.hidden=!h;
   let url="",file=null,seq=0;
   const draw=async()=>{const my=++seq;wait.hidden=false;bS.disabled=bD.disabled=true;
     try{const [W,H]=wpSize(),cv=await wpRender(M,o,W,H);if(my!==seq)return;const blob=await new Promise(r=>cv.toBlob(r,"image/png"));if(!blob)throw new Error("kein Bild");
-      if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(blob);img.src=url;file=new File([blob],"young-grizzlys-hintergrund-"+k+(o.style&&k==="design"?"-"+o.style:"")+".png",{type:"image/png"});
+      if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(blob);img.src=url;file=new File([blob],"young-grizzlys-hintergrund-"+k+(o.style&&k==="design"?"-"+o.style:"")+(o.tone==="light"?"-hell":"")+".png",{type:"image/png"});
       const can=!!(navigator.canShare&&navigator.canShare({files:[file]}));bS.hidden=!can;bS.disabled=false;bD.disabled=false;wait.hidden=true;
       hint.textContent=(can?"„In Fotos sichern“ wählen, dann in den Fotos: Teilen → „Als Hintergrund verwenden“. ":"Bild speichern und in den Einstellungen als Hintergrund festlegen. ")+(M.live?"Nach dem Spiel oder bei Änderungen einfach neu herunterladen.":"")}
     catch(e){console.error(e);wait.textContent="Das Bild konnte nicht erstellt werden.";}};
-  opts.querySelectorAll(".wpChips").forEach(g=>g.querySelectorAll("button").forEach(b=>b.onclick=()=>{o[g.dataset.key]=b.dataset.v;g.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+  opts.querySelectorAll(".wpChips").forEach(g=>g.querySelectorAll("button").forEach(b=>b.onclick=()=>{o[g.dataset.key]=b.dataset.v;if(g.dataset.key==="tone")try{localStorage.setItem("grizzlysWpTone",b.dataset.v)}catch(e){}g.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
     if(k==="trikot"&&g.dataset.key==="team"){const n=(myNrAll()[o.team]||[])[0];if(n){o.nr=n;const i=opts.querySelector("#wpNrIn");if(i)i.value=n}}draw()}));
   const ni=opts.querySelector("#wpNrIn");if(ni)ni.oninput=()=>{ni.value=ni.value.replace(/\D/g,"").slice(0,2);o.nr=ni.value;clearTimeout(ni._t);ni._t=setTimeout(draw,350)};
   bS.onclick=async()=>{try{await navigator.share({files:[file],title:"Young Grizzlys"});trackAnalyticsEvent("wallpaper_saved",{motif:k,style:k==="design"?o.style:""})}catch(e){}};
