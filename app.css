@@ -2526,3 +2526,4 @@ html.dark .instGo{background:#1f6fb8}
 .instGuide{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:left}.instGuide img{border-radius:14px}
 .instGuide ol{margin:4px 0;padding-left:22px;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.4;align-self:stretch}
 .instK{display:inline-grid;place-items:center;min-width:24px;height:22px;border-radius:6px;background:rgba(127,127,127,.15);font-weight:900;font-size:13px;padding:0 4px}
+.instTxt{margin:6px 0 10px;line-height:1.45}.instState{margin-left:auto;font-size:12px;font-weight:900;color:#16a34a;background:rgba(22,163,74,.12);border-radius:99px;padding:3px 9px}.instState[hidden]{display:none}#settingsView .setFoldHead .instState{margin-right:6px}

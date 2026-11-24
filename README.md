@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.51.1.238 | – (nur Test) | 24.11.2026 | Fix: Karte „App installieren“ bei installierter App |
 | 1.51.0.237 | – (nur Test) | 24.11.2026 | Knopf „App installieren“ |
 | 1.50.3.236 | – (nur Test) | 22.11.2026 | Saisonbilanz: „Stand nach 2 Dritteln“ verständlicher |
 | 1.50.2.235 | – (nur Test) | 22.11.2026 | Trikot-Hintergrund ohne Mannschaftsauswahl |
@@ -100,6 +101,11 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.51.1
+
+- **Fix: Karte „App installieren“ (Einstellungen) war bei installierter App leer.** Ursache 1: Die Einstellungen blenden Beschreibungszeilen mit `style="margin:6px 0 10px"` per CSS aus – der Text „installiert“ war dadurch unsichtbar, und der Knopf ist bei installierter App ausgeblendet. Text hat jetzt die Klasse `instTxt`. Ursache 2: Die Karte teilte sich beim Ein-/Ausklappen den gemerkten Zustand mit „Darstellung“ (Schlüssel `design`); jetzt eigener Schlüssel `install`.
+- Bei installierter App: grünes „installiert ✓“ in der Kopfzeile (auch zugeklappt sichtbar) und Hinweis auf „App teilen“/„QR-Code“ für andere Geräte.
 
 ## Version 1.51.0
 

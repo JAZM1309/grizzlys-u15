@@ -3549,7 +3549,8 @@ async function wpOpen(k){
     const inst=standalone(), home=document.getElementById("instHome"), card=document.getElementById("instCard"), btn=document.getElementById("instCardBtn"), txt=document.getElementById("instCardTxt");
     let hid=0;try{hid=Number(localStorage.getItem(DISM))||0}catch(e){}
     if(home)home.hidden=inst||Date.now()<hid||!(window.__bip||mobile);
-    if(card){if(inst){if(btn)btn.hidden=true;if(txt)txt.textContent="Die App ist auf diesem Gerät installiert ✓"}else{if(btn)btn.hidden=false}}
+    const stt=document.getElementById("instState");if(stt)stt.hidden=!inst;
+    if(card){if(inst){if(btn)btn.hidden=true;if(txt)txt.innerHTML="Die App ist auf diesem Gerät installiert ✓<br>Du findest „Grizzlys“ auf dem Startbildschirm. Für ein anderes Gerät: unter Info „App teilen“ oder „QR-Code zeigen“."}else{if(btn)btn.hidden=false}}
   }
   document.querySelectorAll("[data-inst]").forEach(b=>b.addEventListener("click",install));
   document.getElementById("instHomeX")?.addEventListener("click",()=>{try{localStorage.setItem(DISM,String(Date.now()+30*864e5))}catch(e){}refresh()});
