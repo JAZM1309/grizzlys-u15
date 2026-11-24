@@ -8,6 +8,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.51.0.237 | – (nur Test) | 24.11.2026 | Knopf „App installieren“ |
+| 1.50.3.236 | – (nur Test) | 22.11.2026 | Saisonbilanz: „Stand nach 2 Dritteln“ verständlicher |
 | 1.50.2.235 | – (nur Test) | 22.11.2026 | Trikot-Hintergrund ohne Mannschaftsauswahl |
 | 1.50.1.234 | – (nur Test) | 21.11.2026 | Hintergrund „Eishalle“ hell mit Hallenbild |
 | 1.50.0.233 | – (nur Test) | 21.11.2026 | Hintergrundbilder auch hell |
