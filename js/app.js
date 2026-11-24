@@ -1069,9 +1069,10 @@ function ftInner(g){
   if(!open)return head+(mine?`<div class="ftMine">Dein Tipp ${esc(mine)}</div>`:"")+bars;
   if(mine&&!window.__ftEdit?.[key])return head+`<div class="ftMine">Dein Tipp <b>${esc(mine)}</b><button type="button" class="ftLink" data-ft-edit>ändern</button></div>`+bars;
   const v=(mine||"0:0").split(":").map(Number);
-  const side=(n,i)=>`<div class="ftSide"><span class="ftTeam">${esc(shortTeam(n))}</span><div class="ftStep"><button type="button" data-ft-step="${i}" data-d="-1" aria-label="weniger Tore für ${esc(shortTeam(n))}">−</button><b data-ft-v="${i}">${v[i]}</b><button type="button" data-ft-step="${i}" data-d="1" aria-label="mehr Tore für ${esc(shortTeam(n))}">+</button></div></div>`;
+  const side=(n,i)=>`<div class="ftSide"><span class="ftTeam">${esc(shortTeam(n))}</span><div class="ftStep"><button type="button" data-ft-step="${i}" data-d="-1" aria-label="weniger Tore für ${esc(shortTeam(n))}">−</button><input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" class="ftIn" data-ft-v="${i}" value="${v[i]}" aria-label="Tore für ${esc(shortTeam(n))}"><button type="button" data-ft-step="${i}" data-d="1" aria-label="mehr Tore für ${esc(shortTeam(n))}">+</button></div></div>`;
   return head+`<div class="ftPick">${side(g.home,0)}<span class="ftColon">:</span>${side(g.away,1)}</div><button type="button" class="ftSend" data-ft-send>Tipp abgeben</button>`+(S&&S.n?bars:"");
 }
+const FT_MAX=40; /* 1.52.1: Tipps bis 40 Tore (vorher 20) */
 function ftRefresh(key){
   const g=games.find(x=>ftKey(x)===key); if(!g)return;
   document.querySelectorAll(`.ftTile[data-ft="${CSS.escape(key)}"]`).forEach(t=>{t.innerHTML=ftInner(g);ftBind(t,g)});
@@ -1079,10 +1080,15 @@ function ftRefresh(key){
 function ftBind(t,g){
   const key=ftKey(g);
   t.onclick=e=>e.stopPropagation();
-  t.querySelectorAll("[data-ft-step]").forEach(b=>b.onclick=()=>{const i=b.dataset.ftStep,el=t.querySelector(`[data-ft-v="${i}"]`);el.textContent=Math.max(0,Math.min(20,Number(el.textContent)+Number(b.dataset.d)))});
+  t.querySelectorAll("[data-ft-step]").forEach(b=>b.onclick=()=>{const i=b.dataset.ftStep,el=t.querySelector(`[data-ft-v="${i}"]`);el.value=Math.max(0,Math.min(FT_MAX,(Number(el.value)||0)+Number(b.dataset.d)))});
+  /* 1.52.1: Tore auch direkt eintippen (0–40) */
+  t.querySelectorAll("input[data-ft-v]").forEach(i=>{let sel=false;i.onfocus=()=>{i.select();sel=true};i.onpointerup=e=>{if(sel){e.preventDefault();sel=false}};
+    i.oninput=()=>{i.value=i.value.replace(/\D/g,"").slice(0,2)};
+    i.onblur=()=>{i.value=String(Math.max(0,Math.min(FT_MAX,Number(i.value)||0)))};
+    i.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();i.blur()}}});
   t.querySelector("[data-ft-edit]")?.addEventListener("click",()=>{window.__ftEdit=window.__ftEdit||{};window.__ftEdit[key]=true;ftRefresh(key)});
   t.querySelector("[data-ft-send]")?.addEventListener("click",async e=>{
-    const b=e.currentTarget, hs=Number(t.querySelector('[data-ft-v="0"]').textContent), as=Number(t.querySelector('[data-ft-v="1"]').textContent);
+    const b=e.currentTarget, hs=Math.max(0,Math.min(FT_MAX,Number(t.querySelector('[data-ft-v="0"]').value)||0)), as=Math.max(0,Math.min(FT_MAX,Number(t.querySelector('[data-ft-v="1"]').value)||0));
     if(!ftOpen(g)){ftRefresh(key);return}
     if(hs===as){let w=t.querySelector(".ftWarn");if(!w){w=document.createElement("div");w.className="ftWarn";b.before(w)}
       w.textContent="Ein Unentschieden gibt es nicht – bitte einen Sieger tippen. Bei einem Penaltyschießen zählt der Endstand mit einem Tor Vorsprung (z. B. 3:2).";return}
@@ -2232,6 +2238,7 @@ renderInstaDownloads(); setInterval(()=>{try{renderInstaDownloads()}catch(e){}},
 /* ===== v66: News-Bereich – Hinweise, Spieländerungen, Neues in der App ===== */
 /* Nur Neuerungen, die für Nutzer sichtbar oder spürbar sind. Neueste Version oben. */
 const APP_NEWS=[
+  {v:"1.52.1.240",d:"November 2026",items:["Fan-Tipp: Tore lassen sich jetzt auch direkt eintippen – bis 40 statt 20.","Einstellungen neu sortiert: alles auf einen Blick mit dem aktuellen Wert – antippen öffnet die Einstellung."]},
   {v:"1.51.0.237",d:"November 2026",items:["Neuer Knopf „App installieren“ auf der Startseite und in den Einstellungen – klappt jetzt auch im Samsung-Browser, mit Anleitung für iPhone und Firefox."]},
   {v:"1.50.0.233",d:"November 2026",items:["Alle Hintergrundbilder gibt es jetzt auch hell – einfach in der Vorschau „Hell“ wählen."]},
   {v:"1.49.0.232",d:"November 2026",items:["Downloads aufgeräumt: drei Reiter – Spielplan, Social Media und Hintergründe. Eine Zahl zeigt, wenn neue Spieltags- oder Ergebnisbilder da sind."]},
@@ -3098,7 +3105,7 @@ document.addEventListener("click",e=>{
    Browser-Verlauf an. Die Zurück-Taste schließt dann das oberste Fenster. Wird ein Fenster per × geschlossen,
    wird der Eintrag wieder entfernt – so bleibt der Verlauf sauber. */
 (function(){
-  const SEL=".matchModal,.adminModal,.bugReportModal,.thanksModal,.admSheetWrap";
+  const SEL=".matchModal,.adminModal,.bugReportModal,.thanksModal,.admSheetWrap,.stSheetWrap";
   const CLOSE=".admX,.matchModalClose,.adminModalClose,#thanksClose,[aria-label*='chließen']";
   const stack=[]; let ignore=0, pending=0, timer=0;
   const isOpen=el=>el.isConnected&&!el.hidden&&getComputedStyle(el).display!=="none";
@@ -3557,4 +3564,90 @@ async function wpOpen(k){
   window.addEventListener("grizzlysInstallReady",refresh);
   window.addEventListener("appinstalled",()=>{window.__bip=null;try{trackAnalyticsEvent("app_installed",{})}catch(e){}refresh()});
   refresh();
+})();
+
+
+/* ===== 1.52.0: Einstellungen als gegliederte Liste – je Zeile der aktuelle Wert; Antippen öffnet die bisherige Karte als Fenster von unten.
+   Die Karten bleiben dieselben (nur verschoben), alle Schalter und Knöpfe funktionieren unverändert. ===== */
+(function(){
+  const IC={
+    teams:['#1f6fb8','<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 1 0 0-6M21 20c0-2-1.5-4-4-4.6"/>'],
+    nr:['#0b2a52','<path d="M8 3l-4 3 2 4 2-1v12h8V9l2 1 2-4-4-3c-1 2-2.5 3-4 3S9 5 8 3z"/>'],
+    push:['#ff8a00','<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'],
+    theme:['#4a5d75','<path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/>'],
+    season:['#8b5cf6','<path d="M12 2v20M4 6l16 12M20 6L4 18"/>'],
+    install:['#16a34a','<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 8v6M9 11l3 3 3-3"/>'],
+    privacy:['#64748b','<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>'],
+    feedback:['#d6453b','<path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4 3.5V17H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>']};
+  const GROUPS=[["Für mich",["teams","nr","push"]],["Aussehen",["theme","season"]],["App",["install","privacy"]],["Mitmachen",["feedback"]]];
+  const TITLE={teams:"Meine Mannschaften",nr:"Meine Rückennummer",push:"Push-Nachrichten",theme:"Darstellung",season:"Saison-Designs",install:"App installieren",privacy:"Datenschutz",feedback:"Feedback & Wunschliste"};
+  const standalone=()=>window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  let built=false,cards={},open=null;
+  function find(view){const kids=[...view.children];const by=f=>kids.find(f);
+    return {teams:by(c=>c.id==="myTeamsCard"),nr:by(c=>c.id==="myNrCard"),push:by(c=>c.id==="pushCard"),
+      theme:by(c=>c.classList.contains("infoCard")&&c.querySelector("#themeSeg")),season:by(c=>c.classList.contains("seasonCard")),
+      install:by(c=>c.id==="instCard"),privacy:by(c=>c.classList.contains("privacyCard")),feedback:by(c=>c.classList.contains("fbCard"))}}
+  function value(k){try{
+    if(k==="teams"){const T=window.MY_TEAMS||[];return T.length?T.map(teamName).join(", "):"alle"}
+    if(k==="nr"){const o=myNrAll(),L=Object.keys(o).filter(t=>(o[t]||[]).length);if(!L.length)return "–";const all=[...new Set(L.flatMap(t=>o[t]))];return all.slice(0,3).join(", ")+(all.length>3?" …":"")}
+    if(k==="push"){const st=(cards.push&&cards.push.dataset.state)||"off";return {on:["Aktiv","ok"],off:["Aus","off"],blocked:["Blockiert","off"],unsupported:["Nicht möglich",""]}[st]||["Aus","off"]}
+    if(k==="theme"){const m=window.themeMode?window.themeMode():"light";return {light:"Hell",dark:"Dunkel",auto:"Automatisch"}[m]||"Hell"}
+    if(k==="season"){const xc=document.getElementById("xmSwitchCard"),hc=document.getElementById("hwSwitchCard");
+      if(xc&&!xc.hidden)return "Weihnachten "+(document.getElementById("xmToggle")?.checked?"an":"aus");
+      if(hc&&!hc.hidden)return "Halloween "+(document.getElementById("hwToggle")?.checked?"an":"aus");return null}
+    if(k==="install")return standalone()?["installiert ✓","ok"]:["nicht installiert",""];
+    if(k==="privacy"){let c="";try{c=localStorage.getItem("grizzlysConsent")||""}catch(e){}return c==="granted"?"Statistik erlaubt":"Statistik aus"}
+    return "";
+  }catch(e){return ""}}
+  function render(){
+    const list=document.getElementById("stList");if(!list)return;
+    let h="";const st=(cards.push&&cards.push.dataset.state)||"off";
+    if(cards.push&&st==="off")h+=`<button type="button" class="stAlert" data-st="push"><i>🔔</i><span><b>Push ist aus</b><small>Ergebnisse und Erinnerungen verpassen</small></span><em>Einschalten</em></button>`;
+    GROUPS.forEach(([g,keys])=>{const rows=keys.filter(k=>cards[k]).map(k=>{let v=value(k);if(v===null)return "";const [txt,cls]=Array.isArray(v)?v:[v,""];
+      return `<button type="button" class="stRow" data-st="${k}"><span class="stIc" style="background:${IC[k][0]}"><svg viewBox="0 0 24 24" aria-hidden="true">${IC[k][1]}</svg></span><span class="stT">${TITLE[k]}</span><span class="stV ${cls}">${esc(txt)}</span><span class="stChev" aria-hidden="true">›</span></button>`}).join("");
+      if(rows)h+=`<div class="stGT">${g}</div><div class="stGrp">${rows}</div>`});
+    list.innerHTML=h;
+    list.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>openSheet(b.dataset.st));
+  }
+  function openSheet(k){
+    const c=cards[k];if(!c)return;const w=document.getElementById("stSheetWrap"),body=document.getElementById("stBody");
+    if(open)closeSheet(true);
+    open=k;c.classList.add("open");body.appendChild(c);document.getElementById("stTitle").textContent=TITLE[k];
+    w.hidden=false;document.body.style.overflow="hidden";body.scrollTop=0;
+    try{trackAnalyticsEvent("settings_open",{item:k})}catch(e){}
+  }
+  function closeSheet(silent){
+    const w=document.getElementById("stSheetWrap"),store=document.getElementById("stStore");
+    if(open&&cards[open])store.appendChild(cards[open]);open=null;
+    if(!silent){w.hidden=true;document.body.style.overflow="";render()}
+  }
+  function build(){
+    if(built)return;const view=document.getElementById("settingsView");if(!view)return;
+    const f=find(view);if(!f.teams||!f.push||!f.theme)return; /* noch nicht alles da */
+    built=true;cards=f;
+    const head=view.querySelector(".settingsHead"),admin=view.querySelector(".adminLinkRow");
+    const list=document.createElement("div");list.id="stList";list.className="stList";
+    const store=document.createElement("div");store.id="stStore";store.hidden=true;
+    const wrap=document.createElement("div");wrap.id="stSheetWrap";wrap.className="stSheetWrap";wrap.hidden=true;
+    wrap.innerHTML='<div class="stSheet" role="dialog" aria-modal="true" aria-labelledby="stTitle"><div class="stGrab" aria-hidden="true"></div><div class="stHead"><b id="stTitle"></b><button type="button" class="matchModalClose" aria-label="Schließen">✕</button></div><div id="stBody" class="stBody"></div><button type="button" class="stDone">Fertig</button></div>';
+    (head?head.after(list):view.prepend(list));list.after(store);
+    Object.values(cards).forEach(c=>{if(c)store.appendChild(c)});
+    if(admin)view.appendChild(admin);view.appendChild(wrap);
+    view.classList.add("stOn");
+    wrap.querySelector(".matchModalClose").onclick=()=>closeSheet();wrap.querySelector(".stDone").onclick=()=>closeSheet();
+    wrap.addEventListener("click",e=>{if(e.target===wrap)closeSheet()});
+    /* nach unten wischen schließt */
+    {const sh=wrap.querySelector(".stSheet");let y0=null,dy=0;
+     sh.addEventListener("touchstart",e=>{const b=document.getElementById("stBody");if(b.scrollTop>0&&!e.target.closest(".stGrab,.stHead"))return;y0=e.touches[0].clientY;dy=0},{passive:true});
+     sh.addEventListener("touchmove",e=>{if(y0===null)return;dy=e.touches[0].clientY-y0;if(dy>0)sh.style.transform=`translateY(${dy}px)`},{passive:true});
+     sh.addEventListener("touchend",()=>{if(y0===null)return;sh.style.transform="";if(dy>110)closeSheet();y0=null})}
+    /* Werte aktuell halten */
+    new MutationObserver(()=>{if(!open)render()}).observe(cards.push,{attributes:true,attributeFilter:["data-state"]});
+    ["grizzlysPushChanged","grizzlysInstallReady","appinstalled","storage"].forEach(ev=>window.addEventListener(ev,()=>{if(!open)render()}));
+    render();
+  }
+  window.settingsListRefresh=()=>{if(built&&!open)render()};
+  const tryBuild=()=>{build();if(!built)setTimeout(tryBuild,300)};
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(tryBuild,50));else setTimeout(tryBuild,50);
+  {const v=document.getElementById("settingsView");if(v)new MutationObserver(()=>{if(!v.hidden){build();window.settingsListRefresh()}}).observe(v,{attributes:true,attributeFilter:["hidden"]});}
 })();

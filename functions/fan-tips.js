@@ -27,7 +27,7 @@ function summarize(docs) {
   const out = { n: 0, w: 0, d: 0, l: 0, scores: {} };
   for (const x of docs) {
     const hs = Number(x.hs), as = Number(x.as);
-    if (!Number.isInteger(hs) || !Number.isInteger(as) || hs < 0 || as < 0 || hs > 20 || as > 20) continue;
+    if (!Number.isInteger(hs) || !Number.isInteger(as) || hs < 0 || as < 0 || hs > 40 || as > 40) continue;
     const us = x.g === "a" ? as : hs, them = x.g === "a" ? hs : as;
     out.n++;
     out[us > them ? "w" : us < them ? "l" : "d"]++;

@@ -37,8 +37,8 @@ service cloud.firestore {
         && tipId.matches(request.resource.data.gameId + "__[A-Za-z0-9_-]{8,64}")
         && request.resource.data.team in ["A","B","U13"]
         && request.resource.data.g in ["h","a"]
-        && request.resource.data.hs is int && request.resource.data.hs >= 0 && request.resource.data.hs <= 20
-        && request.resource.data.as is int && request.resource.data.as >= 0 && request.resource.data.as <= 20
+        && request.resource.data.hs is int && request.resource.data.hs >= 0 && request.resource.data.hs <= 40
+        && request.resource.data.as is int && request.resource.data.as >= 0 && request.resource.data.as <= 40
         && request.resource.data.createdAt == request.time;
       allow read, delete: if isAdmin();
     }

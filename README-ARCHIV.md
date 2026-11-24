@@ -8,6 +8,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.52.1.240 | – (nur Test) | 24.11.2026 | Fan-Tipp: Eingabe und bis 40 Tore |
+| 1.52.0.239 | – (nur Test) | 24.11.2026 | Einstellungen als gegliederte Liste |
 | 1.51.1.238 | – (nur Test) | 24.11.2026 | Fix: Karte „App installieren“ bei installierter App |
 | 1.51.0.237 | – (nur Test) | 24.11.2026 | Knopf „App installieren“ |
 | 1.50.3.236 | – (nur Test) | 22.11.2026 | Saisonbilanz: „Stand nach 2 Dritteln“ verständlicher |

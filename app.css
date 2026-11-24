@@ -2527,3 +2527,38 @@ html.dark .instGo{background:#1f6fb8}
 .instGuide ol{margin:4px 0;padding-left:22px;display:flex;flex-direction:column;gap:9px;font-size:14.5px;line-height:1.4;align-self:stretch}
 .instK{display:inline-grid;place-items:center;min-width:24px;height:22px;border-radius:6px;background:rgba(127,127,127,.15);font-weight:900;font-size:13px;padding:0 4px}
 .instTxt{margin:6px 0 10px;line-height:1.45}.instState{margin-left:auto;font-size:12px;font-weight:900;color:#16a34a;background:rgba(22,163,74,.12);border-radius:99px;padding:3px 9px}.instState[hidden]{display:none}#settingsView .setFoldHead .instState{margin-right:6px}
+/* 1.52.0: Einstellungen als gegliederte Liste */
+#settingsView.stOn .settingsHead .small{display:none}
+.stList{margin-top:4px}
+.stAlert{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:inherit;background:#fff7ec;border:1px solid #ffd59a;border-radius:16px;padding:11px 12px;margin:4px 0 6px;cursor:pointer}
+.stAlert i{width:34px;height:34px;border-radius:10px;background:#ff8a00;display:grid;place-items:center;font-style:normal;font-size:17px;flex:none}
+.stAlert span{flex:1;min-width:0;display:flex;flex-direction:column}.stAlert b{font-size:14px;color:#7a4300}.stAlert small{font-size:12px;color:#8a6a40;font-weight:600}
+.stAlert em{font-style:normal;background:#ff8a00;color:#2b1500;font-weight:900;font-size:12.5px;border-radius:9px;padding:7px 10px;flex:none}
+html.dark .stAlert{background:#2b1d0b;border-color:#6b4a1a}html.dark .stAlert b{color:#ffcf8a}html.dark .stAlert small{color:#d2b48a}
+.stGT{font-size:11.5px;font-weight:900;letter-spacing:.06em;color:var(--muted);margin:16px 6px 6px;text-transform:uppercase}
+.stGrp{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
+html.dark .stGrp{background:#121f33}
+.stRow{display:flex;align-items:center;gap:11px;width:100%;border:0;border-top:1px solid var(--border);background:transparent;font:inherit;color:inherit;text-align:left;padding:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stRow:first-child{border-top:0}.stRow:active{background:rgba(127,127,127,.08)}
+.stIc{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none}
+.stIc svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.stT{font-size:15px;font-weight:800;flex:1;min-width:0}
+.stV{font-size:13px;color:var(--muted);font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45%}
+.stV.ok{color:#16a34a;font-weight:850}.stV.off{color:#d6453b;font-weight:850}
+.stChev{color:#a8b6c6;font-size:20px;line-height:1}
+.stSheetWrap{position:fixed;inset:0;z-index:1000;background:rgba(4,16,31,.45);display:flex;align-items:flex-end;justify-content:center}
+.stSheetWrap[hidden]{display:none}
+.stSheet{width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;background:#fff;color:var(--text);border-radius:24px 24px 0 0;padding:8px 16px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.25);animation:stUp .22s ease-out;transition:transform .15s}
+html.dark .stSheet{background:#121f33}
+@keyframes stUp{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}
+.stGrab{width:42px;height:5px;border-radius:3px;background:#cfd8e3;margin:2px auto 10px;flex:none}
+.stHead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none;margin-bottom:8px}.stHead b{font-size:19px;font-weight:950}
+.stBody{overflow-y:auto;overscroll-behavior:contain;flex:1;min-height:0;padding-bottom:4px}
+.stBody>.infoCard,.stBody>.fbCard{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+.stBody>.infoCard::before,.stBody>.fbCard::before{display:none!important}
+.stBody>*>.setFoldHead{display:none!important}
+#settingsView .stBody .infoTitle+.small[style*="margin:6px 0 10px"]{display:block}
+.stDone{flex:none;margin-top:10px;border:0;border-radius:13px;padding:13px;background:#0b2a52;color:#fff;font:inherit;font-weight:900;font-size:15px;cursor:pointer}
+html.dark .stDone{background:#1f6fb8}
+.ftStep .ftIn{width:46px;min-width:0;font:inherit;font-size:26px;font-weight:950;font-variant-numeric:tabular-nums;text-align:center;color:inherit;background:transparent;border:1px solid transparent;border-radius:10px;padding:2px 0;-moz-appearance:textfield}
+.ftStep .ftIn:focus{outline:none;border-color:var(--a,#168cff);background:rgba(22,140,255,.08)}
