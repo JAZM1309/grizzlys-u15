@@ -8,6 +8,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.53.1.244 | – (nur Test) | 25.11.2026 | Hintergrund-Auswahl schöner |
+| 1.53.0.243 | – (nur Test) | 25.11.2026 | Hintergrund: Logo in Dunkelblau |
+| 1.52.3.242 | – (nur Test) | 25.11.2026 | Startbildschirm-Hintergrund kräftiger, mit Schrift |
+| 1.52.2.241 | – (nur Test) | 25.11.2026 | Vereinsdesign: Variante „Startbildschirm“ |
 | 1.52.1.240 | – (nur Test) | 24.11.2026 | Fan-Tipp: Eingabe und bis 40 Tore |
 | 1.52.0.239 | – (nur Test) | 24.11.2026 | Einstellungen als gegliederte Liste |
 | 1.51.1.238 | – (nur Test) | 24.11.2026 | Fix: Karte „App installieren“ bei installierter App |

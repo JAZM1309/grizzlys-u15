@@ -50,6 +50,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.53.1.244 | – (nur Test) | 25.11.2026 | Hintergrund-Auswahl schöner |
+| 1.53.0.243 | – (nur Test) | 25.11.2026 | Hintergrund: Logo in Dunkelblau |
+| 1.52.3.242 | – (nur Test) | 25.11.2026 | Startbildschirm-Hintergrund kräftiger, mit Schrift |
+| 1.52.2.241 | – (nur Test) | 25.11.2026 | Vereinsdesign: Variante „Startbildschirm“ |
 | 1.52.1.240 | – (nur Test) | 24.11.2026 | Fan-Tipp: Eingabe und bis 40 Tore |
 | 1.52.0.239 | – (nur Test) | 24.11.2026 | Einstellungen als gegliederte Liste |
 | 1.51.1.238 | – (nur Test) | 24.11.2026 | Fix: Karte „App installieren“ bei installierter App |
@@ -103,6 +107,23 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.53.1
+
+- **Auswahl im Hintergrundbild-Fenster neu gestaltet:** statt loser Knöpfe je Zeile eine kleine Überschrift (Hintergrund · Stil · Logo · Verwendung bzw. Trikot/Mannschaft) und ein Segment-Schalter wie bei den Reitern, mit Symbolen (Mond/Sonne, Schloss/App-Raster, kleines Logo farbig/dunkelblau). Die vier Stile erscheinen als Mini-Vorschaubilder mit den aktuellen Einstellungen. Handy-Vorschau etwas kleiner, Speichern-Knöpfe bleiben unten sichtbar.
+
+## Version 1.53.0
+
+- **Vereinsdesign: Auswahl „Logo farbig / Logo dunkelblau“.** Dunkelblau = Entwurf 4 („Dunkelblau / Weiß“): Originallogo in Graustufen, Kontrast gestreckt, Gamma 1,4, eingefärbt von #0b2a52 (dunkel) bis Weiß – Fell, Zähne, Schläger und Schriftzug bleiben erkennbar. Wird auf dem Gerät aus `logo.png` berechnet (`wpNavyLogo`, einmal zwischengespeichert). Kombinierbar mit allen Stilen, Hell/Dunkel und Sperr-/Startbildschirm. Dateiname bekommt „-blau“.
+- Eintrag in „Neu in der App“ (fasst auch die Startbildschirm-Variante zusammen).
+
+## Version 1.52.3
+
+- **„Startbildschirm“ überarbeitet:** statt blassem Wasserzeichen jetzt dasselbe Motiv wie beim Sperrbildschirm (Logo und Schrift an gleicher Stelle), aber Logo, Schrift und Zierstrich halb durchsichtig (Hell 50 %, Dunkel 55 %). Hintergrund bleibt voll.
+
+## Version 1.52.2
+
+- **Hintergrund „Vereinsdesign“: neue Auswahl „Sperrbildschirm / Startbildschirm“.** Sperrbildschirm wie bisher (Logo groß mit Schrift). Startbildschirm: gleicher Hintergrund in allen vier Stilen, aber ohne Schrift und das Logo nur als blasses Wasserzeichen in der Mitte – die App-Symbole gehen nicht mehr unter (vor allem bei Hell). Dateiname bekommt „-start“.
 
 ## Version 1.52.1
 

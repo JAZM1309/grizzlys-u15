@@ -2562,3 +2562,26 @@ html.dark .stSheet{background:#121f33}
 html.dark .stDone{background:#1f6fb8}
 .ftStep .ftIn{width:46px;min-width:0;font:inherit;font-size:26px;font-weight:950;font-variant-numeric:tabular-nums;text-align:center;color:inherit;background:transparent;border:1px solid transparent;border-radius:10px;padding:2px 0;-moz-appearance:textfield}
 .ftStep .ftIn:focus{outline:none;border-color:var(--a,#168cff);background:rgba(22,140,255,.08)}
+/* 1.53.1: Hintergrund-Auswahl übersichtlicher */
+.wpBody{gap:10px}
+.wpPhone{height:min(44vh,430px)}
+.wpOpts{gap:12px;align-items:stretch}
+.wpOpt{display:flex;flex-direction:column;gap:6px}
+.wpOptL{font-size:11.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-left:4px}
+.wpSeg{display:grid!important;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px!important;background:#e6edf5;border-radius:14px;padding:3px}
+html.dark .wpSeg{background:#0f1c2f}
+.wpSeg button{display:flex;align-items:center;justify-content:center;gap:7px;border:0!important;background:transparent!important;color:#3c5674!important;border-radius:11px!important;padding:9px 6px!important;font-size:13px!important;font-weight:900!important}
+.wpSeg button.on{background:#fff!important;color:#0b2a52!important;box-shadow:0 2px 6px rgba(11,42,82,.14)}
+html.dark .wpSeg button{color:#93a7bd!important}html.dark .wpSeg button.on{background:#1b2d47!important;color:#e7eef8!important}
+.wpSi{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wpLg{width:22px;height:22px;display:grid;place-items:center;flex:none}.wpLg img{width:22px;height:22px;object-fit:contain}
+.wpLg.navy img{filter:grayscale(1) sepia(1) hue-rotate(185deg) saturate(2.2) brightness(.75) contrast(1.3)}
+.wpStyles{display:grid!important;grid-template-columns:repeat(4,1fr);gap:8px!important}
+.wpStyles button{display:flex;flex-direction:column;align-items:center;gap:5px;border:2px solid transparent!important;background:transparent!important;border-radius:14px!important;padding:3px 3px 6px!important;font-size:12px!important;font-weight:850!important;color:inherit!important}
+.wpStyles button canvas{width:100%;aspect-ratio:9/16;height:auto;border-radius:10px;display:block;background:#0a2547;box-shadow:0 2px 8px rgba(4,16,31,.2)}
+.wpStyles button.on{border-color:#0b5cad!important;background:rgba(11,92,173,.07)!important}
+html.dark .wpStyles button.on{border-color:#4fa3ff!important}
+.wpNr{justify-content:space-between;padding:0 4px}
+.wpBtns{position:sticky;bottom:-16px;background:#fff;box-shadow:0 -8px 12px -6px rgba(11,42,82,.12);padding:8px 0 4px;width:100%;display:grid;grid-template-columns:1fr;gap:8px}
+.wpBtns .action{width:100%}
+html.dark .wpBtns{background:#121f33}
