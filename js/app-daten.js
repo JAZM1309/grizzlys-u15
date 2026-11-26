@@ -428,12 +428,12 @@ function fbShowError(msg){
   box.textContent=msg; box.hidden=!msg;
 }
 async function submitBugReport(){
-  const name=document.getElementById("bugReportName")?.value.trim()||"";
+  const name0=document.getElementById("bugReportName")?.value.trim()||"";const name=name0||"anonym"; /* 1.69.0: Name freiwillig – leer wird „anonym“ gespeichert (Regel verlangt 2–80 Zeichen) */
   const area=document.getElementById("bugReportArea")?.value||"Sonstiges";
   const description=document.getElementById("bugReportDescription")?.value.trim()||"";
   const contact=document.getElementById("bugReportContact")?.value.trim()||"";
   const type=currentBugType(), typeInfo=BUG_TYPES[type];
-  if(name.length<2){alert("Bitte gib deinen Namen an.");document.getElementById("bugReportName")?.focus();return;}
+  if(name0.length===1){alert("Bitte gib mindestens zwei Buchstaben an – oder lass das Feld leer.");document.getElementById("bugReportName")?.focus();return;}
   if(description.length<5){alert(typeInfo.emptyMsg);return;}
   fbShowError("");
   fbSaveDraft();
@@ -457,7 +457,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.68.0.277",
+      appVersion:"1.69.0.278",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),

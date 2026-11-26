@@ -311,7 +311,7 @@ function setScheduleMode(mode){
 }
 function todayKey(){const n=new Date(),p=x=>String(x).padStart(2,"0");return n.getFullYear()+"-"+p(n.getMonth()+1)+"-"+p(n.getDate())}
 function nextGame(){const now=Date.now();return games.filter(gameMatchesFilters).sort((a,b)=>dt(a)-dt(b)).find(g=>dt(g).getTime()+2*3600000>=now)||null}
-function stickyOffset(){const el=document.getElementById("scheduleSticky"),tb=document.querySelector(".tabs");const rs=getComputedStyle(document.documentElement);const bar=46;const tabsH=document.documentElement.classList.contains("d27")?0:(tb?tb.offsetHeight:parseFloat(rs.getPropertyValue("--tabsH"))||52); /* 1.54.1: im neuen Design liegt die Navigation unten */return bar+tabsH+(el?el.offsetHeight:0)+12}
+function stickyOffset(){const el=document.getElementById("scheduleSticky"),tb=document.querySelector(".tabs");const rs=getComputedStyle(document.documentElement);const bar=46;const tabsH=document.documentElement.classList.contains("dv")?0:(tb?tb.offsetHeight:parseFloat(rs.getPropertyValue("--tabsH"))||52); /* 1.54.1: im neuen Design liegt die Navigation unten */return bar+tabsH+(el?el.offsetHeight:0)+12}
 function scrollToToday(smooth=true){
   const sec=document.getElementById("scheduleView"); if(!sec||sec.hidden)return;
   let target=null;
@@ -1112,7 +1112,7 @@ function gameCardHtml(g,past,res,detail=false,label=""){
   const wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
   const date=`<div class="g3Date"><span>${esc(wd)}</span><b>${String(d.getDate()).padStart(2,"0")}.</b><span>${esc(mon)}</span><i>${esc(g.time)}</i></div>`;
   const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">${esc(teamName(g.team))}</span>${g.cancelled?`<span class="cxBadge${g.postponed?" pp":""}">${g.postponed?"Verlegt · Termin offen":"Abgesagt"}</span>`:""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
-  const mid=res?`<div class="gzMid"><b class="gzScore">${res.hs}:${res.as}</b><span class="lastPill ${res.o}">${outLabel(res)}</span></div>`
+  const mid=res?`<div class="gzMid"><b class="gzScore"><i>${res.hs}</i><em>:</em><i>${res.as}</i></b><span class="lastPill ${res.o}">${outLabel(res)}</span></div>`
                :lv?`<div class="gzMid gzLive"><b class="gzScore">${esc(String(lv.hs))}:${esc(String(lv.as))}</b><span class="lastPill live${lv.status==="final"?" fin":""}">${lv.status==="final"?"Endstand · vorläufig":`<i class="liveDot"></i>Live`}</span>${lv.status==="final"?"":`<span class="liveClock">${esc(liveLabel(lv))}</span>`}</div>`
                :`<div class="gzMid">${g.cancelled?`<span class="lastPill cx${g.postponed?" pp":""}">${cxW(g)}</span>`:past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
   const match=`<div class="gcMatch"><div class="gcSide">${logo(g.home,"opponentLogo")}<span>${esc(shortTeam(g.home))}</span></div>${mid}<div class="gcSide">${logo(g.away,"opponentLogo")}<span>${esc(shortTeam(g.away))}</span></div></div>`;
@@ -1220,7 +1220,7 @@ function lrRender(list){
       <div class="lrTeams"><span class="lrBadge">${esc(teamName(g.team))}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
         <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?lrScorers(g,r)+msChips(g):""}</div>
-      <div class="lrScore">${r?`<b>${r.hs}:${r.as}</b><span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):r.o}">${g.cancelled?cxW(g):outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):"none"}">${g.cancelled?cxW(g):"Ergebnis folgt"}</span>`}`}</div>
+      <div class="lrScore">${r?`<b><i>${r.hs}</i><em>:</em><i>${r.as}</i></b><span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):r.o}">${g.cancelled?cxW(g):outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):"none"}">${g.cancelled?cxW(g):"Ergebnis folgt"}</span>`}`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");
   el.querySelectorAll(".lrRow").forEach(row=>{const g=list[Number(row.dataset.i)];
@@ -1502,7 +1502,7 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.vi
 })();
 /* 1.9.1.100: Wischen nach links/rechts wechselt zwischen Start, Spielplan, Gegner und Downloads – die Seite folgt dem Finger */
 (function(){
-  const ORDER=["home","schedule","opponents","rules","downloads"];const syncOrder=()=>{const a=document.documentElement.classList.contains("d27")?["home","schedule","opponents","stats","downloads"]:["home","schedule","opponents","rules","downloads"];ORDER.splice(0,ORDER.length,...a)};syncOrder();
+  const ORDER=["home","schedule","opponents","rules","downloads"];const syncOrder=()=>{const a=document.documentElement.classList.contains("dv")?["home","schedule","opponents","stats","downloads"]:["home","schedule","opponents","rules","downloads"];ORDER.splice(0,ORDER.length,...a)};syncOrder();
   const label=v=>(document.querySelector('.tab[data-view="'+v+'"]')||{}).textContent||v;
   const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
   let st=null;
@@ -1937,7 +1937,7 @@ updateFilterUi();renderNext();renderList("all");renderOpponents();standNote();lo
 const INSTA_LOGOS=LOGO_FILES;
 const INSTA_LEAGUE=Object.fromEntries(Object.entries(APP_CFG.teams).map(([k,v])=>[k,v.league]));
 /* 1.67.0: Farbpalette der erzeugten Bilder (Social Media, Hintergrundbilder) – im Vereinsdesign (html.d29) Anthrazit, Grau und Logo-Blau statt Navy und Orange, schmale Großbuchstaben statt Pinselschrift */
-const IC_={get v(){return document.documentElement.classList.contains("d29")},
+const IC_={get v(){return document.documentElement.classList.contains("dv")},
   get acc(){return this.v?"#2b93f0":"#ff8a00"},get accTx(){return this.v?"#ffffff":"#2b1500"},get accTx2(){return this.v?"#08345e":"#4a2500"},get accLight(){return this.v?"#a9d4ff":"#ffd2a1"},get accDark(){return this.v?"#0a62b8":"#c2410c"},
   get bg(){return this.v?"#1f1f1f":"#04101f"},get bg2(){return this.v?"#2b2b2b":"#0a2547"},get navy(){return this.v?"#2b2b2b":"#0b2a52"},
   get t1(){return this.v?"#f2f2f2":"#e7eef8"},get t2(){return this.v?"#d6d6d6":"#d5e1ef"},get t3(){return this.v?"#a8a8a8":"#9fb3ca"},get t3a(){return this.v?"rgba(168,168,168,.75)":"rgba(159,179,202,.75)"},get t4(){return this.v?"#6f6f6f":"#4a6380"},
@@ -3714,7 +3714,7 @@ async function wpOpen(k){
   const paint=v=>seg.querySelectorAll("[data-d27]").forEach(b=>{const on=b.dataset.d27===v;b.classList.toggle("on",on);b.setAttribute("aria-checked",on)});
   paint(get());
   seg.querySelectorAll("[data-d27]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.d27;try{localStorage.setItem("grizzlysD27",v)}catch(e){}
-    const H=document.documentElement,on=v!=="off";H.classList.toggle("d27",on);H.classList.toggle("d28",on);H.classList.toggle("d29",on);
+    const H=document.documentElement,on=v!=="off";H.classList.toggle("dv",on);
     if(on)H.classList.remove("xm","hw");else{try{if(window.xmActive&&window.xmActive())H.classList.add("xm");if(window.hwActive&&window.hwActive())H.classList.add("hw")}catch(e){}}
     paint(v);try{window.dispatchEvent(new Event("resize"))}catch(e){}
     try{trackAnalyticsEvent("design27_toggle",{on:on?1:0,variant:v})}catch(e){}}));
@@ -3758,5 +3758,5 @@ function renderHomeTeams27(){
       ${x.n?`<span class="ht27R"><b><span class="w">${x.w}</span>–<span class="l">${x.l}</span></b><small>${x.gf}:${x.ga} · <span class="${df>0?"w":df<0?"l":""}">${df>0?"+":""}${df}</span></small></span>`:`<span class="ht27R"><small>noch keine<br>Ergebnisse</small></span>`}
       <i class="ht27Bar"><i style="width:${pct}%"></i></i>
     </button>`}).join("");
-  box.querySelectorAll("[data-ht]").forEach(b=>b.onclick=()=>{if(document.documentElement.classList.contains("d27")){try{localStorage.setItem("grizzlysStatsTeam",b.dataset.ht)}catch(e){}showView("stats");window.scrollTo(0,0)}else openBilanz(b.dataset.ht)});
+  box.querySelectorAll("[data-ht]").forEach(b=>b.onclick=()=>{if(document.documentElement.classList.contains("dv")){try{localStorage.setItem("grizzlysStatsTeam",b.dataset.ht)}catch(e){}showView("stats");window.scrollTo(0,0)}else openBilanz(b.dataset.ht)});
 }

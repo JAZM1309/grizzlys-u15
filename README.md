@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.69.0.278 | – (nur Test) | 26.11.2026 | Vereinsdesign: Restpunkte, Aufräumen; Feedback-Name freiwillig |
 | 1.68.0.277 | – (nur Test) | 26.11.2026 | Neues App-Icon (Puck) in der Test-App |
 | 1.67.0.276 | – (nur Test) | 26.11.2026 | Vereinsdesign: Social-Media-Bilder und Hintergrundbilder |
 | 1.66.0.275 | – (nur Test) | 26.11.2026 | Festlegung auf Vereinsdesign, Einstellungen angepasst |
@@ -140,6 +141,12 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.69.0
+
+- **Vereinsdesign (Vorschau) – Restpunkte.** Spielplan-Liste: Ergebnis je Team in eigener Zeile neben dem Teamnamen (`.gzScore` jetzt mit `<i>`-Teilen), Sieg/Niederlage-Hinweis links daneben. „Letzte Ergebnisse“ wie die Liste: Datum oben in Blau, Mannschafts-Chip rechts oben, Teams untereinander mit Logos, Ergebnis je Team. Kalenderansicht (Rahmen, Monatstitel, Wochentage, Heute-Markierung, Knöpfe, Filter-Chips) und Gegner-Karte (Filter-Chips, „Karte laden“, Kartenrahmen) im Vereinsstil.
+- **Aufräumen der Designvorschläge.** Trikot und Klar sind entfernt: statt drei Klassen (`d27`, `d28`, `d29`) gibt es nur noch `html.dv` für das Vereinsdesign (Spezifität der Regeln unverändert); tote Regeln nur für Trikot/Klar (Sammelregel „keine runden Ecken“, Trikotstreifen im Kopf) und das Streifen-SVG im Kopf gelöscht. Das vollständige Zusammenführen der Stilblöcke bleibt für die Sommerpause vorgemerkt.
+- **Feedback: Name freiwillig (für alle).** Das Namensfeld ist kein Pflichtfeld mehr („Name (freiwillig)“); leer wird „anonym“ gespeichert, die Firestore-Regel bleibt unverändert. Kein Eintrag in „Neu in der App“.
 
 ## Version 1.68.0
 
