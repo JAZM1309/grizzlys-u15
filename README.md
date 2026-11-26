@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.68.0.277 | – (nur Test) | 26.11.2026 | Neues App-Icon (Puck) in der Test-App |
 | 1.67.0.276 | – (nur Test) | 26.11.2026 | Vereinsdesign: Social-Media-Bilder und Hintergrundbilder |
 | 1.66.0.275 | – (nur Test) | 26.11.2026 | Festlegung auf Vereinsdesign, Einstellungen angepasst |
 | 1.65.1.274 | – (nur Test) | 26.11.2026 | Design „Verein“: Admin „Zu tun“ lesbar |
@@ -139,6 +140,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.68.0
+
+- **Neues App-Icon für die Saison 2027/28 (nur Test-App).** Liegender 3D-Puck mit Vereinslogo auf dem Bullypunkt einer hellen Eisfläche (rote Mittellinie, blauer Bullykreis). Die Test-App nutzt es ab sofort (mit orangem TEST-Band): `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (Puck kleiner, damit er in runden Masken vollständig bleibt). Die Live-Icons bleiben unverändert – sie stehen in `live.sh` unter NUR_LIVE. Die fertigen Live-Varianten ohne TEST-Band liegen in `img/icons-2027/` bereit; zum Saisonstart diese drei Dateien im Live-Repo über `icon-192.png`, `icon-512.png` und `icon-maskable-512.png` kopieren.
 
 ## Version 1.67.0
 
