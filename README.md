@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.70.5.284 | – (nur Test) | 26.11.2026 | Laufendes Spiel nicht doppelt |
 | 1.70.4.283 | – (nur Test) | 26.11.2026 | Laufendes Spiel oben auf der Startseite |
 | 1.70.3.282 | – (nur Test) | 26.11.2026 | Helferdienste: Liste öffnet über dem Admin, Admin-Kasten einklappbar |
 | 1.70.2.281 | – (nur Test) | 26.11.2026 | Live-Gang: Lesbarkeitsprüfung startet wieder |
@@ -146,6 +147,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.70.5
+
+- **Laufendes Spiel nicht doppelt.** Unter „Letztes Spiel“ bzw. „Letzte Ergebnisse“ erscheinen nur noch abgeschlossene Spiele; das laufende steht ausschließlich oben (gemeinsame Prüfung `isLiveNow`).
 
 ## Version 1.70.4
 

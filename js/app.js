@@ -450,6 +450,7 @@ function printAllGamesPdf(filters=["all"]){
 }
 function downloadIcsBundle(arr,filename){const body=arr.flatMap(g=>icsForEvent(g));const content=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ESV Grizzlys//U15//DE","CALSCALE:GREGORIAN",...body,"END:VCALENDAR"].join("\r\n");const blob=new Blob([content],{type:"text/calendar;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function icsForEvent(g){const d=dt(g),end=new Date(d.getTime()+2*3600000),p=n=>String(n).padStart(2,"0"),stamp=x=>x.getFullYear()+p(x.getMonth()+1)+p(x.getDate())+"T"+p(x.getHours())+p(x.getMinutes())+"00";return ["BEGIN:VEVENT","UID:"+g.date+"-"+g.time+"-"+g.team+"@grizzlys-u15","DTSTART:"+stamp(d),"DTEND:"+stamp(end),...(g.cancelled?["STATUS:CANCELLED"]:[]),"SUMMARY:"+(g.cancelled?cxU(g)+": ":"")+teamName(g.team)+" – "+opponent(g),"LOCATION:"+address(g),"DESCRIPTION:"+g.home+" gegen "+g.away+"\\nSpielort: "+address(g),"END:VEVENT"]}
+function isLiveNow(x){const n=Date.now(),s=+dt(x);return !x.cancelled&&s<=n&&s+2.5*3600000>n&&!resInfo(x)}
 function renderNext(){
   const g=games.filter(x=>dt(x)>=new Date()).sort((a,b)=>dt(a)-dt(b))[0]||games[games.length-1];
   const cls="team"+g.team;
@@ -464,7 +465,7 @@ function renderNext(){
   document.getElementById("nextRoute").onclick=()=>route(g); document.getElementById("nextCalendar").onclick=()=>calendar(g); document.getElementById("nextReminder").onclick=()=>reminder(g); document.getElementById("nextShare").onclick=()=>shareGame(g);
   hwDecorate(document.querySelector(".next"),g);
   /* 1.70.4: Ein Spiel, das gerade läuft (Bully vorbei, noch kein Endstand, höchstens 2,5 Std.), steht ganz oben – darunter die nächsten Spiele */
-  const nowL=new Date(), liveG=games.filter(x=>!x.cancelled&&dt(x)<=nowL&&+dt(x)+2.5*3600000>+nowL&&!resInfo(x)).sort((a,b)=>dt(b)-dt(a))[0]||null;
+  const liveG=games.filter(isLiveNow).sort((a,b)=>dt(b)-dt(a))[0]||null;
   {const now=new Date();
    const more=dt(g)>=now?window.MY_TEAMS.filter(t=>t!==g.team).map(t=>games.filter(x=>x.team===t&&dt(x)>=now).sort((a,b)=>dt(a)-dt(b))[0]).filter(Boolean).sort((a,b)=>dt(a)-dt(b)):[];
    const list=liveG?[liveG,g,...more]:[g,...more];
@@ -618,7 +619,8 @@ function renderLast(){
   try{window.renderSpruch&&window.renderSpruch()}catch(e){console.warn(e)}
   const box=document.getElementById("lastGameCard"); if(!box)return;
   const now=new Date();
-  const past=games.filter(g=>dt(g)<now).sort((a,b)=>dt(b)-dt(a));
+  /* 1.70.5: ein gerade laufendes Spiel steht oben – hier nur wirklich abgeschlossene Spiele */
+  const past=games.filter(g=>dt(g)<now&&!isLiveNow(g)).sort((a,b)=>dt(b)-dt(a));
   /* Letztes Spiel beider Mannschaften: je Team das zuletzt gespielte Spiel (ohne Ergebnis „Ergebnis folgt“), oben das neuere */
   const lastOf=t=>past.find(x=>x.team===t)||null;
   const both=window.MY_TEAMS.map(lastOf).filter(Boolean).sort((a,b)=>dt(b)-dt(a));
