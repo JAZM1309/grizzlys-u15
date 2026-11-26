@@ -47,6 +47,37 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Helferdienste (1.70.0): je Heimspiel Einträge mit frei gewähltem Namen. Eintragen mit (anonymer) Anmeldung,
+    // löschen darf nur, wer eingetragen hat (gleiche uid), oder der Admin. helpersTest = Test-App.
+    function helperEntryOk() {
+      return request.auth != null
+        && request.resource.data.keys().hasOnly(["gid","gd","team","item","name","uid","createdAt"])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.gid is string
+        && request.resource.data.gid.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}_(A|B|U13|U17)")
+        && request.resource.data.gd is string && request.resource.data.gd.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")
+        && request.resource.data.team in ["A","B","U13","U17"]
+        && request.resource.data.item is string && request.resource.data.item.matches("[a-z0-9]{1,20}")
+        && request.resource.data.name is string && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 40
+        && request.resource.data.createdAt == request.time;
+    }
+    match /helpers/{id} {
+      allow read: if true;
+      allow create: if helperEntryOk();
+      allow delete: if isAdmin() || (request.auth != null && resource.data.uid == request.auth.uid);
+      allow update: if false;
+    }
+    match /helpersTest/{id} {
+      allow read: if true;
+      allow create: if helperEntryOk();
+      allow delete: if isAdmin() || (request.auth != null && resource.data.uid == request.auth.uid);
+      allow update: if false;
+    }
+    match /helperCfg/{docId} {
+      allow read: if true;
+      allow write: if isAdmin() && docId in ["template","games"];
+    }
+
     match /scheduleOverrides/{gameId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();

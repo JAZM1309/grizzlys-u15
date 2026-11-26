@@ -3,6 +3,18 @@
 /* Fallback, falls das Firebase-Modul nicht lädt (Vorschau, offline): Spielplan bleibt nutzbar, nur ohne Ergebnisse */
 window.resultFor=window.resultFor||function(){return null};window.resultBadge=window.resultBadge||function(){return ""};
 const ALL_GAMES=window.SPIELPLAN||[]; /* 1.39.0: Spielplan steht in spielplan.js */
+/* 1.70.0: Helferdienste – Daten früh anlegen, weil die Spielkarten schon beim Start danach fragen */
+var HP_DEFAULT=[
+  {id:"bericht",s:"g",t:"Spielbericht",n:1},{id:"zeit",s:"g",t:"Zeitnehmer",n:1},{id:"sbh",s:"g",t:"Strafbank Heim",n:1},{id:"sbg",s:"g",t:"Strafbank Gast",n:1},
+  {id:"tore",s:"g",t:"Aufbau der Tore",d:"vor dem Spiel, in den Drittelpausen und nach dem Spiel",n:2},{id:"fenster",s:"g",t:"Fensterputzer",d:"bei Bedarf",n:1},
+  {id:"schiri",s:"g",t:"Verpflegung Schiedsrichter",d:"Kaffee + Zubehör, Mineralwasser",n:1},{id:"mokipa",s:"g",t:"Verpflegung MoKiPa",n:1},{id:"musik",s:"g",t:"Musik / Stadionsprecher",n:1},
+  {id:"platten",s:"v",t:"Obst- und Gemüseplatten vorbereiten",n:2},{id:"belegt",s:"v",t:"Belegte Brötchen vorbereiten",n:4},{id:"riegel",s:"v",t:"3er-Pack Müsliriegel",n:2},
+  {id:"wasser",s:"v",t:"6 Flaschen Mineralwasser still (1,5 l)",n:2},{id:"obst",s:"v",t:"Obst",d:"z. B. 6 Bananen, 4 Äpfel",n:1},{id:"trauben",s:"v",t:"2 Pack Weintrauben",n:1},
+  {id:"broetchen",s:"v",t:"20 Brötchen",n:1},{id:"belag",s:"v",t:"Käse, Mortadella und Salami",d:"für je 10 Brötchen",n:1},{id:"eier",s:"v",t:"10 gekochte Eier",n:1},
+  {id:"deko",s:"v",t:"Dekoration für Brötchen",d:"Gurke, Paprika, Tomaten und Brezel",n:1},{id:"serv",s:"v",t:"Servietten, Messer und Platten",d:"für den Brötchenverkauf",n:1}];
+var HP_SECT={g:"Für das Spiel",v:"Verpflegung"};
+var HP_DAYS=5;
+var HP_CFG={template:null,games:null}, HP_ENTRIES={}, HP_LOADED=false;
 /* 1.35.0: Nutzer-Ansichten zeigen nur „Meine Mannschaften“; Admin-Bereiche arbeiten mit ALL_GAMES */
 const games=ALL_GAMES.filter(g=>window.myTeam(g.team));
 const logoUrls={"Dinslakener Kobras": "https://www.google.com/s2/favicons?domain=dinslakener-kobras.de&sz=128", "ESC Darmstadt": "https://ehv-nrw.de/media/_versions/club/darmstadt-dukes_medium.png", "ESC Rheine Young Cats": "https://ehv-nrw.de/media/uploads/club/yc-rheine.png", "EHC Gelsenkirchen": "https://www.google.com/s2/favicons?domain=ehc-gelsenkirchen.de&sz=128", "Herner EV": "https://www.google.com/s2/favicons?domain=herner-ev.de&sz=128", "Neusser EV": "https://www.google.com/s2/favicons?domain=neusser-ev.de&sz=128", "GSC Moers": "https://www.rodi-db.de/img/db/img1091.png", "TSVE Bielefeld": "https://www.google.com/s2/favicons?domain=tsve.de&sz=128", "EHC Neuwied": "https://www.google.com/s2/favicons?domain=ehc-neuwied.de&sz=128", "Eisadler Dortmund": "https://www.eishockey.net/admin/files/pictures/30586/30586_37577_1024_ead-logo-1024.png", "TuS Wiehl": "https://ehv-nrw.de/media/uploads/club/tus-wiehl.png", "EC Bergisch Land": "https://ehv-nrw.de/media/uploads/club/ec-bergisch-land.png", "EV Duisburg": "https://www.google.com/s2/favicons?domain=fuechse-duisburg.de&sz=128", "Ratinger Ice Aliens": "https://www.google.com/s2/favicons?domain=icealiens97.de&sz=128", "Lippe Hockey Hamm": "https://ehv-nrw.de/media/uploads/club/lh-hamm.png", "Herforder EV": "https://www.google.com/s2/favicons?domain=herforder-ev.de&sz=128", "Grefrather EC": "https://www.google.com/s2/favicons?domain=grefrather-eg.de&sz=128", "Aachener EC": "https://www.google.com/s2/favicons?domain=aachener-ec.de&sz=128", "Soester EG": "https://www.google.com/s2/favicons?domain=soester-eg.de&sz=128", "EHC Essen Ruhr": "https://ehc-essen.de/images/ehc/EHC_Logo.webp"};
@@ -1111,7 +1123,7 @@ function gameCardHtml(g,past,res,detail=false,label=""){
   const logo=(name,cls)=>/grizzlys/i.test(name)?teamLogoHtml(name,cls):logoHtml(name,cls);
   const wd=d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".",""), mon=d.toLocaleDateString("de-DE",{month:"short"}).replace(".","");
   const date=`<div class="g3Date"><span>${esc(wd)}</span><b>${String(d.getDate()).padStart(2,"0")}.</b><span>${esc(mon)}</span><i>${esc(g.time)}</i></div>`;
-  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">${esc(teamName(g.team))}</span>${g.cancelled?`<span class="cxBadge${g.postponed?" pp":""}">${g.postponed?"Verlegt · Termin offen":"Abgesagt"}</span>`:""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
+  const head=`<div class="g3Head"><div class="gcLeft"><span class="teamBadge">${esc(teamName(g.team))}</span>${g.cancelled?`<span class="cxBadge${g.postponed?" pp":""}">${g.postponed?"Verlegt · Termin offen":"Abgesagt"}</span>`:""}<span class="homeaway">${home?ic("home")+"Heim":ic("away")+"Auswärts"}</span>${label?`<span class="nextBadge">${esc(label)}</span>`:""}${hwBadge(g)}${xmBadge(g)}${hpBadge(g)}</div>${detail?"":'<span class="g3Tog" aria-hidden="true"><span class="g3TogTxt">Details</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6l6-6"/></svg></span>'}</div>`;
   const mid=res?`<div class="gzMid"><b class="gzScore"><i>${res.hs}</i><em>:</em><i>${res.as}</i></b><span class="lastPill ${res.o}">${outLabel(res)}</span></div>`
                :lv?`<div class="gzMid gzLive"><b class="gzScore">${esc(String(lv.hs))}:${esc(String(lv.as))}</b><span class="lastPill live${lv.status==="final"?" fin":""}">${lv.status==="final"?"Endstand · vorläufig":`<i class="liveDot"></i>Live`}</span>${lv.status==="final"?"":`<span class="liveClock">${esc(liveLabel(lv))}</span>`}</div>`
                :`<div class="gzMid">${g.cancelled?`<span class="lastPill cx${g.postponed?" pp":""}">${cxW(g)}</span>`:past?'<span class="lastPill none">Ergebnis folgt</span>':'<span class="vs">VS</span>'}</div>`;
@@ -1125,7 +1137,7 @@ function gameCardHtml(g,past,res,detail=false,label=""){
   const btn=(c,icon,label)=>`<button class="g3Btn ${c}" type="button">${ic(icon)}${label}</button>`;
   const hasRep=!!(res&&!detail&&window.repFor&&window.repFor(g));
   const acts=`<div class="g3Acts">`+(past||g.cancelled?"":btn("cal","calplus","Termin")+btn("rem","bell","Erinnerung"))+(hasRep?btn("rep","file","Bericht"):"")+btn("share","share",res?"Ergebnis teilen":"Teilen")+`</div>`;
-  return `<div class="g3Top">${date}<div class="g3Main">${head}${match}</div></div><div class="g3Det"><div class="g3In"><div class="g3Pad">${thirds}${lv&&lv.goals&&lv.goals.length?liveGoalsHtml(g,lv):res&&!g.cancelled?g3ScorersTile(g,res):""}${ftTile(g)}${tiles?`<div class="g3Pair">${tiles}</div>`:""}${venue}${acts}</div></div></div>`;
+  return `<div class="g3Top">${date}<div class="g3Main">${head}${match}</div></div><div class="g3Det"><div class="g3In"><div class="g3Pad">${thirds}${lv&&lv.goals&&lv.goals.length?liveGoalsHtml(g,lv):res&&!g.cancelled?g3ScorersTile(g,res):""}${ftTile(g)}${hpTile(g)}${tiles?`<div class="g3Pair">${tiles}</div>`:""}${venue}${acts}</div></div></div>`;
 }
 function g3SetOpen(card,on){
   card.classList.toggle("open",on);
@@ -3760,3 +3772,104 @@ function renderHomeTeams27(){
     </button>`}).join("");
   box.querySelectorAll("[data-ht]").forEach(b=>b.onclick=()=>{if(document.documentElement.classList.contains("dv")){try{localStorage.setItem("grizzlysStatsTeam",b.dataset.ht)}catch(e){}showView("stats");window.scrollTo(0,0)}else openBilanz(b.dataset.ht)});
 }
+
+/* ===== 1.70.0: Helferdienste ===== 
+   Je Heimspiel eine Helferliste aus einer gemeinsamen Vorlage. Sie erscheint automatisch 5 Tage vor dem Spiel
+   (Hinweis in der Spielkarte und auf der Startseite) und ist über einen Link auch ohne App erreichbar (#helfer/<Spiel-ID>).
+   Eintragen: frei wählbarer Name; jeder löscht nur seinen eigenen Eintrag (anonyme Firebase-Anmeldung), der Admin alle.
+   Namen werden 3 Tage nach dem Spiel automatisch gelöscht (Cloud Function helperCleanup). */
+function hpGid(g){return g._baseId||(g.date+"_"+String(g.time).replace(/:/g,"")+"_"+g.team)}
+function hpTemplate(){const t=HP_CFG.template&&Array.isArray(HP_CFG.template.items)&&HP_CFG.template.items.length?HP_CFG.template.items:HP_DEFAULT;return t}
+function hpItems(gid){const hide=((HP_CFG.games||{}).hide||{})[gid]||[];return hpTemplate().filter(x=>!hide.includes(x.id))}
+function hpFlag(){try{return localStorage.getItem("grizzlysHelfer")==="on"}catch(e){return false}}
+function hpOn(){return (!!window.GRIZZLYS_TEST&&hpFlag())||!!(HP_CFG.games&&HP_CFG.games.live===true)}
+function hpEligible(g){if(!g||!isHome(g)||g.cancelled)return false;if(((HP_CFG.games||{}).off||{})[hpGid(g)])return false;const t=dt(g)-Date.now();return t<=HP_DAYS*864e5&&t>=-3*36e5}
+function hpStat(gid){const items=hpItems(gid),E=HP_ENTRIES[gid]||[];let need=0,have=0;items.forEach(x=>{const n=Math.max(1,Number(x.n)||1),k=E.filter(e=>e.item===x.id).length;need+=n;have+=Math.min(n,k)});return {need,have,open:need-have}}
+function hpBadge(g){if(!hpOn()||!hpEligible(g))return "";const s=hpStat(hpGid(g));return `<span class="hpBadge${s.open?"":" full"}" data-hpb="${esc(hpGid(g))}" data-hp="${esc(hpGid(g))}" role="button" tabindex="0">${s.open?"Helfer gesucht":"Helfer komplett"}</span>`}
+function hpTile(g){if(!hpOn()||!hpEligible(g))return "";const gid=hpGid(g),s=hpStat(gid),pct=s.need?Math.round(s.have/s.need*100):0;
+  return `<button type="button" class="g3Tile hpTile" data-hp="${esc(gid)}"><span class="hpTxt"><b>Helferdienste</b><small data-hpc="${esc(gid)}">${HP_LOADED?(s.open?`${s.open} von ${s.need} noch offen`:"alles besetzt – danke!"):"wird geladen …"}</small></span><i class="hpBar"><i style="width:${pct}%" data-hpbar="${esc(gid)}"></i></i><span class="hpGo">Eintragen ›</span></button>`}
+function hpPaint(){document.querySelectorAll("[data-hpc]").forEach(el=>{const s=hpStat(el.dataset.hpc);el.textContent=s.open?`${s.open} von ${s.need} noch offen`:"alles besetzt – danke!"});
+  document.querySelectorAll("[data-hpbar]").forEach(el=>{const s=hpStat(el.dataset.hpbar);el.style.width=(s.need?Math.round(s.have/s.need*100):0)+"%"});
+  document.querySelectorAll("[data-hpb]").forEach(el=>{const s=hpStat(el.dataset.hpb);el.classList.toggle("full",!s.open);el.textContent=s.open?"Helfer gesucht":"Helfer komplett"})}
+function hpIso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+async function hpRefresh(){if(!window.hpRange)return;try{const now=new Date(),from=hpIso(new Date(now-864e5)),to=hpIso(new Date(+now+(HP_DAYS+1)*864e5));const L=await window.hpRange(from,to);HP_ENTRIES={};L.forEach(e=>(HP_ENTRIES[e.gid]=HP_ENTRIES[e.gid]||[]).push(e));HP_LOADED=true;hpPaint()}catch(e){console.warn("Helfer laden",e);HP_LOADED=true;hpPaint()}}
+async function hpInit(){
+  for(let k=0;k<40&&!window.hpCfgLoad;k++)await new Promise(r=>setTimeout(r,250));
+  if(!window.hpCfgLoad)return;
+  HP_CFG=await window.hpCfgLoad();
+  if(hpOn()){try{renderNext();renderList()}catch(e){}await hpRefresh();setInterval(hpRefresh,5*60*1000)}
+  hpRoute();
+}
+function hpName(){try{return localStorage.getItem("grizzlysHelferName")||""}catch(e){return ""}}
+function hpSetName(v){try{localStorage.setItem("grizzlysHelferName",v)}catch(e){}}
+function hpLink(gid){return location.origin+location.pathname.replace(/index\.html$/,"")+"#helfer/"+encodeURIComponent(gid)}
+function hpShareText(g,gid,E){const items=hpItems(gid);const open=items.map(x=>{const n=Math.max(1,Number(x.n)||1),k=(E||[]).filter(e=>e.item===x.id).length;return n>k?(n-k>1||n>1?`${x.t} (${n-k})`:x.t):""}).filter(Boolean);
+  const d=dt(g),day=d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
+  return `🏒 Helfer gesucht – Heimspiel ${teamName(g.team)}\n${day} · ${g.time} · ${shortTeam(g.home)} – ${shortTeam(g.away)}\n\n`+(open.length?`Noch offen: ${open.join(", ")}`:"Alle Dienste sind besetzt – danke! 💙")+`\n\n👉 Eintragen: ${hpLink(gid)}`}
+var hpUnsub=null;
+function hpClose(){const m=document.getElementById("hpModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true")}if(hpUnsub){try{hpUnsub()}catch(e){}hpUnsub=null}document.body.style.overflow="";if(location.hash.startsWith("#helfer/"))history.replaceState(null,"",location.pathname+location.search);hpRefresh()}
+function hpOpen(gid){
+  const g=(window.ALL_GAMES||games).find(x=>hpGid(x)===gid)||games.find(x=>hpGid(x)===gid);
+  let m=document.getElementById("hpModal");
+  if(!m){m=document.createElement("div");m.id="hpModal";m.className="matchModal hpModal";m.hidden=true;m.setAttribute("aria-hidden","true");
+    m.innerHTML=`<div class="matchModalBox" role="dialog" aria-modal="true" aria-labelledby="hpTitle"><div class="matchModalHead"><div id="hpTitle" class="matchModalTitle">Helferdienste</div><button class="matchModalClose" type="button" aria-label="Schließen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div><div class="matchModalContent hpBody"></div></div>`;
+    document.body.appendChild(m);m.querySelector(".matchModalClose").onclick=hpClose;m.addEventListener("click",e=>{if(e.target===m)hpClose()})}
+  const body=m.querySelector(".hpBody");
+  if(!g){body.innerHTML=`<p class="hpEmpty">Dieses Spiel wurde nicht gefunden. Vielleicht wurde es abgesagt oder der Link ist veraltet.</p>`}
+  m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  if(!g)return;
+  let E=HP_ENTRIES[gid]||[], busy=false, err="";
+  const draw=()=>{
+    const items=hpItems(gid), uid=window.hpUid&&window.hpUid(), adm=window.hpIsAdmin&&window.hpIsAdmin(), s=(()=>{HP_ENTRIES[gid]=E;return hpStat(gid)})();
+    const d=dt(g),day=d.toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"long"});
+    const row=x=>{const n=Math.max(1,Number(x.n)||1),mine=E.filter(e=>e.item===x.id),free=n-mine.length;
+      return `<div class="hpRow"><div class="hpRowT"><b>${esc(x.t)}</b>${x.d||n>1?`<small>${x.d?esc(x.d):""}${x.d&&n>1?" · ":""}${n>1?`${Math.min(n,mine.length)} von ${n}`:""}</small>`:""}</div><div class="hpWho">`+
+        mine.map(e=>{const own=uid&&e.uid===uid,can=own||adm;return `<span class="hpName${own?" own":""}">${esc(e.name)}${can?`<button type="button" class="hpX" data-del="${esc(e.id)}" aria-label="${esc(e.name)} austragen">✕</button>`:""}</span>`}).join("")+
+        (free>0?`<button type="button" class="hpTake" data-take="${esc(x.id)}">${x.s==="v"?"Ich bring's":"Ich mach's"}</button>`:"")+`</div></div>`};
+    const secs=Object.keys(HP_SECT).map(k=>{const L=items.filter(x=>(x.s||"g")===k);return L.length?`<div class="hpSec">${HP_SECT[k]}</div>`+L.map(row).join(""):""}).join("");
+    body.innerHTML=`<div class="hpHead"><div class="hpKick">Helfer gesucht · ${esc(teamName(g.team))}</div><div class="hpGame">${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</div>
+      <div class="hpMeta">${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</div><div class="hpProg"><i style="width:${s.need?Math.round(s.have/s.need*100):0}%"></i></div><div class="hpMeta">${s.open?`${s.open} von ${s.need} Plätzen noch offen`:"Alle Plätze besetzt – danke! 💙"}</div></div>
+      <label class="hpNameBox"><span>Dein Name</span><input type="text" maxlength="40" autocomplete="given-name" placeholder="z. B. Sandra oder Familie Meier" value="${esc(hpName())}"></label>
+      ${err?`<div class="hpErr">${esc(err)}</div>`:""}${secs}
+      <div class="hpActs"><button type="button" class="hpShare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/></svg>In WhatsApp teilen</button><button type="button" class="hpCopy">Link kopieren</button></div>
+      <p class="hpNote">Namen werden 3 Tage nach dem Spiel automatisch gelöscht. Austragen kannst du dich nur auf dem Gerät, mit dem du dich eingetragen hast.</p>`;
+    const inp=body.querySelector(".hpNameBox input");inp.addEventListener("change",()=>hpSetName(inp.value.trim()));
+    body.querySelectorAll("[data-take]").forEach(b=>b.onclick=async()=>{if(busy)return;const name=inp.value.trim();if(name.length<2){err="Bitte trag zuerst deinen Namen ein.";draw();body.querySelector(".hpNameBox input").focus();return}
+      hpSetName(name);busy=true;b.disabled=true;err="";try{await window.hpAdd(g,gid,b.dataset.take,name);try{trackAnalyticsEvent("helper_signup",{team:teamName(g.team)})}catch(e){}}catch(e){console.warn(e);err=/operation-not-allowed|admin-restricted/.test(String(e&&e.code||e))?"Eintragen ist gerade nicht möglich (Anmeldung bei Firebase noch nicht eingerichtet).":/permission/i.test(String(e&&e.code||e))?"Eintragen ist gerade nicht möglich (keine Berechtigung).":"Das hat nicht geklappt. Bitte Internetverbindung prüfen."}busy=false;draw()});
+    body.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(busy)return;const e0=E.find(e=>e.id===b.dataset.del);if(!confirm(`„${e0?e0.name:""}“ austragen?`))return;busy=true;try{await window.hpDel(b.dataset.del)}catch(e){console.warn(e);err="Austragen hat nicht geklappt."}busy=false;draw()});
+    body.querySelector(".hpShare").onclick=()=>{const t=hpShareText(g,gid,E);try{trackAnalyticsEvent("helper_share",{team:teamName(g.team)})}catch(e){}window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank")};
+    body.querySelector(".hpCopy").onclick=async e=>{try{await navigator.clipboard.writeText(hpLink(gid));e.target.textContent="Kopiert ✓"}catch(x){prompt("Link zum Kopieren:",hpLink(gid))}};
+  };
+  draw();
+  if(hpUnsub){try{hpUnsub()}catch(e){}}
+  if(window.hpWatch)hpUnsub=window.hpWatch(gid,(L,e)=>{if(L){E=L;draw()}});
+}
+function hpRoute(){const h=location.hash;if(!h.startsWith("#helfer/"))return;const gid=decodeURIComponent(h.slice(8));hpOpen(gid)}
+window.addEventListener("hashchange",hpRoute);
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-hp]");if(!b)return;e.stopPropagation();e.preventDefault();hpOpen(b.dataset.hp)},true);
+/* Admin: Vorschau-Schalter, Vorlage bearbeiten, Listen je Spiel ein/aus */
+function hpAdminBox(){const box=document.getElementById("hpAdmBox");if(!box)return;const sum=document.getElementById("hpAdmSum");if(sum)sum.textContent=hpFlag()?"an":"aus";
+  const sw=document.getElementById("hpToggle");if(sw){sw.checked=hpFlag();sw.onchange=()=>{try{localStorage.setItem("grizzlysHelfer",sw.checked?"on":"off")}catch(e){}try{renderNext();renderList()}catch(e){}if(sw.checked)hpRefresh();hpAdminBox()}}
+  const list=document.getElementById("hpAdmGames");if(!list)return;
+  const now=Date.now(),up=games.filter(g=>isHome(g)&&!g.cancelled&&dt(g)>now-3*36e5).sort((a,b)=>dt(a)-dt(b)).slice(0,8),off=((HP_CFG.games||{}).off)||{};
+  list.innerHTML=up.map(g=>{const gid=hpGid(g),d=dt(g),on=!off[gid],vis=dt(g)-now<=HP_DAYS*864e5;return `<div class="hpAdmRow"><div><b>${d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})} · ${esc(teamName(g.team))}</b><small>${esc(shortTeam(opponent(g)))}${vis?" · sichtbar":" · ab "+new Date(+d-HP_DAYS*864e5).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+" sichtbar"}</small></div><label class="hpAdmSw"><input type="checkbox" data-hpoff="${esc(gid)}" ${on?"checked":""}> Liste</label><button type="button" class="hpAdmOpen" data-hp="${esc(gid)}">Öffnen</button></div>`}).join("")||"<p class=\"small\">Keine kommenden Heimspiele.</p>";
+  list.querySelectorAll("[data-hpoff]").forEach(c=>c.onchange=async()=>{const G=Object.assign({off:{},hide:{}},HP_CFG.games||{});G.off=Object.assign({},G.off);if(c.checked)delete G.off[c.dataset.hpoff];else G.off[c.dataset.hpoff]=true;try{await window.hpCfgSave("games",G);HP_CFG.games=G;try{renderNext();renderList()}catch(e){}}catch(e){alert("Speichern nicht möglich: "+(e.message||e));c.checked=!c.checked}});
+  const ed=document.getElementById("hpTplEdit");if(ed)ed.onclick=hpTplEditor;
+}
+function hpTplEditor(){
+  let L=hpTemplate().map(x=>Object.assign({},x));
+  let m=document.getElementById("hpTplModal");
+  if(!m){m=document.createElement("div");m.id="hpTplModal";m.className="matchModal hpModal";m.innerHTML=`<div class="matchModalBox" role="dialog" aria-modal="true"><div class="matchModalHead"><div class="matchModalTitle">Vorlage Helferdienste</div><button class="matchModalClose" type="button" aria-label="Schließen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div><div class="matchModalContent hpTplBody"></div></div>`;document.body.appendChild(m);m.querySelector(".matchModalClose").onclick=()=>{m.hidden=true}}
+  const body=m.querySelector(".hpTplBody");
+  const draw=()=>{body.innerHTML=`<p class="small">Gilt für alle Mannschaften. Anzahl = wie viele Personen sich eintragen können.</p>`+L.map((x,i)=>`<div class="hpTplRow" data-i="${i}"><select data-k="s"><option value="g"${x.s!=="v"?" selected":""}>Spiel</option><option value="v"${x.s==="v"?" selected":""}>Verpflegung</option></select><input data-k="t" value="${esc(x.t)}" maxlength="60" placeholder="Dienst"><input data-k="d" value="${esc(x.d||"")}" maxlength="80" placeholder="Hinweis (optional)"><input data-k="n" type="number" min="1" max="9" value="${Number(x.n)||1}"><button type="button" data-rm="${i}" aria-label="Entfernen">✕</button></div>`).join("")+
+    `<div class="hpActs"><button type="button" class="hpAdd">+ Dienst</button><button type="button" class="hpSave">Speichern</button><button type="button" class="hpReset">Standard</button></div><div class="small hpTplMsg"></div>`;
+    body.querySelectorAll(".hpTplRow").forEach(r=>{const i=Number(r.dataset.i);r.querySelectorAll("[data-k]").forEach(f=>f.oninput=()=>{const k=f.dataset.k;L[i][k]=k==="n"?Math.max(1,Math.min(9,Number(f.value)||1)):f.value})});
+    body.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{L.splice(Number(b.dataset.rm),1);draw()});
+    body.querySelector(".hpAdd").onclick=()=>{L.push({id:"d"+Date.now().toString(36),s:"g",t:"",n:1});draw()};
+    body.querySelector(".hpReset").onclick=()=>{if(confirm("Vorlage auf den Standard zurücksetzen?")){L=HP_DEFAULT.map(x=>Object.assign({},x));draw()}};
+    body.querySelector(".hpSave").onclick=async()=>{const items=L.filter(x=>String(x.t).trim()).map(x=>({id:x.id,s:x.s==="v"?"v":"g",t:String(x.t).trim(),d:String(x.d||"").trim(),n:Math.max(1,Math.min(9,Number(x.n)||1))}));const msg=body.querySelector(".hpTplMsg");try{await window.hpCfgSave("template",{items});HP_CFG.template={items};msg.textContent="Gespeichert ✓";try{renderNext();renderList()}catch(e){}}catch(e){msg.textContent="Speichern nicht möglich: "+(e.message||e)}};
+  };
+  draw();m.hidden=false;
+}
+hpInit();
+setTimeout(hpAdminBox,1500);document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest('[data-adm-tab]'))setTimeout(hpAdminBox,50)});

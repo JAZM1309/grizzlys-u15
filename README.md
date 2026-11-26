@@ -50,6 +50,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.70.3.282 | – (nur Test) | 26.11.2026 | Helferdienste: Liste öffnet über dem Admin, Admin-Kasten einklappbar |
+| 1.70.2.281 | – (nur Test) | 26.11.2026 | Live-Gang: Lesbarkeitsprüfung startet wieder |
+| 1.70.1.280 | – (nur Test) | 26.11.2026 | Vereinsdesign: Admin-Fenster nicht mehr unter der Kopfleiste |
+| 1.70.0.279 | – (nur Test) | 26.11.2026 | Helferdienste (Vorschau) |
 | 1.69.0.278 | – (nur Test) | 26.11.2026 | Vereinsdesign: Restpunkte, Aufräumen; Feedback-Name freiwillig |
 | 1.68.0.277 | – (nur Test) | 26.11.2026 | Neues App-Icon (Puck) in der Test-App |
 | 1.67.0.276 | – (nur Test) | 26.11.2026 | Vereinsdesign: Social-Media-Bilder und Hintergrundbilder |
@@ -141,6 +145,26 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.70.3
+
+- **Helferdienste (Vorschau) – Admin.** „Öffnen“ zeigte die Liste hinter dem Admin-Bereich (Ebene 50 statt über 1100) – Helferliste und Vorlage liegen jetzt darüber. Der Kasten „Helferdienste (Vorschau)“ in Technik › Neue Saison ist einklappbar wie „Veröffentlichen“ (zu Beginn zu, rechts „an/aus“).
+
+## Version 1.70.2
+
+- **Live-Gang wieder möglich.** Die Lesbarkeitsprüfung bildet die Firebase-Module nach; ihr Anmelde-Modul kennt `signInAnonymously` nicht, deshalb startete die App dort nicht („Kontrast 0.00 – Skriptfehler“) und der Live-Gang wurde gesperrt. `signInAnonymously` wird jetzt erst beim ersten Eintragen in eine Helferliste nachgeladen (`import()`), der statische Import entfällt. In der echten App ändert sich nichts.
+
+## Version 1.70.1
+
+- **Vereinsdesign (Vorschau) – Fenster über der Kopfleiste.** `main` hatte im neuen Design `z-index:1` und bildete dadurch einen eigenen Stapel: Admin-Bereich und andere Fenster (z-index 1100) lagen unter der eingeblendeten Kopfleiste, das Schließen-Kreuz war verdeckt. Jetzt `z-index:auto`.
+
+## Version 1.70.0
+
+- **Helferdienste (Vorschau für 2027/28).** Je Heimspiel eine Helferliste aus einer gemeinsamen Vorlage (Standard: 9 Dienste „Für das Spiel“, 11 Positionen „Verpflegung“, mit Anzahl der Plätze). Sie erscheint automatisch 5 Tage vor dem Spiel: Hinweis „Helfer gesucht/komplett“ in der Spielkarte (antippbar) und Kachel „Helferdienste“ in den Details mit Fortschritt. Die Liste öffnet sich auch über einen Link ohne App (`…/#helfer/<Spiel-ID>`, Spiel-ID = ursprünglicher Termin, wandert bei Verlegung mit; bei Absage keine Liste). Eintragen mit frei gewähltem Namen (wird auf dem Gerät gemerkt), „Ich mach's/Ich bring's“ je Platz; austragen kann nur das eintragende Gerät (anonyme Firebase-Anmeldung, gleiche uid) oder der Admin. „In WhatsApp teilen“ erzeugt einen Text mit allen noch offenen Diensten und dem Link, „Link kopieren“ kopiert nur den Link.
+- **Admin › Technik › Neue Saison › Helferdienste:** Schalter (nur dieses Gerät, nur Test-App), kommende Heimspiele mit „Liste“ an/aus und „Öffnen“, „Vorlage bearbeiten“ (Bereich, Dienst, Hinweis, Anzahl; Standard wiederherstellen). Vorlage und An/Aus liegen in `helperCfg/template` bzw. `helperCfg/games` (auch für die spätere Live-App).
+- **Daten und Datenschutz:** Einträge in `helpers` (Live) bzw. `helpersTest` (Test-App; Schreiben ist für diese Sammlung in der Test-App ausdrücklich erlaubt). Neue Firestore-Regeln (`helperEntryOk`, nur festgelegte Felder, Name 2–40 Zeichen). Neue Cloud Function `helperCleanup` (täglich 4:15 Uhr) löscht Einträge 3 Tage nach dem Spiel. Regeln und Function werden beim nächsten „Live gehen“ automatisch veröffentlicht – erst danach funktioniert das Eintragen in der Test-App.
+- **Einmalig in der Firebase-Konsole:** Authentication › Sign-in method › „Anonym“ aktivieren. Ohne diesen Schritt zeigt die Liste „Eintragen ist gerade nicht möglich (Anmeldung bei Firebase noch nicht eingerichtet)“.
+- Admin-Status zeigt bei anonymer Anmeldung weiterhin „Nicht angemeldet“.
 
 ## Version 1.69.0
 

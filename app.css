@@ -3306,3 +3306,63 @@ html.dv.dv.dv.dv .oppMapFilter button,html.dv.dv.dv.dv .rlChips button{border-ra
 html.dv.dv.dv.dv .oppMapFilter button.on,html.dv.dv.dv.dv .oppMapFilter button.active,html.dv.dv.dv.dv .oppMapFilter button[aria-pressed="true"]{background:var(--vAcc)!important;border-color:var(--vAcc)!important;color:#fff!important}
 html.dv.dv.dv.dv .oppMapAsk button{background:var(--vAcc)!important;color:#fff!important;border-radius:99px!important}
 html.dv.dv.dv.dv .oppMapAskIc{color:var(--muted)!important}
+
+/* ===== 1.70.0: Helferdienste ===== */
+.hpBadge{display:inline-flex;align-items:center;font-size:11px;font-weight:900;padding:2px 8px;border-radius:99px;background:#fff1e0;color:#9a5300;white-space:nowrap}
+.hpBadge.full{background:#e4f6ea;color:#1b7a3d}
+html.dark .hpBadge{background:#3a2716;color:#ffcf8a}html.dark .hpBadge.full{background:#173322;color:#8fe0ad}
+.hpTile{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 10px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;border:0}
+.hpTxt{display:flex;flex-direction:column}.hpTxt b{font-size:14px;font-weight:900}.hpTxt small{font-size:12px;color:var(--muted)}
+.hpGo{font-weight:900;font-size:13px;color:var(--vAcc,#0b5cad)}
+.hpBar{grid-column:1/3;height:5px;border-radius:3px;background:rgba(127,127,127,.2);overflow:hidden;display:block}.hpBar>i{display:block;height:100%;background:var(--vAcc,#168cff)}
+.hpModal .matchModalBox{max-height:92vh}
+.hpBody{padding:0 0 18px}
+.hpHead{padding:14px 16px 6px}
+.hpKick{font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--vAcc,#168cff);display:flex;align-items:center;gap:8px}
+.hpKick::before{content:"";width:18px;height:3px;background:currentColor}
+.hpGame{font-size:22px;font-weight:950;line-height:1.1;margin-top:4px}
+.hpMeta{font-size:12.5px;color:var(--muted);margin-top:3px}
+.hpProg{height:6px;border-radius:3px;background:rgba(127,127,127,.2);overflow:hidden;margin-top:10px}.hpProg>i{display:block;height:100%;background:var(--vAcc,#168cff)}
+.hpNameBox{display:flex;flex-direction:column;gap:4px;margin:10px 16px 6px;font-size:12px;font-weight:800;color:var(--muted)}
+.hpNameBox input{font:inherit;font-size:15px;font-weight:600;color:var(--text);padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--card,#fff)}
+.hpErr{margin:6px 16px;padding:8px 10px;border-radius:10px;background:#fdecea;color:#a12a20;font-size:13px;font-weight:700}
+.hpSec{font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:14px 16px 4px}
+.hpRow{display:flex;align-items:center;gap:10px;padding:8px 16px;border-top:1px solid var(--border)}
+.hpRowT{flex:1;min-width:0;display:flex;flex-direction:column}.hpRowT b{font-size:14px;font-weight:800}.hpRowT small{font-size:11.5px;color:var(--muted)}
+.hpWho{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:58%}
+.hpName{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;background:rgba(127,127,127,.13);border-radius:99px;padding:4px 9px}
+.hpName.own{background:color-mix(in srgb,var(--vAcc,#168cff) 16%,transparent);color:var(--vAcc,#0b5cad)}
+.hpX{border:0;background:none;color:inherit;font:inherit;font-weight:900;cursor:pointer;padding:0 0 0 2px}
+.hpTake{border:1.5px solid var(--vAcc,#168cff);color:var(--vAcc,#0b5cad);background:transparent;border-radius:99px;padding:4px 11px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;white-space:nowrap}
+.hpTake:disabled{opacity:.5}
+.hpActs{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px 4px}
+.hpActs button{border:2px solid var(--text);background:transparent;color:var(--text);border-radius:99px;padding:8px 14px;font:inherit;font-weight:800;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.hpActs .hpShare{background:#25d366;border-color:#25d366;color:#fff}
+.hpActs .hpShare svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+.hpActs .hpSave{background:var(--vAcc,#168cff);border-color:var(--vAcc,#168cff);color:#fff}
+.hpNote{font-size:11.5px;color:var(--muted);padding:6px 16px 0;margin:0}
+.hpEmpty{padding:20px 16px;color:var(--muted)}
+.hpAdmGames{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.hpAdmRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:8px 10px}
+.hpAdmRow b{display:block;font-size:13px}.hpAdmRow small{font-size:11.5px;color:var(--muted)}
+.hpAdmSw{font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px}
+.hpAdmOpen,.hpTplBtn{border:1.5px solid var(--text);background:transparent;color:var(--text);border-radius:99px;padding:5px 11px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.hpTplBtn{margin-top:10px}
+.hpTplBody{padding:12px 14px 18px}
+.hpTplRow{display:grid;grid-template-columns:86px minmax(0,1fr) 44px 30px;gap:5px;margin-bottom:8px;align-items:center}
+.hpTplRow input[data-k="d"]{grid-column:2/3;grid-row:2}
+.hpTplRow select,.hpTplRow input{font:inherit;font-size:13px;padding:6px 7px;border:1px solid var(--border);border-radius:8px;background:var(--card,#fff);color:var(--text);min-width:0}
+.hpTplRow button{border:0;background:none;font-weight:900;cursor:pointer;color:var(--muted)}
+html.dv.dv.dv.dv .hpGame{font-family:var(--vCond);text-transform:uppercase;letter-spacing:.01em}
+html.dv.dv.dv.dv .hpKick,html.dv.dv.dv.dv .hpSec{font-family:var(--vCond)}
+html.dv.dv.dv.dv .hpSec{color:var(--vAcc)}
+html.dv.dv.dv.dv .hpTile{background:var(--d27tile)!important;border-radius:12px!important}
+html.dv.dv.dv.dv #homeView .card.g3Hero .hpTile{background:#3a3a3a!important;color:#fff}
+html.dv.dv.dv.dv #homeView .card.g3Hero .hpTxt small{color:#bbb}
+html.dv.dv.dv.dv #homeView .card.g3Hero .hpGo{color:#8fc8ff}
+html.dv.dv.dv.dv #gamesList .card.gz3:not(.open) .g3Head .gcLeft>.hpBadge{display:inline-flex!important}
+/* 1.70.1: main bildet keinen eigenen Stapel mehr – sonst lagen Admin- und andere Fenster unter der Kopfleiste (Schließen-Kreuz verdeckt) */
+html.dv main{z-index:auto!important}
+/* 1.70.3: Helferliste und Vorlage liegen über dem Admin-Bereich */
+#hpModal,#hpTplModal{z-index:1200!important}
+#hpAdmBody .hwSwitchRow{margin-bottom:4px}

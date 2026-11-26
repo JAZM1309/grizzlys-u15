@@ -8,6 +8,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.70.3.282 | – (nur Test) | 26.11.2026 | Helferdienste: Liste öffnet über dem Admin, Admin-Kasten einklappbar |
+| 1.70.2.281 | – (nur Test) | 26.11.2026 | Live-Gang: Lesbarkeitsprüfung startet wieder |
+| 1.70.1.280 | – (nur Test) | 26.11.2026 | Vereinsdesign: Admin-Fenster nicht mehr unter der Kopfleiste |
+| 1.70.0.279 | – (nur Test) | 26.11.2026 | Helferdienste (Vorschau) |
 | 1.69.0.278 | – (nur Test) | 26.11.2026 | Vereinsdesign: Restpunkte, Aufräumen; Feedback-Name freiwillig |
 | 1.68.0.277 | – (nur Test) | 26.11.2026 | Neues App-Icon (Puck) in der Test-App |
 | 1.67.0.276 | – (nur Test) | 26.11.2026 | Vereinsdesign: Social-Media-Bilder und Hintergrundbilder |
