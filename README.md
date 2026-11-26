@@ -50,6 +50,38 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.67.0.276 | – (nur Test) | 26.11.2026 | Vereinsdesign: Social-Media-Bilder und Hintergrundbilder |
+| 1.66.0.275 | – (nur Test) | 26.11.2026 | Festlegung auf Vereinsdesign, Einstellungen angepasst |
+| 1.65.1.274 | – (nur Test) | 26.11.2026 | Design „Verein“: Admin „Zu tun“ lesbar |
+| 1.65.0.273 | – (nur Test) | 26.11.2026 | Neue Designs: Seitentitel überall, „Verein“ auch für News und Admin |
+| 1.64.4.272 | – (nur Test) | 26.11.2026 | Neue Designs: Wischen im Bereich „Bilanz“ |
+| 1.64.3.271 | – (nur Test) | 26.11.2026 | Neue Designs: Gegnerliste kompakter |
+| 1.64.2.270 | – (nur Test) | 26.11.2026 | Neue Designs: Puck mit runder Kante |
+| 1.64.1.269 | – (nur Test) | 26.11.2026 | Design „Verein“: Highlight am Spieltag korrigiert |
+| 1.64.0.268 | – (nur Test) | 26.11.2026 | Design „Verein“: Nächstes Spiel als Highlight mit Eisfläche |
+| 1.63.5.267 | – (nur Test) | 26.11.2026 | Neue Designs: Puck dreht flüssiger |
+| 1.63.4.266 | – (nur Test) | 26.11.2026 | Neue Designs: Puck steht auf der Kante und dreht sich |
+| 1.63.3.265 | – (nur Test) | 26.11.2026 | Neue Designs: Puck dreht sich um seine Achse |
+| 1.63.2.264 | – (nur Test) | 26.11.2026 | Design „Verein“: Wasserzeichen-Schrift sauber |
+| 1.63.1.263 | – (nur Test) | 26.11.2026 | Vorschaubilder ohne News-Eintrag |
+| 1.63.0.262 | – (nur Test) | 26.11.2026 | Social-Media-Downloads mit Vorschaubildern |
+| 1.62.0.261 | – (nur Test) | 26.11.2026 | Neue Designs: Mannschaften+Bilanz zusammengefasst, kompakte Bilanz, Puck |
+| 1.61.2.260 | – (nur Test) | 26.11.2026 | Design „Verein“: Kopf neu angeordnet |
+| 1.61.1.259 | – (nur Test) | 26.11.2026 | Design-Vorschau: Korrekturen Gameday-Kopf, Spielplan-Kopf, Liste |
+| 1.61.0.258 | – (nur Test) | 26.11.2026 | Design-Entwurf „Verein“ |
+| 1.60.0.257 | – (nur Test) | 25.11.2026 | Design-Entwurf „Klar“ zum Umschalten |
+| 1.59.1.256 | – (nur Test) | 25.11.2026 | Trikot-Design: keine runden Chips mehr, Spielplan-Kopf |
+| 1.59.0.255 | – (nur Test) | 25.11.2026 | Trikot-Design Stufe 5: Downloads, Einstellungen, Info |
+| 1.58.1.254 | – (nur Test) | 25.11.2026 | Trikot-Design: Filter laufen beim Scrollen mit |
+| 1.58.0.253 | – (nur Test) | 25.11.2026 | Trikot-Design Stufe 4: Spieldetails, Fenster |
+| 1.57.0.252 | – (nur Test) | 25.11.2026 | Trikot-Design: Saisonbilanz in der Navigation |
+| 1.56.0.251 | – (nur Test) | 25.11.2026 | Trikot-Design Stufe 3: Spielplan-Kopf, Filter, Gegner |
+| 1.55.3.250 | – (nur Test) | 25.11.2026 | Trikot-Design: kleinerer Kopfbereich |
+| 1.55.2.249 | – (nur Test) | 25.11.2026 | Trikot-Design: Kacheln ohne Rahmen |
+| 1.55.1.248 | – (nur Test) | 25.11.2026 | Trikot-Design: eckige Kacheln |
+| 1.55.0.247 | – (nur Test) | 25.11.2026 | Trikot-Design Stufe 2: Karten |
+| 1.54.1.246 | – (nur Test) | 25.11.2026 | Fix Vorschau-Design: Filterzeile beim Scrollen |
+| 1.54.0.245 | – (nur Test) | 25.11.2026 | Neues Trikot-Design als Vorschau (Stufe 1) |
 | 1.53.1.244 | – (nur Test) | 25.11.2026 | Hintergrund-Auswahl schöner |
 | 1.53.0.243 | – (nur Test) | 25.11.2026 | Hintergrund: Logo in Dunkelblau |
 | 1.52.3.242 | – (nur Test) | 25.11.2026 | Startbildschirm-Hintergrund kräftiger, mit Schrift |
@@ -107,6 +139,134 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.67.0
+
+- **Vereinsdesign (Vorschau) – erzeugte Bilder.** Social-Media-Bilder (Spieltag, Ergebnis, Verlegung, Wochenende, Tabelle, Jahresrückblick) und Hintergrundbilder nutzen eine gemeinsame Farbpalette `IC_`: im Vereinsdesign Anthrazit und Grau statt Navy, Logo-Blau statt Orange als Akzent, Hallenfoto in Graustufen, Überschriften in schmalen Großbuchstaben statt Pinselschrift. Mannschaftsfarben (U15 A blau, U15 B orange, U13 gelb) bleiben. Ohne Vorschau sehen alle Bilder exakt aus wie bisher. Vorschaubilder in den Downloads werden je Design getrennt zwischengespeichert.
+
+## Version 1.66.0
+
+- **Festlegung auf das Vereinsdesign (Vorschau).** Auswahl in Admin › Technik › Neue Saison nur noch „Aus / Verein“; Trikot und Klar sind entfernt. Gespeicherte Werte `on`/`e` werden als „Verein“ behandelt. Technisch baut „Verein“ weiter auf den Stilebenen `d27`/`d28` auf (immer zusammen mit `d29` gesetzt) – das Zusammenführen der CSS-Blöcke ist für den Umbau in der Sommerpause vorgemerkt.
+- **Einstellungen im Vereinsdesign.** Gruppentitel wie überall mit blauem Strich und gesperrter Schrift; Symbole einfarbig im Kreis statt bunter Kacheln; „Aktiv“ in Blau, „Aus“ neutral; Hinweis „Push ist aus“ grau mit blauem „Einschalten“-Knopf statt Orange.
+
+## Version 1.65.1
+
+- **Design „Verein“ (Vorschau) – Admin.** Box „Zu tun“ war weiß auf weiß: jetzt anthrazit mit heller Schrift und blauer Überschrift. Design-Auswahl Aus/Trikot/Klar/Verein als runde Leiste, aktive Auswahl blau.
+
+## Version 1.65.0
+
+- **Neue Designs (Vorschau) – Seitentitel überall.** Downloads, Einstellungen und Info haben jetzt wie Spielplan, Gegner und Bilanz einen Seitentitel (`.vPage`, nur in den neuen Designs sichtbar; der blaue Einstellungen-Kopf entfällt dort). In „Verein“ mit Wasserzeichen MEDIA, SETUP, INFO. „Verein“ jetzt auch im News-Fenster (Titel schmal in Großbuchstaben, runde Karten, blaue Datumszeilen) und im Admin-Bereich (Anthrazit-Kopf, Reiter als Pill-Leiste mit blauem aktivem Reiter, Gruppentitel mit blauem Strich, runde Boxen, Pill-Knöpfe, runde Eingabefelder).
+
+## Version 1.64.4
+
+- **Neue Designs (Vorschau) – Wischen im Bereich „Bilanz“.** `#statsView` fehlte in der Liste der Bereiche, in denen die Wischgeste startet. Jetzt lässt sich auch aus der Bilanz wischen; außerdem startet die Geste auch im leeren Bereich unter kurzen Seiten (ganzes `main`).
+
+## Version 1.64.3
+
+- **Neue Designs (Vorschau) – Gegnerliste.** In „Verein“ kleinere Abstände zwischen und in den Gegnerkarten, kleinere Logos und ein schmalerer Route-Knopf. In allen neuen Designs darf die Zeile „2 Spiele · U15 B · 170 km“ umbrechen, statt unter den Route-Knopf zu laufen.
+
+## Version 1.64.2
+
+- **Neue Designs (Vorschau) – Puck mit runder Kante.** In der Schrägansicht wirkte der Puck „abgeschnitten“, weil die Kante nur aus einer Fläche in der Mitte bestand. Jetzt bilden 18 schmale Flächen rundum eine echte zylindrische Kante (`.pkE`, abwechselnd hell/dunkel für die Riffelung), dazu Vorder- und Rückseite mit Logo.
+
+## Version 1.64.1
+
+- **Design „Verein“ (Vorschau) – Highlight am Spieltag.** Wetter und Spielort („Heimspiel/Auswärtsspiel“ + Halle, ggf. Route) stehen jetzt unter Datum und Chips statt über der Eisfläche; Wetter dunkel hinterlegt, Spielort hell lesbar. Puck bekommt mehr Platz und wird beim Drehen nicht mehr abgeschnitten.
+
+## Version 1.64.0
+
+- **Design „Verein“ (Vorschau) – „Nächstes Spiel“ als Highlight.** Die oberste Karte auf der Startseite ist dunkel (anthrazit), quer durch läuft eine helle Eisfläche mit dezenten Markierungen (rote Mittellinie, zwei blaue Linien, Bullykreis – reine CSS-Verläufe). Logos und Teamnamen stehen auf dem Eis, der Puck dreht sich genau auf dem Mittelpunkt (Mittelspalte fest, Puck absolut zentriert). Datum, Countdown und Kopfzeile hell auf dunkel; im Dunkelmodus ist das Eis etwas gedämpft. Gilt nur für „Verein“.
+
+## Version 1.63.5
+
+- **Neue Designs (Vorschau) – Puck dreht flüssiger.** Das Zucken kam vom Neusortieren der 11 Schichten, wenn der Puck genau hochkant steht. Jetzt nur noch Vorder- und Rückseite (jeweils mit ausgeblendeter Rückfläche) plus eine geriffelte Kantenfläche; Animation mit festem Start- und Endwinkel und `will-change`.
+
+## Version 1.63.4
+
+- **Neue Designs (Vorschau) – Puck steht auf der Kante.** Der Puck (`.g3Puck`) enthält jetzt einen 3D-Körper `.pk3` aus 11 Schichten (Vorder- und Rückseite mit Vereinslogo, dazwischen die Kante) und dreht sich hochkant um die senkrechte Achse (`rotateY`, 5 s je Umdrehung), mit Schatten am Boden. Bei „Bewegung reduzieren“ steht er leicht schräg still. Im bisherigen Design unverändert (`.pk3` ausgeblendet).
+
+## Version 1.63.3
+
+- **Neue Designs (Vorschau) – Puck dreht sich um seine Achse.** Oberseite jetzt als echte 3D-Scheibe mit aufgedrucktem Vereinslogo (`rotateX(72deg)` + `rotateZ` animiert, 6 s je Umdrehung); die geriffelte Kante läuft passend mit. Bei „Bewegung reduzieren“ still.
+
+## Version 1.63.2
+
+- **Design „Verein“ (Vorschau) – Wasserzeichen sauber.** Die umrandete Hintergrundschrift (PLAN, TEAMS, STATS) zeigte bei manchen Buchstaben innere Linien, weil `-webkit-text-stroke` auch überlappende Glyphenteile nachzeichnet. Jetzt Umriss über acht 1-px-Schatten in deckender Mischfarbe, Füllung in Hintergrundfarbe – saubere Konturen auf allen drei Seiten, hell und dunkel.
+
+## Version 1.63.0
+
+- **Downloads › Social Media mit Vorschaubildern (für alle).** Statt der Symbole (Kalender, Pokal, Tabelle) zeigt jeder Eintrag ein kleines Vorschaubild des fertigen Bildes (48×60). Erzeugt mit denselben Zeichenfunktionen wie das große Bild (`instaDraw`, `instaTable`, `instaYear`, `instaWeekend`), aber erst, wenn der Eintrag sichtbar wird (IntersectionObserver), nacheinander und als kleines JPEG im Speicher zwischengespeichert (`instaThumbCache`, Schlüssel je Bildart, Spiel und Ergebnis bzw. Tabellenstand). Bis dahin bleibt das Symbol stehen und pulsiert leicht. Kein Eintrag in „Neu in der App“ (ab 1.63.1 wieder entfernt).
+
+## Version 1.62.0
+
+- **Neue Designs (Vorschau) – Startseite und Saisonbilanz.** „Mannschaften“ und „Saisonbilanz“ auf der Startseite zu einem Block zusammengefasst (`renderHomeTeams27`, `#homeTeams27`): eine Zeile je Mannschaft mit Buchstabe, Name, Tabellenplatz, Liga und Spielfortschritt, Formpunkten der letzten 5 Spiele, Siege–Niederlagen groß, Tore und Differenz, Fortschrittsbalken unten; Antippen öffnet den Bereich „Bilanz“ mit dieser Mannschaft. Saisonbilanz kompakter: Kapitäns-Chips klein in einer Zeile (nur „C 43“, ohne „Kapitän“), Zahlen-Kacheln in 4er- bzw. 3er-Reihe mit kleinerer Schrift. Puck neu: gerade Seitenkante, dicker (Verhältnis näher am echten Puck), dreht sich langsam (Lichtreflex oben und geriffelte Kante laufen mit; bei „Bewegung reduzieren“ still). Ohne Vorschau unverändert.
+
+## Version 1.61.2
+
+- **Design „Verein“ (Vorschau) – Kopf neu angeordnet.** „YOUNG GRIZZLYS“ zweizeilig neben dem Logo, Saison- bzw. Bully-Chip direkt unter dem Logo (Logo ragt nicht mehr über). „GAMEDAY“-Leuchtschrift rechts auf Höhe des Chips, nicht mehr tiefer als der übrige Kopf.
+
+## Version 1.61.1
+
+- **Design-Vorschau – Korrekturen nach Handy-Test.** Leuchtschrift „GAMEDAY“ im Kopf sitzt in allen neuen Designs unten rechts statt über den Knöpfen oben. Spielplan-Kopf: Tabellen-Knöpfe rutschen in eine eigene Zeile, wenn sie nicht neben den Titel passen (z. B. mit U13 drei Knöpfe). „Verein“-Liste: Datum bleibt einzeilig, oben nur der Mannschafts-Chip (Verlegt/Heim/Auswärts stehen rechts bzw. in den Details). Titel im Kopf etwas schmaler.
+
+## Version 1.61.0
+
+- **Design-Entwurf „Verein“ (Vorschau).** Vierte Auswahl in Admin › Technik › Neue Saison (`grizzlysD27`=`v`, setzt `html.d27.d28.d29`). Angelehnt an grizzlys-bergkamen.de, ohne zu kopieren: Anthrazit-Kopf, Logo ragt unten über, schmale Großbuchstaben (Systemschrift Roboto Condensed bzw. Arial Narrow), Abschnittstitel mit blauem Strich und gesperrter Schrift, Seitentitel mit umrandetem Wasserzeichen (PLAN, TEAMS, STATS), Logo-Blau `#0A7FE0` als Akzent. Karten rund (14 px) mit dünnem Rand; auf der Startseite oben graue Logofläche, darunter Datum in Blau. Knöpfe als Pill mit Umriss, „Tipp abgeben“ gefüllt blau. Spielplan als Liste: Datum und Mannschafts-Chip oben, darunter Heim- und Gastteam untereinander mit kleinen Logos, Ergebnis rechts; angetippt klappt die Karte wie gewohnt auf. Die Sammelregel „keine runden Ecken“ gilt nicht für „Verein“.
+
+## Version 1.60.0
+
+- **Design-Entwurf „Klar“ (Vorschau) zum Umschalten.** Admin › Technik › Neue Saison: statt Schalter jetzt Auswahl „Aus / Trikot / Klar“ (`grizzlysD27` = `off`/`on`/`e`; „Klar“ setzt `html.d27.d28`). „Klar“ baut auf dem Trikot-Design auf: dunkelblauer Kopf mit gerader Kante (ohne Streifen), weißer Hintergrund, Kacheln über die volle Breite ohne abgeschrägte Ecken und ohne Balken, Kachel in Pastell je Mannschaft (U15 A hellblau, U15 B hellorange, U13 hellgelb; dunkel: gedeckte Töne), Datum oben in einer Zeile statt Spalte links, „Nächstes Spiel“ als ruhige Überschrift. Analytics `design27_toggle` mit `variant`.
+
+## Version 1.59.1
+
+- **Trikot-Design (Vorschau) – keine runden Ecken mehr.** Eine Sammelregel setzt im Trikot-Design überall die Eckenrundung auf 0 (Wetter-, Spielbericht-, Torschützen-, Tabellenplatz-, Filter- und „Verlegt“-Chips, Saison-Chip und Kopf-Knöpfe, Knöpfe bei „Deine Stimme zählt“, alle Rahmen in der Saisonbilanz, Filter auf der Gegner-Karte …). Rund bleiben bewusst: Logos und Bilder, Schalter (an/aus), Formpunkte, Live- und Hinweispunkte, Puck, Kartenmarker und die Saison-Designs (Weihnachten/Halloween). Spielplan-Kopf: Spielanzahl steht unter „Spielplan“, damit „Tabelle A/B“ auf schmalen Handys nicht mehr über dem Titel liegt. Vereinsname im Kopf bleibt einzeilig (Schrift passt sich der Breite an). Fan-Tipp: +/− und Eingabefeld etwas schmaler, damit auf 360-px-Handys nichts abgeschnitten wird. Nur mit eingeschalteter Vorschau.
+
+## Version 1.59.0
+
+- **Trikot-Design (Vorschau) – Stufe 5: Downloads, Einstellungen, Info.** Alle Info- und Einstellungskarten eckig mit abgeschrägten Ecken, ohne Schatten. Download-Einträge, Wegweiser-Zeilen und Mannschafts-Links als eckige Kacheln mit dezentem Farbbalken links. Hinweis „Benachrichtigungen“ mit orangem Balken. Einstellungs-Fenster eckig mit abgeschrägter Ecke. Hintergrundbilder: Vorschauen, Auswahl-Segmente und Chips eckig, Auswahl schwarz (dunkel: Trikotblau). Nur mit eingeschalteter Vorschau.
+
+## Version 1.58.1
+
+- **Trikot-Design (Vorschau) – Filter laufen mit.** Beim Scrollen bleiben oben unter der Kopfleiste stehen: Mannschaftswahl in „Bilanz“ (die Reiter Überblick/Verlauf/… direkt darunter), Suchfeld bei den Gegnern und die Reiter in den Downloads (jetzt auch eckig, aktiver Reiter schwarz). Nur mit eingeschalteter Vorschau.
+
+## Version 1.58.0
+
+- **Trikot-Design (Vorschau) – Stufe 4: Spieldetails und Fenster.** Aufgeklappte Spielkarte: Fan-Tipp, Spielort und Ergebnis-Kacheln eckig auf hellblauem Grund, „Tipp abgeben“ und „Route“ schwarz mit abgeschrägter Ecke, +/− und Kalender/Erinnerung/Teilen eckig. Spielbericht mit schwarzem Balken links. Alle Fenster (`.matchModalBox`: Spieldetails, Saisonbilanz, Gegner …) eckig mit abgeschrägter Ecke oben rechts und schwarzem Kopf (dunkel: Trikotblau). Reiter der Saisonbilanz als eckige Segmente, aktiver Reiter schwarz. Nur sichtbar mit eingeschalteter Vorschau.
+
+## Version 1.57.0
+
+- **Trikot-Design (Vorschau) – Saisonbilanz als eigener Bereich.** In der unteren Navigation ersetzt „Bilanz“ den Punkt „Regeln“. Neuer Bereich `#statsView` mit Mannschaftsauswahl (gemerkt in `grizzlysStatsTeam`) und der kompletten Saisonbilanz (`bilanzHtml`, Reiter Überblick/Verlauf/Liga/Nummern, Reiterleiste klebt unter der Kopfleiste). Regeln sind in der Info als eigene Karte „Regeln & Begriffe“ erreichbar. Wischen zwischen den Bereichen folgt der neuen Reihenfolge. Die Saisonbilanz-Kachel auf der Startseite öffnet weiter das Fenster. Ohne Vorschau bleibt alles wie bisher. Analytics: `stats_opened`, `saisonbilanz_opened` mit `src:"nav"`.
+
+## Version 1.56.0
+
+- **Trikot-Design (Vorschau) – Stufe 3: Spielplan-Kopf, Filter, Gegner.** Umschalter Liste/Kalender und Liste/Karte als eckige Segmente (aktiv schwarz, dunkel: Trikotblau). Filter, Suchfeld, Tabellen-Links und Monatsleiste eckig; aktueller Monat schwarz. „Heute“- und Route-Knopf schwarz mit abgeschrägter Ecke. Monatsanzeige an der Scroll-Leiste eckig. Gegnerkarten wie die Spielkarten: abgeschrägte Ecken, dezenter Farbbalken links (U15 A blau, U15 B orange). Nur sichtbar mit eingeschalteter Vorschau.
+
+## Version 1.55.3
+
+- **Trikot-Design (Vorschau) – kleinerer Kopfbereich.** Logo 54 statt 76 px, weniger Abstand unten, Trikotstreifen flacher (88 statt 150 px). Der Kopfbereich ist rund 90 px niedriger, Inhalte rücken nach oben. Nur sichtbar mit eingeschalteter Vorschau.
+
+## Version 1.55.2
+
+- **Trikot-Design (Vorschau) – Kacheln ohne Rahmen.** Die abgeschrägten Ecken bleiben, der schwarze/blaue Rahmen entfällt. Stattdessen ein dezenter Farbbalken links in der Mannschaftsfarbe (70 % Deckkraft; „Nächstes Spiel“ kräftiger, 5 px), bei Mannschaftskarten oben. Neutrale Karten (letzte Ergebnisse, Saisonbilanz, Feedback) mit blassblauem Balken. Nur sichtbar mit eingeschalteter Vorschau.
+
+## Version 1.55.1
+
+- **Trikot-Design (Vorschau) – eckige Kacheln.** Spielkarten, letzte Ergebnisse, Mannschafts- und Saisonbilanz-Karten haben keine runden Ecken mehr, sondern zwei abgeschrägte Ecken (oben rechts, unten links) wie ein Trikot-Patch, mit durchgehendem schwarzem Rahmen (dunkel: Trikotblau) inklusive Schrägen. Mannschaftsfarbe als Streifen innen links bzw. oben. „Nächstes Spiel“ mit kräftigerem Rahmen und größerer Schräge. Countdown-Kästchen eckig. Nur sichtbar mit eingeschalteter Vorschau.
+
+## Version 1.55.0
+
+- **Trikot-Design (Vorschau, `html.d27`) – Stufe 2: Karten.** Spielkarten (Startseite und Spielplan, `.card.gz3`): weiß bzw. #15212f, runde Ecken, Mannschaftsfarbe nur noch als schmaler Streifen links, Kopfband schwarz (dunkel: Trikotblau), Datumsspalte hell. „Nächstes Spiel“ als weiße Karte statt Hallenfoto, Countdown in hellen Kästchen. Letzte Ergebnisse: weiße Karte, Kopfzeile dezent, Siege schwarz, Niederlagen hellblau. Mannschafts- und Saisonbilanz-Karten weiß mit Farbstreifen oben. Nur sichtbar mit eingeschalteter Vorschau.
+
+## Version 1.54.1
+
+- **Fix im Vorschau-Design:** Die mitlaufende Filterzeile im Spielplan (und weitere `.stickyFilters`) hing beim Scrollen mitten im Bild, weil ihr Abstand oben noch die Höhe der Reiterleiste enthielt – die liegt im neuen Design unten. Mit `html.d27` jetzt direkt unter der Kopfleiste; „Heute“-Sprung (`stickyOffset`) entsprechend angepasst.
+
+## Version 1.54.0
+
+- **Neues Trikot-Design für 2027/28 als Vorschau – Stufe 1.** Schalter in Admin › Technik › „Neue Saison“ (nur dieses Gerät, `localStorage` `grizzlysD27`, Klasse `html.d27`, wird schon im `<head>` gesetzt). Hat Vorrang vor Halloween/Weihnachten (deren Klassen werden entfernt, solange die Vorschau an ist). Alle anderen sehen unverändert das bisherige Design.
+- Stufe 1: Grundfarben (Hintergrund Eisblau #dcebfa bzw. Nachtblau #0d1520, Karten weiß bzw. #15212f, Akzent Schwarz bzw. Trikotblau), Kopfbereich hellblau mit weichem Übergang und geschwungenen Trikotstreifen (`.d27sw`, SVG im Header), Navigation als Leiste unten (die bisherigen 5 Reiter), Mini-Kopfleiste beim Scrollen blau.
+- Nächste Stufen: Startseite (Nächstes Spiel, letzte Ergebnisse), Spielplan, Saisonbilanz als eigener Navigationspunkt, Gegner, Spieldetails, Downloads, Einstellungen, Admin.
+- Analytics: `design27_toggle`.
 
 ## Version 1.53.1
 
