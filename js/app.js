@@ -463,12 +463,14 @@ function renderNext(){
      [["nextRoute","Route"],["nextCalendar","Termin"],["nextReminder","Erinnerung"],["nextShare","Teilen"]].forEach(([id,l])=>{const b=document.getElementById(id);if(b){b.setAttribute("aria-label",l);b.title=l}});}}
   document.getElementById("nextRoute").onclick=()=>route(g); document.getElementById("nextCalendar").onclick=()=>calendar(g); document.getElementById("nextReminder").onclick=()=>reminder(g); document.getElementById("nextShare").onclick=()=>shareGame(g);
   hwDecorate(document.querySelector(".next"),g);
-  g3HomeCard("g3HomeNext",g,"Nächstes Spiel",false);
-  /* Immer das nächste Spiel beider Mannschaften zeigen: oben das frühere, darunter das der anderen Mannschaft */
+  /* 1.70.4: Ein Spiel, das gerade läuft (Bully vorbei, noch kein Endstand, höchstens 2,5 Std.), steht ganz oben – darunter die nächsten Spiele */
+  const nowL=new Date(), liveG=games.filter(x=>!x.cancelled&&dt(x)<=nowL&&+dt(x)+2.5*3600000>+nowL&&!resInfo(x)).sort((a,b)=>dt(b)-dt(a))[0]||null;
   {const now=new Date();
    const more=dt(g)>=now?window.MY_TEAMS.filter(t=>t!==g.team).map(t=>games.filter(x=>x.team===t&&dt(x)>=now).sort((a,b)=>dt(a)-dt(b))[0]).filter(Boolean).sort((a,b)=>dt(a)-dt(b)):[];
-   g3HomeCard("g3HomeNext2",more[0]||null,"Nächstes Spiel",false);
-   g3HomeCard("g3HomeNext3",more[1]||null,"Nächstes Spiel",false);}
+   const list=liveG?[liveG,g,...more]:[g,...more];
+   g3HomeCard("g3HomeNext",list[0],liveG?"Läuft gerade":"Nächstes Spiel",false);
+   g3HomeCard("g3HomeNext2",list[1]||null,"Nächstes Spiel",false);
+   g3HomeCard("g3HomeNext3",list[2]||null,"Nächstes Spiel",false);}
   renderLast(); renderTeamTiles();
 }
 
@@ -1166,7 +1168,7 @@ function g3HomeCard(id,g,label,defOpen){
    else if(g.cancelled){k="cx";sub=g.postponed?"Verlegt – neuer Termin offen":"Abgesagt"}
    else{const d0=new Date();d0.setHours(0,0,0,0);const d1=dt(g);d1.setHours(0,0,0,0);const n=Math.round((d1-d0)/86400000);sub=n===0?"Heute":n===1?"Morgen":n>1?"in "+n+" Tagen":"";
      /* 1.28.0: Countdown in den letzten 24 Stunden, am Spieltag „Heute“-Band */
-     if(id.startsWith("g3HomeNext")&&n===0){k="today";label="Heute";sub=g3Countdown(g)}
+     if(id.startsWith("g3HomeNext")&&n===0){k="today";if(label==="Läuft gerade"){sub="● Live"}else{label="Heute";sub=g3Countdown(g)}}
      else if(id.startsWith("g3HomeNext")&&dt(g)-Date.now()<24*3600000)sub=g3Countdown(g)}
    el.insertAdjacentHTML("afterbegin",`<div class="g3Band ${k}">${esc(label)}${sub?`<span${id.startsWith("g3HomeNext")&&!g.cancelled&&/^Bully/.test(sub)?` data-cd="${esc(g.date+"T"+g.time)}"`:""}>${esc(sub)}</span>`:""}</div>`);
    /* Spieltag: Route und Halle direkt auf der Karte */

@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.70.4.283 | – (nur Test) | 26.11.2026 | Laufendes Spiel oben auf der Startseite |
 | 1.70.3.282 | – (nur Test) | 26.11.2026 | Helferdienste: Liste öffnet über dem Admin, Admin-Kasten einklappbar |
 | 1.70.2.281 | – (nur Test) | 26.11.2026 | Live-Gang: Lesbarkeitsprüfung startet wieder |
 | 1.70.1.280 | – (nur Test) | 26.11.2026 | Vereinsdesign: Admin-Fenster nicht mehr unter der Kopfleiste |
@@ -145,6 +146,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.70.4
+
+- **Laufendes Spiel oben auf der Startseite (für alle).** Bisher zeigte die oberste Karte nur Spiele, deren Bully noch bevorsteht – ein laufendes Spiel rutschte zu „Letztes Spiel“ bzw. „Letzte Ergebnisse“. Jetzt steht ein laufendes Spiel (Bully vorbei, noch kein Endstand, höchstens 2,5 Std.) als erste Karte mit der Beschriftung „Läuft gerade“ (inkl. Live-Stand, falls vorhanden), darunter die nächsten Spiele. Kein Eintrag in „Neu in der App“.
 
 ## Version 1.70.3
 
