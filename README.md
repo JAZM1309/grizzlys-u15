@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.71.7.293 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift ohne Linien in den Buchstaben |
 | 1.71.6.292 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift kräftiger |
 | 1.71.5.291 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift hinter dem Titel |
 | 1.71.4.290 | – (nur Test) | 27.11.2026 | Hintergrundbilder: Überschriften in Großschrift |
@@ -155,6 +156,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.71.7
+
+- Strichschrift in den Bildern: Umriss wird auf einer eigenen Ebene gezeichnet und das Buchstabeninnere ausgestanzt (`destination-out`). Damit fallen die Linien weg, die die Handy-Schrift (überlappende Konturen) sonst in den Buchstaben zeigt.
 
 ## Version 1.71.6
 

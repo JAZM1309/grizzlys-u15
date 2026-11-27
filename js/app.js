@@ -2089,8 +2089,14 @@ function instaBg(c,W,H,rink){
   c.save();c.shadowColor=IC_.accA(.75);c.shadowBlur=30;c.strokeStyle=IC_.acc;c.lineWidth=8;c.beginPath();c.moveTo(-20,334);c.lineTo(W+20,156);c.stroke();c.restore();
 }
 /* 1.71.5: Strichschrift (Umriss) groß hinter der Überschrift – wie die Seitenköpfe im Vereinsdesign */
-function icGhost(c,txt,x,y,size,align,light){if(!IC_.v||!txt)return;c.save();c.font="800 "+size+"px "+INSTA_COND;c.textAlign=align||"left";c.textBaseline="alphabetic";
-  c.shadowColor="transparent";c.lineJoin="round";c.lineWidth=Math.max(2,size/60);c.strokeStyle=light?"rgba(10,127,224,.5)":"rgba(92,180,255,.55)";c.strokeText(String(txt).toUpperCase(),x,y);c.restore()}
+function icGhost(c,txt,x,y,size,align,light){if(!IC_.v||!txt)return;
+  /* 1.71.7: Umriss auf eigener Ebene zeichnen und das Buchstabeninnere ausstanzen – so verschwinden die Linien in den Buchstaben (überlappende Konturen der Schrift) */
+  const W=c.canvas.width,H=c.canvas.height,t=document.createElement("canvas");t.width=W;t.height=H;const g=t.getContext("2d");
+  g.font="800 "+size+"px "+INSTA_COND;g.textAlign=align||"left";g.textBaseline="alphabetic";g.lineJoin="round";
+  const T=String(txt).toUpperCase(),lw=Math.max(2,size/60);
+  g.lineWidth=lw*2;g.strokeStyle=light?"rgba(10,127,224,.5)":"rgba(92,180,255,.55)";g.strokeText(T,x,y);
+  g.globalCompositeOperation="destination-out";g.fillStyle="#000";g.fillText(T,x,y);
+  c.save();c.setTransform(1,0,0,1,0,0);c.shadowColor="transparent";c.drawImage(t,0,0);c.restore()}
 function instaHead(c,W,tag,h1,h2){if(IC_.v){h1=h1.toUpperCase();h2=h2.toUpperCase()}
   c.textBaseline="alphabetic";c.textAlign="left";c.fillStyle="#fff";instaFont(c,900,27);instaSpace(c,5);c.fillText("ESV GRIZZLYS BERGKAMEN",62,93);
   instaSpace(c,3);const tw=c.measureText(tag).width+44;instaRR(c,W-62-tw,56,tw,48,10);c.fillStyle=IC_.acc;c.fill();c.fillStyle=IC_.accTx;c.textAlign="center";c.fillText(tag,W-62-tw/2+1.5,90);instaSpace(c,0);

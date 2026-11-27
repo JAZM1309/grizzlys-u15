@@ -63,7 +63,7 @@ self.addEventListener("notificationclick", event => {
   );
 });
 
-const CACHE = "grizzlys-u15-v292";
+const CACHE = "grizzlys-u15-v293";
 // Update-Hinweis („Neue Version verfügbar“) für diese Version zeigen? false = Nutzer bekommen sie still beim nächsten Öffnen.
 // In Live wird der Wert beim „Live gehen“ aus dem Häkchen im Admin-Bereich gesetzt.
 const UPDATE_HINWEIS = false;
@@ -72,8 +72,8 @@ const CORE = [
   "./",
   "./index.html",
   "./spielplan.js?h=5afc53c9",
-  "./js/app.js?h=439be05d",
-  "./js/app-daten.js?h=67e81cd4",
+  "./js/app.js?h=ffeb3595",
+  "./js/app-daten.js?h=35c78028",
   "./app.css?h=19f5d52d",
   "./spielbericht.js?h=7d4b1618",
   "./sprueche.js?h=37f027d6",
