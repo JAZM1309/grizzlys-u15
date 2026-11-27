@@ -1260,7 +1260,7 @@ function lrRender(list){
       <div class="lrDate">${esc(wd)}<b>${String(d.getDate()).padStart(2,"0")}.</b>${esc(mon)}</div>
       <div class="lrTeams"><span class="lrBadge">${esc(teamName(g.team))}</span>
         <div class="lrTeam">${logo(g.home)}<span>${esc(shortTeam(g.home))}</span></div>
-        <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?lrScorers(g,r)+msChips(g):""}</div>
+        <div class="lrTeam">${logo(g.away)}<span>${esc(shortTeam(g.away))}</span></div>${r&&!g.cancelled?msChips(g):""}</div>
       <div class="lrScore">${r?`<b><i>${r.hs}</i><em>:</em><i>${r.as}</i></b><span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):r.o}">${g.cancelled?cxW(g):outLabel(r)}</span>`:liveFor(g)?(x=>`<b>${esc(String(x.hs))}:${esc(String(x.as))}</b><span class="lrPill live">${x.status==="final"?"vorläufig":"● Live"}</span>`)(liveFor(g)):`${window.resultsLoading&&!g.cancelled?'<span class="lrPill sk"></span>':`<span class="lrPill ${g.cancelled?"cx"+(g.postponed?" pp":""):"none"}">${g.cancelled?cxW(g):"Ergebnis folgt"}</span>`}`}</div>
       ${rp?`<button class="lrRep" type="button" data-rep="${i}"><span>📝</span><span><small>Spielbericht</small>${esc(rp.title||"Jetzt lesen")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>`:""}
     </div>`;}).join("");

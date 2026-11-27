@@ -8,6 +8,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.73.8.306 | – (nur Test) | 27.11.2026 | Startseite: Torschützen nur noch in den Details |
 | 1.73.7.305 | – (nur Test) | 27.11.2026 | Startseite: Abschnitts-Überschriften zuverlässig |
 | 1.73.6.304 | – (nur Test) | 27.11.2026 | „Mehr“ im aktuellen Design ausgeblendet |
 | 1.73.5.303 | – (nur Test) | 27.11.2026 | App-Fehler als erledigt markieren |
