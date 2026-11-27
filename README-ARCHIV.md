@@ -8,6 +8,11 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.71.6.292 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift kräftiger |
+| 1.71.5.291 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift hinter dem Titel |
+| 1.71.4.290 | – (nur Test) | 27.11.2026 | Hintergrundbilder: Überschriften in Großschrift |
+| 1.71.3.289 | – (nur Test) | 27.11.2026 | Neuigkeiten: Mannschaftschips lesbar |
+| 1.71.2.288 | – (nur Test) | 27.11.2026 | Startseite: klare Abschnitte (Verein-Design) |
 | 1.71.1.287 | – (nur Test) | 27.11.2026 | Push-Einstellung „Helferdienste“ |
 | 1.71.0.286 | – (nur Test) | 27.11.2026 | Helferdienste: Erinnerung am Vortag, Aushang |
 | 1.70.6.285 | – (nur Test) | 27.11.2026 | Helferliste aus WhatsApp lässt sich schließen |

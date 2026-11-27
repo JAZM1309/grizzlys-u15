@@ -3367,3 +3367,24 @@ html.dv main{z-index:auto!important}
 #hpModal,#hpTplModal{z-index:1200!important}
 #hpAdmBody .hwSwitchRow{margin-bottom:4px}
 .hpActs .hpPrint{border-width:1.5px}
+/* 1.71.2: Startseite – klare Abschnitte zwischen nächstem Spiel, weiteren Spielen und letzten Ergebnissen */
+.vSec{display:none}
+html.dv.dv.dv.dv #homeView .vSec{display:flex;align-items:center;gap:10px;margin:28px 0 10px;padding:0;font-family:var(--vCond);font-weight:800;font-size:22px;line-height:1;letter-spacing:.03em;text-transform:uppercase;color:var(--text,#2b2b2b)}
+html.dv.dv.dv.dv #homeView .vSec::before{content:"";width:22px;height:4px;background:var(--vAcc);flex:none}
+html.dv.dv.dv.dv #homeView .ht27Head{margin-top:28px}
+html.dv.dv.dv.dv #homeView .ht27Head b{font-size:22px;font-weight:800;letter-spacing:.03em;color:var(--text,#2b2b2b)}
+html.dv.dv.dv.dv #homeView .ht27Head b::before{height:4px}
+html.dark.dv.dv.dv.dv #homeView .vSec,html.dark.dv.dv.dv.dv #homeView .ht27Head b{color:#f2f2f2}
+html.dv.dv.dv.dv #homeView .lrCard .lrHead{display:none!important}
+html.dv.dv.dv.dv #homeView #g3HomeNext2 .g3Band,html.dv.dv.dv.dv #homeView #g3HomeNext3 .g3Band{font-size:0!important}
+html.dv.dv.dv.dv #homeView #g3HomeNext2 .g3Band::before,html.dv.dv.dv.dv #homeView #g3HomeNext3 .g3Band::before{display:none!important}
+html.dv.dv.dv.dv #homeView #g3HomeNext2 .g3Band span,html.dv.dv.dv.dv #homeView #g3HomeNext3 .g3Band span{font-size:12px!important;margin-left:0!important}
+html.dv.dv.dv.dv .lrCard .lrRow.o_w,html.dv.dv.dv.dv .lrCard .lrRow.o_l,html.dv.dv.dv.dv .lrCard .lrRow.o_d,html.dv.dv.dv.dv .lrCard .lrRow{background:var(--d27card)!important}
+html.dv.dv.dv.dv .lrCard .lrRow+.lrRow{border-top:1px solid var(--d27line)!important}
+html.dv.dv.dv.dv #homeView .ht27Head{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+html.dv.dv.dv.dv #homeView .ht27Head span{margin:0 0 0 32px;font-size:12px}
+/* 1.71.3: Neuigkeiten – Mannschaftschips (data-team statt Klasse) im Verein-Design lesbar */
+html.dv.dv.dv.dv .newsItem[data-team] .teamBadge{color:#fff!important;border:0!important;box-shadow:none!important;background:#5a6472!important}
+html.dv.dv.dv.dv .newsItem[data-team="A"] .teamBadge{background:var(--vAcc)!important}
+html.dv.dv.dv.dv .newsItem[data-team="B"] .teamBadge{background:#d9731a!important}
+html.dv.dv.dv.dv .newsItem[data-team="U13"] .teamBadge{background:#94760a!important}

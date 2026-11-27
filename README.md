@@ -50,6 +50,11 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.71.6.292 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift kräftiger |
+| 1.71.5.291 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift hinter dem Titel |
+| 1.71.4.290 | – (nur Test) | 27.11.2026 | Hintergrundbilder: Überschriften in Großschrift |
+| 1.71.3.289 | – (nur Test) | 27.11.2026 | Neuigkeiten: Mannschaftschips lesbar |
+| 1.71.2.288 | – (nur Test) | 27.11.2026 | Startseite: klare Abschnitte (Verein-Design) |
 | 1.71.1.287 | – (nur Test) | 27.11.2026 | Push-Einstellung „Helferdienste“ |
 | 1.71.0.286 | – (nur Test) | 27.11.2026 | Helferdienste: Erinnerung am Vortag, Aushang |
 | 1.70.6.285 | – (nur Test) | 27.11.2026 | Helferliste aus WhatsApp lässt sich schließen |
@@ -150,6 +155,26 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.71.6
+
+- Strichschrift hinter den Bildtiteln kräftiger (dickere Linie, höhere Deckkraft).
+
+## Version 1.71.5
+
+- Social-Media-Bilder und Hintergrundbild „Spiele des Monats“ im Vereinsdesign: große Umriss-Schrift (Strichschrift) hinter der Überschrift wie in den Seitenköpfen (`icGhost`).
+
+## Version 1.71.4
+
+- Hintergrundbilder im Vereinsdesign: Überschriften in Großschrift (Datum bei „Nächstes Spiel“, Monat/„Nächste Spiele“, „Frohe Weihnachten“) über `IC_.up()`; `wpFitFont` verkleinert sie, falls sie nicht in die Breite passen.
+
+## Version 1.71.3
+
+- Neuigkeiten (Berichte, Änderungen, Hinweise): Mannschaftschips im Verein-Design wieder lesbar – die Einträge tragen die Mannschaft als `data-team`, nicht als Klasse, deshalb fehlte die Chipfarbe (weiße Schrift auf hellem Grund).
+
+## Version 1.71.2
+
+- Startseite im Verein-Design übersichtlicher: eigene Überschriften „Weitere Spiele“ und „Letzte Ergebnisse“, keine doppelte Beschriftung „Nächstes Spiel“ mehr, Ergebniszeilen ohne farbigen Verlauf (Sieg/Niederlage zeigt das Etikett).
 
 ## Version 1.71.1
 
