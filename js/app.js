@@ -484,16 +484,21 @@ function renderNext(){
   renderLast(); renderTeamTiles(); vHomeSecs();
 }
 /* 1.71.2: Verein-Design – klare Abschnitte auf der Startseite (Weitere Spiele / Letzte Ergebnisse) */
-function vHomeSecs(){
+function vHomeSecs(){try{vHomeSecs0()}catch(e){console.warn(e)}}
+function vHomeSecs0(){
   const on=document.documentElement.classList.contains("dv");
   const put=(id,anchorId,txt)=>{const a=document.getElementById(anchorId);let h=document.getElementById(id);
     if(!on||!a||a.hidden||!a.innerHTML.trim()){if(h)h.remove();return}
     if(!h){h=document.createElement("h3");h.id=id;h.className="vSec"}
-    h.textContent=txt; if(a.previousElementSibling!==h)a.parentNode.insertBefore(h,a);};
+    if(h.textContent!==txt)h.textContent=txt; if(a.previousElementSibling!==h)a.parentNode.insertBefore(h,a);};
   put("vSecNext","g3HomeNext2","Weitere Spiele");
   const lr=document.getElementById("lrCard");
   put("vSecLast","lrCard",lr&&lr.querySelectorAll(".lrRow").length>1?"Letzte Ergebnisse":"Letztes Ergebnis");
 }
+/* 1.73.7: Überschriften unabhängig vom Ablauf halten – beobachtet die Startseite und setzt sie nach jedem Umbau neu */
+(function(){const home=document.getElementById("homeView");if(!home||!window.MutationObserver)return;let t=0;
+  new MutationObserver(m=>{if(!m.some(x=>(x.type==="childList"&&x.target===home)||(x.type==="attributes"&&x.target.parentNode===home)))return;clearTimeout(t);t=setTimeout(vHomeSecs,60)}).observe(home,{childList:true,attributes:true,attributeFilter:["hidden"],subtree:true});
+  setTimeout(vHomeSecs,0);})();
 
 
 const HW_PUMPKIN='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 8c0-3 1-5 3-6" fill="none" stroke="#3b8a2f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="9.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="22.5" cy="19" rx="7" ry="9.5" fill="#e8660a"/><ellipse cx="16" cy="19" rx="6.2" ry="10.5" fill="#ff8a1f"/><path d="M9 17l3 2.2l-3.4 .4zM23 17l-3 2.2l3.4 .4zM11 24q5 3.4 10 0l-1.6 -1.6l-1.6 1.2l-1.8 -1.4l-1.8 1.4l-1.6 -1.2z" fill="#1a0f05"/></svg>';

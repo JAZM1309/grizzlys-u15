@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.73.7.305 | – (nur Test) | 27.11.2026 | Startseite: Abschnitts-Überschriften zuverlässig |
 | 1.73.6.304 | – (nur Test) | 27.11.2026 | „Mehr“ im aktuellen Design ausgeblendet |
 | 1.73.5.303 | – (nur Test) | 27.11.2026 | App-Fehler als erledigt markieren |
 | 1.73.4.302 | – (nur Test) | 27.11.2026 | Fehlerbehebung Kalender/Druck, Admin-Reiter |
@@ -167,6 +168,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.73.7
+
+- Startseite (Verein-Design): Die Überschriften „Weitere Spiele“ und „Letzte Ergebnisse“ fehlten auf einem Handy. `vHomeSecs` ist jetzt gegen Fehler abgesichert und wird zusätzlich von einem MutationObserver auf `#homeView` nach jedem Umbau der Startseite neu ausgeführt.
 
 ## Version 1.73.6
 
