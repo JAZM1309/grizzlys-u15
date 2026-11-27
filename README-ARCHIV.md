@@ -8,6 +8,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.73.3.301 | – (nur Test) | 27.11.2026 | Kopf: Schrift weiter vom Logo |
+| 1.73.2.300 | – (nur Test) | 27.11.2026 | Kopf etwas kleiner |
+| 1.73.1.299 | – (nur Test) | 27.11.2026 | Kopf: Young Grizzlys einzeilig mit Strichschrift |
+| 1.73.0.298 | – (nur Test) | 27.11.2026 | Navigation: „Mehr“ unten statt Knöpfe oben |
 | 1.72.3.297 | – (nur Test) | 27.11.2026 | Saisonwechsel-Werkzeug, App Check vorbereitet |
 | 1.72.2.296 | – (nur Test) | 27.11.2026 | Dunkelmodus-Durchgang, Seitenwechsel, Ladeplatzhalter |
 | 1.72.1.295 | – (nur Test) | 27.11.2026 | Hintergrundbilder: Strichschrift hinter den Titeln |

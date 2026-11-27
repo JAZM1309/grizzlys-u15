@@ -1446,7 +1446,7 @@ function closeMatchDetails(){
 function vSlide(name,prev){const el=document.getElementById(name+"View");if(!el)return;el.classList.remove("vInR","vInL");
   if(!prev||prev===name||window.__swNav||!document.documentElement.classList.contains("dv")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;
   const O=["home","schedule","opponents","stats","rules","downloads","settings","info"];void el.offsetWidth;el.classList.add(O.indexOf(name)>O.indexOf(prev)?"vInR":"vInL")}
-function showView(name){if(["home","schedule","opponents","rules","stats","downloads"].includes(name))window.__lastMain=name;trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":name==="rules"?"rules_opened":name==="stats"?"stats_opened":name==="settings"?"settings_opened":"info_opened");const _pv=["home","schedule","opponents","rules","stats","downloads","info","settings"].find(v=>{const e=document.getElementById(v+"View");return e&&!e.hidden});["home","schedule","opponents","rules","stats","downloads","info","settings"].forEach(v=>{const e=document.getElementById(v+"View");if(e)e.hidden=v!==name});vSlide(name,_pv);if(name==="stats")try{renderStats()}catch(e){console.warn(e)}if(name==="rules")try{renderRules()}catch(e){console.warn(e)}document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
+function showView(name){if(["home","schedule","opponents","rules","stats","downloads"].includes(name))window.__lastMain=name;trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":name==="rules"?"rules_opened":name==="stats"?"stats_opened":name==="settings"?"settings_opened":"info_opened");const _pv=["home","schedule","opponents","rules","stats","downloads","info","settings"].find(v=>{const e=document.getElementById(v+"View");return e&&!e.hidden});["home","schedule","opponents","rules","stats","downloads","info","settings"].forEach(v=>{const e=document.getElementById(v+"View");if(e)e.hidden=v!==name});vSlide(name,_pv);if(name==="stats")try{renderStats()}catch(e){console.warn(e)}if(name==="rules")try{renderRules()}catch(e){console.warn(e)}document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name||(b.classList.contains("tabMore")&&["downloads","settings","info"].includes(name))));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 {const v=document.querySelector(".inVer"),t=document.getElementById("inMadeVer");if(v&&t)t.textContent=" · Version "+v.textContent.trim();}
 /* 1.9.1.107: Gruselmoment im Halloween-Design – höchstens einmal am Tag, nie über offenen Fenstern, nicht anklickbar */
@@ -1543,14 +1543,14 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.vi
 })();
 /* 1.9.1.100: Wischen nach links/rechts wechselt zwischen Start, Spielplan, Gegner und Downloads – die Seite folgt dem Finger */
 (function(){
-  const ORDER=["home","schedule","opponents","rules","downloads"];const syncOrder=()=>{const a=document.documentElement.classList.contains("dv")?["home","schedule","opponents","stats","downloads"]:["home","schedule","opponents","rules","downloads"];ORDER.splice(0,ORDER.length,...a)};syncOrder();
-  const label=v=>(document.querySelector('.tab[data-view="'+v+'"]')||{}).textContent||v;
+  const ORDER=["home","schedule","opponents","rules","downloads"];const syncOrder=()=>{const a=document.documentElement.classList.contains("dv")?["home","schedule","opponents","stats","downloads","settings","info"]:["home","schedule","opponents","rules","downloads"];ORDER.splice(0,ORDER.length,...a)};syncOrder();
+  const label=v=>({settings:"Einstellungen",info:"Info",downloads:"Downloads"})[v]||(document.querySelector('.tab[data-view="'+v+'"]')||{}).textContent||v;
   const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
   let st=null;
   const hint=document.createElement("div");hint.className="swHint";hint.setAttribute("aria-hidden","true");document.body.appendChild(hint);
   const dots=document.createElement("div");dots.className="swDots";dots.setAttribute("aria-hidden","true");dots.innerHTML=ORDER.map(()=>"<i></i>").join("");document.body.appendChild(dots);
   let dotsT=0;
-  function showDots(v){[...dots.children].forEach((d,k)=>d.classList.toggle("on",ORDER[k]===v));dots.classList.add("on");clearTimeout(dotsT);dotsT=setTimeout(()=>dots.classList.remove("on"),900)}
+  function showDots(v){if(dots.children.length!==ORDER.length)dots.innerHTML=ORDER.map(()=>"<i></i>").join("");[...dots.children].forEach((d,k)=>d.classList.toggle("on",ORDER[k]===v));dots.classList.add("on");clearTimeout(dotsT);dotsT=setTimeout(()=>dots.classList.remove("on"),900)}
   const cur=()=>{syncOrder();return ORDER.concat(["settings","info","rules","stats"]).find(v=>{const e=document.getElementById(v+"View");return e&&!e.hidden})};
   const overlayOpen=()=>[...document.querySelectorAll(".matchModal,.adminModal,.bugReportModal,.thanksModal,.admSheetWrap,.gdSplash")].some(m=>!m.hidden&&m.offsetParent!==null);
   function setPos(el,x,anim,ms){el.style.transition=anim?"transform "+ms+"ms cubic-bezier(.2,.8,.2,1),opacity "+ms+"ms":"none";el.style.transform=x?"translateX("+x+"px)":"";el.style.opacity=x?String(Math.max(.35,1-Math.abs(x)/innerWidth*.7)):"";}
@@ -2467,6 +2467,7 @@ function newsChangeHtml(c,unread){
 function renderNews(){
   const items=newsUnread(), n=items.length, badge=document.getElementById("newsBadge");
   if(badge){badge.hidden=!n;badge.textContent=n>9?"9+":String(n)}
+  {const d=document.getElementById("moreDot"),c=document.getElementById("moreNewsCnt");if(d)d.hidden=!n;if(c){c.hidden=!n;c.textContent=n>9?"9+":String(n)}}
   const btn=document.getElementById("newsTopBtn"); if(btn)btn.setAttribute("aria-label",n?"Neuigkeiten, "+n+" ungelesen":"Neuigkeiten");
   /* Startseite: neuester ungelesener Hinweis oder Spieländerung */
   const top=items.find(i=>i.kind==="note")||items.find(i=>i.kind==="report")||items.find(i=>i.kind==="change");
@@ -2532,6 +2533,14 @@ document.querySelectorAll("#appMap [data-go]").forEach(b=>b.onclick=()=>{const k
   if(k==="news"){openNews();return}
   showView(k==="start"?"home":k)});
 document.getElementById("newsTopBtn").onclick=openNews;
+/* 1.73.0: Verein-Design – „Mehr“ in der unteren Leiste (Downloads, Neuigkeiten, Einstellungen, Info) statt der Knöpfe oben */
+(function(){const btn=document.querySelector(".tabMore"),sh=document.getElementById("moreSheet");if(!btn||!sh)return;
+  const set=o=>{sh.hidden=!o;btn.setAttribute("aria-expanded",String(o));btn.classList.toggle("open",o)};
+  btn.onclick=e=>{e.stopPropagation();set(sh.hidden)};
+  sh.addEventListener("click",e=>{const b=e.target.closest("[data-more]");if(!b)return;set(false);const k=b.dataset.more;if(k==="news")openNews();else showView(k)});
+  document.addEventListener("click",e=>{if(!sh.hidden&&!e.target.closest("#moreSheet,.tabMore"))set(false)},true);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!sh.hidden)set(false)});
+  window.addEventListener("scroll",()=>{if(!sh.hidden)set(false)},{passive:true});})();
 
 /* ===== Gameday ===== */
 (function(){

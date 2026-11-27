@@ -3423,3 +3423,25 @@ html.dv main>section.vInL{animation:vInL .28s cubic-bezier(.2,.8,.2,1)}
 html.dark .swTeams .warn{color:#ffb347}
 /* 1.72.4: reCAPTCHA-Hinweis (App Check) nicht über der Navigation – Hinweistext steht im Datenschutz */
 .grecaptcha-badge{visibility:hidden!important}
+/* 1.73.0: Verein-Design – Knöpfe oben weg, „Mehr“ unten */
+.tabMore,.moreSheet{display:none}
+html.dv .infoTop{display:none!important}
+html.dv .tabs .tab[data-view="downloads"]{display:none!important}
+html.dv .tabs .tabMore{display:flex!important;position:relative;font:inherit;cursor:pointer}
+html.dv .tabMore .moreDot{position:absolute;top:4px;left:calc(50% + 7px);width:9px;height:9px;border-radius:50%;background:#d6453b;box-shadow:0 0 0 2px var(--d27card,#fff)}
+html.dv .tabMore .moreDot[hidden]{display:none}
+html.dv .moreSheet:not([hidden]){display:grid;position:fixed;right:8px;bottom:calc(68px + env(safe-area-inset-bottom));z-index:45;min-width:210px;padding:6px;gap:2px;background:var(--d27card,#fff);border:1px solid var(--d27line,rgba(0,0,0,.1));border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.22);animation:moreIn .16s ease-out}
+@keyframes moreIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html.dv .moreSheet button{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border:0;background:transparent;color:var(--text);font:inherit;font-size:15px;font-weight:700;text-align:left;border-radius:6px;cursor:pointer}
+html.dv .moreSheet button:active{background:var(--d27tile,rgba(0,0,0,.05))}
+html.dv .moreSheet svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:var(--vAcc);flex:none}
+html.dv .moreSheet em{margin-left:auto;font-style:normal;font-size:12px;font-weight:800;color:#fff;background:#d6453b;border-radius:99px;padding:1px 8px}
+html.dv .moreSheet em[hidden]{display:none}
+html.dark.dv .moreSheet{box-shadow:0 12px 30px rgba(0,0,0,.6)}
+/* 1.73.1: Kopf im Verein-Design – „Young Grizzlys“ einzeilig, dahinter „GRIZZLYS“ in Strichschrift (Knöpfe oben sind weg) */
+html.dv.dv.dv.dv .hero{position:relative}
+html.dv.dv.dv.dv .heroTop{padding-right:0!important;position:relative;z-index:1;gap:20px!important}
+html.dv.dv.dv.dv .heroTop h1{white-space:nowrap!important;width:auto!important;font-size:clamp(22px,6.8vw,28px)!important;line-height:1!important;letter-spacing:.03em!important;overflow:visible!important}
+html.dv.dv.dv.dv .hero::after{content:"GRIZZLYS";position:absolute;left:90px;right:0;top:10px;z-index:0;overflow:hidden;white-space:nowrap;pointer-events:none;font-family:var(--vCond);font-weight:800;font-size:clamp(46px,15vw,66px);line-height:1;letter-spacing:.02em;color:var(--vHead);
+  text-shadow:1px 0 0 rgba(92,180,255,.42),-1px 0 0 rgba(92,180,255,.42),0 1px 0 rgba(92,180,255,.42),0 -1px 0 rgba(92,180,255,.42),1px 1px 0 rgba(92,180,255,.42),-1px -1px 0 rgba(92,180,255,.42),1px -1px 0 rgba(92,180,255,.42),-1px 1px 0 rgba(92,180,255,.42)}
+html.dv.dv.dv.dv .heroChips{position:relative;z-index:1}
