@@ -8,6 +8,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.71.1.287 | – (nur Test) | 27.11.2026 | Push-Einstellung „Helferdienste“ |
 | 1.71.0.286 | – (nur Test) | 27.11.2026 | Helferdienste: Erinnerung am Vortag, Aushang |
 | 1.70.6.285 | – (nur Test) | 27.11.2026 | Helferliste aus WhatsApp lässt sich schließen |
 | 1.70.5.284 | – (nur Test) | 26.11.2026 | Laufendes Spiel nicht doppelt |

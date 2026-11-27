@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.71.1.287 | – (nur Test) | 27.11.2026 | Push-Einstellung „Helferdienste“ |
 | 1.71.0.286 | – (nur Test) | 27.11.2026 | Helferdienste: Erinnerung am Vortag, Aushang |
 | 1.70.6.285 | – (nur Test) | 27.11.2026 | Helferliste aus WhatsApp lässt sich schließen |
 | 1.70.5.284 | – (nur Test) | 26.11.2026 | Laufendes Spiel nicht doppelt |
@@ -149,6 +150,10 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.71.1
+
+- **Push-Einstellung „Helferdienste“.** In Einstellungen › Push-Nachrichten gibt es unter „Erinnerung am Vortag“ den Schalter „Helferdienste“ (Standard an, `prefs.helpers`). Sichtbar, sobald die Helferdienste aktiv sind (Test-App mit Vorschau-Schalter bzw. später für alle). `helperReminder` überspringt Geräte mit ausgeschaltetem Schalter.
 
 ## Version 1.71.0
 

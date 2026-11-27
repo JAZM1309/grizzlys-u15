@@ -51,7 +51,8 @@ exports.helperReminder = onSchedule(
     let sent = 0, missing = 0;
     for (const x of byDevice.values()) {
       const toks = await db.collection("pushTokens").where("installationId", "==", x.iid).get();
-      const tokens = toks.docs.map(d => d.data().token).filter(Boolean);
+      // 1.71.1: Push-Einstellung „Helferdienste“ (prefs.helpers) – ausgeschaltet = keine Erinnerung
+      const tokens = toks.docs.filter(d => !(d.data().prefs && d.data().prefs.helpers === false)).map(d => d.data().token).filter(Boolean);
       if (!tokens.length) { missing += 1; continue; }
       const team = x.team === "U13" ? "U13" : x.team === "U17" ? "U17" : "U15 " + x.team;
       const data = {

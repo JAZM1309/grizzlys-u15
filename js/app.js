@@ -493,7 +493,7 @@ function hwUpdateGreeting(){
   el.hidden=!(document.documentElement.classList.contains("hw")&&!closed);
 }
 /* Push-Bereich: Status anzeigen */
-(function(){const ids={results:"pfResults",reminders:"pfReminders",reports:"pfReports",teamA:"pfTeamA",teamB:"pfTeamB",teamU13:"pfTeamU13",liveGoals:"pfLiveGoals",livePeriods:"pfLivePeriods",liveMyNr:"pfLiveMyNr"},E={};for(const k in ids){E[k]=document.getElementById(ids[k]);if(!E[k])return}
+(function(){const ids={results:"pfResults",reminders:"pfReminders",helpers:"pfHelpers",reports:"pfReports",teamA:"pfTeamA",teamB:"pfTeamB",teamU13:"pfTeamU13",liveGoals:"pfLiveGoals",livePeriods:"pfLivePeriods",liveMyNr:"pfLiveMyNr"},E={};for(const k in ids){E[k]=document.getElementById(ids[k]);if(!E[k])return}
   const OPTIN={liveGoals:1,livePeriods:1,teamU13:1,reports:1,liveMyNr:1}; /* 1.43.0: Spielbericht und „Tore meiner Nummer“ nur auf Wunsch */ /* 1.35.0: U13 nur bei ausdrücklicher Auswahl */ /* 1.26.0: Live-Pushs nur, wenn ausdrücklich eingeschaltet */
   let p={};try{p=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}")}catch(e){}for(const k in E)E[k].checked=OPTIN[k]?p[k]===true:p[k]!==false;
   const save=()=>{let o={};try{o=JSON.parse(localStorage.getItem("grizzlysPushPrefs")||"{}")||{}}catch(e){}for(const k in E)o[k]=E[k].checked;try{localStorage.setItem("grizzlysPushPrefs",JSON.stringify(o))}catch(e){}window.savePushPrefs&&window.savePushPrefs()};
@@ -3793,6 +3793,7 @@ function hpStat(gid){const items=hpItems(gid),E=HP_ENTRIES[gid]||[];let need=0,h
 function hpBadge(g){if(!hpOn()||!hpEligible(g))return "";const s=hpStat(hpGid(g));return `<span class="hpBadge${s.open?"":" full"}" data-hpb="${esc(hpGid(g))}" data-hp="${esc(hpGid(g))}" role="button" tabindex="0">${s.open?"Helfer gesucht":"Helfer komplett"}</span>`}
 function hpTile(g){if(!hpOn()||!hpEligible(g))return "";const gid=hpGid(g),s=hpStat(gid),pct=s.need?Math.round(s.have/s.need*100):0;
   return `<button type="button" class="g3Tile hpTile" data-hp="${esc(gid)}"><span class="hpTxt"><b>Helferdienste</b><small data-hpc="${esc(gid)}">${HP_LOADED?(s.open?`${s.open} von ${s.need} noch offen`:"alles besetzt – danke!"):"wird geladen …"}</small></span><i class="hpBar"><i style="width:${pct}%" data-hpbar="${esc(gid)}"></i></i><span class="hpGo">Eintragen ›</span></button>`}
+function hpPfRow(){const r=document.querySelector(".pfHelpersRow");if(r)r.hidden=!hpOn()}
 function hpPaint(){document.querySelectorAll("[data-hpc]").forEach(el=>{const s=hpStat(el.dataset.hpc);el.textContent=s.open?`${s.open} von ${s.need} noch offen`:"alles besetzt – danke!"});
   document.querySelectorAll("[data-hpbar]").forEach(el=>{const s=hpStat(el.dataset.hpbar);el.style.width=(s.need?Math.round(s.have/s.need*100):0)+"%"});
   document.querySelectorAll("[data-hpb]").forEach(el=>{const s=hpStat(el.dataset.hpb);el.classList.toggle("full",!s.open);el.textContent=s.open?"Helfer gesucht":"Helfer komplett"})}
@@ -3802,6 +3803,7 @@ async function hpInit(){
   for(let k=0;k<40&&!window.hpCfgLoad;k++)await new Promise(r=>setTimeout(r,250));
   if(!window.hpCfgLoad)return;
   HP_CFG=await window.hpCfgLoad();
+  hpPfRow();
   if(hpOn()){try{renderNext();renderList()}catch(e){}await hpRefresh();setInterval(hpRefresh,5*60*1000)}
   hpRoute();
 }
@@ -3855,7 +3857,7 @@ window.addEventListener("hashchange",hpRoute);
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-hp]");if(!b)return;e.stopPropagation();e.preventDefault();hpOpen(b.dataset.hp)},true);
 /* Admin: Vorschau-Schalter, Vorlage bearbeiten, Listen je Spiel ein/aus */
 function hpAdminBox(){const box=document.getElementById("hpAdmBox");if(!box)return;const sum=document.getElementById("hpAdmSum");if(sum)sum.textContent=hpFlag()?"an":"aus";
-  const sw=document.getElementById("hpToggle");if(sw){sw.checked=hpFlag();sw.onchange=()=>{try{localStorage.setItem("grizzlysHelfer",sw.checked?"on":"off")}catch(e){}try{renderNext();renderList()}catch(e){}if(sw.checked)hpRefresh();hpAdminBox()}}
+  const sw=document.getElementById("hpToggle");if(sw){sw.checked=hpFlag();sw.onchange=()=>{try{localStorage.setItem("grizzlysHelfer",sw.checked?"on":"off")}catch(e){}hpPfRow();try{renderNext();renderList()}catch(e){}if(sw.checked)hpRefresh();hpAdminBox()}}
   const list=document.getElementById("hpAdmGames");if(!list)return;
   const now=Date.now(),up=games.filter(g=>isHome(g)&&!g.cancelled&&dt(g)>now-3*36e5).sort((a,b)=>dt(a)-dt(b)).slice(0,8),off=((HP_CFG.games||{}).off)||{};
   list.innerHTML=up.map(g=>{const gid=hpGid(g),d=dt(g),on=!off[gid],vis=dt(g)-now<=HP_DAYS*864e5;return `<div class="hpAdmRow"><div><b>${d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"})} · ${esc(teamName(g.team))}</b><small>${esc(shortTeam(opponent(g)))}${vis?" · sichtbar":" · ab "+new Date(+d-HP_DAYS*864e5).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})+" sichtbar"}</small></div><label class="hpAdmSw"><input type="checkbox" data-hpoff="${esc(gid)}" ${on?"checked":""}> Liste</label><button type="button" class="hpAdmOpen" data-hp="${esc(gid)}">Öffnen</button></div>`}).join("")||"<p class=\"small\">Keine kommenden Heimspiele.</p>";
