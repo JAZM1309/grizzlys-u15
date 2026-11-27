@@ -462,7 +462,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.73.4.302",
+      appVersion:"1.73.5.303",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -1830,14 +1830,17 @@ async function loadAppErrors(){
   try{
     const snap=await getDocs(query(collection(db,"appErrors"),orderBy("last","desc"),limit(40))), rows=[]; snap.forEach(d=>rows.push({id:d.id,...d.data()}));
     sum.textContent=rows.length?rows.length+(rows.length===1?" Meldung":" Meldungen"):"keine";
-    list.innerHTML=rows.length?rows.map(r=>'<div class="apRow warn"><i>!</i><div><b>'+esc(r.msg||"")+'</b><span>'+esc(r.day||"")+' · '+(Number(r.n)||1)+'× · '+esc(r.v||"?")+' · '+esc(r.plat||"")+(r.src?' · '+esc(r.src):'')+'</span></div></div>').join(""):'<div class="small">Keine Fehler gemeldet – gut so.</div>';
+    list.innerHTML=rows.length?rows.map(r=>'<div class="apRow warn errRow"><i>!</i><div><b>'+esc(r.msg||"")+'</b><span>'+esc(r.day||"")+' · '+(Number(r.n)||1)+'× · '+esc(r.v||"?")+' · '+esc(r.plat||"")+(r.src?' · '+esc(r.src):'')+'</span></div><button type="button" class="errDone" data-err="'+esc(r.id)+'" aria-label="Als erledigt markieren">✓</button></div>').join(""):'<div class="small">Keine Fehler gemeldet – gut so.</div>';
   }catch(e){console.error(e);sum.textContent="Fehler";list.innerHTML='<div class="small analyticsError">Konnte nicht geladen werden (Firestore-Regeln für appErrors veröffentlicht?).</div>'}
+  /* 1.73.5: einzelne Meldung als erledigt markieren = löschen (kommt der Fehler wieder, erscheint er neu) */
+  list.querySelectorAll(".errDone").forEach(b=>b.onclick=async()=>{b.disabled=true;try{await deleteDoc(doc(db,"appErrors",b.dataset.err));const row=b.closest(".errRow");row.classList.add("gone");setTimeout(()=>{row.remove();const n=list.querySelectorAll(".errRow").length;sum.textContent=n?n+(n===1?" Meldung":" Meldungen"):"keine";if(!n)list.innerHTML='<div class="small">Keine Fehler gemeldet – gut so.</div>'},250)}catch(e){b.disabled=false;alert("Nicht möglich: "+(e.message||e))}});
 }
 async function clearAppErrors(){
   if(auth.currentUser?.uid!==ADMIN_UID)return;
-  try{const cut=new Date(Date.now()-14*864e5).toISOString().slice(0,10), snap=await getDocs(collection(db,"appErrors")); let n=0;
-    for(const d of snap.docs){ if(String((d.data()||{}).day||"")<cut){await deleteDoc(d.ref);n++} }
-    alert(n+" alte Meldungen gelöscht.");}catch(e){alert("Löschen nicht möglich: "+(e.message||e))}
+  if(!confirm("Alle Fehlermeldungen als erledigt markieren? Tritt ein Fehler erneut auf, erscheint er wieder."))return;
+  try{const snap=await getDocs(collection(db,"appErrors")); let n=0;
+    for(const d of snap.docs){await deleteDoc(d.ref);n++}
+    alert(n===1?"1 Meldung erledigt.":n+" Meldungen erledigt.");}catch(e){alert("Nicht möglich: "+(e.message||e))}
   loadAppErrors();
 }
 document.querySelector("#admErrBox .admFoldHead")?.addEventListener("click",()=>setTimeout(()=>{ if(!document.getElementById("admErrBody")?.hidden) loadAppErrors(); },0));
