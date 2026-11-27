@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.74.2.309 | – (nur Test) | 27.11.2026 | Bilanz, Downloads, Info im Vereinsdesign |
 | 1.74.1.308 | – (nur Test) | 27.11.2026 | Intro: Strichschrift schmaler |
 | 1.74.0.307 | – (nur Test) | 27.11.2026 | Intro im Vereinsdesign |
 | 1.73.8.306 | – (nur Test) | 27.11.2026 | Startseite: Torschützen nur noch in den Details |
@@ -171,6 +172,12 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.74.2
+
+- Saisonbilanz (Verein-Design): Mannschaftswahl ohne farbigen Balken; gewählte Mannschaft in ihrer Farbe (U15 A blau, U15 B orange, U13 gold). Abschnitts-Überschriften größer, schmale Großschrift mit blauem Strich.
+- Downloads › Spielplan: Symbol-Kacheln einheitlich im Vereinsblau (vorher schwarz/rosa/gelb; Kalender im Dunkelmodus hell auf hell).
+- Info: QR-Code direkt in der Karte „Dein digitaler Spielplan“ (antippen öffnet die große Ansicht mit Anleitung); „App teilen“ über die volle Breite, Knopf „QR-Code zeigen“ entfällt.
 
 ## Version 1.74.1
 

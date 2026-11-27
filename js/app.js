@@ -2966,6 +2966,11 @@ function openQr(){
 }
 window.openQr=openQr;
 document.getElementById("qrApp")?.addEventListener("click",openQr);
+/* 1.74.2: Verein-Design – QR-Code direkt in der Info-Karte (antippen = groß mit Anleitung) */
+(function(){const row=document.querySelector("#infoView .inShareRow");if(!row||document.getElementById("inQr"))return;
+  const d=document.createElement("button");d.type="button";d.id="inQr";d.className="inQr";d.setAttribute("aria-label","QR-Code groß anzeigen");
+  d.innerHTML=`<svg viewBox="0 0 ${QR_N} ${QR_N}" aria-hidden="true"><rect width="${QR_N}" height="${QR_N}" fill="#fff"/><path d="${QR_PATH}" fill="#071b33"/></svg><span><b>Mit der Handykamera scannen</b><small>${esc(APP_LIVE_URL.replace("https://","").replace(/\/$/,""))}</small><em>Antippen für groß</em></span>`;
+  d.onclick=openQr;row.before(d);})();
 
 /* ===== 1.42.0: App-Verknüpfungen (langes Drücken auf das App-Symbol, siehe manifest.webmanifest „shortcuts“)
    ./?go=bilanz-U13 | bilanz-A | bilanz-B öffnet die Saisonbilanz der Mannschaft und räumt die Adresse wieder auf.

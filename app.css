@@ -3473,3 +3473,22 @@ html.dv .tabs .tab.tabMore{display:flex!important}
 @keyframes viGhost{to{opacity:1;letter-spacing:0}}
 @keyframes viPop{to{transform:translateY(-62%) scale(1)}}
 @keyframes viUp{to{opacity:1;transform:none}}
+/* 1.74.2: Saisonbilanz – Mannschaftswahl ohne Balken, B orange; Abschnitts-Überschriften mit blauem Strich */
+html.dv.dv.dv.dv .statsTeams button.active::after{display:none!important}
+html.dv.dv.dv.dv .statsTeams button.teamA.active{background:var(--vAcc)!important;color:#fff!important;border-color:var(--vAcc)!important}
+html.dv.dv.dv.dv .statsTeams button.teamB.active{background:var(--b,#e8761a)!important;color:#fff!important;border-color:var(--b,#e8761a)!important}
+html.dv.dv.dv.dv .statsTeams button.teamU13.active{background:#94760a!important;color:#fff!important;border-color:#94760a!important}
+html.dv.dv.dv.dv #statsView .sbSec>h4{display:flex;align-items:center;gap:10px;margin:22px 0 10px!important;font-family:var(--vCond)!important;font-weight:800!important;font-size:19px!important;letter-spacing:.03em!important;text-transform:uppercase;color:var(--text)!important}
+html.dv.dv.dv.dv #statsView .sbSec>h4::before{content:"";width:20px;height:4px;background:var(--vAcc);flex:none}
+html.dv.dv.dv.dv #statsView .sbSec>h4 small{font-size:13px;font-weight:700;color:var(--muted)}
+/* Downloads – einheitliche Symbol-Kacheln im Vereinsblau (auch im Dunkelmodus lesbar) */
+html.dv.dv.dv.dv .downloadCard .dlIcon{background:rgba(10,127,224,.12)!important;color:var(--vAcc)!important;border-radius:8px!important;box-shadow:none!important}
+html.dv.dv.dv.dv .downloadCard .dlIcon svg{stroke:currentColor!important;color:inherit!important}
+html.dark.dv.dv.dv.dv .downloadCard .dlIcon{background:rgba(92,180,255,.14)!important;color:#5cb4ff!important}
+/* Info – QR-Code direkt sichtbar */
+.inQr{display:none}
+html.dv .inQr{display:flex;align-items:center;gap:14px;width:100%;margin:12px 0 4px;padding:10px;border:1px solid var(--d27line,var(--border));border-radius:8px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+html.dv .inQr svg{width:96px;height:96px;flex:none;border-radius:4px;background:#fff;padding:4px}
+html.dv .inQr span{display:grid;gap:3px;min-width:0}html.dv .inQr b{font-size:14px}html.dv .inQr small{font-size:12px;color:var(--muted);word-break:break-all}html.dv .inQr em{font-style:normal;font-size:12px;font-weight:700;color:var(--vAcc)}
+html.dv #qrApp{display:none!important}
+html.dv .inShareRow #shareApp{flex:1 1 100%!important;width:100%!important;max-width:none!important}
