@@ -2930,6 +2930,7 @@ document.getElementById("qrApp")?.addEventListener("click",openQr);
   const run=()=>goTo(go);
   setTimeout(run,(window.__introMs||0)+300);
   function goTo(go){try{
+    const hp=/^helfer-(.+)$/.exec(go);if(hp){showView("home");hpOpen(hp[1]);trackAnalyticsEvent("shortcut_opened",{ziel:"helfer"});return}
     const rp=/^report-(.+)$/.exec(go);
     if(rp){const g=ALL_GAMES.find(x=>rkey(x)===rp[1]);if(g){showView("home");openMatchDetails(g,true)}trackAnalyticsEvent("shortcut_opened",{ziel:"bericht"});return}
     const m=/^bilanz-(.+)$/.exec(go), team=m&&m[1];
@@ -3811,7 +3812,7 @@ function hpShareText(g,gid,E){const items=hpItems(gid);const open=items.map(x=>{
   const d=dt(g),day=d.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit"});
   return `🏒 Helfer gesucht – Heimspiel ${teamName(g.team)}\n${day} · ${g.time} · ${shortTeam(g.home)} – ${shortTeam(g.away)}\n\n`+(open.length?`Noch offen: ${open.join(", ")}`:"Alle Dienste sind besetzt – danke! 💙")+`\n\n👉 Eintragen: ${hpLink(gid)}`}
 var hpUnsub=null;
-function hpClose(){const m=document.getElementById("hpModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true")}if(hpUnsub){try{hpUnsub()}catch(e){}hpUnsub=null}document.body.style.overflow="";if(location.hash.startsWith("#helfer/"))history.replaceState(null,"",location.pathname+location.search);hpRefresh()}
+function hpClose(){const m=document.getElementById("hpModal");if(m){m.hidden=true;m.setAttribute("aria-hidden","true")}if(hpUnsub){try{hpUnsub()}catch(e){}hpUnsub=null}document.body.style.overflow="";/* 1.70.6: Link-Anker erst entfernen, nachdem die Zurück-Logik ihren Verlaufseintrag aufgeräumt hat – sonst öffnete der Rücksprung die Liste sofort wieder */setTimeout(()=>{const mm=document.getElementById("hpModal");if(location.hash.startsWith("#helfer/")&&(!mm||mm.hidden)){try{history.replaceState(history.state,"",location.pathname+location.search)}catch(e){}}},400);hpRefresh()}
 function hpOpen(gid){
   const g=(window.ALL_GAMES||games).find(x=>hpGid(x)===gid)||games.find(x=>hpGid(x)===gid);
   let m=document.getElementById("hpModal");
@@ -3835,20 +3836,21 @@ function hpOpen(gid){
       <div class="hpMeta">${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</div><div class="hpProg"><i style="width:${s.need?Math.round(s.have/s.need*100):0}%"></i></div><div class="hpMeta">${s.open?`${s.open} von ${s.need} Plätzen noch offen`:"Alle Plätze besetzt – danke! 💙"}</div></div>
       <label class="hpNameBox"><span>Dein Name</span><input type="text" maxlength="40" autocomplete="given-name" placeholder="z. B. Sandra oder Familie Meier" value="${esc(hpName())}"></label>
       ${err?`<div class="hpErr">${esc(err)}</div>`:""}${secs}
-      <div class="hpActs"><button type="button" class="hpShare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/></svg>In WhatsApp teilen</button><button type="button" class="hpCopy">Link kopieren</button></div>
-      <p class="hpNote">Namen werden 3 Tage nach dem Spiel automatisch gelöscht. Austragen kannst du dich nur auf dem Gerät, mit dem du dich eingetragen hast.</p>`;
+      <div class="hpActs"><button type="button" class="hpShare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/></svg>In WhatsApp teilen</button><button type="button" class="hpCopy">Link kopieren</button><button type="button" class="hpPrint">Aushang drucken</button></div>
+      <p class="hpNote">Namen werden 3 Tage nach dem Spiel automatisch gelöscht. Austragen kannst du dich nur auf dem Gerät, mit dem du dich eingetragen hast. Hast du Push-Nachrichten eingeschaltet, erinnert dich die App am Vortag um 18 Uhr an deinen Dienst.</p>`;
     const inp=body.querySelector(".hpNameBox input");inp.addEventListener("change",()=>hpSetName(inp.value.trim()));
     body.querySelectorAll("[data-take]").forEach(b=>b.onclick=async()=>{if(busy)return;const name=inp.value.trim();if(name.length<2){err="Bitte trag zuerst deinen Namen ein.";draw();body.querySelector(".hpNameBox input").focus();return}
-      hpSetName(name);busy=true;b.disabled=true;err="";try{await window.hpAdd(g,gid,b.dataset.take,name);try{trackAnalyticsEvent("helper_signup",{team:teamName(g.team)})}catch(e){}}catch(e){console.warn(e);err=/operation-not-allowed|admin-restricted/.test(String(e&&e.code||e))?"Eintragen ist gerade nicht möglich (Anmeldung bei Firebase noch nicht eingerichtet).":/permission/i.test(String(e&&e.code||e))?"Eintragen ist gerade nicht möglich (keine Berechtigung).":"Das hat nicht geklappt. Bitte Internetverbindung prüfen."}busy=false;draw()});
+      hpSetName(name);busy=true;b.disabled=true;err="";try{await window.hpAdd(g,gid,b.dataset.take,name,(items.find(x=>x.id===b.dataset.take)||{}).t||"");try{trackAnalyticsEvent("helper_signup",{team:teamName(g.team)})}catch(e){}}catch(e){console.warn(e);err=/operation-not-allowed|admin-restricted/.test(String(e&&e.code||e))?"Eintragen ist gerade nicht möglich (Anmeldung bei Firebase noch nicht eingerichtet).":/permission/i.test(String(e&&e.code||e))?"Eintragen ist gerade nicht möglich (keine Berechtigung).":"Das hat nicht geklappt. Bitte Internetverbindung prüfen."}busy=false;draw()});
     body.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(busy)return;const e0=E.find(e=>e.id===b.dataset.del);if(!confirm(`„${e0?e0.name:""}“ austragen?`))return;busy=true;try{await window.hpDel(b.dataset.del)}catch(e){console.warn(e);err="Austragen hat nicht geklappt."}busy=false;draw()});
     body.querySelector(".hpShare").onclick=()=>{const t=hpShareText(g,gid,E);try{trackAnalyticsEvent("helper_share",{team:teamName(g.team)})}catch(e){}window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank")};
+    body.querySelector(".hpPrint").onclick=()=>hpPrint(g,gid,E);
     body.querySelector(".hpCopy").onclick=async e=>{try{await navigator.clipboard.writeText(hpLink(gid));e.target.textContent="Kopiert ✓"}catch(x){prompt("Link zum Kopieren:",hpLink(gid))}};
   };
   draw();
   if(hpUnsub){try{hpUnsub()}catch(e){}}
   if(window.hpWatch)hpUnsub=window.hpWatch(gid,(L,e)=>{if(L){E=L;draw()}});
 }
-function hpRoute(){const h=location.hash;if(!h.startsWith("#helfer/"))return;const gid=decodeURIComponent(h.slice(8));hpOpen(gid)}
+function hpRoute(){const h=location.hash;if(!h.startsWith("#helfer/"))return;const m=document.getElementById("hpModal");if(m&&!m.hidden)return;const gid=decodeURIComponent(h.slice(8));hpOpen(gid)}
 window.addEventListener("hashchange",hpRoute);
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-hp]");if(!b)return;e.stopPropagation();e.preventDefault();hpOpen(b.dataset.hp)},true);
 /* Admin: Vorschau-Schalter, Vorlage bearbeiten, Listen je Spiel ein/aus */
@@ -3877,3 +3879,21 @@ function hpTplEditor(){
 }
 hpInit();
 setTimeout(hpAdminBox,1500);document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest('[data-adm-tab]'))setTimeout(hpAdminBox,50)});
+
+/* 1.71.0: Aushang zum Ausdrucken (A4, schwarz-weiß): alle Dienste mit eingetragenen Namen und freien Linien */
+function hpPrint(g,gid,E){
+  const items=hpItems(gid),d=dt(g),day=d.toLocaleDateString("de-DE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const row=x=>{const n=Math.max(1,Number(x.n)||1),names=(E||[]).filter(e=>e.item===x.id).map(e=>e.name);let cells="";for(let i=0;i<n;i++)cells+=`<span class="slot">${names[i]?esc(names[i]):"&nbsp;"}</span>`;
+    return `<tr><td class="t"><b>${esc(x.t)}</b>${x.d?`<br><small>${esc(x.d)}</small>`:""}</td><td class="n">${cells}</td></tr>`};
+  const sec=k=>{const L=items.filter(x=>(x.s||"g")===k);return L.length?`<h2>${HP_SECT[k]}</h2><table>${L.map(row).join("")}</table>`:""};
+  const html=`<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><title>Helferdienste ${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</title><style>
+    @page{size:A4;margin:14mm}body{font:12pt/1.35 Arial,Helvetica,sans-serif;color:#111}h1{font-size:20pt;margin:0 0 2mm;text-transform:uppercase}.meta{margin:0 0 6mm;color:#444}
+    h2{font-size:12pt;letter-spacing:.12em;text-transform:uppercase;border-bottom:2px solid #111;padding-bottom:1mm;margin:6mm 0 2mm}table{width:100%;border-collapse:collapse}td{border-bottom:1px solid #bbb;padding:2.2mm 1mm;vertical-align:top}
+    td.t{width:46%}small{color:#555}.slot{display:inline-block;min-width:42mm;border-bottom:1px solid #111;padding:0 1mm 1mm;margin:0 3mm 2mm 0}
+    .foot{margin-top:8mm;font-size:9pt;color:#666}</style></head><body>
+    <h1>Helferdienste · ${esc(teamName(g.team))}</h1><p class="meta"><b>${esc(shortTeam(g.home))} – ${esc(shortTeam(g.away))}</b><br>${esc(day)} · ${esc(g.time)} Uhr · ${esc(g.stadium)}</p>
+    ${sec("g")}${sec("v")}<p class="foot">Eintragen auch online: ${esc(hpLink(gid))}</p><script>setTimeout(()=>print(),300)<\/script></body></html>`;
+  const w=window.open("","_blank");if(!w){alert("Bitte Pop-ups für diese Seite erlauben, um den Aushang zu drucken.");return}
+  w.document.open();w.document.write(html);w.document.close();
+  try{trackAnalyticsEvent("helper_print",{team:teamName(g.team)})}catch(e){}
+}

@@ -342,6 +342,7 @@ exports.onFanTipWritten = require("./fan-tips").onFanTipWritten;
 exports.onReportPublished = require("./report-push").onReportPublished;
 exports.weatherForecast = require("./weather").weatherForecast;
 exports.helperCleanup = require("./helpers").helperCleanup;
+exports.helperReminder = require("./helpers").helperReminder;
 
 // 1.44.0: Ein-Tipp-Feedback (👍/👎) und Wunschliste – anonyme Zähler
 const feedbackVotes = require("./feedback-votes");

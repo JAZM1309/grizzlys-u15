@@ -3366,3 +3366,4 @@ html.dv main{z-index:auto!important}
 /* 1.70.3: Helferliste und Vorlage liegen über dem Admin-Bereich */
 #hpModal,#hpTplModal{z-index:1200!important}
 #hpAdmBody .hwSwitchRow{margin-bottom:4px}
+.hpActs .hpPrint{border-width:1.5px}

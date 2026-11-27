@@ -457,7 +457,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.70.5.284",
+      appVersion:"1.71.0.286",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -2004,5 +2004,6 @@ window.hpCfgLoad=async function(){const out={};for(const id of ["template","game
 window.hpCfgSave=async function(id,data){return _hpSet(doc(db,"helperCfg",id),data)};
 window.hpWatch=function(gid,cb){return onSnapshot(query(collection(db,HP_COL),where("gid","==",gid)),s=>cb(s.docs.map(x=>({id:x.id,...x.data()}))),e=>{console.warn("Helferliste",e);cb(null,e)})};
 window.hpRange=async function(from,to){const s=await getDocs(query(collection(db,HP_COL),where("gd",">=",from),where("gd","<=",to)));return s.docs.map(x=>({id:x.id,...x.data()}))};
-window.hpAdd=async function(g,gid,item,name){const uid=await window.hpEnsureAuth();return _hpAdd(collection(db,HP_COL),{gid,gd:g.date,team:g.team,item,name,uid,createdAt:serverTimestamp()})};
+/* 1.71.0: label (Name des Dienstes) und iid (Geräte-Kennung) für die Push-Erinnerung am Vortag */
+window.hpAdd=async function(g,gid,item,name,label){const uid=await window.hpEnsureAuth();return _hpAdd(collection(db,HP_COL),{gid,gd:g.date,team:g.team,item,name,uid,label:String(label||"").slice(0,80),iid:String(getInstallationId()).replace(/[^A-Za-z0-9_-]/g,"").slice(0,64),createdAt:serverTimestamp()})};
 window.hpDel=async function(id){return _hpDel(doc(db,HP_COL,id))};

@@ -50,6 +50,8 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.71.0.286 | – (nur Test) | 27.11.2026 | Helferdienste: Erinnerung am Vortag, Aushang |
+| 1.70.6.285 | – (nur Test) | 27.11.2026 | Helferliste aus WhatsApp lässt sich schließen |
 | 1.70.5.284 | – (nur Test) | 26.11.2026 | Laufendes Spiel nicht doppelt |
 | 1.70.4.283 | – (nur Test) | 26.11.2026 | Laufendes Spiel oben auf der Startseite |
 | 1.70.3.282 | – (nur Test) | 26.11.2026 | Helferdienste: Liste öffnet über dem Admin, Admin-Kasten einklappbar |
@@ -147,6 +149,15 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.71.0
+
+- **Helferdienste (Vorschau) – Erinnerung am Vortag.** Neue Cloud Function `helperReminder` (täglich 18:00 Uhr): sucht Einträge für Spiele am nächsten Tag (`helpers` und `helpersTest`), ordnet sie über die Geräte-Kennung (`iid` im Eintrag = `installationId` in `pushTokens`) den Push-Tokens zu und schickt je Gerät und Spiel eine Meldung „Morgen Heimspiel U15 A – danke fürs Helfen!“ mit allen eingetragenen Diensten (Test-Einträge mit „[Test]“). Tippen öffnet die Helferliste (`go=helfer-<Spiel-ID>`). Einträge speichern dafür zusätzlich `label` (Name des Dienstes) und `iid`; die Firestore-Regeln erlauben beide Felder (optional, begrenzte Länge). Ohne Push keine Erinnerung – Hinweis steht unter der Liste.
+- **Aushang drucken.** Neuer Knopf in der Helferliste: öffnet eine A4-Seite (schwarz-weiß) mit Spiel, Datum, Halle und allen Diensten – eingetragene Namen stehen auf den Linien, freie Plätze bleiben als Linie zum Handeintrag; unten der Link zur Online-Liste. Der Druckdialog öffnet sich automatisch.
+
+## Version 1.70.6
+
+- **Helferdienste (Vorschau) – Schließen nach Öffnen per Link.** Wurde die Liste über den WhatsApp-Link geöffnet (`#helfer/…`), öffnete sie sich nach dem × sofort wieder: Die Zurück-Logik (1.44.5) springt beim Schließen einen Verlaufseintrag zurück – auf die Adresse mit `#helfer/…`, was erneut öffnete, weil der Anker vorher schon entfernt worden war. Jetzt wird der Anker erst danach entfernt, und eine bereits offene Liste wird nicht erneut geöffnet.
 
 ## Version 1.70.5
 
