@@ -3456,3 +3456,6 @@ html.dv.dv.dv.dv .admTabs button{flex:1 1 auto!important;width:auto!important}
 .errDone{flex:none;width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:transparent;color:#1f9d55;font-size:17px;font-weight:900;cursor:pointer;margin-left:6px}
 .errDone:active{background:rgba(31,157,85,.12)}.errDone:disabled{opacity:.4}
 .errRow.gone{opacity:0;transition:opacity .2s}
+/* 1.73.6: „Mehr“ nur im Verein-Design – im aktuellen Design überschrieb eine allgemeine Tab-Regel das Ausblenden */
+html:not(.dv) .tabs .tab.tabMore,html:not(.dv) .moreSheet{display:none!important}
+html.dv .tabs .tab.tabMore{display:flex!important}
