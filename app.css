@@ -3459,3 +3459,17 @@ html.dv.dv.dv.dv .admTabs button{flex:1 1 auto!important;width:auto!important}
 /* 1.73.6: „Mehr“ nur im Verein-Design – im aktuellen Design überschrieb eine allgemeine Tab-Regel das Ausblenden */
 html:not(.dv) .tabs .tab.tabMore,html:not(.dv) .moreSheet{display:none!important}
 html.dv .tabs .tab.tabMore{display:flex!important}
+/* 1.74.0: Intro im Verein-Design */
+#vIntro{position:fixed;inset:0;z-index:7000;background:#2b2b2b;overflow:hidden;touch-action:none;cursor:pointer;font-family:var(--vCond,"Barlow Condensed","Roboto Condensed","Arial Narrow",sans-serif);transition:opacity .3s ease}
+#vIntro.viOut{opacity:0}
+#vIntro .viLine{position:absolute;left:0;top:50%;height:4px;width:0;background:#0A7FE0;animation:viLine .6s cubic-bezier(.3,.8,.3,1) forwards}
+#vIntro .viGhost{position:absolute;left:-10%;right:-10%;top:calc(50% - .62em);text-align:center;white-space:nowrap;font-weight:800;font-size:min(19vw,110px);line-height:1;color:#2b2b2b;opacity:0;letter-spacing:.22em;
+  text-shadow:1px 0 0 rgba(92,180,255,.5),-1px 0 0 rgba(92,180,255,.5),0 1px 0 rgba(92,180,255,.5),0 -1px 0 rgba(92,180,255,.5),1px 1px 0 rgba(92,180,255,.5),-1px -1px 0 rgba(92,180,255,.5),1px -1px 0 rgba(92,180,255,.5),-1px 1px 0 rgba(92,180,255,.5);animation:viGhost 1s .45s cubic-bezier(.2,.8,.2,1) forwards}
+#vIntro .viLogo{position:absolute;left:50%;top:50%;width:min(34vw,150px);height:auto;margin-left:calc(min(34vw,150px) / -2);transform:translateY(-62%) scale(0);animation:viPop .45s 1.3s cubic-bezier(.3,1.6,.5,1) forwards;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+#vIntro .viKick,#vIntro .viTitle{position:absolute;left:0;right:0;text-align:center;opacity:0;transform:translateY(10px);animation:viUp .45s forwards}
+#vIntro .viKick{top:calc(50% + min(22vw,100px));color:#5cb4ff;font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;animation-delay:1.7s}
+#vIntro .viTitle{top:calc(50% + min(22vw,100px) + 20px);color:#fff;font-size:min(10vw,44px);font-weight:800;letter-spacing:.03em;text-transform:uppercase;animation-delay:1.8s}
+@keyframes viLine{to{width:100%}}
+@keyframes viGhost{to{opacity:1;letter-spacing:0}}
+@keyframes viPop{to{transform:translateY(-62%) scale(1)}}
+@keyframes viUp{to{opacity:1;transform:none}}

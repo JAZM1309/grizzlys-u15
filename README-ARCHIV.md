@@ -8,6 +8,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.74.1.308 | – (nur Test) | 27.11.2026 | Intro: Strichschrift schmaler |
+| 1.74.0.307 | – (nur Test) | 27.11.2026 | Intro im Vereinsdesign |
 | 1.73.8.306 | – (nur Test) | 27.11.2026 | Startseite: Torschützen nur noch in den Details |
 | 1.73.7.305 | – (nur Test) | 27.11.2026 | Startseite: Abschnitts-Überschriften zuverlässig |
 | 1.73.6.304 | – (nur Test) | 27.11.2026 | „Mehr“ im aktuellen Design ausgeblendet |

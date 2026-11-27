@@ -50,6 +50,8 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.74.1.308 | – (nur Test) | 27.11.2026 | Intro: Strichschrift schmaler |
+| 1.74.0.307 | – (nur Test) | 27.11.2026 | Intro im Vereinsdesign |
 | 1.73.8.306 | – (nur Test) | 27.11.2026 | Startseite: Torschützen nur noch in den Details |
 | 1.73.7.305 | – (nur Test) | 27.11.2026 | Startseite: Abschnitts-Überschriften zuverlässig |
 | 1.73.6.304 | – (nur Test) | 27.11.2026 | „Mehr“ im aktuellen Design ausgeblendet |
@@ -169,6 +171,14 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.74.1
+
+- Intro im Verein-Design: Strichschrift „GRIZZLYS“ deutlich kleiner (max. 19 % der Bildbreite statt 30 %), läuft nicht mehr über den Rand.
+
+## Version 1.74.0
+
+- **Neues Intro im Verein-Design** (statt Splitter-Animation): blaue Linie zieht quer durchs Bild, Strichschrift „GRIZZLYS“ zieht sich zusammen, Logo springt auf, darunter „ESV Grizzlys Bergkamen“ und „Young Grizzlys“; nach ca. 2,5 s Ausblenden. Antippen überspringt. Gleiche Regeln wie bisher: einmal je App-Start, nicht bei „Bewegung reduzieren“, abschaltbar, `#intro` erzwingt es. Im aktuellen Design bleibt die bisherige Animation.
 
 ## Version 1.73.8
 
