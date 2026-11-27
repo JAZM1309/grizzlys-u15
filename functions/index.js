@@ -343,6 +343,8 @@ exports.onReportPublished = require("./report-push").onReportPublished;
 exports.weatherForecast = require("./weather").weatherForecast;
 exports.helperCleanup = require("./helpers").helperCleanup;
 exports.helperReminder = require("./helpers").helperReminder;
+// 1.72.0: Kalender-Abo (webcal) – Spielplan mit Verlegungen, Absagen und Ergebnissen
+exports.calendarFeed = require("./calendar").calendarFeed;
 
 // 1.44.0: Ein-Tipp-Feedback (👍/👎) und Wunschliste – anonyme Zähler
 const feedbackVotes = require("./feedback-votes");

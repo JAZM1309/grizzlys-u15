@@ -50,6 +50,7 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.72.0.294 | – (nur Test) | 27.11.2026 | Kalender-Abo (Vorbereitung 2027/28) |
 | 1.71.7.293 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift ohne Linien in den Buchstaben |
 | 1.71.6.292 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift kräftiger |
 | 1.71.5.291 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift hinter dem Titel |
@@ -156,6 +157,11 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.72.0
+
+- **Kalender-Abo (Vorbereitung Saison 2027/28).** Neue Cloud Function `calendarFeed` (`functions/calendar.js`, europe-west1): liefert den Spielplan als iCalendar-Feed, Parameter `t` (Mannschaften, z. B. `A,B`) und `v` (`home`/`away`). Quellen: `spielplan.js` der Live-App, `scheduleOverrides` (Verlegung/Absage, gleiche Regeln wie in der App) und `results` (Endstand im Termin-Titel aus Grizzlys-Sicht). Hallen-Adressen liest der Feed aus `rinkAddresses` in `js/app.js`. Zwischenspeicher 15 Min., Kalender holen alle ~4 Std. neu.
+- In der Kalender-Auswahl (Downloads › Spielplan) Abschnitt „Kalender abonnieren“ mit webcal-Link, Google-Kalender-Link und „Link kopieren“ – vorerst nur mit Vorschau-Schalter (Verein-Design). Funktioniert erst, wenn die Function mit „Live gehen“ deployt ist; in der Live-App bleibt der Abschnitt bis zum Saisonstart unsichtbar.
 
 ## Version 1.71.7
 

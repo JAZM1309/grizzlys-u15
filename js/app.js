@@ -357,7 +357,16 @@ function updateCalFilterUI(){
   const n=calGames().length;
   document.getElementById("calFilterHint").textContent=n===1?"1 Spiel ausgewählt":n+" Spiele ausgewählt";
   document.getElementById("calFilterGo").disabled=n===0;
+  calAboUpdate();
 }
+/* 1.72.0: Kalender-Abo (webcal) – Feed der Cloud Function calendarFeed, Auswahl wie bei der Kalenderdatei (Zeitraum entfällt) */
+const CAL_FEED="https://europe-west1-grizzlys-u15.cloudfunctions.net/calendarFeed";
+function calAboUrl(){const t=[...calSel.teams].sort().join(","),q=["t="+t];if(calSel.venues.size===1)q.push("v="+[...calSel.venues][0]);return CAL_FEED+"?"+q.join("&")}
+function calAboUpdate(){const box=document.getElementById("calAbo");if(!box)return;const ok=calSel.teams.size>0&&calSel.venues.size>0,u=calAboUrl(),w=u.replace(/^https:/,"webcal:");
+  box.classList.toggle("off",!ok);document.getElementById("calAboWebcal").href=w;document.getElementById("calAboGoogle").href="https://calendar.google.com/calendar/render?cid="+encodeURIComponent(w);}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#calAboCopy,#calAboWebcal,#calAboGoogle");if(!b)return;
+  try{trackAnalyticsEvent("calendar_subscribe",{type:b.id.replace("calAbo","").toLowerCase()})}catch(_){}
+  if(b.id==="calAboCopy"){const u=calAboUrl();(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>{b.textContent="Kopiert ✓";setTimeout(()=>b.textContent="Link kopieren",1800)},()=>prompt("Kalender-Link kopieren:",u))}});
 function openCalFilter(){const m=document.getElementById("calFilterModal");updateCalFilterUI();m.hidden=false;m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
 function closeCalFilter(){const m=document.getElementById("calFilterModal");m.hidden=true;m.setAttribute("aria-hidden","true");document.body.style.overflow=""}
 function downloadSelectedCalendar(){

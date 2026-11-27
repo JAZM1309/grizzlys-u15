@@ -3388,3 +3388,12 @@ html.dv.dv.dv.dv .newsItem[data-team] .teamBadge{color:#fff!important;border:0!i
 html.dv.dv.dv.dv .newsItem[data-team="A"] .teamBadge{background:var(--vAcc)!important}
 html.dv.dv.dv.dv .newsItem[data-team="B"] .teamBadge{background:#d9731a!important}
 html.dv.dv.dv.dv .newsItem[data-team="U13"] .teamBadge{background:#94760a!important}
+/* 1.72.0: Kalender-Abo in der Kalender-Auswahl – Vorschau (Verein-Design), für alle ab Saison 2027/28 */
+.calAbo{display:none}
+html.dv .calAbo{display:block;margin:14px 0 4px;padding-top:12px;border-top:1px solid var(--d27line,rgba(0,0,0,.12))}
+html.dv .calAbo .small{margin:4px 0 10px}
+html.dv .calAboBtns{display:flex;flex-wrap:wrap;gap:8px}
+html.dv .calAboBtns .action{flex:1 1 30%;min-width:96px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;text-align:center;white-space:nowrap;font-size:13px}
+html.dv .calAboBtns a.action:first-child{background:var(--vAcc)!important;color:#fff!important;border-color:var(--vAcc)!important}
+html.dv .calAbo .calAboNote{font-size:11.5px;opacity:.85;margin-top:10px}
+html.dv .calAbo.off{opacity:.45;pointer-events:none}
