@@ -372,7 +372,7 @@ function closeCalFilter(){const m=document.getElementById("calFilterModal");m.hi
 function downloadSelectedCalendar(){
   const arr=calGames(); if(!arr.length)return;
   const t=[...calSel.teams].sort().join("+");
-  const label=teamName(t.replace)("+"," + ");
+  const label=teamName(t).replace("+"," + ");
   trackAnalyticsEvent("calendar_download",{team:label,type:"custom",venue:calSel.venues.size===2?"alle":[...calSel.venues][0],range:calSel.range});
   const parts=[APP_CFG.age,t.replace("+","-und-")];
   if(calSel.venues.size===1)parts.push([...calSel.venues][0]==="home"?"Heim":"Auswaerts");
@@ -427,7 +427,7 @@ function printAllGamesPdf(filters=["all"]){
     return "<tr>"+
       "<td>"+esc(fmtDate(g))+"</td>"+
       "<td>"+esc(g.time)+"</td>"+
-      "<td class=\"printTeam"+g.team+"\">"+teamName(esc)(g.team)+"</td>"+
+      "<td class=\"printTeam"+g.team+"\">"+esc(teamName(g.team))+"</td>"+
       "<td>"+esc(g.home)+"</td>"+
       "<td>"+esc(g.away)+"</td>"+
       "<td class=\"printResult\">"+(g.cancelled?(score!=="–"?score+" ":"")+"<b>"+(g.postponed?"verlegt, Termin offen":"abgesagt")+"</b>":score)+"</td>"+

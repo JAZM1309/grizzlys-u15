@@ -8,6 +8,7 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.73.4.302 | – (nur Test) | 27.11.2026 | Fehlerbehebung Kalender/Druck, Admin-Reiter |
 | 1.73.3.301 | – (nur Test) | 27.11.2026 | Kopf: Schrift weiter vom Logo |
 | 1.73.2.300 | – (nur Test) | 27.11.2026 | Kopf etwas kleiner |
 | 1.73.1.299 | – (nur Test) | 27.11.2026 | Kopf: Young Grizzlys einzeilig mit Strichschrift |
