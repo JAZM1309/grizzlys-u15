@@ -1442,7 +1442,11 @@ function closeMatchDetails(){
   document.body.style.overflow="";
 }
 
-function showView(name){if(["home","schedule","opponents","rules","stats","downloads"].includes(name))window.__lastMain=name;trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":name==="rules"?"rules_opened":name==="stats"?"stats_opened":name==="settings"?"settings_opened":"info_opened");["home","schedule","opponents","rules","stats","downloads","info","settings"].forEach(v=>{const e=document.getElementById(v+"View");if(e)e.hidden=v!==name});if(name==="stats")try{renderStats()}catch(e){console.warn(e)}if(name==="rules")try{renderRules()}catch(e){console.warn(e)}document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
+/* 1.72.2: Verein-Design – beim Antippen der Tabs gleitet die neue Seite aus der passenden Richtung herein (Wischen hat eigene Bewegung) */
+function vSlide(name,prev){const el=document.getElementById(name+"View");if(!el)return;el.classList.remove("vInR","vInL");
+  if(!prev||prev===name||window.__swNav||!document.documentElement.classList.contains("dv")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;
+  const O=["home","schedule","opponents","stats","rules","downloads","settings","info"];void el.offsetWidth;el.classList.add(O.indexOf(name)>O.indexOf(prev)?"vInR":"vInL")}
+function showView(name){if(["home","schedule","opponents","rules","stats","downloads"].includes(name))window.__lastMain=name;trackAnalyticsEvent(name==="home"?"home_opened":name==="schedule"?"spielplan_opened":name==="opponents"?"opponents_opened":name==="downloads"?"downloads_opened":name==="rules"?"rules_opened":name==="stats"?"stats_opened":name==="settings"?"settings_opened":"info_opened");const _pv=["home","schedule","opponents","rules","stats","downloads","info","settings"].find(v=>{const e=document.getElementById(v+"View");return e&&!e.hidden});["home","schedule","opponents","rules","stats","downloads","info","settings"].forEach(v=>{const e=document.getElementById(v+"View");if(e)e.hidden=v!==name});vSlide(name,_pv);if(name==="stats")try{renderStats()}catch(e){console.warn(e)}if(name==="rules")try{renderRules()}catch(e){console.warn(e)}document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===name));if(name==="schedule"){const ng=nextGame();if(ng){calendarCursor=new Date(dt(ng).getFullYear(),dt(ng).getMonth(),1)}setScheduleMode(scheduleMode)}window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 {const v=document.querySelector(".inVer"),t=document.getElementById("inMadeVer");if(v&&t)t.textContent=" · Version "+v.textContent.trim();}
 /* 1.9.1.107: Gruselmoment im Halloween-Design – höchstens einmal am Tag, nie über offenen Fenstern, nicht anklickbar */
@@ -1587,7 +1591,7 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.vi
     setPos(s0.view,dir*w,!reduce,reduce?0:170);
     setTimeout(()=>{
       cleanup(s0.view);
-      showView(s0.n); showDots(s0.n);
+      window.__swNav=1;showView(s0.n);window.__swNav=0; showDots(s0.n);
       const v=document.getElementById(s0.n+"View");
       if(reduce)return;
       v.classList.add("swView");document.documentElement.classList.add("swiping");
@@ -2098,11 +2102,11 @@ function instaBg(c,W,H,rink){
   c.save();c.shadowColor=IC_.accA(.75);c.shadowBlur=30;c.strokeStyle=IC_.acc;c.lineWidth=8;c.beginPath();c.moveTo(-20,334);c.lineTo(W+20,156);c.stroke();c.restore();
 }
 /* 1.71.5: Strichschrift (Umriss) groß hinter der Überschrift – wie die Seitenköpfe im Vereinsdesign */
-function icGhost(c,txt,x,y,size,align,light){if(!IC_.v||!txt)return;
+function icGhost(c,txt,x,y,size,align,light,maxW){if(!IC_.v||!txt)return;
   /* 1.71.7: Umriss auf eigener Ebene zeichnen und das Buchstabeninnere ausstanzen – so verschwinden die Linien in den Buchstaben (überlappende Konturen der Schrift) */
   const W=c.canvas.width,H=c.canvas.height,t=document.createElement("canvas");t.width=W;t.height=H;const g=t.getContext("2d");
   g.font="800 "+size+"px "+INSTA_COND;g.textAlign=align||"left";g.textBaseline="alphabetic";g.lineJoin="round";
-  const T=String(txt).toUpperCase(),lw=Math.max(2,size/60);
+  const T=String(txt).toUpperCase();if(align==="center"&&!maxW)maxW=W*.95;if(maxW){const tw=g.measureText(T).width;if(tw>maxW){size=size*maxW/tw;g.font="800 "+size+"px "+INSTA_COND}}const lw=Math.max(2,size/60);
   g.lineWidth=lw*2;g.strokeStyle=light?"rgba(10,127,224,.5)":"rgba(92,180,255,.55)";g.strokeText(T,x,y);
   g.globalCompositeOperation="destination-out";g.fillStyle="#000";g.fillText(T,x,y);
   c.save();c.setTransform(1,0,0,1,0,0);c.shadowColor="transparent";c.drawImage(t,0,0);c.restore()}
@@ -2847,6 +2851,7 @@ window.xmOpenCalendar=xmOpenCalendar;
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{xmRefresh()}catch(e){console.warn(e)}};}
 xmRefresh();
 {const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{renderNews()}catch(e){console.warn(e)}};}
+{const prev=window.applyResults;window.applyResults=function(){prev&&prev.apply(this,arguments);try{const v=document.getElementById("statsView");if(v&&!v.hidden)renderStats(true)}catch(e){console.warn(e)}};}
 renderNews();
 
 /* ===== 1.41.0: Spruch des Tages auf der Startseite (1.41.3: ganz oben, ohne Hintergrund, mittig, Titel in Pinselschrift) =====
@@ -3402,7 +3407,7 @@ function wpLightBg(c,W,H){const u=W/1080;let g=c.createLinearGradient(0,0,0,H);g
 function wpPhoto(c,W,H,rink,bright,L){if(L){wpLightBg(c,W,H);return}c.fillStyle=IC_.bg;c.fillRect(0,0,W,H);
   if(rink){const s=Math.max(W/rink.naturalWidth,H/rink.naturalHeight)*1.02,w=rink.naturalWidth*s,h=rink.naturalHeight*s;c.save();c.filter=`saturate(1.15) brightness(${bright||.75})`;c.drawImage(rink,(W-w)/2,(H-h)/2,w,h);c.restore()}
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,IC_.ov(.55));g.addColorStop(.45,IC_.ov(.35));g.addColorStop(1,IC_.ov(.94));c.fillStyle=g;c.fillRect(0,0,W,H)}
-function wpBrand(c,W,y,u,col,L){instaFont(c,0,100*u,true);c.textAlign="center";c.textBaseline="alphabetic";
+function wpBrand(c,W,y,u,col,L){icGhost(c,"GRIZZLYS",W/2,y+34*u,250*u,"center",L);instaFont(c,0,100*u,true);c.textAlign="center";c.textBaseline="alphabetic";
   c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=24*u;const a="YOUNG ",b="GRIZZLYS",wa=c.measureText(a).width,wb=c.measureText(b).width,x0=W/2-(wa+wb)/2;
   c.textAlign="left";c.fillStyle=L?IC_.navy:"#fff";c.fillText(a,x0,y);c.fillStyle=col||IC_.acc;c.fillText(b,x0+wa,y);c.restore();
   instaFont(c,800,30*u);instaSpace(c,12*u);c.textAlign="center";c.fillStyle=L?IC_.navyA(.7):IC_.t2a(.85);c.fillText("ESV GRIZZLYS BERGKAMEN",W/2+6*u,y+62*u);instaSpace(c,0)}
@@ -3434,7 +3439,7 @@ async function wpDesignBase(c,W,H,o){
   if(st==="nacht"){let g=c.createRadialGradient(W/2,H*.5,0,W/2,H*.5,H*.7);g.addColorStop(0,L?"#ffffff":"#123f75");g.addColorStop(.45,L?"#e3eef9":IC_.bg2);g.addColorStop(1,L?"#bcd5ee":"#030b17");c.fillStyle=g;c.fillRect(0,0,W,H);
     c.save();c.globalAlpha=L?.05:.06;c.strokeStyle=L?IC_.navy:"#fff";c.lineWidth=2*u;for(let x=-H;x<W;x+=46*u){c.beginPath();c.moveTo(x,H);c.lineTo(x+H,0);c.stroke()}c.restore();
     const lh=LG(c,logo,W/2,H*.52,W*.58,L?IC_.navyA(.3):"rgba(70,160,255,.7)")||W*.55;
-    A(()=>{const y=H*.52+lh/2+90*u;c.fillStyle=IC_.acc;instaRR(c,W/2-70*u,y,140*u,8*u,4*u);c.fill();
+    A(()=>{const y=H*.52+lh/2+90*u;icGhost(c,"GRIZZLYS",W/2,y+125*u,210*u,"center",L);c.fillStyle=IC_.acc;instaRR(c,W/2-70*u,y,140*u,8*u,4*u);c.fill();
     instaFont(c,900,40*u);instaSpace(c,14*u);c.textAlign="center";c.fillStyle=ink;c.fillText("YOUNG GRIZZLYS",W/2+7*u,y+80*u);instaSpace(c,0);});return}
   if(st==="feld"){c.fillStyle=L?"#f2f7fc":IC_.bg2;c.fillRect(0,0,W,H);let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,L?"rgba(255,255,255,.6)":"rgba(255,255,255,.07)");g.addColorStop(1,L?"rgba(160,195,230,.35)":"rgba(0,0,0,.35)");c.fillStyle=g;c.fillRect(0,0,W,H);
     const cy=H*.52,R=W*.36,ln=(y,col,w)=>{c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.strokeStyle=col;c.lineWidth=w;c.stroke()};
@@ -3443,13 +3448,13 @@ async function wpDesignBase(c,W,H,o){
     [[.22,-.34],[.78,-.34],[.22,.34],[.78,.34]].forEach(([fx,fy])=>{const x=W*fx,y=cy+H*fy;c.beginPath();c.arc(x,y,W*.17,0,Math.PI*2);c.strokeStyle="rgba(214,69,59,.35)";c.lineWidth=5*u;c.stroke();c.beginPath();c.arc(x,y,12*u,0,Math.PI*2);c.fillStyle="rgba(214,69,59,.55)";c.fill()});
     c.beginPath();c.arc(W/2,cy,R*.96,0,Math.PI*2);c.fillStyle=L?"rgba(255,255,255,.75)":IC_.ov(.55);c.fill();
     LG(c,logo,W/2,cy,R*1.5,L?IC_.navyA(.3):"rgba(0,0,0,.6)");
-    A(()=>{instaFont(c,0,90*u,true);c.textAlign="center";c.fillStyle=ink;c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillText("YOUNG GRIZZLYS",W/2,cy+H*.2+150*u);c.restore();});return}
+    A(()=>{icGhost(c,"GRIZZLYS",W/2,cy+H*.2+185*u,230*u,"center",L);instaFont(c,0,90*u,true);c.textAlign="center";c.fillStyle=ink;c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillText("YOUNG GRIZZLYS",W/2,cy+H*.2+150*u);c.restore();});return}
   /* streifen */
   if(L)wpLightBg(c,W,H);else{c.fillStyle=IC_.bg;c.fillRect(0,0,W,H)}
   c.beginPath();c.moveTo(0,H*.62);c.lineTo(W,H*.48);c.lineTo(W,H);c.lineTo(0,H);c.closePath();let g=c.createLinearGradient(0,H*.5,0,H);g.addColorStop(0,L?"rgba(22,140,255,.30)":"rgba(22,140,255,.45)");g.addColorStop(1,L?"rgba(22,140,255,.08)":"rgba(22,140,255,.05)");c.fillStyle=g;c.fill();
   c.save();c.shadowColor=L?IC_.accA(.5):IC_.accA(.85);c.shadowBlur=40*u;c.strokeStyle=IC_.acc;c.lineWidth=14*u;c.beginPath();c.moveTo(-20,H*.62+3*u);c.lineTo(W+20,H*.48-3*u);c.stroke();c.restore();
   LG(c,logo,W/2,H*.43,W*.56,L?IC_.navyA(.3):"rgba(22,140,255,.55)");
-  A(()=>{instaFont(c,0,104*u,true);c.textAlign="center";c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillStyle=ink;c.fillText("YOUNG",W/2,H*.68);c.fillStyle=IC_.acc;c.fillText("GRIZZLYS",W/2,H*.68+110*u);c.restore()});}
+  A(()=>{icGhost(c,"GRIZZLYS",W/2,H*.68+120*u,270*u,"center",L);instaFont(c,0,104*u,true);c.textAlign="center";c.save();c.shadowColor=L?"rgba(255,255,255,.8)":"rgba(0,0,0,.6)";c.shadowBlur=20*u;c.fillStyle=ink;c.fillText("YOUNG",W/2,H*.68);c.fillStyle=IC_.acc;c.fillText("GRIZZLYS",W/2,H*.68+110*u);c.restore()});}
 
 async function wpDesign(c,W,H,o){return wpDesignBase(c,W,H,o)}
 
@@ -3496,7 +3501,7 @@ async function wpTrikot(c,W,H,o){
   else{instaFont(c,800,J*.06);c.textAlign="center";c.textBaseline="middle";c.fillStyle=col.ink;c.globalAlpha=.6;c.fillText("Nummer eintragen",W/2,y0+J*.5);c.globalAlpha=1}
   c.textBaseline="alphabetic";
   const ly=y0+J*1.06+170*u; wpLogo(c,logo,W/2-150*u,ly,110*u,LT?IC_.navyA(.25):"rgba(0,0,0,.4)");
-  instaFont(c,0,64*u,true);c.textAlign="left";c.fillStyle=LT?IC_.navy:"#fff";c.fillText("YOUNG",W/2-80*u,ly-4*u);c.fillStyle=IC_.acc;c.fillText("GRIZZLYS",W/2-80*u,ly+56*u)}
+  icGhost(c,"GRIZZLYS",W/2-96*u,ly+66*u,150*u,"left",LT,W/2+66*u);instaFont(c,0,64*u,true);c.textAlign="left";c.fillStyle=LT?IC_.navy:"#fff";c.fillText("YOUNG",W/2-80*u,ly-4*u);c.fillStyle=IC_.acc;c.fillText("GRIZZLYS",W/2-80*u,ly+56*u)}
 
 /* 4) Nächstes Spiel */
 function wpNextGame(team){const now=Date.now();return games.filter(g=>(!team||g.team===team)&&window.myTeam(g.team)&&!g.cancelled&&!resInfo(g)&&dt(g).getTime()+2*3600000>now).sort((a,b)=>dt(a)-dt(b))[0]||null}
@@ -3509,7 +3514,7 @@ async function wpNext(c,W,H,o){
   instaRR(c,x0,y0,cw,ch,48*u);c.lineWidth=3*u;c.strokeStyle=LT?IC_.navyA(.10):"rgba(255,255,255,.16)";c.stroke();
   c.textAlign="center";c.textBaseline="alphabetic";
   instaFont(c,900,30*u);instaSpace(c,6*u);const tag=("NÄCHSTES SPIEL · "+teamName(g.team)).toUpperCase(),tw=c.measureText(tag).width+60*u;instaRR(c,W/2-tw/2,y0+50*u,tw,64*u,32*u);c.fillStyle=col;c.fill();c.fillStyle=g.team==="A"?"#fff":IC_.accTx;c.fillText(tag,W/2+3*u,y0+93*u);instaSpace(c,0);
-  instaFont(c,0,150*u,true);c.fillStyle=T1;wpFitFont(c,IC_.up(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" 00.00."),cw-80*u);c.fillText(IC_.up(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" "+d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})),W/2,y0+300*u);
+  icGhost(c,d.toLocaleDateString("de-DE",{weekday:"long"}),W/2,y0+330*u,230*u,"center",LT,cw-40*u);c.textAlign="center";instaFont(c,0,150*u,true);c.fillStyle=T1;wpFitFont(c,IC_.up(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" 00.00."),cw-80*u);c.fillText(IC_.up(d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")+" "+d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})),W/2,y0+300*u);
   instaFont(c,900,70*u);c.fillStyle=IC_.acc;c.fillText(g.time+" Uhr",W/2,y0+395*u);
   const ly=y0+ch*.62,r=Math.min(130*u,cw*.16);instaCircle(c,lh,g.home,W/2-cw*.28,ly,r);instaCircle(c,la,g.away,W/2+cw*.28,ly,r);
   instaFont(c,900,60*u);c.fillStyle=T1;c.textBaseline="middle";c.fillText("VS",W/2,ly);c.textBaseline="alphabetic";
@@ -3546,7 +3551,7 @@ async function wpAdvent(c,W,H,o){
   c.fillStyle="#ffffff";if(LT){c.save();c.shadowColor=IC_.navyA(.15);c.shadowBlur=30*u}c.beginPath();c.moveTo(0,H*.9);for(let x=0;x<=W;x+=W/8)c.quadraticCurveTo(x+W/16,H*(.87+rnd()*.03),x+W/8,H*.9);c.lineTo(W,H);c.lineTo(0,H);c.closePath();c.fill();if(LT)c.restore();
   for(let i=0;i<90;i++){const x=rnd()*W,y=rnd()*H*.95,r=(rnd()*5+2)*u;c.globalAlpha=.25+rnd()*.55;c.fillStyle=LT&&y<H*.88?"#7fb0de":"#fff";c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.globalAlpha=1;
   const lh=wpLogo(c,logo,W/2,H*.5,W*.62,"rgba(255,214,120,.6)")||W*.6;
-  instaFont(c,0,120*u,true);c.textAlign="center";c.save();c.shadowColor=LT?"rgba(255,255,255,.8)":"rgba(0,0,0,.55)";c.shadowBlur=20*u;c.fillStyle=LT?IC_.navy:"#fff";wpFitFont(c,IC_.up("Weihnachten"),W-120*u);c.fillText(IC_.up("Frohe"),W/2,H*.5+lh/2+130*u);c.fillStyle=IC_.acc;c.fillText(IC_.up("Weihnachten"),W/2,H*.5+lh/2+250*u);c.restore();
+  instaFont(c,0,120*u,true);c.textAlign="center";c.save();c.shadowColor=LT?"rgba(255,255,255,.8)":"rgba(0,0,0,.55)";c.shadowBlur=20*u;icGhost(c,"Weihnachten",W/2,H*.5+lh/2+250*u,250*u,"center",LT);c.fillStyle=LT?IC_.navy:"#fff";wpFitFont(c,IC_.up("Weihnachten"),W-120*u);c.fillText(IC_.up("Frohe"),W/2,H*.5+lh/2+130*u);c.fillStyle=IC_.acc;c.fillText(IC_.up("Weihnachten"),W/2,H*.5+lh/2+250*u);c.restore();
   instaFont(c,800,30*u);instaSpace(c,10*u);c.fillStyle=LT?IC_.navyA(.7):IC_.t2a(.9);c.fillText("YOUNG GRIZZLYS",W/2+5*u,H*.5+lh/2+320*u);instaSpace(c,0)}
 
 /* --- Liste und Fenster --- */
@@ -3779,6 +3784,8 @@ function renderStats(keep){
   bar.innerHTML=teams.map(x=>`<button type="button" role="tab" class="team${x}${x===t?" active":""}" aria-selected="${x===t}" data-st="${x}">${esc(teamName(x))}</button>`).join("");
   bar.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{try{localStorage.setItem("grizzlysStatsTeam",b.dataset.st)}catch(e){}sbTabLast="ov";renderStats()});
   if(body.dataset.team!==t&&!keep)sbTabLast=sbTabLast||"ov";
+  /* 1.72.2: solange die Ergebnisse laden, graue Platzhalter statt Nullen */
+  if(window.resultsLoading){body.dataset.team="";body.innerHTML=`<div class="stSk">${'<i class="sk"></i>'.repeat(6)}<b class="sk"></b><b class="sk"></b></div>`;const sub=document.getElementById("statsSub");if(sub)sub.textContent="Ergebnisse werden geladen …";return}
   body.innerHTML=bilanzHtml(t); body.dataset.team=t;
   const S=seasonStats(t);const sub=document.getElementById("statsSub"); if(sub){sub.textContent=S.tot.gp?S.tot.gp+" Spiele gewertet":"noch keine Ergebnisse"}
   body.querySelectorAll("[data-rep]").forEach(b=>b.onclick=()=>{const x=S.reports[Number(b.dataset.rep)];openMatchDetails(x.g,true)});
@@ -3804,7 +3811,7 @@ function renderHomeTeams27(){
     return `<button type="button" class="ht27Row team${t}" data-ht="${t}" aria-label="Saisonbilanz ${esc(teamName(t))}">
       <span class="ht27L">${esc(letter)}</span>
       <span class="ht27Mid"><b>${esc(teamName(t))}${x.rank?`<em>Platz ${x.rank}</em>`:""}</b><small>${esc(lg)}${x.total?` · ${x.played}/${x.total} gespielt`:""}</small>${x.form&&x.form.length?`<span class="ht27Form">${form(x.form)}</span>`:""}</span>
-      ${x.n?`<span class="ht27R"><b><span class="w">${x.w}</span>–<span class="l">${x.l}</span></b><small>${x.gf}:${x.ga} · <span class="${df>0?"w":df<0?"l":""}">${df>0?"+":""}${df}</span></small></span>`:`<span class="ht27R"><small>noch keine<br>Ergebnisse</small></span>`}
+      ${x.n?`<span class="ht27R"><b><span class="w">${x.w}</span>–<span class="l">${x.l}</span></b><small>${x.gf}:${x.ga} · <span class="${df>0?"w":df<0?"l":""}">${df>0?"+":""}${df}</span></small></span>`:window.resultsLoading?`<span class="ht27R ht27Sk"><b class="sk"></b><small class="sk"></small></span>`:`<span class="ht27R"><small>noch keine<br>Ergebnisse</small></span>`}
       <i class="ht27Bar"><i style="width:${pct}%"></i></i>
     </button>`}).join("");
   box.querySelectorAll("[data-ht]").forEach(b=>b.onclick=()=>{if(document.documentElement.classList.contains("dv")){try{localStorage.setItem("grizzlysStatsTeam",b.dataset.ht)}catch(e){}showView("stats");window.scrollTo(0,0)}else openBilanz(b.dataset.ht)});

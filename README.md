@@ -50,6 +50,9 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.72.3.297 | – (nur Test) | 27.11.2026 | Saisonwechsel-Werkzeug, App Check vorbereitet |
+| 1.72.2.296 | – (nur Test) | 27.11.2026 | Dunkelmodus-Durchgang, Seitenwechsel, Ladeplatzhalter |
+| 1.72.1.295 | – (nur Test) | 27.11.2026 | Hintergrundbilder: Strichschrift hinter den Titeln |
 | 1.72.0.294 | – (nur Test) | 27.11.2026 | Kalender-Abo (Vorbereitung 2027/28) |
 | 1.71.7.293 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift ohne Linien in den Buchstaben |
 | 1.71.6.292 | – (nur Test) | 27.11.2026 | Bilder: Strichschrift kräftiger |
@@ -157,6 +160,21 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.72.3
+
+- **Saisonwechsel (Admin › Technik › Saison).** Neue Cloud Function `seasonImport` (`functions/season.js`, nur Admin, nur lesen): holt zu eingegebenen EHV-Liganummern alle Grizzlys-Spiele und liefert den fertigen Text für `spielplan.js` (Hallen per `rinkAddresses`, sonst über den Namen der Heimmannschaft; Spiele ohne Termin werden gezählt, aber nicht übernommen). Im Admin: Eingabe je Mannschaft (Zahl oder EHV-Link mit divisionId), Vorschau, Download „spielplan.js“, Checkliste Saisonstart (auf dem Gerät gespeichert).
+- **App Check vorbereitet.** `APP_CFG.appCheckKey` in index.html (leer = aus). Mit Schlüssel wird Firebase App Check (reCAPTCHA v3) per dynamischem Import aktiviert; Durchsetzen erst später in der Firebase-Konsole. reCAPTCHA-Badge ausgeblendet – vor dem Einschalten Hinweis in den Datenschutz aufnehmen.
+
+## Version 1.72.2
+
+- Dunkelmodus-Durchgang (Verein-Design): B-/U13-Buchstaben auf Orange/Gold mit dunkler Schrift (Kontrast), alle Fenstertitel in schmaler Großschrift wie die Neuigkeiten.
+- Tabs antippen: neue Seite gleitet aus der passenden Richtung herein (`vSlide`, Klassen `vInR`/`vInL`); beim Wischen bleibt die eigene Bewegung (`window.__swNav`).
+- Solange die Ergebnisse laden: graue Platzhalter in „Mannschaften“ (Startseite) und in der Saisonbilanz statt „noch keine Ergebnisse“; Bilanz baut sich nach dem Laden neu auf.
+
+## Version 1.72.1
+
+- Hintergrundbilder im Vereinsdesign: Strichschrift hinter den Titeln auch bei Vereinsdesign (alle vier Stile), Trikot, Nächstes Spiel (Wochentag) und Advent. `icGhost` passt mittige Strichschrift automatisch an die Bildbreite an (optional `maxW`).
 
 ## Version 1.72.0
 

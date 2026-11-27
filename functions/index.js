@@ -345,6 +345,8 @@ exports.helperCleanup = require("./helpers").helperCleanup;
 exports.helperReminder = require("./helpers").helperReminder;
 // 1.72.0: Kalender-Abo (webcal) – Spielplan mit Verlegungen, Absagen und Ergebnissen
 exports.calendarFeed = require("./calendar").calendarFeed;
+// 1.72.3: Saisonwechsel – neuen Spielplan beim EHV abrufen (nur Admin, nur lesen)
+exports.seasonImport = require("./season").seasonImport;
 
 // 1.44.0: Ein-Tipp-Feedback (👍/👎) und Wunschliste – anonyme Zähler
 const feedbackVotes = require("./feedback-votes");

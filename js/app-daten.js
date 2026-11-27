@@ -20,6 +20,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const functions = getFunctions(app, "europe-west1");
+/* 1.72.4: Firebase App Check – nur die echte App (reCAPTCHA v3) bekommt Zugriff. Aktiv, sobald APP_CFG.appCheckKey gesetzt ist.
+   Erst im Beobachtungsmodus (Firebase-Konsole › App Check: Anfragen ansehen), Durchsetzen später in der Konsole einschalten. */
+window.APP_CHECK=false;
+(function(){const key=window.APP_CFG&&window.APP_CFG.appCheckKey; if(!key||!/^https:/.test(location.protocol))return;
+  import("https://www.gstatic.com/firebasejs/12.2.1/firebase-app-check.js").then(m=>{m.initializeAppCheck(app,{provider:new m.ReCaptchaV3Provider(key),isTokenAutoRefreshEnabled:true});window.APP_CHECK=true}).catch(e=>console.warn("App Check nicht aktiv",e));})();
 // Admin: Spielplan der App mit dem EHV-Spielplan vergleichen (Cloud Function scheduleCheck, nur lesend)
 document.getElementById("ehvCheckBtn")?.addEventListener("click",async e=>{
   const btn=e.currentTarget, box=document.getElementById("ehvCheckResult");
@@ -457,7 +462,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.72.0.294",
+      appVersion:"1.72.3.297",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),
@@ -997,6 +1002,48 @@ async function admBackup(){
   msg.className="apResult ok"; msg.textContent="✓ Sicherung erstellt ("+(blob.size/1024).toFixed(0)+" KB) · "+cnt.join(" · "); btn.disabled=false;
 }
 document.getElementById("admBackupBtn")?.addEventListener("click",admBackup);
+/* 1.72.3: Saisonwechsel – neuer Spielplan vom EHV (Function seasonImport, nur lesend) und Checkliste Saisonstart */
+(function(){
+  const rows=document.getElementById("swRows"); if(!rows)return;
+  const KEY="grizzlysSwCfg", CK="grizzlysSwChecks";
+  const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  let cfg={}; try{cfg=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+  const y=Number(String(window.APP_CFG.season||"").slice(0,4))||new Date().getFullYear();
+  const seasonIn=document.getElementById("swSeason"); seasonIn.value=cfg.season||((y+1)+"/"+String(y+2).slice(2));
+  let list=Array.isArray(cfg.rows)&&cfg.rows.length?cfg.rows:Object.keys(window.APP_CFG.teams).map(t=>({t,id:""}));
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({season:seasonIn.value.trim(),rows:list}))}catch(e){}};
+  function draw(){
+    rows.innerHTML=list.map((r,i)=>`<div class="swRow"><input class="swT" data-i="${i}" value="${esc(r.t)}" maxlength="6" aria-label="Mannschaft (Schlüssel)" placeholder="A"><input class="swId" data-i="${i}" value="${esc(r.id)}" inputmode="url" aria-label="EHV-Liganummer" placeholder="Liganummer oder EHV-Link"><button type="button" class="swDel" data-i="${i}" aria-label="Zeile entfernen">✕</button></div>`).join("");
+    rows.querySelectorAll("input").forEach(el=>el.addEventListener("input",()=>{const r=list[+el.dataset.i];if(el.classList.contains("swT"))r.t=el.value.toUpperCase().replace(/[^A-Z0-9]/g,"");else r.id=el.value;save()}));
+    rows.querySelectorAll(".swDel").forEach(b=>b.onclick=()=>{list.splice(+b.dataset.i,1);save();draw()});
+  }
+  draw(); seasonIn.addEventListener("input",save);
+  document.getElementById("swAdd").onclick=()=>{if(list.length>=6)return;list.push({t:"",id:""});save();draw()};
+  const out=document.getElementById("swOut"), btn=document.getElementById("swLoad");
+  btn.onclick=async()=>{
+    const divisions={}; list.forEach(r=>{const m=String(r.id||"").match(/divisionId=(\d+)/i)||String(r.id||"").match(/(\d{4,8})/);if(r.t&&m)divisions[r.t]=m[1]});
+    out.hidden=false;
+    if(!Object.keys(divisions).length){out.innerHTML='<div class="small">Bitte mindestens eine Mannschaft mit Liganummer eintragen.</div>';return}
+    btn.disabled=true; out.innerHTML='<div class="small">EHV wird abgefragt …</div>';
+    try{
+      const r=(await httpsCallable(functions,"seasonImport")({divisions,season:seasonIn.value.trim()})).data;
+      const T=Object.entries(r.teams).map(([t,x])=>`<li class="${x.ok?"":"bad"}"><b>${esc(t)}</b> · Liga ${esc(x.id)}: ${x.ok?`${x.games} Spiele${x.open?` · ${x.open} ohne Termin`:""}${x.unknownHalls&&x.unknownHalls.length?` · <span class="warn">Halle unbekannt: ${esc(x.unknownHalls.join(", "))}</span>`:""}`:esc(x.error)}</li>`).join("");
+      const dated=r.games.filter(g=>g.date);
+      const prev=dated.slice(0,10).map(g=>`<li><span>${esc(g.date.slice(8,10)+"."+g.date.slice(5,7)+".")} ${esc(g.time)}</span> <b>${esc(g.team)}</b> ${esc(g.home)} – ${esc(g.away)} <em>${esc(g.stadium)}</em></li>`).join("");
+      out.innerHTML=`<ul class="swTeams">${T}</ul>${dated.length?`<div class="small">${dated.length} Spiele mit Termin${r.open?` · ${r.open} noch ohne Termin (nicht in der Datei, später als Verlegung eintragen)`:""}:</div><ol class="swPrev">${prev}</ol>${dated.length>10?`<div class="small">… und ${dated.length-10} weitere</div>`:""}<div class="apBtns"><button id="swDl" class="action" type="button">💾 spielplan.js herunterladen</button></div><div class="small">Unbekannte Hallen bitte mit Adresse melden – sie kommen dann in die Hallenliste der App. Neue Mannschaften (z. B. U17) brauchen außerdem einen Eintrag in den App-Einstellungen.</div>`:'<div class="small">Keine Spiele mit Termin gefunden.</div>'}`;
+      const dl=document.getElementById("swDl"); if(dl)dl.onclick=()=>{const b=new Blob([r.text],{type:"text/javascript"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="spielplan.js";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
+    }catch(err){console.error(err);out.innerHTML='<div class="small">Abruf nicht möglich. Bitte prüfen, ob du als Admin angemeldet bist und die Function „seasonImport“ deployt ist (kommt mit „Live gehen“).</div>'}
+    btn.disabled=false;
+  };
+  const CHECKS=[["bak","Saisonende-Sicherung heruntergeladen"],["plan","Neuer Spielplan (spielplan.js) im Test-Paket"],["ligen","Neue EHV-Liganummern für Tabelle, Ergebnisse und Live-Ticker hinterlegt"],["teams","Mannschaften und Ligen in den App-Einstellungen angepasst (z. B. U17)"],["design","Vereinsdesign für alle eingeschaltet, Vorschau-Schalter entfernt"],["icons","Neue App-Icons übernommen"],["helfer","Helferdienste für alle freigeschaltet"],["abo","Kalender-Abo für alle sichtbar"],["news","Eintrag in „Neu in der App“"],["test","Probelauf mit ein paar Eltern"]];
+  let ck={}; try{ck=JSON.parse(localStorage.getItem(CK)||"{}")}catch(e){}
+  const box=document.getElementById("swChecks"), sum=document.getElementById("admSwSum");
+  const paint=()=>{const n=CHECKS.filter(c=>ck[c[0]]).length;if(sum)sum.textContent=n?n+" von "+CHECKS.length+" erledigt":"Vorbereitung"};
+  box.innerHTML=CHECKS.map(([k,l])=>`<label class="swCk"><input type="checkbox" data-k="${k}"${ck[k]?" checked":""}><span>${esc(l)}</span></label>`).join("");
+  box.querySelectorAll("input").forEach(i=>i.onchange=()=>{ck[i.dataset.k]=i.checked;try{localStorage.setItem(CK,JSON.stringify(ck))}catch(e){}paint()});
+  paint();
+})();
+
 function setAdminUi(user){
   const login=document.getElementById("adminLogin"), panel=document.getElementById("adminPanel"), status=document.getElementById("adminStatus");
   if(user && user.uid===ADMIN_UID){ login.hidden=true; panel.hidden=false; status.textContent="Admin angemeldet"; document.getElementById("adminLogout").hidden=false; loadBugReports(); setupAnalyticsDashboard(); adminNewsEditor(); setupAdminPushStatus(); admStart(); loadSprueche(true).then(()=>adminSpruchEditor()); try{adminWishEditor();adminReactions();loadCaptains(true).then(()=>adminCaptainEditor())}catch(e){console.warn(e)} }
