@@ -462,7 +462,7 @@ async function submitBugReport(){
       area,
       description,
       contact,
-      appVersion:"1.74.6.313",
+      appVersion:"1.75.1.315",
       platform:detectPlatform(),
       userAgent:navigator.userAgent||"",
       pushRegistered:getPushRegistrationStatus(),

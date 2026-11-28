@@ -8,6 +8,8 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.75.1.315 | – (nur Test) | 27.11.2026 | Gemeinsames SpG-Logo auch im aktuellen Design |
+| 1.75.0.314 | – (nur Test) | 27.11.2026 | Spielgemeinschaften: ein gemeinsames Logo |
 | 1.74.6.313 | – (nur Test) | 27.11.2026 | Logo Dinslaken in besserer Qualität |
 | 1.74.5.312 | – (nur Test) | 27.11.2026 | Logos Dinslaken, Ratingen, Gelsenkirchen freigestellt |
 | 1.74.4.311 | – (nur Test) | 27.11.2026 | Neue Sprüche für 2027/28 |

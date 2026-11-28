@@ -50,6 +50,8 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.75.1.315 | – (nur Test) | 27.11.2026 | Gemeinsames SpG-Logo auch im aktuellen Design |
+| 1.75.0.314 | – (nur Test) | 27.11.2026 | Spielgemeinschaften: ein gemeinsames Logo |
 | 1.74.6.313 | – (nur Test) | 27.11.2026 | Logo Dinslaken in besserer Qualität |
 | 1.74.5.312 | – (nur Test) | 27.11.2026 | Logos Dinslaken, Ratingen, Gelsenkirchen freigestellt |
 | 1.74.4.311 | – (nur Test) | 27.11.2026 | Neue Sprüche für 2027/28 |
@@ -176,6 +178,14 @@ Letzte Stände (vollständige Liste und ältere Versionen: `README-ARCHIV.md`):
 | 1.36.0.186 | – (nur Test) | 12.11.2026 | Neue Funktion (U13, Young Grizzlys) |
 | 1.35.0.185 | – (nur Test) | 12.11.2026 | Neue Funktion |
 | 1.34.1.184 | – (nur Test) | 12.11.2026 | Kleine Ergänzung |
+
+## Version 1.75.1
+
+- Gemeinsames Logo für Spielgemeinschaften jetzt auch im aktuellen Design (CSS-Regel ohne `html.dv`, Bilder ohne `IC_.v`-Bedingung).
+
+## Version 1.75.0
+
+- **Spielgemeinschaften im Verein-Design als ein Logo:** Wo bisher zwei Logos nebeneinander standen, liegen sie jetzt überlappend – erstes vorn links, zweites dahinter rechts (Platzbedarf etwa wie ein Logo). Gilt für alle Mannschaften und Ligen: Grizzlys/Young Cats, SpG Neusser EV/GSC Moers (U15 A und 1b in der U15 B), SpG EHC Gelsenkirchen/Herner EV 1b. Umgesetzt per CSS für `.logos` mit zwei Bildern (App-Ansichten) und in den Bildern (`instaCircle`, neue `instaPair` für Tabelle und Wochenende; Young Cats dort jetzt mit im gemeinsamen Logo statt als kleines Abzeichen).
 
 ## Version 1.74.6
 

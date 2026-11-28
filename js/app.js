@@ -2002,14 +2002,18 @@ function instaSpace(c,px){try{c.letterSpacing=px+"px"}catch(e){}}
 function instaWrap(c,text,maxW){const words=String(text).split(/\s+/).filter(Boolean),lines=[];let cur="";words.forEach(w=>{const t=cur?cur+" "+w:w;if(cur&&c.measureText(t).width>maxW){lines.push(cur);cur=w}else cur=t});if(cur)lines.push(cur);return lines}
 function instaContain(c,img,cx,cy,box){const s=Math.min(box/img.naturalWidth,box/img.naturalHeight),w=img.naturalWidth*s,h=img.naturalHeight*s;c.drawImage(img,cx-w/2,cy-h/2,w,h)}
 async function instaLogos(name){
-  if(/grizzlys/i.test(name)){const main=await instaImg(grizzlysLogo);const yc=/young cats/i.test(name)?await instaImg("logos/"+INSTA_LOGOS["ESC Rheine Young Cats"]):null;return {imgs:main?[main]:[],badge:yc}}
+  if(/grizzlys/i.test(name)){const main=await instaImg(grizzlysLogo);const yc=/young cats/i.test(name)?await instaImg("logos/"+INSTA_LOGOS["ESC Rheine Young Cats"]):null;if(main&&yc)return {imgs:[main,yc],badge:null};return {imgs:main?[main]:[],badge:yc}}
   const imgs=(await Promise.all(logoKeys(name).map(k=>instaImg(INSTA_LOGOS[k]?"logos/"+INSTA_LOGOS[k]:"")))).filter(Boolean);
   return {imgs,badge:null};
 }
+/* 1.75.0: kleines Logo – bei Spielgemeinschaften beide Logos überlappend (ab 1.75.1 in beiden Designs) */
+function instaPair(c,lg,x,y,box){if(lg.imgs.length>1){instaContain(c,lg.imgs[1],x+box*.2,y-box*.04,box*.72);instaContain(c,lg.imgs[0],x-box*.17,y+box*.04,box*.78)}else instaContain(c,lg.imgs[0],x,y,box)}
 function instaCircle(c,lg,name,cx,cy,r){
   c.save();c.shadowColor="rgba(0,0,0,.55)";c.shadowBlur=50;c.shadowOffsetY=18;c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.fillStyle=IC_.panel(.62);c.fill();c.restore();
   c.save();c.beginPath();c.arc(cx,cy,r-2,0,Math.PI*2);c.clip();
   if(lg.imgs.length===1) instaContain(c,lg.imgs[0],cx,cy,r*1.4);
+  else if(lg.imgs.length>1){ /* 1.75.0: Spielgemeinschaft als ein Logo – erstes vorn links, zweites dahinter rechts */
+    instaContain(c,lg.imgs[1],cx+r*.3,cy-r*.06,r*1.0); c.save();c.shadowColor="rgba(0,0,0,.45)";c.shadowBlur=r*.12;c.shadowOffsetX=r*.03;c.shadowOffsetY=r*.04;instaContain(c,lg.imgs[0],cx-r*.26,cy+r*.06,r*1.06);c.restore(); }
   else if(lg.imgs.length>1){ instaContain(c,lg.imgs[0],cx-r*.42,cy,r*.78); instaContain(c,lg.imgs[1],cx+r*.42,cy,r*.78); }
   else { instaFont(c,900,r*.4);instaSpace(c,2);c.fillStyle="#cfe3fb";c.textAlign="center";c.textBaseline="middle";c.fillText(String(name).replace(/^SpG\s+/i,"").slice(0,3).toUpperCase(),cx,cy+4);instaSpace(c,0); }
   c.restore();
@@ -2139,7 +2143,7 @@ async function instaTable(team){
     const fg=mine?IC_.accTx:"#fff",fs=Math.min(36,rh*.46);
     c.textBaseline="middle";instaFont(c,900,fs);c.fillStyle=fg;c.textAlign="center";c.fillText(r.r+".",cx.nr,mid+1);
     const lg=logos[i],lr=rh*.36;c.save();c.beginPath();c.arc(cx.logo,mid,lr,0,Math.PI*2);c.fillStyle=mine?"rgba(255,255,255,.85)":"rgba(255,255,255,.92)";c.fill();c.clip();
-    if(lg&&lg.imgs.length)instaContain(c,lg.imgs[0],cx.logo,mid,lr*1.55);else{instaFont(c,900,lr*.7);c.fillStyle="#12263f";c.fillText(shortTeam(r.n).slice(0,2).toUpperCase(),cx.logo,mid+1)}c.restore();
+    if(lg&&lg.imgs.length)instaPair(c,lg,cx.logo,mid,lr*1.55);else{instaFont(c,900,lr*.7);c.fillStyle="#12263f";c.fillText(shortTeam(r.n).slice(0,2).toUpperCase(),cx.logo,mid+1)}c.restore();
     c.textAlign="left";instaFont(c,mine?900:800,fs);c.fillStyle=fg;let nm=shortTeam(r.n);while(c.measureText(nm).width>cx.sp-60-cx.name&&nm.length>6)nm=nm.slice(0,-2);if(nm!==shortTeam(r.n))nm=nm.replace(/\s*$/,"")+"…";c.fillText(nm,cx.name,mid+1);
     c.textAlign="center";instaFont(c,800,fs);c.fillText(String(r.gp),cx.sp,mid+1);const gd=Number(r.gd)||0;c.fillText(gd>0?"+"+gd:gd<0?"−"+Math.abs(gd):"0",cx.gd,mid+1);instaFont(c,900,fs*1.08);c.fillText(String(r.p),cx.p,mid+1);
   });
@@ -3106,7 +3110,7 @@ async function instaWeekend(W0){
     /* Logos und Namen */
     const lr=Math.min(40,rh*.27), mid=y+rh*.44;
     [[g.home,logos[i][0],390],[g.away,logos[i][1],830]].forEach(([n,lg,x])=>{c.save();c.beginPath();c.arc(x,mid,lr,0,Math.PI*2);c.fillStyle="rgba(255,255,255,.94)";c.fill();c.clip();
-      if(lg&&lg.imgs.length)instaContain(c,lg.imgs[0],x,mid,lr*1.55);else{instaFont(c,900,lr*.7);c.fillStyle="#12263f";c.textBaseline="middle";c.fillText(shortTeam(n).slice(0,2).toUpperCase(),x,mid+1);c.textBaseline="alphabetic"}c.restore();
+      if(lg&&lg.imgs.length)instaPair(c,lg,x,mid,lr*1.55);else{instaFont(c,900,lr*.7);c.fillStyle="#12263f";c.textBaseline="middle";c.fillText(shortTeam(n).slice(0,2).toUpperCase(),x,mid+1);c.textBaseline="alphabetic"}c.restore();
       instaFont(c,800,Math.min(26,rh*.17));c.fillStyle=IC_.t1;let nm=shortTeam(n);while(c.measureText(nm).width>250&&nm.length>6)nm=nm.slice(0,-2);if(nm!==shortTeam(n))nm=nm.replace(/\s*$/,"")+"…";c.fillText(nm,x,y+rh*.88)});
     instaFont(c,900,r?Math.min(56,rh*.36):Math.min(34,rh*.24));c.fillStyle=r?(r.o==="w"?"#5fd18f":"#fff"):IC_.acc;c.textBaseline="middle";
     c.fillText(g.cancelled?cxU(g):r?r.hs+":"+r.as:"VS",CX,mid);c.textBaseline="alphabetic";
