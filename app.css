@@ -3492,3 +3492,10 @@ html.dv .inQr svg{width:96px;height:96px;flex:none;border-radius:4px;background:
 html.dv .inQr span{display:grid;gap:3px;min-width:0}html.dv .inQr b{font-size:14px}html.dv .inQr small{font-size:12px;color:var(--muted);word-break:break-all}html.dv .inQr em{font-style:normal;font-size:12px;font-weight:700;color:var(--vAcc)}
 html.dv #qrApp{display:none!important}
 html.dv .inShareRow #shareApp{flex:1 1 100%!important;width:100%!important;max-width:none!important}
+/* 1.74.3: Intro wartet auf den App-Code; Gameday-Variante */
+#vIntro.viWait,#vIntro.viWait *{animation-play-state:paused!important}
+#vIntro .viGames{position:absolute;left:16px;right:16px;top:calc(50% + min(22vw,100px) + 20px + min(10vw,44px) + 14px);display:grid;gap:10px;text-align:center;color:#fff;opacity:0;transform:translateY(10px);animation:viUp .45s 2.1s forwards}
+#vIntro .viGames div{font-size:17px;font-weight:700;line-height:1.25}
+#vIntro .viGames em{font-style:normal;color:#5cb4ff;font-size:13px;margin:0 4px}
+#vIntro .viGames small{display:block;margin-top:2px;font-size:13px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.04em}
+#vIntro.viGd .viKick{color:#ff8a00}

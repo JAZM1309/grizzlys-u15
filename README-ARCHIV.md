@@ -8,6 +8,10 @@ Die Stände von 1.9.1.66 bis 1.9.1.140 hießen ursprünglich alle „1.9.1“ un
 
 | Neue Version | Alte Bezeichnung | Datum | Art |
 |---|---|---|---|
+| 1.74.6.313 | – (nur Test) | 27.11.2026 | Logo Dinslaken in besserer Qualität |
+| 1.74.5.312 | – (nur Test) | 27.11.2026 | Logos Dinslaken, Ratingen, Gelsenkirchen freigestellt |
+| 1.74.4.311 | – (nur Test) | 27.11.2026 | Neue Sprüche für 2027/28 |
+| 1.74.3.310 | – (nur Test) | 27.11.2026 | Gameday-Intro statt zweitem Bildschirm |
 | 1.74.2.309 | – (nur Test) | 27.11.2026 | Bilanz, Downloads, Info im Vereinsdesign |
 | 1.74.1.308 | – (nur Test) | 27.11.2026 | Intro: Strichschrift schmaler |
 | 1.74.0.307 | – (nur Test) | 27.11.2026 | Intro im Vereinsdesign |

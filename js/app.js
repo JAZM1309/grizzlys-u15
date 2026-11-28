@@ -2556,6 +2556,10 @@ document.getElementById("newsTopBtn").onclick=openNews;
   const sameDay=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
   const hm=g=>g.time.replace(/^0/,"");
   function todays(){const n=new Date();return games.filter(g=>sameDay(dt(g),n)&&!g.cancelled).sort((a,b)=>dt(a)-dt(b))}
+  /* 1.74.3: Verein-Design – an Spieltagen wird das Intro zum Gameday-Intro (kein zweiter Gameday-Bildschirm) */
+  try{if(window.vIntroStart){const L=todays().filter(g=>Date.now()<dt(g).getTime()+2.5*3600000);
+    if(L.length){const n=new Date();try{localStorage.setItem("grizzlysGameday"+n.getFullYear()+"-"+(n.getMonth()+1)+"-"+n.getDate(),"1")}catch(e){}}
+    window.vIntroStart(L.length?L.map(g=>({team:teamName(g.team),time:hm(g),home:shortTeam(g.home),away:shortTeam(g.away),place:g.stadium})):null)}}catch(e){console.warn(e)}
   /* 1.9.1.125: Status eines einzelnen Spiels (vor dem Spiel, läuft, Ergebnis) */
   function gameText(g,now){
     const s=dt(g).getTime(), r=resInfo(g);
